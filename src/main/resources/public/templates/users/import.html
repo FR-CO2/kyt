@@ -1,0 +1,12 @@
+<div class="panel panel-info">
+    <div class="panel-heading">
+        <span class="glyphicon glyphicon-plus-sign"></span> Importer des utilisateurs
+    </div>
+    <div class="panel-body">
+        <alert type="danger" ng-if="import.form.error">{{import.form.error}}</alert>
+        <input type="file" ngf-select ng-model="import.file" name="file" accept="*" required>
+        <div>
+            <button type="submit" class="btn btn-info center-block" ng-click="import.submit()">valider</button>
+        </div>
+    </div>
+</div>

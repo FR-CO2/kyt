@@ -1,0 +1,37 @@
+<div class="panel panel-default kanban-card" >
+    <div class="panel-heading center-block">
+        <div class="row">
+            <a ng-click="kanbanCtrl.goToTask(task.id)">#{{task.id}}</a>
+            {{task.name}}
+        </div>
+        <div class="row">
+            <span>
+                <a href="#" editable-select="task.assignee" onshow="kanbanCtrl.loadMember()" onaftersave="kanbanCtrl.saveTask(task)" e-ng-options="member as member.user.username for member in kanbanCtrl.members">
+                    <span ng-if="!task.assignee">
+                        -
+                    </span>
+                    {{task.assignee.user.username}}
+                </a>
+            </span>
+        </div> 
+        <div class="row">
+            <span class="badge pull-right">
+                <a href="#" editable-select="task.category" onshow="kanbanCtrl.loadCategory()" onaftersave="kanbanCtrl.saveTask(task)" e-ng-options="category as category.name for category in kanbanCtrl.categories">
+                    <span ng-if="!task.category">
+                        -
+                    </span>
+                    <span class="glyphicon glyphicon-tag" ng-if="task.category"></span> {{task.category.name}}
+                </a>
+
+            </span>
+        </div>
+    </div>
+    <div class="panel-body">
+        <div>
+            {{task.description}}
+        </div>
+    </div>
+    <div class="panel-footer text-right" ng-if="task.plannedEnding">
+        <span class="glyphicon glyphicon-calendar"></span> {{task.plannedEnding | date:'dd/MM/yyyy'}}
+    </div>
+</div>

@@ -1,0 +1,52 @@
+<alert type="danger" ng-if="edit.form.error">{{edit.form.error}}</alert>
+<form id="login" role="form" ng-submit="edit.submit()">
+    <div class="form-group">
+        <label for="taskname">Nom de la tâche</label>
+        <input type="text" required ng-model="edit.task.name" class="form-control" id="taskname" name="taskName" placeholder="Nom de la tâche"/>
+    </div>
+    <div class="form-group">
+        <label for="state">Etat</label>
+        <select ng-model="edit.task.stateId" required class="form-control" name="state" id="state" placeholder="Etat">
+            <option ng-selected="edit.task.stateId === state.id" value="{{state.id}}" ng-repeat="state in edit.states">{{state.name}}</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="swimlane">Couloir</label>
+        <select ng-model="edit.task.swimlaneId" class="form-control" id="swimlane" name="swimlane" placeholder="Etat">
+            <option ng-selected="edit.task.swimlaneId === swimlane.id" value="{{swimlane.id}}" ng-repeat="swimlane in edit.swimlanes">{{swimlane.name}}</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="category">Catégorie</label>
+        <select ng-model="edit.task.categoryId" class="form-control" id="category" name="category" placeholder="Catégorie">
+            <option ng-selected="edit.task.categoryId === category.id" value="{{category.id}}" ng-repeat="category in edit.categories">{{category.name}}</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="description">Description</label>
+        <textarea col="100" rows="10" ng-model="edit.task.description" class="form-control" id="description" name="description" placeholder="Description"/>
+    </div>
+    <div class="form-group">
+        <label for="assignee">Assigné à </label>
+        <select ng-model="edit.task.assigneeId" class="form-control" id="assignee" name="assignee" placeholder="Assigné à">
+            <option value="{{member.id}}" ng-repeat="member in edit.members">{{member.user.username}}</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="backup">Backup </label>
+        <select ng-model="edit.task.backupId" class="form-control" id="backup" name="backup" placeholder="Backup">
+            <option value="{{member.id}}" ng-repeat="member in edit.members">{{member.user.username}}</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="plannedStart">Date de début prévue </label>
+        <input type="date" id="plannedStart" class="form-control" ng-model="edit.plannedStartFmt" pattern="dd/MM/YYYY"/>
+    </div>
+    <div class="form-group">
+        <label for="plannedEnding">Date de fin prévue </label>
+        <input type="date" id="plannedEnding" class="form-control" ng-model="edit.plannedEndingFmt" pattern="dd/MM/YYYY"/>
+    </div>
+    <div>
+        <button type="submit"  class="btn btn-info center-block">valider</button>
+    </div>
+</form>

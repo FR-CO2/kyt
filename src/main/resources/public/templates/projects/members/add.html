@@ -1,0 +1,23 @@
+<div class="panel panel-info">
+    <div class="panel-heading">
+        <span class="glyphicon glyphicon-plus-sign"></span> Nouveau membre
+    </div>
+    <div class="panel-body">
+        <alert type="danger" ng-if="add.form.error">{{add.form.error}}</alert>
+        <form id="login" role="form" ng-submit="add.submit()">
+            <div class="form-group">
+                <select ng-model="add.member.applicationUserId" class="form-control" name="user" placeholder="Utilisateur">
+                    <option value="{{user.id}}" ng-repeat="user in add.users">{{user.username}}</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <select ng-model="add.member.projectRole" class="form-control" name="role" placeholder="Role">
+                    <option value="{{role}}" ng-repeat="role in add.roles">{{role}}</option>
+                </select>
+            </div>
+            <div>
+                <button type="submit"  class="btn btn-info center-block">valider</button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,103 @@
+<div ui-view>
+    <h3>Liste des tâches</h3>
+
+    <div class="row">
+        <div class="col-md-4 col-md-offset-8">
+            <button class="btn btn-info btn-sm" ng-click="taskCtrl.add()"><span class="glyphicon glyphicon-plus-sign"></span>Nouvelle tâche</button>
+            <button class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                Import/Export <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu pull-right">
+                <li><a href="#"><span class="glyphicon glyphicon-import"></span>Import</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-export"></span>Export</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Etat</th>
+                    <th>Couloir</th>
+                    <th>Categorie</th>
+                    <th>assignee</th>
+                    <th>Date début</th>
+                    <th>Date fin</th>
+                    <th>Charge estimée</th>
+                    <th>Consommé</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="task in taskCtrl.tasks.content">
+                    <td>
+                        {{task.name}}
+                    </td>
+                    <td>
+                        {{task.state.name}}
+                    </td>
+                    <td>
+                        {{task.swimlane.name}}
+                    </td>
+                    <td>
+                        <a href="#" editable-select="task.category" onshow="taskCtrl.loadCategory()" onaftersave="taskCtrl.saveTask(task)" e-ng-options="category as category.name for category in taskCtrl.categories">
+                            <span ng-if="!task.category">
+                                -
+                            </span>
+                            {{task.category.name}}
+                        </a>
+                    </td>
+                    <td>
+                        <a href="#" editable-select="task.assignee" onshow="taskCtrl.loadMember()" onaftersave="taskCtrl.saveTask(task)" e-ng-options="member as member.user.username for member in taskCtrl.members">
+                            <span ng-if="!task.assignee">
+                                -
+                            </span>
+                            {{task.assignee.user.username}}
+                        </a>
+                    </td>
+                    <td>
+                        {{task.plannedStart| date:'dd/MM/yyyy'}}
+                    </td>
+                    <td>
+
+                        {{task.plannedEnding| date:'dd/MM/yyyy'}}
+                    </td>
+                    <td>{{task.estimatedLoad}}</td>
+                    <td>-</td>
+                    <td>
+                        <a ng-click="taskCtrl.edit(task.id)" title="edit">
+                            <span class="glyphicon glyphicon-edit"></span>
+                        </a>
+                        <a ng-if="$session.user.applicationRole === 'ADMIN'" ng-click="taskCtrl.delete(task.id)" title="delete">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="11">
+                        <div class="row">
+                            <div class="col-md-6 col-md-offset-3" >
+                                <div class="center-block text-center">
+                                    <pagination total-items="taskCtrl.tasks.totalElements" ng-model="taskCtrl.numPage" items-per-page="taskCtrl.tasks.size" max-size="5" class="pagination-sm" boundary-links="true" rotate="false" num-pages="taskCtrl.tasks.totalPages" ng-click="taskCtrl.pageChanged()"></pagination>
+                                </div>
+                            </div>
+                            <div class="col-md-3 form-inline"> 
+                                <div class="form-group pull-right">
+                                    <label for="nbEltUser">Nb élements :</label>
+                                    <select id="nbEltUser" ng-model="taskCtrl.nbElt" class="form-control input-sm" style="margin: 20px;" ng-change="taskCtrl.pageChanged()">
+                                        <option value="10">10</option>
+                                        <option value="20">20</option>
+                                        <option value="50">50</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>

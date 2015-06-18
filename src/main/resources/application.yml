@@ -1,0 +1,28 @@
+## YAML Template.
+---
+endpoints :
+    shutdown :
+        enabled : true
+        
+spring:
+    oauth2:
+        client:
+            client-id: kanban
+            client-secret: nosecret
+    datasource:
+        driverClassName: org.h2.Driver
+        url: jdbc:h2:~/kanban
+        username: sa
+        password: sa
+    jpa: 
+        hibernate:
+            ddl-auto: update
+security:
+    user:
+        name: greg
+        password: turnquist
+        
+logging:
+    level:
+        org.springframework.security: INFO
+        org.hibernate: INFO

@@ -1,0 +1,70 @@
+<h2>Liste des projets</h2>
+
+<div class="row">
+    <div class="col-md-3 col-md-offset-9">
+        <button class="btn btn-info btn-sm" ng-click="projectCtrl.add()"><span class="glyphicon glyphicon-plus-sign"></span>Ajouter</button>
+        <button class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+            Import/Export <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu pull-right">
+            <li><a href="#"><span class="glyphicon glyphicon-import"></span>Import</a></li>
+            <li><a href="#"><span class="glyphicon glyphicon-export"></span>Export</a></li>
+        </ul>
+    </div>
+</div>
+<div class="row">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Etats</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="project in projectCtrl.projects.content">
+                <td>
+                    {{project.name}}
+                </td>
+                <td class="text-justify">
+                    <ul class="list-inline"> 
+                        <li ng-repeat="state in project.taskStates">
+                            {{state.name}} <span class="badge alert-info">{{state.tasks.length}}</span>
+                        </li>
+                    </ul>
+                </td>
+                <td>
+                    <a ng-click="projectCtrl.edit(project.id)">
+                        <span class="glyphicon glyphicon-edit"></span>
+                    </a>
+                    <a ng-click="projectCtrl.delete(project.id)">
+                        <span class="glyphicon glyphicon-trash"></span>
+                    </a>
+                </td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="3">
+                    <div class="row">
+                        <div class="col-md-6 col-md-offset-3" >
+                            <div class="center-block text-center">
+                                <pagination total-items="projectCtrl.projects.nbElt" ng-model="projectCtrl.projects.number" items-per-page="projectCtrl.projects.size" max-size="5" class="pagination-sm" boundary-links="true" rotate="false" num-pages="projectCtrl.projects.totalPages" ng-change="projectCtrl.pageChanged()"></pagination>
+                            </div>
+                        </div>
+                        <div class="col-md-3 form-inline"> 
+                            <div class="form-group pull-right">
+                                <label for="nbEltUser">Nb élements :</label>
+                                <select id="nbEltUser" ng-model="projectCtrl.nbElt" class="form-control input-sm" style="margin: 20px;">
+                                    <option value="10">10</option>
+                                    <option value="20">20</option>
+                                    <option value="50">50</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+</div>

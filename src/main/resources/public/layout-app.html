@@ -1,0 +1,39 @@
+<header class="navbar navbar-default" ng-controller="headerController as header">
+    <div id="logo" class="navbar-header">
+        <a class="navbar-brand" ui-sref="app.dashboard" style="padding-top: 2px;">
+            <img class="logo" src="../images/CO2-Logo.png" alt="logo" title="CO2" height="50"/>
+            KyT
+        </a>
+    </div>
+
+    <div class="navbar-text navbar-right">
+        <a class="dropdown-toggle account" data-toggle="dropdown">
+            <span class="glyphicon glyphicon-user"></span>
+            {{$session.user.username}}
+        </a>
+        <ul class="dropdown-menu">
+            <li>
+                <a href="#">
+                    <span class="glyphicon glyphicon-cog"></span>
+                    <span>Profil</span>
+                </a>
+            </li>
+            <li>
+                <a ui-sref="app.users">
+                    <span class="glyphicon glyphicon-user"></span>
+                    <span>Administrer utilisateurs</span>
+                </a>
+            </li>
+            <li>
+                <a ng-click="header.logout()">
+                    <span class="glyphicon glyphicon-log-out"></span>
+                    <span>Logout</span>
+                </a>
+            </li>  
+        </ul>
+    </div>
+</header>
+<div class="container-fluid">
+    <div class="row" ui-view>
+    </div>
+</div>

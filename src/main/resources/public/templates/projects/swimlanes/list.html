@@ -1,0 +1,33 @@
+<div class="row">
+    <div class="col-md-4 col-md-offset-8">
+        <button class="btn btn-info btn-sm" ng-click="configCtrl.add()"><span class="glyphicon glyphicon-plus-sign"></span>Nouveau couloir</button>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12" as-sortable="configCtrl.swimlaneListSortOptions" ng-model="configCtrl.swimlanes">
+        <div class="row" ng-repeat="swimlane in configCtrl.swimlanes" as-sortable-item>
+            <div class="col-md-8">
+                <div class="panel panel-default" as-sortable-item-handle>
+                    <div class="row">
+                        <div class="col-md-4">
+                            {{swimlane.name}} 
+                        </div>
+                        <div class="col-md-4">
+                            {{swimlane.responsable.user.name}} 
+                        </div>
+                        <div class="col-md-4">
+                            <span class="badge  pull-right">
+                                {{swimlane.taskCount}}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <a ng-click="configCtrl.delete(swimlane.id)">
+                    <span class="glyphicon glyphicon-trash"></span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
