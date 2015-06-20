@@ -5,35 +5,23 @@
  */
 package com.cgi.fgdc.bdx.kanban.project.reporting;
 
-import com.cgi.fgdc.bdx.kanban.project.state.State;
 import com.cgi.fgdc.bdx.kanban.project.swimlane.Swimlane;
 import java.util.List;
-import java.util.Map;
 
 /**
  *
  * @author ben
  */
-public class SwimlaneReport {
+public class SwimlaneReport extends StateReport{
     
-    private Swimlane swimlane;
+    private String swimlane;
     
-    private List<StateReport> statesReport;
-
-    public Swimlane getSwimlane() {
+    public String getSwimlane() {
         return swimlane;
     }
 
-    public void setSwimlane(Swimlane swimlane) {
+    public void setSwimlane(String swimlane) {
         this.swimlane = swimlane;
     }
 
-    public List<StateReport> getStatesReport() {
-        return statesReport;
-    }
-
-    public void setStatesReport(List<StateReport> statesReport) {
-        this.statesReport = statesReport;
-    }
-    
 }

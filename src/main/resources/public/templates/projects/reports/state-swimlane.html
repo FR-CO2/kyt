@@ -1,4 +1,9 @@
-<canvas id="line" class="chart chart-line" data="data"
-  labels="labels" legend="true" series="series"
-  click="onClick">
-</canvas> 
+<div class="row">
+    <div class="col-md-3"><h4>Répartition par Etat</h4></div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <canvas id="bar" class="chart chart-bar" data="reportStateCtrl.stateValues" 
+                labels="reportStateCtrl.stateLabels"></canvas> 
+    </div>
+</div>

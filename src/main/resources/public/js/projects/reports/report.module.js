@@ -3,27 +3,36 @@
 
     function stateReportController($stateParams, reportsResource) {
         var vm = this;
-        vm.stateReport = reportsResource.query({"projectId": $stateParams.id, reportName: "state"});
         vm.swimlane = reportsResource.query({"projectId": $stateParams.id, reportName: "swimlane"});
+        vm.stateLabels = [];
+        vm.stateValues = [new Array()];
+        vm.stateSeries = ["Tâches"];
+        reportsResource.get({"projectId": $stateParams.id, reportName: "state"},
+        function (result) {
+            for (var i = 0; i < result.length; i++) {
+                vm.stateLabels.push(result[i][0]);
+                vm.stateValues[0].push(result[i][1]);
+            }
+        });
     }
 
     function assigneeReportController($stateParams, reportsResource) {
         var vm = this;
         vm.labels = [];
         vm.values = [];
-        reportsResource.get({"projectId": $stateParams.id, reportName: "assignee"}, 
-            function(result) {
-                for (var i in result) {
-                    vm.labels.push(result[i][0]);
-                    vm.values.push(result[i][1]);
-                }
-            });
+        reportsResource.get({"projectId": $stateParams.id, reportName: "assignee"},
+        function (result) {
+            for (var i = 0; i < result.length; i++) {
+                vm.labels.push(result[i][0]);
+                vm.values.push(result[i][1]);
+            }
+        });
     }
 
 
     function reportsResource($resource) {
         return $resource("/api/project/:projectId/report/:reportName",
-        {projectId: "@projectId", reportName: "@reportName"},
+                {projectId: "@projectId", reportName: "@reportName"},
         {get: {isArray: true}});
     }
 

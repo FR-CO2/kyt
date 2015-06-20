@@ -13,15 +13,15 @@ import com.cgi.fgdc.bdx.kanban.project.state.State;
  */
 public class StateReport {
     
-    private State state;
+    private String state;
     
     private Long nbTask;
 
-    public State getState() {
+    public String getState() {
         return state;
     }
 
-    public void setState(State state) {
+    public void setState(String state) {
         this.state = state;
     }
 

@@ -23,20 +23,20 @@ public class ReportingController {
 
     @Autowired
     private ReportingRepository repository;
-    
+
     @RequestMapping(value = "assignee", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public Iterable<AssigneeReport> assigneeReport(@PathVariable("projectId") Long projectId) {
         return repository.getAssigneeReporting(projectId);
     }
 
     @RequestMapping(value = "state", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity stateReport(@PathVariable("projectId") Long projectId) {
-        return new ResponseEntity(HttpStatus.OK);
+    public Iterable<StateReport> stateReport(@PathVariable("projectId") Long projectId) {
+        return repository.getStateReporting(projectId);
     }
 
     @RequestMapping(value = "swimlane", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity swimlaneReport(@PathVariable("projectId") Long projectId) {
-        return new ResponseEntity(HttpStatus.OK);
+    public Iterable<SwimlaneReport> swimlaneReport(@PathVariable("projectId") Long projectId) {
+        return repository.getSwimlaneReporting(projectId);
     }
 
 }
