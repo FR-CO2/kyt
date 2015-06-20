@@ -17,6 +17,8 @@ import org.springframework.data.repository.PagingAndSortingRepository;
  */
 public interface TaskRepository extends PagingAndSortingRepository<Task, Long> {
 
+    Iterable<Task> findByProjectAndStateKanbanHideFalse(Project project);
+
     Iterable<Task> findByProject(Project project);
 
     Page<Task> findByProject(Project project, Pageable p);

@@ -56,11 +56,18 @@ public class TaskController {
     @Autowired
     private MemberRepository memberRepository;
 
-    @RequestMapping(value= "page", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "page", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     @JsonView(ControllerViews.TaskList.class)
     public Page<Task> projectPage(@PathVariable("projectId") Long projectId, Pageable p) {
         Project project = projectRepository.findOne(projectId);
         return repository.findByProject(project, p);
+    }
+
+    @RequestMapping(value = "kanban", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    @JsonView(ControllerViews.TaskList.class)
+    public Iterable<Task> kanbanList(@PathVariable("projectId") Long projectId) {
+        Project project = projectRepository.findOne(projectId);
+        return repository.findByProjectAndStateKanbanHideFalse(project);
     }
 
     @RequestMapping(method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)

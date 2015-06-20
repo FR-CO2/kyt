@@ -1,6 +1,6 @@
 (function () {
     "use strict";
-    function editTaskController($filter, $stateParams, taskResourceSrv, categoryResource,
+    function editTaskController($stateParams, taskResourceSrv, categoryResource,
             memberResource, stateResource, swimlaneResource) {
         var vm = this;
         vm.categories = categoryResource.query({"projectId": $stateParams.id});
@@ -28,7 +28,7 @@
         };
     }
 
-    function taskListController($state, $stateParams, $modal, taskResourceSrv, categoryResource, memberResource) {
+    function taskListController($state, $stateParams, $modal, taskResourceSrv, taskStateResource, swimlaneResource, categoryResource, memberResource) {
         var vm = this;
         vm.nbElt = 10;
         vm.numPage = 1;
@@ -57,6 +57,12 @@
                 vm.tasks = taskResourceSrv.page({projectId: $stateParams.id, size: vm.paging.size, page: vm.paging.page});
             });
         };
+        vm.loadState = function () {
+            return vm.states ? null : vm.states = taskStateResource.query({projectId: $stateParams.id});
+        };
+        vm.loadSwimlane = function () {
+            return vm.swimlanes ? null : vm.swimlanes = swimlaneResource.query({projectId: $stateParams.id});
+        };
         vm.loadCategory = function () {
             return vm.categories ? null : vm.categories = categoryResource.query({projectId: $stateParams.id});
         };
@@ -71,6 +77,18 @@
                 task.assigneeId = task.assignee.id;
             }
             task = taskResourceSrv.save({projectId: $stateParams.id, id: task.id}, task);
+        };
+        vm.changeState = function (task) {
+            if (task.state) {
+                taskResourceSrv.updateState({projectId: $stateParams.id, id: task.id, stateId: task.state.id});
+            }
+        };
+        vm.changeSwimlane = function (task) {
+            if (task.swimlane) {
+                taskResourceSrv.updateSwimlane({projectId: $stateParams.id, id: task.id, swimlaneId: task.swimlane.id});
+            } else {
+                taskResourceSrv.removeSwimlane({projectId: $stateParams.id, id: task.id});
+            }
         };
         vm.pageChanged = function () {
             if (vm.nbElt !== vm.paging.size) {
@@ -89,6 +107,7 @@
 
     function taskResource($resource) {
         return $resource("/api/project/:projectId/task/:id", {projectId: "@projectId", id: "@id"}, {
+            kanban: {url: "/api/project/:projectId/task/kanban", method: "GET", isArray: true},
             page: {url: "/api/project/:projectId/task/page", method: "GET", isArray: false},
             updateState: {
                 url: "/api/project/:projectId/task/:id/state/:stateId",
@@ -125,8 +144,8 @@
 
     taskConfig.$inject = ["$stateProvider"];
     newTaskController.$inject = ["$stateParams", "$modalInstance", "taskResource", "categoryResource", "memberResource"];
-    taskListController.$inject = ["$state", "$stateParams", "$modal", "taskResource", "categoryResource", "memberResource"];
-    editTaskController.$inject = ["$filter", "$stateParams", "taskResource", "categoryResource", "memberResource", "taskStateResource", "swimlaneResource"];
+    taskListController.$inject = ["$state", "$stateParams", "$modal", "taskResource", "taskStateResource", "swimlaneResource", "categoryResource", "memberResource"];
+    editTaskController.$inject = ["$stateParams", "taskResource", "categoryResource", "memberResource", "taskStateResource", "swimlaneResource"];
     taskResource.$inject = ["$resource"];
     angular.module("kanban.project.task", [])
             .config(taskConfig)

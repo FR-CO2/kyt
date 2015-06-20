@@ -35,10 +35,18 @@
                         {{task.name}}
                     </td>
                     <td>
-                        {{task.state.name}}
+                        <a href="#" editable-select="task.state" onshow="taskCtrl.loadState()" onaftersave="taskCtrl.changeState(task)" e-ng-options="state as state.name for state in taskCtrl.states">
+                            {{task.state.name}}
+                        </a>
                     </td>
                     <td>
-                        {{task.swimlane.name}}
+                        <a href="#" editable-select="task.swimlane" onshow="taskCtrl.loadSwimlane()" onaftersave="taskCtrl.changeSwimlane(task)" e-ng-options="swimlane as swimlane.name for swimlane in taskCtrl.swimlanes">
+                            <span ng-if="!task.swimlane">
+                                -
+                            </span>
+                            {{task.swimlane.name}}
+                        </a>
+
                     </td>
                     <td>
                         <a href="#" editable-select="task.category" onshow="taskCtrl.loadCategory()" onaftersave="taskCtrl.saveTask(task)" e-ng-options="category as category.name for category in taskCtrl.categories">

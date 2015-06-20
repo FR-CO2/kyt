@@ -16,7 +16,7 @@
                     vm.tasks[states[i].position][defaultSwimlanePos] = new Array();
                 }
                 vm.swimlanes[defaultSwimlanePos] = {name: "", position: defaultSwimlanePos};
-                taskResource.query({projectId: projectId}, function (tasks) {
+                taskResource.kanban({projectId: projectId}, function (tasks) {
                     for (var i = 0; i < tasks.length; i++) {
                         var task = tasks[i];
                         var lanePos = defaultSwimlanePos;

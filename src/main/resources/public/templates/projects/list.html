@@ -28,8 +28,8 @@
                 </td>
                 <td class="text-justify">
                     <ul class="list-inline"> 
-                        <li ng-repeat="state in project.taskStates">
-                            {{state.name}} <span class="badge alert-info">{{state.tasks.length}}</span>
+                        <li ng-repeat="state in project.states" ng-if="!state.kanbanHide">
+                            {{state.name}} <span class="badge alert-info">{{state.taskCount}}</span>
                         </li>
                     </ul>
                 </td>
