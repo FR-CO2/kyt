@@ -5,21 +5,36 @@
 </div>
 <div class="row">
     <div class="col-md-12" as-sortable="configStateCtrl.stateListSortOptions" ng-model="configStateCtrl.states">
+        <div class="row">
+            <div class="col-md-10">
+                <div class="row">
+                    <div class="col-md-3">Nom</div>
+                    <div class="col-md-3 text-center">Etat de fermeture</div>
+                    <div class="col-md-3 text-center">Masqué dans Kanban</div>
+                </div>
+            </div>
+        </div>
         <div class="row" ng-repeat="state in configStateCtrl.states" as-sortable-item>
-            <div class="col-md-8">
+            <div class="col-md-10">
                 <div class="panel panel-default" as-sortable-item-handle>
                     <div class="row">
-                        <div class="col-md-8">
+                        <div class="col-md-3">
                             {{state.name}} 
                         </div>
-                        <div class="col-md-4">
-                        <span class="badge  pull-right">
-                            {{state.taskCount}}</span>
+                        <div class="col-md-3 text-center">
+                            <input type="checkbox" onclick="return false" ng-model="state.closeState"/>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <input type="checkbox" onclick="return false" ng-model="state.kanbanHide"/>
+                        </div>
+                        <div class="col-md-3">
+                            <span class="badge  pull-right">
+                                {{state.taskCount}}</span>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-2">
                 <a ng-click="configStateCtrl.delete(state.id)">
                     <span class="glyphicon glyphicon-trash"></span>
                 </a>

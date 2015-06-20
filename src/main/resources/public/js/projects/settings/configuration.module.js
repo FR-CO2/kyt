@@ -181,7 +181,8 @@
                 url: "/api/project/:projectId/state/:id/position/:newPosition",
                 method: "POST",
                 params: {projectId: "@projectId", id: "@id", newPosition: "@newPosition"}
-            }
+            },
+            kanban: {method: "GET", isArray: true, params: {projectId: "@id", id: "kanban"}}
         });
     }
 

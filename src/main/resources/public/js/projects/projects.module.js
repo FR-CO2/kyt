@@ -3,7 +3,7 @@
 
     function kanbanLoader(vm, taskStateResource, swimlaneResource, taskResource, projectId) {
         vm.tasks = [];
-        taskStateResource.query({projectId: projectId}, function (states) {
+        taskStateResource.kanban({projectId: projectId}, function (states) {
             vm.nbState = states.length;
             vm.states = states;
             vm.swimlanes = swimlaneResource.query({projectId: projectId}, function (swimlanes) {

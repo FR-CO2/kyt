@@ -36,6 +36,12 @@ public class StateController {
         return repository.findByProjectOrderByPositionAsc(project);
     }
 
+    @RequestMapping(value = "kanban", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    public Iterable<State> kanbanList(@PathVariable("projectId") Long projectId) {
+        Project project = projectRepository.findOne(projectId);
+        return repository.findByProjectAndKanbanHideFalseOrderByPositionAsc(project);
+    }
+
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity delete(@PathVariable("id") Long id) {
         repository.delete(id);

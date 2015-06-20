@@ -46,6 +46,7 @@ public class State implements Serializable {
         done.setName("Terminé");
         done.setPosition(3L);
         done.setProject(project);
+        done.setCloseState(Boolean.TRUE);
         List<State> defaults = new ArrayList<>();
         defaults.add(backlog);
         defaults.add(ready);
@@ -66,7 +67,10 @@ public class State implements Serializable {
     private Long position;
 
     @JsonView(ControllerViews.ProjectList.class)
-    private Boolean kanbanHide;
+    private Boolean kanbanHide = Boolean.FALSE;
+
+    @JsonView(ControllerViews.ProjectList.class)
+    private Boolean closeState = Boolean.FALSE;
 
     @ManyToOne
     @JsonIgnore
@@ -129,6 +133,13 @@ public class State implements Serializable {
     public void setKanbanHide(Boolean kanbanHide) {
         this.kanbanHide = kanbanHide;
     }
-    
-    
+
+    public Boolean getCloseState() {
+        return closeState;
+    }
+
+    public void setCloseState(Boolean closeState) {
+        this.closeState = closeState;
+    }
+
 }

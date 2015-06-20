@@ -21,6 +21,8 @@ public interface StateRepository extends PagingAndSortingRepository<State, Long>
 
     Iterable<State> findByProjectOrderByPositionAsc(Project project);
 
+    Iterable<State> findByProjectAndKanbanHideFalseOrderByPositionAsc(Project project);
+
     @Query(value = "SELECT MAX(s.position) + 1 FROM state s where s.project_id = ?1", nativeQuery = true)
     Long getProjectMaxPosition(Long projectId);
 }
