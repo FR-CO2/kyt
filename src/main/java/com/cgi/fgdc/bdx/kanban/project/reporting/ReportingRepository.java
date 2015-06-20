@@ -29,9 +29,9 @@ public interface ReportingRepository extends PagingAndSortingRepository<Task, Lo
             + "        SWIMLANE AS sw,"
             + "        STATE AS s "
             + "    where "
-            + "    s.PROJECT_ID= ?1 AND sw.PROJECT_ID = ?1 GROUP BY sw.id, s.id) AS SSW"
+            + "    s.PROJECT_ID= ?1 AND sw.PROJECT_ID = s.PROJECT_ID GROUP BY sw.id, s.id) AS SSW "
             + "    LEFT OUTER JOIN TASK AS t on SSW.state_id = t.STATE_ID and ssw.swimlane_id = t.SWIMLANE_ID"
-            + "group by swimlane, state Order by swimlane, state;", nativeQuery = true)
+            + " group by swimlane, state Order by swimlane, state;", nativeQuery = true)
     Iterable<SwimlaneReport> getSwimlaneReporting(Long projectId);
 
     @Query(value = "SELECT c.name AS category, COUNT(t.id) AS nbTask FROM CATEGORY AS c"
