@@ -29,6 +29,18 @@
         });
     }
 
+    function categoryReportController($stateParams, reportsResource) {
+        var vm = this;
+        vm.labels = [];
+        vm.values = [];
+        reportsResource.get({"projectId": $stateParams.id, reportName: "category"},
+        function (result) {
+            for (var i = 0; i < result.length; i++) {
+                vm.labels.push(result[i][0]);
+                vm.values.push(result[i][1]);
+            }
+        });
+    }
 
     function reportsResource($resource) {
         return $resource("/api/project/:projectId/report/:reportName",
@@ -54,17 +66,25 @@
             controllerAs: "reportStateCtrl",
             url: "/state"
         });
+        $stateProvider.state("app.project-detail.report.category", {
+            templateUrl: "/templates/projects/reports/category.html",
+            controller: "categoryReportController",
+            controllerAs: "reportCategoryCtrl",
+            url: "/category"
+        });
     }
 
     projectReportsConfig.$inject = ["$stateProvider"];
     stateReportController.$inject = ["$stateParams", "reportsResource"];
     assigneeReportController.$inject = ["$stateParams", "reportsResource"];
+    categoryReportController.$inject = ["$stateParams", "reportsResource"];
     reportsResource.$inject = ["$resource"];
 
     angular.module("kanban.project.reports", [])
             .config(projectReportsConfig)
             .controller("stateReportController", stateReportController)
             .controller("assigneeReportController", assigneeReportController)
+            .controller("categoryReportController", categoryReportController)
             .service("reportsResource", reportsResource);
 
 })();

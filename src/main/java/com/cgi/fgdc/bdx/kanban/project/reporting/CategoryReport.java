@@ -9,18 +9,18 @@ package com.cgi.fgdc.bdx.kanban.project.reporting;
  *
  * @author ben
  */
-public class StateReport {
-    
-    private String state;
-    
+public class CategoryReport {
+
+    private String category;
+
     private Long nbTask;
 
-    public String getState() {
-        return state;
+    public String getCategory() {
+        return category;
     }
 
-    public void setState(String state) {
-        this.state = state;
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public Long getNbTask() {
@@ -30,5 +30,4 @@ public class StateReport {
     public void setNbTask(Long nbTask) {
         this.nbTask = nbTask;
     }
-    
 }

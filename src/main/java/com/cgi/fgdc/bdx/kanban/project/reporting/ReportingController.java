@@ -6,8 +6,6 @@
 package com.cgi.fgdc.bdx.kanban.project.reporting;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -37,6 +35,11 @@ public class ReportingController {
     @RequestMapping(value = "swimlane", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public Iterable<SwimlaneReport> swimlaneReport(@PathVariable("projectId") Long projectId) {
         return repository.getSwimlaneReporting(projectId);
+    }
+
+    @RequestMapping(value = "category", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    public Iterable<CategoryReport> categoryReport(@PathVariable("projectId") Long projectId) {
+        return repository.getCategoryReporting(projectId);
     }
 
 }
