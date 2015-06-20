@@ -19,9 +19,13 @@
         vm.goProject = function (projectId) {
             $state.transitionTo("app.project-detail.kanban", {id: projectId});
         };
+        vm.goTask = function (projectId, taskId) {
+            $state.transitionTo("app.project-detail.task", {"id": projectId, "taskId": taskId});
+        };
+
     }
 
-    function authService($http) {
+    function appAuthService($http) {
         return {
             login: function (credentials) {
                 var config = {
@@ -47,10 +51,10 @@
         return $resource("/api/userProfile");
     }
 
-    function loginController($state, $scope, userProfileSrv, authService) {
+    function loginController($state, $scope, userProfileSrv, appAuthService) {
         var vm = this;
         vm.authenticate = function () {
-            authService.login(vm.loginForm).success(function (result) {
+            appAuthService.login(vm.loginForm).success(function (result) {
                 $scope.$session.oauth = result;
                 $scope.$session.user = userProfileSrv.get();
                 vm.loginForm = {};
@@ -71,11 +75,11 @@
         };
     }
 
-    function runApp($rootScope, $state, $modal, $sessionStorage, $localStorage, editableOptions) {
+    function runApp($rootScope, $state, $modal, $sessionStorage, $localStorage, editableOptions, authService) {
         $rootScope.$storage = $localStorage;
         $rootScope.$session = $sessionStorage;
         editableOptions.theme = 'bs3';
-        $rootScope.$on("loginRequired", function () {
+        $rootScope.$on("event:auth-loginRequired", function () {
             delete $rootScope.$session.oauth;
             delete $rootScope.$session.user;
             $modal.open({
@@ -121,20 +125,20 @@
     }
 
     applicationConfig.$inject = ["$stateProvider", "$httpProvider"];
-    runApp.$inject = ["$rootScope", "$state", "$modal", "$sessionStorage", "$localStorage", "editableOptions"];
-    loginController.$inject = ["$state", "$scope", "userProfile", "authService"];
+    runApp.$inject = ["$rootScope", "$state", "$modal", "$sessionStorage", "$localStorage", "editableOptions", "authService"];
+    loginController.$inject = ["$state", "$scope", "userProfile", "appAuthService"];
     headerController.$inject = ["$scope", "$state"];
     homeController.$inject = ["$state", "projectResource", "taskResource"];
-    authService.$inject = ["$http"];
+    appAuthService.$inject = ["$http"];
     userProfile.$inject = ["$resource"];
     angular.module("kaban", ["ngResource", "ngRoute", "ui.router", "ui.bootstrap", "ui.calendar",
-        "ui.sortable", "ngStorage", "http-auth-interceptor", "xeditable",
+        "ui.sortable", "ngStorage", "http-auth-interceptor", "xeditable", "chart.js",
         "kanban.project", "kanban.user"])
             .config(applicationConfig)
             .run(runApp)
             .controller("headerController", headerController)
             .controller("homeController", homeController)
             .controller("loginController", loginController)
-            .service("authService", authService)
+            .service("appAuthService", appAuthService)
             .service("userProfile", userProfile);
 })();

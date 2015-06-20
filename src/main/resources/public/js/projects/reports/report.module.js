@@ -1,18 +1,33 @@
 (function () {
     "use strict";
 
-    function stateReportController($stateParams, $modal, stateResourceSrv) {
+    function stateReportController($stateParams, reportsResource) {
         var vm = this;
-        vm.states = stateResourceSrv.query({"projectId": $stateParams.id});
-
+        vm.stateReport = reportsResource.query({"projectId": $stateParams.id, reportName: "state"});
+        vm.swimlane = reportsResource.query({"projectId": $stateParams.id, reportName: "swimlane"});
     }
 
-    function assigneeReportController($stateParams, $modal, memberResourceSrv) {
+    function assigneeReportController($stateParams, reportsResource) {
         var vm = this;
-        vm.members = memberResourceSrv.page({"projectId": $stateParams.id, size: vm.paging.size, page: vm.paging.page});
+        vm.labels = [];
+        vm.values = [];
+        reportsResource.get({"projectId": $stateParams.id, reportName: "assignee"}, 
+            function(result) {
+                for (var i in result) {
+                    vm.labels.push(result[i][0]);
+                    vm.values.push(result[i][1]);
+                }
+            });
     }
 
-    
+
+    function reportsResource($resource) {
+        return $resource("/api/project/:projectId/report/:reportName",
+        {projectId: "@projectId", reportName: "@reportName"},
+        {get: {isArray: true}});
+    }
+
+
     function projectReportsConfig($stateProvider) {
         $stateProvider.state("app.project-detail.report", {
             templateUrl: "templates/projects/reports/report-layout.html",
@@ -33,13 +48,15 @@
     }
 
     projectReportsConfig.$inject = ["$stateProvider"];
-    stateReportController.$inject = ["$stateParams", "$modal", "taskStateResource"];
-    assigneeReportController.$inject = ["$stateParams", "$modal", "memberResource"];
+    stateReportController.$inject = ["$stateParams", "reportsResource"];
+    assigneeReportController.$inject = ["$stateParams", "reportsResource"];
+    reportsResource.$inject = ["$resource"];
 
     angular.module("kanban.project.reports", [])
             .config(projectReportsConfig)
             .controller("stateReportController", stateReportController)
-            .controller("assigneeReportController", assigneeReportController);
+            .controller("assigneeReportController", assigneeReportController)
+            .service("reportsResource", reportsResource);
 
 })();
 

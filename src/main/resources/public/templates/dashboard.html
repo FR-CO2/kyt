@@ -65,7 +65,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="task in homeCtrl.tasks.content" ng-click="homeCtrl.goTask(task.id)">
+                        <tr ng-repeat="task in homeCtrl.tasks.content" ng-click="homeCtrl.goTask(task.project.id, task.id)">
                             <td>
                                 {{task.project.name}}
                             </td>

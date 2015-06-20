@@ -5,6 +5,7 @@
  */
 package com.cgi.fgdc.bdx.kanban.project.reporting;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,9 +21,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/api/project/{projectId}/report")
 public class ReportingController {
 
+    @Autowired
+    private ReportingRepository repository;
+    
     @RequestMapping(value = "assignee", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity assigneeReport(@PathVariable("projectId") Long projectId) {
-        return new ResponseEntity(HttpStatus.OK);
+    public Iterable<AssigneeReport> assigneeReport(@PathVariable("projectId") Long projectId) {
+        return repository.getAssigneeReporting(projectId);
     }
 
     @RequestMapping(value = "state", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
