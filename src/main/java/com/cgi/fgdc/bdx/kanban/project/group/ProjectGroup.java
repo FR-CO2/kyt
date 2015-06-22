@@ -7,12 +7,14 @@ package com.cgi.fgdc.bdx.kanban.project.group;
 
 import com.cgi.fgdc.bdx.kanban.project.Project;
 import com.cgi.fgdc.bdx.kanban.project.security.Member;
-import com.cgi.fgdc.bdx.kanban.project.task.Task;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
@@ -21,7 +23,8 @@ import javax.persistence.ManyToOne;
  * @author ben
  */
 @Entity
-public class Group implements Serializable {
+public class ProjectGroup implements Serializable {
+
     private static final long serialVersionUID = 9067365517863789740L;
 
     @Id
@@ -33,8 +36,14 @@ public class Group implements Serializable {
     @JsonIgnore
     private Project project;
 
-    @ManyToMany
     @JsonIgnore
+    @ManyToMany
+    @JoinTable(
+            name = "MEMBER_GROUP",
+            joinColumns = {
+                @JoinColumn(name = "GROUP_ID", referencedColumnName = "ID")},
+            inverseJoinColumns = {
+                @JoinColumn(name = "MEMBER_ID", referencedColumnName = "ID")})
     private List<Member> members;
 
     public Long getId() {
@@ -68,5 +77,5 @@ public class Group implements Serializable {
     public void setProject(Project project) {
         this.project = project;
     }
-    
+
 }

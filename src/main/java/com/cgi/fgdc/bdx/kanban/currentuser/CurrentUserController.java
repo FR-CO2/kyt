@@ -15,12 +15,14 @@ import com.cgi.fgdc.bdx.kanban.user.ApplicationUserRepository;
 import com.cgi.fgdc.bdx.kanban.user.ApplicationUserRole;
 import com.fasterxml.jackson.annotation.JsonView;
 import java.security.Principal;
+import java.sql.Timestamp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.web.bind.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -61,4 +63,13 @@ public class CurrentUserController {
         }
         return projectRepositoy.findByMembersUser(getCurrentUser(user), page);
     }
+
+    @RequestMapping(value = "userEvent", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    @JsonView(ControllerViews.TaskList.class)
+    public Iterable<Task> listEvents(@AuthenticationPrincipal Principal user, @RequestParam Long endAfter) {
+        ApplicationUser appUser = getCurrentUser(user);
+        Timestamp endAfterTime = new Timestamp(endAfter);
+        return taskRepositoy.findByAssigneeUserAndPlannedEndingGreaterThan(appUser, endAfterTime);
+    }
+
 }

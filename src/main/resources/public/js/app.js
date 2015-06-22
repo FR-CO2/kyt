@@ -1,8 +1,7 @@
 (function () {
     "use strict";
-    function homeController($state, projectResource, taskResource) {
+    function homeController($state, projectResource, taskResource, eventsResource) {
         var vm = this;
-        vm.events = [];
         vm.uiConfig = {
             calendar: {
                 height: 450,
@@ -16,13 +15,34 @@
         };
         vm.projects = projectResource.user();
         vm.tasks = taskResource.user();
+        vm.events = [
+            {
+                events: [
+                ],
+                color: '#b9def0', // an option!
+                textColor: '#FFF' // an option!
+            }
+        ];
+        var date = new Date();
+        eventsResource.user({endAfter: date.getTime()}, function (result) {
+            var eventsSource = [];
+            for (var i = 0; i < result.length; i++) {
+                var event = {
+                    title: result[i].name,
+                    allDay: false,
+                    end: new Date(result[i].plannedEnding),
+                    start: result[i].plannedStart ? new Date(result[i].plannedStart) : result[i].created
+                };
+                eventsSource.push(event);
+            }
+            vm.events[0].events = eventsSource;
+        });
         vm.goProject = function (projectId) {
             $state.transitionTo("app.project-detail.kanban", {id: projectId});
         };
         vm.goTask = function (projectId, taskId) {
             $state.transitionTo("app.project-detail.task", {"id": projectId, "taskId": taskId});
         };
-
     }
 
     function appAuthService($http) {
@@ -128,12 +148,12 @@
     runApp.$inject = ["$rootScope", "$state", "$modal", "$sessionStorage", "$localStorage", "editableOptions", "authService"];
     loginController.$inject = ["$state", "$scope", "userProfile", "appAuthService"];
     headerController.$inject = ["$scope", "$state"];
-    homeController.$inject = ["$state", "projectResource", "taskResource"];
+    homeController.$inject = ["$state", "projectResource", "taskResource", "eventsResource"];
     appAuthService.$inject = ["$http"];
     userProfile.$inject = ["$resource"];
     angular.module("kaban", ["ngResource", "ngRoute", "ui.router", "ui.bootstrap", "ui.calendar",
         "ui.sortable", "ngStorage", "http-auth-interceptor", "xeditable", "chart.js",
-        "kanban.project", "kanban.user"])
+        "kanban.project", "kanban.user", "kanban.user", "kanban.calendar"])
             .config(applicationConfig)
             .run(runApp)
             .controller("headerController", headerController)

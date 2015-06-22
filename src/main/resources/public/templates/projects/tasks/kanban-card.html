@@ -26,11 +26,7 @@
             </span>
         </div>
     </div>
-    <div class="panel-body">
-        <div>
-            {{task.description}}
-        </div>
-    </div>
+
     <div class="panel-footer text-right" ng-if="task.plannedEnding">
         <span class="glyphicon glyphicon-calendar"></span> {{task.plannedEnding | date:'dd/MM/yyyy'}}
     </div>

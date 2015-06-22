@@ -7,7 +7,7 @@ package com.cgi.fgdc.bdx.kanban.project.security;
 
 import com.cgi.fgdc.bdx.kanban.ControllerViews;
 import com.cgi.fgdc.bdx.kanban.project.Project;
-import com.cgi.fgdc.bdx.kanban.project.group.Group;
+import com.cgi.fgdc.bdx.kanban.project.group.ProjectGroup;
 import com.cgi.fgdc.bdx.kanban.project.swimlane.Swimlane;
 import com.cgi.fgdc.bdx.kanban.project.task.Task;
 import com.cgi.fgdc.bdx.kanban.user.ApplicationUser;
@@ -46,9 +46,9 @@ public class Member implements Serializable {
     @JsonView(ControllerViews.TaskList.class)
     private ApplicationUser user;
 
-    @ManyToMany(mappedBy = "members", cascade = CascadeType.DETACH)
+    @ManyToMany(mappedBy="members", cascade = CascadeType.DETACH)
     @JsonIgnore
-    private List<Group> groups;
+    private List<ProjectGroup> groups;
 
     @OneToMany(mappedBy = "responsable", cascade = CascadeType.DETACH)
     private List<Swimlane> swimlanes;
@@ -102,11 +102,11 @@ public class Member implements Serializable {
         this.projectRole = projectRole;
     }
 
-    public List<Group> getGroups() {
+    public List<ProjectGroup> getGroups() {
         return groups;
     }
 
-    public void setGroups(List<Group> groups) {
+    public void setGroups(List<ProjectGroup> groups) {
         this.groups = groups;
     }
 

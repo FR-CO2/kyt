@@ -14,7 +14,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
  *
  * @author ben
  */
-public interface GroupRepository extends PagingAndSortingRepository<Group, Long>{
+public interface ProjectGroupRepository extends PagingAndSortingRepository<ProjectGroup, Long>{
     
-        Page<Group> findByProject(Project project, Pageable p);
+        Page<ProjectGroup> findByProject(Project project, Pageable p);
 }
