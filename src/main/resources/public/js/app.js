@@ -11,7 +11,10 @@
                     center: "",
                     right: "today prev,next"
                 },
-                weekends: true
+                weekNumbers : true,
+                dayClick: function(date, jsEvent, view) {
+                    //TODO popin timesheet
+                }
             }
         };
         vm.projects = projectResource.user();

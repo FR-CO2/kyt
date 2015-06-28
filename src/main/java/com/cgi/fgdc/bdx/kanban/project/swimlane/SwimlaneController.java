@@ -7,6 +7,7 @@ package com.cgi.fgdc.bdx.kanban.project.swimlane;
 
 import com.cgi.fgdc.bdx.kanban.project.Project;
 import com.cgi.fgdc.bdx.kanban.project.ProjectRepository;
+import com.cgi.fgdc.bdx.kanban.project.security.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,9 @@ public class SwimlaneController {
     @Autowired
     private ProjectRepository projectRepository;
 
+    @Autowired
+    private MemberRepository memberRepository;
+
     @RequestMapping(method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public Iterable<Swimlane> projectList(@PathVariable("projectId") Long projectId) {
         Project project = projectRepository.findOne(projectId);
@@ -43,16 +47,21 @@ public class SwimlaneController {
     }
 
     @RequestMapping(method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Swimlane> create(@PathVariable("projectId") Long projectId, @RequestBody Swimlane swimlane) {
+    public ResponseEntity<Swimlane> create(@PathVariable("projectId") Long projectId, @RequestBody SwimlaneForm swimlane) {
         Project project = projectRepository.findOne(projectId);
-        swimlane.setProject(project);
+        Swimlane newLane = new Swimlane();
+        newLane.setName(swimlane.getName());
+        newLane.setProject(project);
         Long maxPosition = repository.getProjectMaxPosition(projectId);
+        if (swimlane.getResponsableId() != null) {
+            newLane.setResponsable(memberRepository.findOne(swimlane.getResponsableId()));
+        }
         if (maxPosition == null) {
             maxPosition = 0L;
         }
-        swimlane.setPosition(maxPosition);
-        repository.save(swimlane);
-        return new ResponseEntity(swimlane, HttpStatus.CREATED);
+        newLane.setPosition(maxPosition);
+        repository.save(newLane);
+        return new ResponseEntity(newLane, HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "{swimlaneId}/position/{newPosition}", method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)

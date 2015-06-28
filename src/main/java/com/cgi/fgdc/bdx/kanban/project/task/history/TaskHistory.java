@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.cgi.fgdc.bdx.kanban.project.task;
+package com.cgi.fgdc.bdx.kanban.project.task.history;
 
+import com.cgi.fgdc.bdx.kanban.project.task.Task;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import javax.persistence.Entity;

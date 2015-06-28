@@ -136,8 +136,9 @@
         };
     }
 
-    function swimlaneAddController($stateParams, $modalInstance, swimlaneResourceSrv) {
+    function swimlaneAddController($stateParams, $modalInstance, swimlaneResourceSrv, memberResourceSrv) {
         var vm = this;
+        vm.members = memberResourceSrv.query({"projectId": $stateParams.id});
         vm.submit = function () {
             swimlaneResourceSrv.save({"projectId": $stateParams.id}, vm.swimlane, function () {
                 $modalInstance.close();
@@ -236,7 +237,7 @@
     stateListController.$inject = ["$stateParams", "$modal", "taskStateResource"];
     stateAddController.$inject = ["$stateParams", "$modalInstance", "taskStateResource"];
     swimlaneListController.$inject = ["$stateParams", "$modal", "swimlaneResource"];
-    swimlaneAddController.$inject = ["$stateParams", "$modalInstance", "swimlaneResource"];
+    swimlaneAddController.$inject = ["$stateParams", "$modalInstance", "swimlaneResource", "memberResource"];
     categoryListController.$inject = ["$stateParams", "$modal", "categoryResource"];
     memberListController.$inject = ["$stateParams", "$modal", "memberResource"];
     categoryAddController.$inject = ["$stateParams", "$modalInstance", "categoryResource"];

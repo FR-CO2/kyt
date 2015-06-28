@@ -10,6 +10,7 @@ import com.cgi.fgdc.bdx.kanban.project.Project;
 import com.cgi.fgdc.bdx.kanban.project.group.ProjectGroup;
 import com.cgi.fgdc.bdx.kanban.project.swimlane.Swimlane;
 import com.cgi.fgdc.bdx.kanban.project.task.Task;
+import com.cgi.fgdc.bdx.kanban.project.task.allocation.Allocation;
 import com.cgi.fgdc.bdx.kanban.user.ApplicationUser;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -31,6 +32,7 @@ import javax.persistence.Transient;
 @Entity
 public class Member implements Serializable {
 
+
     private static final long serialVersionUID = 4462667625489059354L;
 
     @Id
@@ -46,11 +48,16 @@ public class Member implements Serializable {
     @JsonView(ControllerViews.TaskList.class)
     private ApplicationUser user;
 
+    @OneToMany(mappedBy = "member")
+    @JsonIgnore
+    private List<Allocation> allocations;
+    
     @ManyToMany(mappedBy="members", cascade = CascadeType.DETACH)
     @JsonIgnore
     private List<ProjectGroup> groups;
 
     @OneToMany(mappedBy = "responsable", cascade = CascadeType.DETACH)
+    @JsonIgnore
     private List<Swimlane> swimlanes;
 
     @OneToMany(cascade = CascadeType.ALL)
@@ -124,6 +131,14 @@ public class Member implements Serializable {
 
     public void setTasks(List<Task> tasks) {
         this.tasks = tasks;
+    }
+
+    public List<Allocation> getAllocations() {
+        return allocations;
+    }
+
+    public void setAllocations(List<Allocation> allocations) {
+        this.allocations = allocations;
     }
 
 }
