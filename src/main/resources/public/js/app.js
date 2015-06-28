@@ -5,10 +5,11 @@
         vm.uiConfig = {
             calendar: {
                 editable: true,
+                lang: 'fr',
                 header: {
-                    left: 'title',
-                    center: '',
-                    right: 'today prev,next'
+                    left: "title",
+                    center: "",
+                    right: "today prev,next"
                 },
                 weekends: true
             }

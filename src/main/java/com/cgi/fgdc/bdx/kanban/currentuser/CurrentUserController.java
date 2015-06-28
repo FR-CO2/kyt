@@ -15,7 +15,7 @@ import com.cgi.fgdc.bdx.kanban.user.ApplicationUserRepository;
 import com.cgi.fgdc.bdx.kanban.user.ApplicationUserRole;
 import com.fasterxml.jackson.annotation.JsonView;
 import java.security.Principal;
-import java.sql.Timestamp;
+import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -66,11 +66,11 @@ public class CurrentUserController {
 
     @RequestMapping(value = "userEvent", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     @JsonView(ControllerViews.TaskList.class)
-    public Iterable<Task> listTasksEvents(@AuthenticationPrincipal Principal user, @RequestParam("end") Long startBefore, @RequestParam("start") Long endAfter) {
+    public Iterable<Task> listTasksEvents(@AuthenticationPrincipal Principal user, @RequestParam Long start, @RequestParam Long end) {
         ApplicationUser appUser = getCurrentUser(user);
-        Timestamp endAfterTime = new Timestamp(endAfter);
-        Timestamp startBeforeTime = new Timestamp(startBefore);
-        return taskRepositoy.findByAssigneeUserAndPlannedEndingBetween(appUser, endAfterTime, startBeforeTime);
+        Date startTime = new Date(start * 1000);
+        Date endTime = new Date(end * 1000);
+        return taskRepositoy.findByAssigneeUserAndPlannedEndingBetweenOrPlannedStartBetween(appUser, startTime, endTime, startTime, endTime);
     }
 
 }

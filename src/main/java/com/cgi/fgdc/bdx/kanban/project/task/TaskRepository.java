@@ -7,7 +7,7 @@ package com.cgi.fgdc.bdx.kanban.project.task;
 
 import com.cgi.fgdc.bdx.kanban.project.Project;
 import com.cgi.fgdc.bdx.kanban.user.ApplicationUser;
-import java.sql.Timestamp;
+import java.util.Date;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -26,5 +26,5 @@ public interface TaskRepository extends PagingAndSortingRepository<Task, Long> {
 
     Page<Task> findByAssigneeUserOrBackupUser(ApplicationUser user, ApplicationUser backup, Pageable p);
 
-    Iterable<Task> findByAssigneeUserAndPlannedEndingBetween(ApplicationUser user, Timestamp endAfter, Timestamp endBefore);
+    Iterable<Task> findByAssigneeUserAndPlannedEndingBetweenOrPlannedStartBetween(ApplicationUser user, Date endAfter, Date endBefore, Date startAfter, Date startBefore);
 }
