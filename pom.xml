@@ -107,6 +107,7 @@
             <artifactId>angular-xeditable</artifactId>
             <version>0.1.9</version>
         </dependency>
+        
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>angular-chart.js</artifactId>
@@ -117,6 +118,13 @@
             <artifactId>chartjs</artifactId>
             <version>1.0.2</version>
         </dependency>
+        
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>angular-bootstrap-colorpicker</artifactId>
+            <version>3.0.17</version>
+        </dependency>
+        
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>angular-file-upload</artifactId>

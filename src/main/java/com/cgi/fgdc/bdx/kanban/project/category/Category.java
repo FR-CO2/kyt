@@ -44,6 +44,10 @@ public class Category implements Serializable {
     @JsonIgnore
     private List<Task> tasks;
 
+    private String color;
+    
+    private String bgcolor;
+    
     public Long getId() {
         return id;
     }
@@ -74,6 +78,22 @@ public class Category implements Serializable {
 
     public void setTasks(List<Task> tasks) {
         this.tasks = tasks;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public String getBgcolor() {
+        return bgcolor;
+    }
+
+    public void setBgcolor(String bgcolor) {
+        this.bgcolor = bgcolor;
     }
 
 }

@@ -66,10 +66,11 @@ public class CurrentUserController {
 
     @RequestMapping(value = "userEvent", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     @JsonView(ControllerViews.TaskList.class)
-    public Iterable<Task> listEvents(@AuthenticationPrincipal Principal user, @RequestParam Long endAfter) {
+    public Iterable<Task> listTasksEvents(@AuthenticationPrincipal Principal user, @RequestParam("end") Long startBefore, @RequestParam("start") Long endAfter) {
         ApplicationUser appUser = getCurrentUser(user);
         Timestamp endAfterTime = new Timestamp(endAfter);
-        return taskRepositoy.findByAssigneeUserAndPlannedEndingGreaterThan(appUser, endAfterTime);
+        Timestamp startBeforeTime = new Timestamp(startBefore);
+        return taskRepositoy.findByAssigneeUserAndPlannedStartLessThanAndPlannedEndingGreaterThan(appUser, startBeforeTime, endAfterTime);
     }
 
 }

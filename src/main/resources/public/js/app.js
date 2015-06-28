@@ -1,42 +1,43 @@
 (function () {
     "use strict";
-    function homeController($state, projectResource, taskResource, eventsResource) {
+    function homeController($state, projectResource, taskResource, $sessionStorage) {
         var vm = this;
         vm.uiConfig = {
             calendar: {
-                height: 450,
                 editable: true,
                 header: {
                     left: 'title',
                     center: '',
                     right: 'today prev,next'
-                }
+                },
+                weekends: true
             }
         };
         vm.projects = projectResource.user();
         vm.tasks = taskResource.user();
-        vm.events = [
-            {
-                events: [
-                ],
-                color: '#b9def0', // an option!
-                textColor: '#FFF' // an option!
-            }
-        ];
-        var date = new Date();
-        eventsResource.user({endAfter: date.getTime()}, function (result) {
-            var eventsSource = [];
-            for (var i = 0; i < result.length; i++) {
-                var event = {
-                    title: result[i].name,
-                    allDay: false,
-                    end: new Date(result[i].plannedEnding),
-                    start: result[i].plannedStart ? new Date(result[i].plannedStart) : result[i].created
-                };
-                eventsSource.push(event);
-            }
-            vm.events[0].events = eventsSource;
-        });
+        vm.events = [{
+                url: "/api/userEvent",
+                headers: {
+                    Authorization: $sessionStorage.oauth.token_type + " " + $sessionStorage.oauth.access_token
+                },
+                eventDataTransform: function (event) {
+                    var eventTransform = {};
+                    eventTransform.title = event.name;
+                    eventTransform.start = new Date(event.plannedStart);
+                    eventTransform.end = new Date(event.plannedEnding);
+                    if (event.category) {
+                        var cat = event.category;
+                        if (cat.color) {
+                            eventTransform.color = cat.color;
+                        }
+                        if (cat.bgcolor) {
+                            eventTransform.bgcolor = cat.bgcolor;
+                        }
+                    }
+                    return eventTransform;
+                }
+            }];
+
         vm.goProject = function (projectId) {
             $state.transitionTo("app.project-detail.kanban", {id: projectId});
         };
@@ -148,7 +149,7 @@
     runApp.$inject = ["$rootScope", "$state", "$modal", "$sessionStorage", "$localStorage", "editableOptions", "authService"];
     loginController.$inject = ["$state", "$scope", "userProfile", "appAuthService"];
     headerController.$inject = ["$scope", "$state"];
-    homeController.$inject = ["$state", "projectResource", "taskResource", "eventsResource"];
+    homeController.$inject = ["$state", "projectResource", "taskResource", "$sessionStorage"];
     appAuthService.$inject = ["$http"];
     userProfile.$inject = ["$resource"];
     angular.module("kaban", ["ngResource", "ngRoute", "ui.router", "ui.bootstrap", "ui.calendar",

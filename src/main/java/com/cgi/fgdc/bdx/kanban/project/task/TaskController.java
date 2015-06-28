@@ -145,10 +145,14 @@ public class TaskController {
 
     private Task convertTaskForm(Long projectId, TaskForm form) {
         Task result = new Task();
+        Task oldTask;
         result.setId(form.getId());
         if (form.getId() == null) {
             result.setCreated(new Timestamp(new Date().getTime()));
         } else {
+            oldTask = repository.findOne(form.getId());
+            result.setCreated(oldTask.getCreated());
+            //TODO Historiser modification
             result.setLastModified(new Timestamp(new Date().getTime()));
         }
         result.setName(form.getName());

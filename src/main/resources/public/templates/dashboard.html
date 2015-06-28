@@ -1,4 +1,4 @@
-<div class="col-md-8">
+<div class="col-md-7">
     <div class="row">
         <div class="panel">
             <div class="panel-heading">
@@ -79,7 +79,7 @@
                                 {{task.category.name}}
                             </td>
                             <td>
-                                {{task.plannedEnding | date:'dd/MM/yyyy'}}
+                                {{task.plannedEnding| date:'dd/MM/yyyy'}}
                             </td>
                             <td>
                                 {{task.estimatedLoad}}
@@ -100,7 +100,6 @@
         </div>
     </div>
 </div>   
-</div>
-<div class="col-md-4">
+<div class="col-md-5">
     <div ui-calendar="homeCtrl.uiConfig.calendar" class="calendar" ng-model="homeCtrl.events" ></div> 
 </div>
