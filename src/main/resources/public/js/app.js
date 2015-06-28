@@ -32,7 +32,7 @@
                             eventTransform.color = cat.color;
                         }
                         if (cat.bgcolor) {
-                            eventTransform.bgcolor = cat.bgcolor;
+                            eventTransform.backgroundColor = cat.bgcolor;
                         }
                     }
                     return eventTransform;
