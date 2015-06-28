@@ -34,6 +34,7 @@
                         if (cat.bgcolor) {
                             eventTransform.backgroundColor = cat.bgcolor;
                         }
+                        eventTransform.url= "#/project/" + event.project.id +"/task/"+ event.id;
                     }
                     return eventTransform;
                 }
