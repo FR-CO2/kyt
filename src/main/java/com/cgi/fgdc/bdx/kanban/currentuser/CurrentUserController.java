@@ -70,7 +70,7 @@ public class CurrentUserController {
         ApplicationUser appUser = getCurrentUser(user);
         Timestamp endAfterTime = new Timestamp(endAfter);
         Timestamp startBeforeTime = new Timestamp(startBefore);
-        return taskRepositoy.findByAssigneeUserAndPlannedStartLessThanAndPlannedEndingGreaterThan(appUser, startBeforeTime, endAfterTime);
+        return taskRepositoy.findByAssigneeUserAndPlannedEndingBetween(appUser, endAfterTime, startBeforeTime);
     }
 
 }

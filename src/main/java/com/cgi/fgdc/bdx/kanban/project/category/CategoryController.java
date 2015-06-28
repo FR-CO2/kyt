@@ -44,9 +44,17 @@ public class CategoryController {
         return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 
-    @RequestMapping(value="{categoryId}", method = RequestMethod.DELETE, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "{categoryId}", method = RequestMethod.DELETE, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity delete(@PathVariable("categoryId") Long categoryId) {
         repository.delete(categoryId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @RequestMapping(value = "{categoryId}", method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity update(@PathVariable("projectId") Long projectId, @RequestBody Category category) {
+        Project project = projectRepository.findOne(projectId);
+        category.setProject(project);
+        Category result = repository.save(category);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }

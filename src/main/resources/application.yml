@@ -17,10 +17,6 @@ spring:
     jpa: 
         hibernate:
             ddl-auto: update
-security:
-    user:
-        name: greg
-        password: turnquist
         
 logging:
     level:

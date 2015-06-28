@@ -79,6 +79,11 @@
                 vm.categories = categoryResourceSrv.query({"projectId": $stateParams.id});
             });
         };
+        vm.save = function (category) {
+            categoryResourceSrv.save({projectId: $stateParams.id, id: category.id}, category, function () {
+                vm.categories = categoryResourceSrv.query({"projectId": $stateParams.id});
+            });
+        };
     }
 
     function memberListController($stateParams, $modal, memberResourceSrv) {
