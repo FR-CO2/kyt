@@ -123,7 +123,8 @@
                 url: "/api/project/:projectId/task/:id/swimlane",
                 method: "DELETE"
             },
-            user: {url: "/api/userTask", method: "GET"}
+            user: {url: "/api/userTask", method: "GET"},
+            userDay: {url: "/api/userTask/day/:day", method: "GET", params: {day: "@day"}, isArray: true}
         });
     }
 

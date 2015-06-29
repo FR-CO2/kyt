@@ -55,6 +55,7 @@
                     } else {
                         taskResource.removeSwimlane({projectId: $stateParams.id, id: taskUpdated.id});
                     }
+                    //Todo mise à jour nb tâche par état
                 });
             }
         };

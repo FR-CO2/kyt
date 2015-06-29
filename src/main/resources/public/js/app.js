@@ -1,6 +1,6 @@
 (function () {
     "use strict";
-    function homeController($state, projectResource, taskResource, $sessionStorage) {
+    function homeController($state, $modal, projectResource, taskResource, $sessionStorage) {
         var vm = this;
         vm.uiConfig = {
             calendar: {
@@ -11,9 +11,19 @@
                     center: "",
                     right: "today prev,next"
                 },
-                weekNumbers : true,
-                dayClick: function(date, jsEvent, view) {
-                    //TODO popin timesheet
+                dayClick: function (date) {
+                    $modal.open({
+                        animation: true,
+                        templateUrl: "templates/timesheet/day.html",
+                        controller: "timesheetController",
+                        controllerAs: "tsCtrl",
+                        size: "md",
+                        resolve: {
+                            dateTS: function () {
+                                return date;
+                            }
+                        }
+                    });
                 }
             }
         };
@@ -37,12 +47,11 @@
                         if (cat.bgcolor) {
                             eventTransform.backgroundColor = cat.bgcolor;
                         }
-                        eventTransform.url= "#/project/" + event.project.id +"/task/"+ event.id;
+                        eventTransform.url = "#/project/" + event.project.id + "/task/" + event.id;
                     }
                     return eventTransform;
                 }
             }];
-
         vm.goProject = function (projectId) {
             $state.transitionTo("app.project-detail.kanban", {id: projectId});
         };
@@ -154,12 +163,12 @@
     runApp.$inject = ["$rootScope", "$state", "$modal", "$sessionStorage", "$localStorage", "editableOptions", "authService"];
     loginController.$inject = ["$state", "$scope", "userProfile", "appAuthService"];
     headerController.$inject = ["$scope", "$state"];
-    homeController.$inject = ["$state", "projectResource", "taskResource", "$sessionStorage"];
+    homeController.$inject = ["$state", "$modal", "projectResource", "taskResource", "$sessionStorage"];
     appAuthService.$inject = ["$http"];
     userProfile.$inject = ["$resource"];
     angular.module("kaban", ["ngResource", "ngRoute", "ui.router", "ui.bootstrap", "ui.calendar",
         "ui.sortable", "ngStorage", "http-auth-interceptor", "xeditable", "chart.js",
-        "kanban.project", "kanban.user", "kanban.user", "kanban.calendar"])
+        "kanban.project", "kanban.user", "kanban.user", "kaban.timesheet"])
             .config(applicationConfig)
             .run(runApp)
             .controller("headerController", headerController)

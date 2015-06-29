@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.web.bind.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -73,4 +74,12 @@ public class CurrentUserController {
         return taskRepositoy.findByAssigneeUserAndPlannedEndingBetweenOrPlannedStartBetween(appUser, startTime, endTime, startTime, endTime);
     }
 
+    @RequestMapping(value = "userTask/day/{day}", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    @JsonView(ControllerViews.TaskList.class)
+    public Iterable<Task> listTaskOfDay(@AuthenticationPrincipal Principal user, @PathVariable("day") Long day) {
+        ApplicationUser appUser = getCurrentUser(user);
+        Date startTime = new Date(day);
+        Date endTime = new Date(day);
+        return taskRepositoy.findByAssigneeUserAndPlannedEndingBetweenOrPlannedStartBetween(appUser, startTime, endTime, startTime, endTime);
+    }
 }
