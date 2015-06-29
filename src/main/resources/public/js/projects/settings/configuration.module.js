@@ -30,7 +30,7 @@
         };
     }
 
-    function swimlaneListController($stateParams, $modal, swimlaneResourceSrv) {
+    function swimlaneListController($stateParams, $modal, swimlaneResourceSrv, memberResourceSrv) {
         var vm = this;
         vm.swimlaneListSortOptions = {
             orderChanged: function (event) {
@@ -40,6 +40,9 @@
             }
         };
         vm.swimlanes = swimlaneResourceSrv.query({"projectId": $stateParams.id});
+        vm.loadMember = function () {
+            vm.members = memberResourceSrv.query({"projectId": $stateParams.id});
+        };
         vm.add = function () {
             var modalInstance = $modal.open({
                 animation: true,
@@ -54,6 +57,11 @@
         };
         vm.delete = function (swimlaneId) {
             swimlaneResourceSrv.delete({projectId: $stateParams.id, id: swimlaneId}, function () {
+                vm.swimlanes = swimlaneResourceSrv.query({"projectId": $stateParams.id});
+            });
+        };
+        vm.save = function (swimlane) {
+            swimlaneResourceSrv.updateResponable({projectId: $stateParams.id, id: swimlane.id, newResponsable: swimlane.responsable.id}, function () {
                 vm.swimlanes = swimlaneResourceSrv.query({"projectId": $stateParams.id});
             });
         };
@@ -198,6 +206,11 @@
                 url: "/api/project/:projectId/swimlane/:id/position/:newPosition",
                 method: "POST",
                 params: {projectId: "@projectId", id: "@id", newPosition: "@newPosition"}
+            },
+            updateResponable: {
+                url: "/api/project/:projectId/swimlane/:id/responsable/:newResponsable",
+                method: "POST",
+                params: {projectId: "@projectId", id: "@id", newResponsable: "@newResponsable"}
             }
         });
     }
@@ -236,7 +249,7 @@
     projectSettingsConfig.$inject = ["$stateProvider"];
     stateListController.$inject = ["$stateParams", "$modal", "taskStateResource"];
     stateAddController.$inject = ["$stateParams", "$modalInstance", "taskStateResource"];
-    swimlaneListController.$inject = ["$stateParams", "$modal", "swimlaneResource"];
+    swimlaneListController.$inject = ["$stateParams", "$modal", "swimlaneResource", "memberResource"];
     swimlaneAddController.$inject = ["$stateParams", "$modalInstance", "swimlaneResource", "memberResource"];
     categoryListController.$inject = ["$stateParams", "$modal", "categoryResource"];
     memberListController.$inject = ["$stateParams", "$modal", "memberResource"];

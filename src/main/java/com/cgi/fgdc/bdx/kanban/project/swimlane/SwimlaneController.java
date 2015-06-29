@@ -7,6 +7,7 @@ package com.cgi.fgdc.bdx.kanban.project.swimlane;
 
 import com.cgi.fgdc.bdx.kanban.project.Project;
 import com.cgi.fgdc.bdx.kanban.project.ProjectRepository;
+import com.cgi.fgdc.bdx.kanban.project.security.Member;
 import com.cgi.fgdc.bdx.kanban.project.security.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -86,6 +87,15 @@ public class SwimlaneController {
                 position++;
             }
         }
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+    
+    @RequestMapping(value = "{swimlaneId}/responsable/{newResponsable}", method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity updateResponsable(@PathVariable("projectId") Long projectId, @PathVariable("swimlaneId") Long swimlaneId, @PathVariable("newResponsable") Long newResponsable) {
+        Swimlane swimlane = repository.findOne(swimlaneId);
+        Member responsable = memberRepository.findOne(newResponsable);
+        swimlane.setResponsable(responsable);
+        repository.save(swimlane);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 }

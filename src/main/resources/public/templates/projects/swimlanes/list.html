@@ -13,7 +13,12 @@
                             {{swimlane.name}} 
                         </div>
                         <div class="col-md-4">
-                            {{swimlane.responsable.user.name}} 
+                            <a href="#" editable-select="swimlane.responsable" onshow="configCtrl.loadMember()" onaftersave="configCtrl.save(swimlane)" e-ng-options="member as member.user.username for member in configCtrl.members">
+                                <span ng-if="!swimlane.responsable">
+                                    -
+                                </span>
+                                {{swimlane.responsable.user.username}} 
+                            </a>
                         </div>
                         <div class="col-md-4">
                             <span class="badge  pull-right">

@@ -15,10 +15,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PostLoad;
+import javax.persistence.Transient;
+import org.hibernate.annotations.Formula;
 
 /**
  *
@@ -76,9 +80,20 @@ public class State implements Serializable {
     @JsonIgnore
     private Project project;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY, mappedBy="state")
     @JsonIgnore
-    private List<Task> tasks = new ArrayList<>();
+    private List<Task> tasks;
+
+    @JsonView(ControllerViews.ProjectList.class)
+    @Transient
+    private int taskCount = 0;
+
+    @PostLoad
+    public void onLoad() {
+        if (this.tasks != null) {
+            this.taskCount = this.tasks.size();
+        }
+    }
 
     public Long getId() {
         return id;
@@ -120,12 +135,6 @@ public class State implements Serializable {
         this.tasks = tasks;
     }
 
-    @JsonProperty(value = "taskCount")
-    @JsonView(ControllerViews.ProjectList.class)
-    public Integer getTasksCount() {
-        return tasks.size();
-    }
-
     public Boolean getKanbanHide() {
         return kanbanHide;
     }
@@ -140,6 +149,14 @@ public class State implements Serializable {
 
     public void setCloseState(Boolean closeState) {
         this.closeState = closeState;
+    }
+
+    public int getTaskCount() {
+        return taskCount;
+    }
+
+    public void setTaskCount(int taskCount) {
+        this.taskCount = taskCount;
     }
 
 }

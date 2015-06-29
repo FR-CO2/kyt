@@ -18,6 +18,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PostLoad;
+import javax.persistence.Transient;
 
 /**
  *
@@ -49,6 +51,17 @@ public class Swimlane implements Serializable {
     @ManyToOne
     @JsonIgnore
     private Project project;
+
+    @JsonView(ControllerViews.ProjectList.class)
+    @Transient
+    private int taskCount = 0;
+
+    @PostLoad
+    public void onLoad() {
+        if (this.tasks != null) {
+            this.taskCount = this.tasks.size();
+        }
+    }
 
     public Long getId() {
         return id;
@@ -96,6 +109,14 @@ public class Swimlane implements Serializable {
 
     public void setPosition(Long position) {
         this.position = position;
+    }
+
+    public int getTaskCount() {
+        return taskCount;
+    }
+
+    public void setTaskCount(int taskCount) {
+        this.taskCount = taskCount;
     }
 
 }
