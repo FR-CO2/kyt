@@ -1,13 +1,13 @@
-<header class="navbar navbar-default" ng-controller="headerController as header">
+<header class="navbar navbar-static-top navbar-default" ng-controller="headerController as header">
     <div id="logo" class="navbar-header">
-        <a class="navbar-brand" ui-sref="app.dashboard" style="padding-top: 2px;">
-            <img class="logo" src="../images/CO2-Logo.png" alt="logo" title="CO2" height="50"/>
+        <a class="navbar-brand" ui-sref="app.dashboard">
+            <img class="logo" src="../images/CO2-Logo.png" alt="logo" title="CO2" height="48"/>
             KyT
         </a>
     </div>
-
-    <div class="navbar-text navbar-right">
-        <a class="dropdown-toggle account" data-toggle="dropdown">
+    
+    <div class="navbar-text navbar-right dropdown">
+        <a class="dropdown-toggle account" data-toggle="dropdown" aria-expanded="true">
             <span class="glyphicon glyphicon-user"></span>
             {{$session.user.username}}
         </a>
@@ -34,6 +34,6 @@
     </div>
 </header>
 <div class="container-fluid">
-    <div class="row" ui-view>
+    <div class="row" ui-view="">
     </div>
 </div>

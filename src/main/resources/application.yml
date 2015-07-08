@@ -11,12 +11,12 @@ spring:
             client-secret: nosecret
     datasource:
         driverClassName: org.h2.Driver
-        url: jdbc:h2:~/kanban
+        url: jdbc:h2:~/Sites/dev/co2/kyt
         username: sa
         password: sa
     jpa: 
         hibernate:
-            ddl-auto: update
+            ddl-auto: create
         
 logging:
     level:
