@@ -1,66 +1,118 @@
+/* line 2, ../../../../../../co2themes/sass/_utilities.sass */
+.clearChild:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
 @font-face {
-  font-family: "Oswald-Bold";
-  src: url('/fonts/oswald/Oswald-Bold.ttf?1422273888') format('truetype');
+  font-family: "oswald-demi-italic";
+  src: url('/fonts/oswald/oswald-demi-bolditalic-webfont.eot?1437026646');
+  src: url('/fonts/oswald/oswald-demi-bolditalic-webfont.eot?&1437026646#iefix') format('embedded-opentype'), url('/fonts/oswald/oswald-demi-bolditalic-webfont.svg?1437026646') format('svg'), url('/fonts/oswald/oswald-demi-bolditalic-webfont.ttf?1437026646') format('truetype'), url('/fonts/oswald/oswald-demi-bolditalic-webfont.woff?1437026646') format('woff'), url('/fonts/oswald/oswald-demi-bolditalic-webfont.woff2?1437026646') format('woff2');
 }
 @font-face {
-  font-family: "Oswald-BoldItalic";
-  src: url('/fonts/oswald/Oswald-BoldItalic.ttf?1422274240') format('truetype');
+  font-family: "oswald-demi";
+  src: url('/fonts/oswald/oswald-demibold-webfont.eot?1437026646');
+  src: url('/fonts/oswald/oswald-demibold-webfont.eot?&1437026646#iefix') format('embedded-opentype'), url('/fonts/oswald/oswald-demibold-webfont.svg?1437026646') format('svg'), url('/fonts/oswald/oswald-demibold-webfont.ttf?1437026646') format('truetype'), url('/fonts/oswald/oswald-demibold-webfont.woff?1437026646') format('woff'), url('/fonts/oswald/oswald-demibold-webfont.woff2?1437026646') format('woff2');
 }
 @font-face {
-  font-family: "Oswald-Demi-BoldItalic";
-  src: url('/fonts/oswald/Oswald-Demi-BoldItalic.ttf?1422274242') format('truetype');
+  font-family: "oswald";
+  src: url('/fonts/oswald/oswald-light-webfont.eot?1437026646');
+  src: url('/fonts/oswald/oswald-light-webfont.eot?&1437026646#iefix') format('embedded-opentype'), url('/fonts/oswald/oswald-light-webfont.svg?1437026646') format('svg'), url('/fonts/oswald/oswald-light-webfont.ttf?1437026646') format('truetype'), url('/fonts/oswald/oswald-light-webfont.woff?1437026646') format('woff'), url('/fonts/oswald/oswald-light-webfont.woff2?1437026646') format('woff2');
 }
 @font-face {
-  font-family: "Oswald-DemiBold";
-  src: url('/fonts/oswald/Oswald-DemiBold.ttf?1422273952') format('truetype');
+  font-family: "oswald-italic";
+  src: url('/fonts/oswald/oswald-lightitalic-webfont.eot?1437026646');
+  src: url('/fonts/oswald/oswald-lightitalic-webfont.eot?&1437026646#iefix') format('embedded-opentype'), url('/fonts/oswald/oswald-lightitalic-webfont.svg?1437026646') format('svg'), url('/fonts/oswald/oswald-lightitalic-webfont.ttf?1437026646') format('truetype'), url('/fonts/oswald/oswald-lightitalic-webfont.woff?1437026646') format('woff'), url('/fonts/oswald/oswald-lightitalic-webfont.woff2?1437026646') format('woff2');
 }
-@font-face {
-  font-family: "Oswald-Extra-LightItalic";
-  src: url('/fonts/oswald/Oswald-Extra-LightItalic.ttf?1422274242') format('truetype');
+/* line 1, ../../../../../../co2themes/sass/theme/_form.sass */
+input, .form-control {
+  border: 1px solid #42AFEE;
+  color: #0172B4;
 }
-@font-face {
-  font-family: "Oswald-ExtraLight";
-  src: url('/fonts/oswald/Oswald-ExtraLight.ttf?1422273952') format('truetype');
+
+/* line 1, ../../../../../../co2themes/sass/theme/_layout.sass */
+body {
+  background: #F5F5F5;
+  color: #2D2D2D;
 }
-@font-face {
-  font-family: "Oswald-Heavy";
-  src: url('/fonts/oswald/Oswald-Heavy.ttf?1422273952') format('truetype');
+
+/* line 1, ../../../../../../co2themes/sass/theme/_titles.sass */
+h1, h2, h3, h4, h5, h6 {
+  color: #168ACE;
+  font-family: oswald, Helvetica Neue, Helvetica, Arial, sans-serif;
 }
-@font-face {
-  font-family: "Oswald-HeavyItalic";
-  src: url('/fonts/oswald/Oswald-HeavyItalic.ttf?1422274244') format('truetype');
+
+/* line 1, ../../../../../../co2themes/sass/theme/_panel.sass */
+[class^=panel-heading-] {
+  margin: 0;
+  padding: 0;
 }
-@font-face {
-  font-family: "Oswald-Light";
-  src: url('/fonts/oswald/Oswald-Light.ttf?1422273888') format('truetype');
+
+/* line 6, ../../../../../../co2themes/sass/theme/_panel.sass */
+.panel-heading {
+  padding: 1em;
+  font-family: oswald, Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-size: 2em;
+  line-height: 1.5em;
 }
-@font-face {
-  font-family: "Oswald-LightItalic";
-  src: url('/fonts/oswald/Oswald-LightItalic.ttf?1422274244') format('truetype');
+/* line 2, ../../../../../../co2themes/sass/_utilities.sass */
+.panel-heading:after {
+  content: "";
+  display: table;
+  clear: both;
 }
-@font-face {
-  font-family: "Oswald-Medium";
-  src: url('/fonts/oswald/Oswald-Medium.ttf?1422273954') format('truetype');
+/* line 12, ../../../../../../co2themes/sass/theme/_panel.sass */
+.panel-heading-title {
+  display: inline-block;
+  float: left;
 }
-@font-face {
-  font-family: "Oswald-MediumItalic";
-  src: url('/fonts/oswald/Oswald-MediumItalic.ttf?1422274246') format('truetype');
+/* line 15, ../../../../../../co2themes/sass/theme/_panel.sass */
+.panel-heading-action {
+  float: right;
+  font-size: 1.5rem;
 }
-@font-face {
-  font-family: "Oswald-Regular";
-  src: url('/fonts/oswald/Oswald-Regular.ttf?1422273890') format('truetype');
+/* line 18, ../../../../../../co2themes/sass/theme/_panel.sass */
+.panel-info {
+  border: none;
 }
-@font-face {
-  font-family: "Oswald-RegularItalic";
-  src: url('/fonts/oswald/Oswald-RegularItalic.ttf?1422274246') format('truetype');
+/* line 20, ../../../../../../co2themes/sass/theme/_panel.sass */
+.panel-info > .panel-heading {
+  background: #D4EFFF;
 }
-/* line 10, ../../../../../../co2themes/sass/bootstrap/_navbar.sass */
+/* line 22, ../../../../../../co2themes/sass/theme/_panel.sass */
+.panel-login {
+  width: 60%;
+  margin: auto;
+  margin-top: 100px;
+}
+/* line 26, ../../../../../../co2themes/sass/theme/_panel.sass */
+.panel-login .panel-body {
+  font-size: 2em;
+  line-height: 1.5em;
+}
+
+/* line 2, ../../../../../../co2themes/sass/theme/_button.sass */
+.btn-info {
+  background: #168ACE;
+}
+/* line 4, ../../../../../../co2themes/sass/theme/_button.sass */
+.btn-info:hover {
+  background: #42AFEE;
+}
+
+/* line 1, ../../../../../../co2themes/sass/theme/_calendar.sass */
+.fc-view {
+  background: #FFF;
+}
+
+/* line 9, ../../../../../../co2themes/sass/bootstrap/_navbar.sass */
 .navbar {
   font-size: 16px;
-  font-family: "Oswald-BoldItalic, Helvetica Neue, Helvetica, Arial, sans-serif";
+  font-family: oswald, Helvetica Neue, Helvetica, Arial, sans-serif;
   line-height: 3em;
 }
-/* line 14, ../../../../../../co2themes/sass/bootstrap/_navbar.sass */
+/* line 13, ../../../../../../co2themes/sass/bootstrap/_navbar.sass */
 .navbar-text, .navbar-header, .navbar-brand {
   height: 100%;
   padding: 0;
@@ -68,10 +120,11 @@
   vertical-align: middle;
 }
 
-/* line 16, ../../../../../../co2themes/sass/bootstrap/_navbar.sass */
+/* line 15, ../../../../../../co2themes/sass/bootstrap/_navbar.sass */
 .navbar-default {
-  background: #42AFEE;
+  background: #168ACE;
   color: #FFF;
+  border-bottom: 2px solid #0172B4;
   height: auto;
   padding: 1em;
 }
@@ -81,10 +134,11 @@
 }
 /* line 23, ../../../../../../co2themes/sass/bootstrap/_navbar.sass */
 .navbar-default .navbar-brand {
-  font-size: 1.3333em;
+  font-size: 2em;
+  font-family: oswald-demi, Helvetica Neue, Helvetica, Arial, sans-serif;
   color: #FFF;
 }
-/* line 26, ../../../../../../co2themes/sass/bootstrap/_navbar.sass */
+/* line 27, ../../../../../../co2themes/sass/bootstrap/_navbar.sass */
 .navbar-default a {
   font-size: 1.3333em;
   cursor: pointer;
@@ -92,14 +146,14 @@
   color: #FFF;
 }
 
-/* line 7, ../../../../../../co2themes/sass/app.sass */
+/* line 17, ../../../../../../co2themes/sass/app.sass */
 #board {
   height: 100%;
   width: 100%;
   display: table;
 }
 
-/* line 13, ../../../../../../co2themes/sass/app.sass */
+/* line 23, ../../../../../../co2themes/sass/app.sass */
 td.column, th.column {
   height: 100%;
   vertical-align: top;
@@ -108,29 +162,29 @@ td.column, th.column {
   padding-right: 15px;
 }
 
-/* line 20, ../../../../../../co2themes/sass/app.sass */
+/* line 30, ../../../../../../co2themes/sass/app.sass */
 td.column ul {
   min-height: 100px;
 }
 
-/* line 23, ../../../../../../co2themes/sass/app.sass */
+/* line 33, ../../../../../../co2themes/sass/app.sass */
 td.column ul .panel {
   border: 2px solid black;
 }
 
-/* line 26, ../../../../../../co2themes/sass/app.sass */
+/* line 36, ../../../../../../co2themes/sass/app.sass */
 td.column ul .panel-heading {
   padding-left: 5px;
   padding-right: 5px;
 }
 
-/* line 30, ../../../../../../co2themes/sass/app.sass */
+/* line 40, ../../../../../../co2themes/sass/app.sass */
 td.column ul .panel-heading .row {
   margin-left: 0px;
   margin-right: 0px;
 }
 
-/* line 34, ../../../../../../co2themes/sass/app.sass */
+/* line 44, ../../../../../../co2themes/sass/app.sass */
 .kanban-card .badge {
   background-color: transparent;
 }
