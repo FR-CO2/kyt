@@ -2,10 +2,12 @@
     <div class="panel-heading">
         <span class="glyphicon glyphicon-time"></span> Imputation du {{tsCtrl.dateTS| date:'dd/MM/yyyy' }}
     </div>
-    <form>
+    <alert type="danger" ng-if="tsCtrl.formError">{{tsCtrl.formError}}</alert>
+    <form ng-submit="tsCtrl.submit()">
         <table class="table">
             <thead>
                 <tr>
+                    <th>Projet</th>
                     <th>Id tâche</th>
                     <th>Nom tâche</th>
                     <th>Temps passé</th>
@@ -14,16 +16,19 @@
             </thead>
             <tbody>
                 <tr ng-repeat="task in tsCtrl.tasks">
+                    <td class="col-md-3">
+                        {{task.project.name}}
+                    </td>
                     <td class="col-md-1">
                         #{{task.id}}
                     </td>
-                    <td class="col-md-5">
+                    <td class="col-md-4">
                         {{task.name}}
                     </td>
-                    <td class="col-md-3">
+                    <td class="col-md-2">
                         <input type="number" class="form-control" ng-model="tsCtrl.assignation[task.id].timespend"/>
                     </td>
-                    <td class="col-md-3">
+                    <td class="col-md-2">
                         <input type="number" class="form-control" ng-model="tsCtrl.assignation[task.id].timeremains"/>
                     </td>
                 </tr>
