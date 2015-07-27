@@ -80,6 +80,6 @@ public class CurrentUserController {
         ApplicationUser appUser = getCurrentUser(user);
         Date startTime = new Date(day);
         Date endTime = new Date(day);
-        return taskRepositoy.findByAssigneeUserAndPlannedEndingBetweenOrPlannedStartBetween(appUser, startTime, endTime, startTime, endTime);
+        return taskRepositoy.findByAssigneeUserAndPlannedEndingAfterAndPlannedStartBefore(appUser, endTime, startTime);
     }
 }

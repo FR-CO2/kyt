@@ -27,4 +27,6 @@ public interface TaskRepository extends PagingAndSortingRepository<Task, Long> {
     Page<Task> findByAssigneeUserOrBackupUser(ApplicationUser user, ApplicationUser backup, Pageable p);
 
     Iterable<Task> findByAssigneeUserAndPlannedEndingBetweenOrPlannedStartBetween(ApplicationUser user, Date endAfter, Date endBefore, Date startAfter, Date startBefore);
+    
+    Iterable<Task> findByAssigneeUserAndPlannedEndingAfterAndPlannedStartBefore(ApplicationUser user, Date endAfter, Date startBefore);
 }
