@@ -7,10 +7,13 @@ package com.cgi.fgdc.bdx.kanban.project.task;
 
 import com.cgi.fgdc.bdx.kanban.project.Project;
 import com.cgi.fgdc.bdx.kanban.user.ApplicationUser;
+import java.security.Principal;
 import java.util.Date;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.security.web.bind.annotation.AuthenticationPrincipal;
 
 /**
  *
@@ -21,6 +24,9 @@ public interface TaskRepository extends PagingAndSortingRepository<Task, Long> {
     Iterable<Task> findByProjectAndStateKanbanHideFalse(Project project);
 
     Iterable<Task> findByProject(Project project);
+    
+    @Query("select t from Task t where UPPER(t.name) like %?1% and (t.plannedStart > ?2 or t.plannedEnding < ?2)")
+    Iterable<Task> searchByName(String name,Date dateTask);
 
     Page<Task> findByProject(Project project, Pageable p);
 

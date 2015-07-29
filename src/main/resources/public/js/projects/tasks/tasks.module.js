@@ -124,7 +124,8 @@
                 method: "DELETE"
             },
             user: {url: "/api/userTask", method: "GET"},
-            userDay: {url: "/api/userTask/day/:day", method: "GET", params: {day: "@day"}, isArray: true}
+            userDay: {url: "/api/userTask/day/:day", method: "GET", params: {day: "@day"}, isArray: true},
+            searchByName: {url: "/api/userTask/search/:day/:name", method: "GET", params: {day: "@day", name: "@name"}, isArray: true}
         });
     }
 

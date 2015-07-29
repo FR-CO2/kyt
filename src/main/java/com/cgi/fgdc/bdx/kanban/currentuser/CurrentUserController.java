@@ -82,4 +82,13 @@ public class CurrentUserController {
         Date endTime = new Date(day);
         return taskRepositoy.findByAssigneeUserAndPlannedEndingAfterAndPlannedStartBefore(appUser, endTime, startTime);
     }
+    
+    @RequestMapping(value = "userTask/search/{day}/{name}", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    @JsonView(ControllerViews.TaskList.class)
+    public Iterable<Task> searchTaskByName(@AuthenticationPrincipal Principal user, @PathVariable("day") Long day, 
+            @PathVariable("name") String name) {
+        ApplicationUser appUser = getCurrentUser(user);
+        Date startTime = new Date(day);
+        return taskRepositoy.searchByName(name.toUpperCase(), startTime);
+    }
 }
