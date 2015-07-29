@@ -16,8 +16,7 @@ spring:
         password: sa
     jpa: 
         hibernate:
-            ddl-auto: create
-        
+            ddl-auto: update 
 logging:
     level:
         org.springframework.security: INFO
