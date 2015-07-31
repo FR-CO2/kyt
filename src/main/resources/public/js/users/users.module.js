@@ -1,11 +1,20 @@
 (function () {
     "use strict";
 
-    function userImportController($modalInstance) {
+    function userImportController($modalInstance, $http) {
         var vm = this;
 
         vm.submit = function () {
-            $modalInstance.close();
+            var formData = new FormData();
+            formData.append("file", vm.file);
+            formData.append("filename", vm.filename);
+            $http({
+                method: 'POST',
+                url: '/api/user/import',
+                transformRequest: angular.identity,
+                headers: {'Content-Type': 'multipart/form-data'},
+                data: formData
+            });
         };
     }
 
@@ -94,18 +103,64 @@
         });
     }
 
+    function fileread($q) {
+        var slice = Array.prototype.slice;
+
+        return {
+            restrict: 'A',
+            require: '?ngModel',
+            link: function (scope, element, attrs, ngModel) {
+                if (!ngModel)
+                    return;
+
+                ngModel.$render = function () {
+                };
+
+                element.bind('change', function (e) {
+                    var element = e.target;
+
+                    $q.all(slice.call(element.files, 0).map(readFile))
+                            .then(function (values) {
+                                if (element.multiple)
+                                    ngModel.$setViewValue(values);
+                                else
+                                    ngModel.$setViewValue(values.length ? values[0] : null);
+                            });
+
+                    function readFile(file) {
+                        var deferred = $q.defer();
+
+                        var reader = new FileReader();
+                        reader.onload = function (e) {
+                            deferred.resolve(e.target.result);
+                        };
+                        reader.onerror = function (e) {
+                            deferred.reject(e);
+                        };
+                        reader.readAsDataURL(file);
+
+                        return deferred.promise;
+                    }
+
+                }); //change
+
+            } //link
+        }; //return
+    }
+
     userConfig.$inject = ["$stateProvider"];
     userResource.$inject = ["$resource"];
     userListController.$inject = ["$modal", "userResource"];
-    userImportController.$inject = ["$modalInstance", "userResource"];
+    userImportController.$inject = ["$modalInstance", "$http"];
     userAddController.$inject = ["$modalInstance", "userResource", "applicationRoleResource"];
     applicationRoleResource.$inject = ["$resource"];
-
+    fileread.$inject = ["$q"];
     angular.module("kanban.user", [])
             .config(userConfig)
             .controller("userListController", userListController)
             .controller("userAddController", userAddController)
             .controller("userImportController", userImportController)
             .service("userResource", userResource)
-            .service("applicationRoleResource", applicationRoleResource);
+            .service("applicationRoleResource", applicationRoleResource)
+            .directive("fileread", fileread);
 })();

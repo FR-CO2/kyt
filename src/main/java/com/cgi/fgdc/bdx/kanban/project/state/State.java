@@ -9,7 +9,6 @@ import com.cgi.fgdc.bdx.kanban.ControllerViews;
 import com.cgi.fgdc.bdx.kanban.project.Project;
 import com.cgi.fgdc.bdx.kanban.project.task.Task;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -22,7 +21,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PostLoad;
 import javax.persistence.Transient;
-import org.hibernate.annotations.Formula;
 
 /**
  *

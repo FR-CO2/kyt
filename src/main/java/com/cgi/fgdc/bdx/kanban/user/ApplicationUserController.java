@@ -14,7 +14,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -32,11 +35,16 @@ public class ApplicationUserController {
         return repository.findAll();
     }
 
-    @RequestMapping(value="page", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "page", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public Page<ApplicationUser> page(Pageable p) {
         return repository.findAll(p);
     }
-
+    
+    @RequestMapping(value = "import", method = RequestMethod.POST)
+    public @ResponseBody String handleFileUpload(@RequestParam("file") MultipartFile file) {
+        return "ok";
+    }
+    
     @RequestMapping(method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ApplicationUser> create(@RequestBody ApplicationUser newUser) {
         return new ResponseEntity<>(repository.save(newUser), HttpStatus.CREATED);
@@ -52,4 +60,5 @@ public class ApplicationUserController {
         repository.delete(userId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
 }
