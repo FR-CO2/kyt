@@ -38,7 +38,7 @@
 
         select = function (event, ui) {
             if (ui.item) {
-                $scope.tsCtrl.addTask(ui.item);
+                $scope.tsCtrl.addTask(ui.item); // a vérifier
             }
         };
 
@@ -73,7 +73,7 @@
         
         vm.addTask =function(task){
             vm.tasks.push(task);
-            $scope.$apply();
+            $scope.$apply(); // a vérifier
         };
     }
 
