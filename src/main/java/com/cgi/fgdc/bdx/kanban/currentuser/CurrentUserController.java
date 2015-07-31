@@ -89,6 +89,6 @@ public class CurrentUserController {
             @PathVariable("name") String name) {
         ApplicationUser appUser = getCurrentUser(user);
         Date startTime = new Date(day);
-        return taskRepositoy.searchByName(name.toUpperCase(), startTime);
+        return taskRepositoy.searchByName(name.toUpperCase(), startTime, appUser);
     }
 }
