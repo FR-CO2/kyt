@@ -5,14 +5,13 @@
         var vm = this;
 
         vm.submit = function () {
-            var formData = new FormData();
-            formData.append("file", vm.file);
+            var formData = new FormData("importUser");
+            formData.append("importUser", vm.fileInput);
             formData.append("filename", vm.filename);
             $http({
                 method: 'POST',
                 url: '/api/user/import',
-                transformRequest: angular.identity,
-                headers: {'Content-Type': 'multipart/form-data'},
+                headers: {'Content-Type': undefined},
                 data: formData
             });
         };
