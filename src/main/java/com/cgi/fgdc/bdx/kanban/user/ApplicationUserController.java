@@ -6,6 +6,10 @@
 package com.cgi.fgdc.bdx.kanban.user;
 
 import java.io.File;
+import java.io.IOException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.Part;
+import org.apache.catalina.core.ApplicationPart;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -42,10 +46,9 @@ public class ApplicationUserController {
         return repository.findAll(p);
     }
     
-    @RequestMapping(value = "import", method = RequestMethod.POST)
-    public String handleFileUpload(@RequestParam("importUser") MultipartFile file) {
-        String result = "'result': 'ok'";
-        return result;
+    @RequestMapping(value = "import", method = RequestMethod.POST, consumes= org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity handleFileUpload(@RequestParam(value = "importuser", required= false ) Part file) throws IOException {
+        return new ResponseEntity<>(HttpStatus.OK);
     }
     
     @RequestMapping(method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)

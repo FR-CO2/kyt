@@ -5,14 +5,17 @@
         var vm = this;
 
         vm.submit = function () {
-            var formData = new FormData("importUser");
-            formData.append("importUser", vm.fileInput);
-            formData.append("filename", vm.filename);
+            var formData = new FormData();
+            formData.append("importuser", vm.fileInput);
             $http({
                 method: 'POST',
                 url: '/api/user/import',
                 headers: {'Content-Type': undefined},
                 data: formData
+            }).success(function() {
+                $modalInstance.close();
+            }).error(function(e) {
+                vm.form = {error: e};
             });
         };
     }
