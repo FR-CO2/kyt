@@ -93,8 +93,9 @@ input, .form-control {
   font-size: 16px;
   font-family: oswald, Helvetica Neue, Helvetica, Arial, sans-serif;
   line-height: 3em;
+  margin: 0;
 }
-/* line 13, ../../../../../../co2themes/sass/bootstrap/_navbar.sass */
+/* line 14, ../../../../../../co2themes/sass/bootstrap/_navbar.sass */
 .navbar-text, .navbar-header, .navbar-brand {
   height: 100%;
   padding: 0;
@@ -102,12 +103,12 @@ input, .form-control {
   vertical-align: middle;
 }
 
-/* line 15, ../../../../../../co2themes/sass/bootstrap/_navbar.sass */
+/* line 16, ../../../../../../co2themes/sass/bootstrap/_navbar.sass */
 .nav {
   padding: 0 1em;
 }
 
-/* line 18, ../../../../../../co2themes/sass/bootstrap/_navbar.sass */
+/* line 19, ../../../../../../co2themes/sass/bootstrap/_navbar.sass */
 .navbar-default {
   background: #168ACE;
   color: #FFF;
@@ -115,17 +116,17 @@ input, .form-control {
   height: auto;
   padding: 1em;
 }
-/* line 24, ../../../../../../co2themes/sass/bootstrap/_navbar.sass */
+/* line 25, ../../../../../../co2themes/sass/bootstrap/_navbar.sass */
 .navbar-default .navbar-header {
   position: relative;
 }
-/* line 26, ../../../../../../co2themes/sass/bootstrap/_navbar.sass */
+/* line 27, ../../../../../../co2themes/sass/bootstrap/_navbar.sass */
 .navbar-default .navbar-brand {
   font-size: 2em;
   font-family: oswald-demi, Helvetica Neue, Helvetica, Arial, sans-serif;
   color: #FFF;
 }
-/* line 30, ../../../../../../co2themes/sass/bootstrap/_navbar.sass */
+/* line 31, ../../../../../../co2themes/sass/bootstrap/_navbar.sass */
 .navbar-default .navbar-text {
   font-size: 1.5em;
   cursor: pointer;
@@ -133,12 +134,12 @@ input, .form-control {
   color: #FFF;
 }
 
-/* line 35, ../../../../../../co2themes/sass/bootstrap/_navbar.sass */
+/* line 36, ../../../../../../co2themes/sass/bootstrap/_navbar.sass */
 .navbar-default .navbar-nav > li > a, .navbar-default a, .open > a, .navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:focus {
   color: #FFF;
   background: none;
 }
-/* line 38, ../../../../../../co2themes/sass/bootstrap/_navbar.sass */
+/* line 39, ../../../../../../co2themes/sass/bootstrap/_navbar.sass */
 .navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus, .navbar-default a:hover, .navbar-default a:focus, .open > a:hover, .open > a:focus, .navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:focus, .navbar-default .navbar-nav > .open > a:hover:hover, .navbar-default .navbar-nav > .open > a:hover:focus, .navbar-default .navbar-nav > .open > a:focus:hover, .navbar-default .navbar-nav > .open > a:focus:focus {
   color: #D4EFFF;
 }
@@ -146,7 +147,7 @@ input, .form-control {
 /* line 1, ../../../../../../co2themes/sass/theme/_layout.sass */
 body {
   font-size: 16px;
-  background: #F5F5F5;
+  background: #E9F0F4;
   color: #2D2D2D;
 }
 
@@ -179,6 +180,50 @@ h1, h2, h3, h4, h5, h6 {
   margin: 0;
 }
 
+/* line 2, ../../../../../../co2themes/sass/theme/_off-canvas.sass */
+.offcanvas__container {
+  min-height: 100%;
+  display: flex;
+  position: relative;
+}
+/* line 6, ../../../../../../co2themes/sass/theme/_off-canvas.sass */
+.offcanvas__menu {
+  width: 20%;
+  float: left;
+  background: #172B36;
+  flex-grow: 1;
+  order: 1;
+  transition: ease 1s all;
+}
+/* line 13, ../../../../../../co2themes/sass/theme/_off-canvas.sass */
+.offcanvas__content {
+  width: 80%;
+  float: left;
+  padding: 1em;
+  flex-grow: 2;
+  order: 3;
+  min-height: 600px;
+}
+/* line 20, ../../../../../../co2themes/sass/theme/_off-canvas.sass */
+.offcanvas__label {
+  font-size: 2em;
+  color: #0172B4;
+}
+/* line 23, ../../../../../../co2themes/sass/theme/_off-canvas.sass */
+.offcanvas__checkbox {
+  display: none;
+}
+/* line 26, ../../../../../../co2themes/sass/theme/_off-canvas.sass */
+.offcanvas__checkbox:checked ~ .offcanvas__menu {
+  transform: translate3d(-20%, 0, 0);
+  width: 0;
+  overflow: hidden;
+}
+/* line 30, ../../../../../../co2themes/sass/theme/_off-canvas.sass */
+.offcanvas__checkbox:checked ~ .offcanvas__content {
+  width: 100%;
+}
+
 /* line 18, ../../../../../../co2themes/sass/app.sass */
 #board {
   height: 100%;
@@ -186,7 +231,13 @@ h1, h2, h3, h4, h5, h6 {
   display: table;
 }
 
-/* line 24, ../../../../../../co2themes/sass/app.sass */
+/* line 23, ../../../../../../co2themes/sass/app.sass */
+.app__content {
+  padding: 1em 0;
+  margin: 0;
+}
+
+/* line 27, ../../../../../../co2themes/sass/app.sass */
 td.column, th.column {
   height: 100%;
   vertical-align: top;
@@ -195,34 +246,34 @@ td.column, th.column {
   padding-right: 15px;
 }
 
-/* line 31, ../../../../../../co2themes/sass/app.sass */
+/* line 34, ../../../../../../co2themes/sass/app.sass */
 td.column ul {
   min-height: 100px;
 }
 
-/* line 34, ../../../../../../co2themes/sass/app.sass */
+/* line 37, ../../../../../../co2themes/sass/app.sass */
 td.column ul .panel {
   border: 2px solid black;
 }
 
-/* line 37, ../../../../../../co2themes/sass/app.sass */
+/* line 40, ../../../../../../co2themes/sass/app.sass */
 td.column ul .panel-heading {
   padding-left: 5px;
   padding-right: 5px;
 }
 
-/* line 41, ../../../../../../co2themes/sass/app.sass */
+/* line 44, ../../../../../../co2themes/sass/app.sass */
 td.column ul .panel-heading .row {
   margin-left: 0px;
   margin-right: 0px;
 }
 
-/* line 45, ../../../../../../co2themes/sass/app.sass */
+/* line 48, ../../../../../../co2themes/sass/app.sass */
 .kanban-card .badge {
   background-color: transparent;
 }
 
-/* line 48, ../../../../../../co2themes/sass/app.sass */
+/* line 51, ../../../../../../co2themes/sass/app.sass */
 .ui-autocomplete {
   z-index: 1051;
 }
