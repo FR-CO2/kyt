@@ -32,10 +32,10 @@
         vm.events = [{
                 url: "/api/userEvent",
                 headers: {
-                    Authorization: (function() {
+                    Authorization: (function () {
                         if ($sessionStorage.oauth) {
                             return $sessionStorage.oauth.token_type + " " + $sessionStorage.oauth.access_token;
-                        } 
+                        }
                         return "";
                     })()
                 },
@@ -124,24 +124,29 @@
         $rootScope.$storage = $localStorage;
         $rootScope.$session = $sessionStorage;
         editableOptions.theme = 'bs3';
+        $rootScope.loginOngoing = false;
         $rootScope.$on("event:auth-loginRequired", function () {
             delete $rootScope.$session.oauth;
             delete $rootScope.$session.user;
             var modalScope = $rootScope.$new();
-            modalScope.modalInstance = $modal.open({
-                animation: true,
-                templateUrl: "login.html",
-                controller: "loginController",
-                controllerAs: "login",
-                scope: modalScope,
-                backdrop: "static",
-                size: "md"
-            });
-            modalScope.modalInstance.result.then(
-                    function (result) {
-                        authService.loginConfirmed();
-                    }
-            );
+            if (!$rootScope.loginOngoing) {
+                $rootScope.loginOngoing = true;
+                modalScope.modalInstance = $modal.open({
+                    animation: true,
+                    templateUrl: "login.html",
+                    controller: "loginController",
+                    controllerAs: "login",
+                    scope: modalScope,
+                    backdrop: "static",
+                    size: "md"
+                });
+                modalScope.modalInstance.result.then(
+                        function (result) {
+                            authService.loginConfirmed();
+                            $rootScope.loginOngoing = false;
+                        }
+                );
+            }
         });
         $state.go("login");
     }
