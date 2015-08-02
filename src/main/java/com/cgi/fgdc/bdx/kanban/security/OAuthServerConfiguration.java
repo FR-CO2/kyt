@@ -44,7 +44,7 @@ public class OAuthServerConfiguration {
 
         @Override
         public void configure(HttpSecurity http) throws Exception {
-            http.authorizeRequests().antMatchers("/api").authenticated();
+            http.authorizeRequests().antMatchers("/api/**").authenticated();
         }
 
     }

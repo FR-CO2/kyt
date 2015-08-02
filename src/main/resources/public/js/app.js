@@ -32,7 +32,12 @@
         vm.events = [{
                 url: "/api/userEvent",
                 headers: {
-                    Authorization: $sessionStorage.oauth.token_type + " " + $sessionStorage.oauth.access_token
+                    Authorization: (function() {
+                        if ($sessionStorage.oauth) {
+                            return $sessionStorage.oauth.token_type + " " + $sessionStorage.oauth.access_token;
+                        } 
+                        return "";
+                    })()
                 },
                 eventDataTransform: function (event) {
                     var eventTransform = {};
@@ -52,6 +57,7 @@
                     return eventTransform;
                 }
             }];
+
         vm.goProject = function (projectId) {
             $state.transitionTo("app.project-detail.kanban", {id: projectId});
         };
@@ -121,8 +127,8 @@
         $rootScope.$on("event:auth-loginRequired", function () {
             delete $rootScope.$session.oauth;
             delete $rootScope.$session.user;
-            var modalScope  = $rootScope.$new();
-            $modal.open({
+            var modalScope = $rootScope.$new();
+            modalScope.modalInstance = $modal.open({
                 animation: true,
                 templateUrl: "login.html",
                 controller: "loginController",
@@ -133,10 +139,7 @@
             });
             modalScope.modalInstance.result.then(
                     function (result) {
-                        // Closed
-                    },function () {
-                        // Dismissed
-                        ;
+                        authService.loginConfirmed();
                     }
             );
         });
