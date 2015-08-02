@@ -93,7 +93,11 @@
                 $scope.$session.oauth = result;
                 $scope.$session.user = userProfileSrv.get();
                 vm.loginForm = {};
-                $state.transitionTo("app.dashboard");
+                if ($scope.modalInstance) {
+                    $scope.modalInstance.close();
+                } else {
+                    $state.transitionTo("app.dashboard");
+                }
             }).error(function () {
                 vm.loginForm = {};
                 vm.loginForm.error = "Login/password invalide";
@@ -117,14 +121,24 @@
         $rootScope.$on("event:auth-loginRequired", function () {
             delete $rootScope.$session.oauth;
             delete $rootScope.$session.user;
+            var modalScope  = $rootScope.$new();
             $modal.open({
                 animation: true,
                 templateUrl: "login.html",
                 controller: "loginController",
                 controllerAs: "login",
+                scope: modalScope,
                 backdrop: "static",
                 size: "md"
             });
+            modalScope.modalInstance.result.then(
+                    function (result) {
+                        // Closed
+                    },function () {
+                        // Dismissed
+                        ;
+                    }
+            );
         });
         $state.go("login");
     }

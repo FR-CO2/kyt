@@ -80,7 +80,7 @@
             });
         };
         vm.export = function () {
-            window.open("api/users/csv", '_blank', '');
+            window.open("api/user/export", '_blank', '');
         };
         vm.import = function () {
             var modalInstance = $modal.open({
