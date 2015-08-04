@@ -5,7 +5,7 @@
   clear: both;
 }
 
-/* line 10, ../../../../../../co2themes/sass/_utilities.sass */
+/* line 14, ../../../../../../co2themes/sass/_utilities.sass */
 [ng-click] {
   cursor: pointer;
 }
@@ -155,6 +155,13 @@ input, .form-control {
   color: #D4EFFF;
 }
 
+/* line 2, ../../../../../../co2themes/sass/bootstrap/_table.sass */
+.table > thead > tr > th {
+  font-family: oswald, Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.2em;
+}
+
 /* line 1, ../../../../../../co2themes/sass/theme/_layout.sass */
 body {
   font-size: 16px;
@@ -239,60 +246,67 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* line 2, ../../../../../../co2themes/sass/theme/_kanban.sass */
-.kanban__table {
-  background: #FFF;
+.kanban__column {
+  border-top: 2px solid #0172B4 !important;
+  border-left: 1px solid #D4EFFF !important;
+  padding: 1em;
+}
+/* line 6, ../../../../../../co2themes/sass/theme/_kanban.sass */
+.kanban__column--title {
+  text-align: center;
 }
 
-/* line 20, ../../../../../../co2themes/sass/app.sass */
+/* line 8, ../../../../../../co2themes/sass/theme/_kanban.sass */
+.as-sortable-placeholder {
+  background: #D4EFFF;
+  border: 2px dashed #0172B4;
+}
+
+/* line 12, ../../../../../../co2themes/sass/theme/_kanban.sass */
+td.column ul {
+  min-height: 100px;
+}
+
+/* line 15, ../../../../../../co2themes/sass/theme/_kanban.sass */
+td.column ul .panel-heading {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+/* line 19, ../../../../../../co2themes/sass/theme/_kanban.sass */
+td.column ul .panel-heading .row {
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+/* line 23, ../../../../../../co2themes/sass/theme/_kanban.sass */
+.kanban-card {
+  border: none;
+}
+/* line 25, ../../../../../../co2themes/sass/theme/_kanban.sass */
+.kanban-card__heading {
+  font-size: 16px;
+  line-height: 1.2em;
+}
+/* line 27, ../../../../../../co2themes/sass/theme/_kanban.sass */
+.kanban-card .badge {
+  background-color: transparent;
+}
+
+/* line 21, ../../../../../../co2themes/sass/app.sass */
 #board {
   height: 100%;
   width: 100%;
   display: table;
 }
 
-/* line 25, ../../../../../../co2themes/sass/app.sass */
+/* line 26, ../../../../../../co2themes/sass/app.sass */
 .app__content {
   padding: 1em 0;
   margin: 0;
 }
 
-/* line 29, ../../../../../../co2themes/sass/app.sass */
-td.column, th.column {
-  height: 100%;
-  vertical-align: top;
-  border-left: 1px solid #5bc0de;
-  padding-left: 15px;
-  padding-right: 15px;
-}
-
-/* line 36, ../../../../../../co2themes/sass/app.sass */
-td.column ul {
-  min-height: 100px;
-}
-
-/* line 39, ../../../../../../co2themes/sass/app.sass */
-td.column ul .panel {
-  border: 2px solid black;
-}
-
-/* line 42, ../../../../../../co2themes/sass/app.sass */
-td.column ul .panel-heading {
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-/* line 46, ../../../../../../co2themes/sass/app.sass */
-td.column ul .panel-heading .row {
-  margin-left: 0px;
-  margin-right: 0px;
-}
-
-/* line 50, ../../../../../../co2themes/sass/app.sass */
-.kanban-card .badge {
-  background-color: transparent;
-}
-
-/* line 53, ../../../../../../co2themes/sass/app.sass */
+/* line 30, ../../../../../../co2themes/sass/app.sass */
 .ui-autocomplete {
   z-index: 1051;
 }
