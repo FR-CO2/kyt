@@ -79,12 +79,18 @@ input, .form-control {
   line-height: 1.2em;
 }
 
-/* line 2, ../../../../../../co2themes/sass/bootstrap/_button.sass */
-.btn-info {
+/* line 1, ../../../../../../co2themes/sass/bootstrap/_button.sass */
+.btn, .fc-button {
+  font-family: oswald, Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  background: #FFF;
+}
+/* line 5, ../../../../../../co2themes/sass/bootstrap/_button.sass */
+.btn-info, .fc-button-info {
   background: #168ACE;
 }
-/* line 4, ../../../../../../co2themes/sass/bootstrap/_button.sass */
-.btn-info:hover {
+/* line 7, ../../../../../../co2themes/sass/bootstrap/_button.sass */
+.btn-info:hover, .fc-button-info:hover {
   background: #42AFEE;
 }
 
