@@ -4,8 +4,8 @@
             <div class="panel-heading">
                     <h2 class="panel-heading-title">Liste des projets</h2>
                     <div class="panel-heading-action">
-                        <button class="btn btn-info btn-sm" ng-click="projectCtrl.add()"><span class="glyphicon glyphicon-plus-sign"></span>&nbsp;Ajouter</button>
-                        <button class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                        <button class="btn btn-info" ng-click="projectCtrl.add()"><span class="glyphicon glyphicon-plus-sign"></span>Ajouter</button>
+                        <button class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                             Import/Export <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu pull-right">
@@ -29,7 +29,7 @@
                                 {{project.name}}
                             </td>
                             <td class="text-justify">
-                                <ul class="list-inline"> 
+                                <ul class="list-inline">
                                     <li ng-repeat="state in project.states" ng-if="!state.kanbanHide">
                                         {{state.name}} <span class="badge alert-info">{{state.taskCount}}</span>
                                     </li>
@@ -53,7 +53,7 @@
                                         <pagination total-items="projectCtrl.projects.nbElt" ng-model="projectCtrl.projects.number" items-per-page="projectCtrl.projects.size" max-size="5" class="pagination-sm" boundary-links="true" rotate="false" num-pages="projectCtrl.projects.totalPages" ng-change="projectCtrl.pageChanged()"></pagination>
                                     </div>
                                 </div>
-                                <div class="col-md-3 form-inline"> 
+                                <div class="col-md-3 form-inline">
                                     <div class="form-group pull-right">
                                         <label for="nbEltUser">Nb élements :</label>
                                         <select id="nbEltUser" ng-model="projectCtrl.nbElt" class="form-control input-sm" style="margin: 20px;">

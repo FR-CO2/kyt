@@ -64,16 +64,17 @@ input, .form-control {
 .panel-heading-action {
   float: right;
   font-size: 1.5rem;
+  position: relative;
 }
-/* line 18, ../../../../../../co2themes/sass/bootstrap/_panel.sass */
+/* line 19, ../../../../../../co2themes/sass/bootstrap/_panel.sass */
 .panel-info {
   border: none;
 }
-/* line 20, ../../../../../../co2themes/sass/bootstrap/_panel.sass */
+/* line 21, ../../../../../../co2themes/sass/bootstrap/_panel.sass */
 .panel-info > .panel-heading {
   background: #D4EFFF;
 }
-/* line 22, ../../../../../../co2themes/sass/bootstrap/_panel.sass */
+/* line 23, ../../../../../../co2themes/sass/bootstrap/_panel.sass */
 .panel-body {
   font-size: 0.875em;
   line-height: 1.2em;
@@ -92,6 +93,10 @@ input, .form-control {
 /* line 7, ../../../../../../co2themes/sass/bootstrap/_button.sass */
 .btn-info:hover, .fc-button-info:hover {
   background: #42AFEE;
+}
+/* line 9, ../../../../../../co2themes/sass/bootstrap/_button.sass */
+.btn > .glyphicon, .fc-button > .glyphicon {
+  margin-right: 0.5em;
 }
 
 /* line 9, ../../../../../../co2themes/sass/bootstrap/_navbar.sass */
@@ -233,20 +238,25 @@ h1, h2, h3, h4, h5, h6 {
   width: 100%;
 }
 
-/* line 18, ../../../../../../co2themes/sass/app.sass */
+/* line 2, ../../../../../../co2themes/sass/theme/_kanban.sass */
+.kanban__table {
+  background: #FFF;
+}
+
+/* line 20, ../../../../../../co2themes/sass/app.sass */
 #board {
   height: 100%;
   width: 100%;
   display: table;
 }
 
-/* line 23, ../../../../../../co2themes/sass/app.sass */
+/* line 25, ../../../../../../co2themes/sass/app.sass */
 .app__content {
   padding: 1em 0;
   margin: 0;
 }
 
-/* line 27, ../../../../../../co2themes/sass/app.sass */
+/* line 29, ../../../../../../co2themes/sass/app.sass */
 td.column, th.column {
   height: 100%;
   vertical-align: top;
@@ -255,34 +265,34 @@ td.column, th.column {
   padding-right: 15px;
 }
 
-/* line 34, ../../../../../../co2themes/sass/app.sass */
+/* line 36, ../../../../../../co2themes/sass/app.sass */
 td.column ul {
   min-height: 100px;
 }
 
-/* line 37, ../../../../../../co2themes/sass/app.sass */
+/* line 39, ../../../../../../co2themes/sass/app.sass */
 td.column ul .panel {
   border: 2px solid black;
 }
 
-/* line 40, ../../../../../../co2themes/sass/app.sass */
+/* line 42, ../../../../../../co2themes/sass/app.sass */
 td.column ul .panel-heading {
   padding-left: 5px;
   padding-right: 5px;
 }
 
-/* line 44, ../../../../../../co2themes/sass/app.sass */
+/* line 46, ../../../../../../co2themes/sass/app.sass */
 td.column ul .panel-heading .row {
   margin-left: 0px;
   margin-right: 0px;
 }
 
-/* line 48, ../../../../../../co2themes/sass/app.sass */
+/* line 50, ../../../../../../co2themes/sass/app.sass */
 .kanban-card .badge {
   background-color: transparent;
 }
 
-/* line 51, ../../../../../../co2themes/sass/app.sass */
+/* line 53, ../../../../../../co2themes/sass/app.sass */
 .ui-autocomplete {
   z-index: 1051;
 }
