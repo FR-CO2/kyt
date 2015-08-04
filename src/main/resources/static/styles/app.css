@@ -208,18 +208,21 @@ h1, h2, h3, h4, h5, h6 {
 .offcanvas__label {
   font-size: 2em;
   color: #0172B4;
+  cursor: pointer;
+  font-family: oswald, Helvetica Neue, Helvetica, Arial, sans-serif;
+  text-transform: uppercase;
 }
-/* line 23, ../../../../../../co2themes/sass/theme/_off-canvas.sass */
+/* line 26, ../../../../../../co2themes/sass/theme/_off-canvas.sass */
 .offcanvas__checkbox {
   display: none;
 }
-/* line 26, ../../../../../../co2themes/sass/theme/_off-canvas.sass */
+/* line 29, ../../../../../../co2themes/sass/theme/_off-canvas.sass */
 .offcanvas__checkbox:checked ~ .offcanvas__menu {
   transform: translate3d(-20%, 0, 0);
   width: 0;
   overflow: hidden;
 }
-/* line 30, ../../../../../../co2themes/sass/theme/_off-canvas.sass */
+/* line 33, ../../../../../../co2themes/sass/theme/_off-canvas.sass */
 .offcanvas__checkbox:checked ~ .offcanvas__content {
   width: 100%;
 }
