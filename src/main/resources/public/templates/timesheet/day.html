@@ -12,6 +12,8 @@
                     <th>Nom tâche</th>
                     <th>Temps passé</th>
                     <th>Temps restant</th>
+                    <th>Temps total consommé</th>
+                    <th>Temps total prévu</th>
                 </tr>
             </thead>
             <tbody>
@@ -26,14 +28,20 @@
                         {{task.name}}
                     </td>
                     <td class="col-md-2">
-                        <input type="number" class="form-control" ng-model="tsCtrl.assignation[task.id].timespend"/>
+                        <input type="number" class="form-control" min="0" max="1" step="0.1" ng-model="tsCtrl.assignation[task.id].timeSpent"/>
                     </td>
                     <td class="col-md-2">
-                        <input type="number" class="form-control" ng-model="tsCtrl.assignation[task.id].timeremains"/>
+                        <input type="number" class="form-control" min="0" step="0.1" ng-model="tsCtrl.assignation[task.id].timeRemains"/>
+                    </td>
+                    <td>
+                        {{task.estimatedLoad}}
+                    </td>
+                    <td>
+                        {{task.estimatedLoad- task.timeRemains}}
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="5" style="text-align:center">
+                    <td colspan="7" style="text-align:center">
                         Nom de la tâche à ajouter: 
                         <div ng-controller="autoCompleteCtrl" class="ui-widget">
                             <input placeholder="Search..." ng-model="term" ui-autocomplete="autocompleteOptions"/>

@@ -59,11 +59,21 @@
         vm.submit = function() {
             var keys = Object.keys(vm.assignation);
             var assignationSum = 0;
+            var mapTimespent = new Map();
+            var mapTimeremains = new Map();
             for (var i = 0; i < keys.length; i++) {
                 assignationSum += vm.assignation[keys[i]].timespend;
+                mapTimespent.set(parseInt(keys[i]), vm.assignation[keys[i]].timeSpent);
+                mapTimeremains.set(parseInt(keys[i]), vm.assignation[keys[i]].timeRemains);
             }
             if (assignationSum > 10) {
                 vm.formError = "Les temps saisis sur une journÃ©e ne peut excÃ©der 10";
+            } else{
+                for(i = 0; i < vm.tasks.length; i++){
+                    vm.tasks[i].timeSpent = mapTimespent.get(vm.tasks[i].id);
+                    vm.tasks[i].timeRemains = mapTimeremains.get(vm.tasks[i].id);
+                    taskResource.save({"projectId": vm.tasks[i].id}, vm.tasks[i]);
+                }
             }
         };
         
@@ -73,7 +83,7 @@
         
         vm.addTask =function(task){
             vm.tasks.push(task);
-            $scope.$apply(); // a vérifier
+            $scope.$apply();
         };
     }
 

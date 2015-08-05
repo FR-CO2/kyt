@@ -183,6 +183,8 @@ public class TaskController {
         result.setPlannedStart(form.getPlannedStart());
         result.setPlannedEnding(form.getPlannedEnding());
         result.setEstimatedLoad(form.getEstimatedLoad());
+        result.setTimeRemains(form.getTimeRemains());
+        result.setTimeSpent(form.getTimeSpent());
         return result;
     }
 }

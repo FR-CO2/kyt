@@ -46,6 +46,10 @@
         <label for="plannedEnding">Date de fin prévue </label>
         <input type="date" id="plannedEnding" class="form-control" ng-model="edit.plannedEndingFmt" pattern="dd/MM/YYYY"/>
     </div>
+    <div class="form-group">
+        <label for="estimatedLoad">Charge totale prévue</label>
+        <input type="number" id="estimatedLoad" class="form-control" ng-model="edit.task.estimatedLoad" min="0" step="1"/>
+    </div>
     <div>
         <button type="submit"  class="btn btn-info center-block">valider</button>
     </div>

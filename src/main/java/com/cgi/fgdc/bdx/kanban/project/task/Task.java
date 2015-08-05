@@ -11,14 +11,23 @@ import com.cgi.fgdc.bdx.kanban.project.state.State;
 import com.cgi.fgdc.bdx.kanban.project.category.Category;
 import com.cgi.fgdc.bdx.kanban.project.security.Member;
 import com.cgi.fgdc.bdx.kanban.project.swimlane.Swimlane;
+import com.cgi.fgdc.bdx.kanban.project.task.allocation.Allocation;
+import com.cgi.fgdc.bdx.kanban.project.task.allocation.AllocationDateComparator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.PostLoad;
+import javax.persistence.Transient;
 
 /**
  *
@@ -78,6 +87,30 @@ public class Task implements Serializable {
 
     @JsonView(ControllerViews.TaskList.class)
     private String description;
+    
+    @JsonView(ControllerViews.TaskList.class)
+    @Transient
+    private Long timeSpent = 0L;
+    
+    @JsonView(ControllerViews.TaskList.class)
+    @Transient
+    private Long timeRemains = 0L;
+    
+    @JsonIgnore
+    @OneToMany(mappedBy = "task")
+    private List<Allocation> allocations;
+    
+    @PostLoad
+    public void onLoad(){
+        if(!allocations.isEmpty()){
+            for(Allocation alloc : this.allocations) {
+                this.timeSpent += alloc.getTimeSpent();
+            }
+
+            Collections.sort(allocations, new AllocationDateComparator());
+            this.timeRemains = allocations.get(allocations.size()-1).getTimeRemains();
+        }
+    }
 
     public Long getId() {
         return id;
@@ -226,4 +259,27 @@ public class Task implements Serializable {
         return null;
     }
 
+    public List<Allocation> getAllocations() {
+        return allocations;
+    }
+
+    public void setAllocations(List<Allocation> allocations) {
+        this.allocations = allocations;
+    }
+    
+    public Long getTimeSpent() {
+        return timeSpent;
+    }
+
+    public void setTimeSpent(Long timeSpent) {
+        this.timeSpent = timeSpent;
+    }
+
+    public Long getTimeRemains() {
+        return timeRemains;
+    }
+
+    public void setTimeRemains(Long timeRemains) {
+        this.timeRemains = timeRemains;
+    }   
 }

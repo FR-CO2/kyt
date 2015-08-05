@@ -40,6 +40,12 @@ public class TaskForm extends Task {
 
     @JsonView(ControllerViews.Task.class)
     private Long assigneeId;
+    
+    @JsonView(ControllerViews.Task.class)
+    private Long timeRemains = 0L;
+    
+    @JsonView(ControllerViews.Task.class)
+    private Long timeSpent = 0L;
 
     public void setStateId(Long stateId) {
         this.stateId = stateId;
@@ -59,6 +65,14 @@ public class TaskForm extends Task {
 
     public void setBackupId(Long backupId) {
         this.backupId = backupId;
+    }
+
+    public void setTimeremains(Long timeremains) {
+        this.timeRemains = timeremains;
+    }
+
+    public void setTimespent(Long timespend) {
+        this.timeSpent = timespend;
     }
 
     @Override
@@ -85,4 +99,14 @@ public class TaskForm extends Task {
     public Long getSwimlaneId() {
         return swimlaneId;
     }
+
+    public Long getTimeremains() {
+        return timeRemains;
+    }
+    
+    public Long getTimespent() {
+        return timeSpent;
+    }
+    
+    
 }
