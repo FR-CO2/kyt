@@ -46,7 +46,7 @@ public class TaskForm extends Task {
     
     @JsonView(ControllerViews.Task.class)
     private Long timeSpent = 0L;
-
+    
     public void setStateId(Long stateId) {
         this.stateId = stateId;
     }
@@ -107,6 +107,4 @@ public class TaskForm extends Task {
     public Long getTimespent() {
         return timeSpent;
     }
-    
-    
-}
+}    

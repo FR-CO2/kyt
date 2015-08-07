@@ -16,6 +16,7 @@ import com.cgi.fgdc.bdx.kanban.project.security.Member;
 import com.cgi.fgdc.bdx.kanban.project.security.MemberRepository;
 import com.cgi.fgdc.bdx.kanban.project.swimlane.Swimlane;
 import com.cgi.fgdc.bdx.kanban.project.swimlane.SwimlaneRepository;
+import com.cgi.fgdc.bdx.kanban.project.task.allocation.AllocationRepository;
 import com.fasterxml.jackson.annotation.JsonView;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -55,7 +56,7 @@ public class TaskController {
 
     @Autowired
     private MemberRepository memberRepository;
-
+    
     @RequestMapping(value = "page", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     @JsonView(ControllerViews.TaskList.class)
     public Page<Task> projectPage(@PathVariable("projectId") Long projectId, Pageable p) {

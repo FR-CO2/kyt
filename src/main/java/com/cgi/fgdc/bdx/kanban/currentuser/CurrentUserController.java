@@ -71,7 +71,7 @@ public class CurrentUserController {
         ApplicationUser appUser = getCurrentUser(user);
         Date startTime = new Date(start * 1000);
         Date endTime = new Date(end * 1000);
-        return taskRepositoy.findByAssigneeUserAndPlannedEndingBetweenOrPlannedStartBetween(appUser, startTime, endTime, startTime, endTime);
+        return taskRepositoy.findByAssigneeUserAndPlannedEndingBetweenAndPlannedStartBetween(appUser, startTime, endTime, startTime, endTime);
     }
 
     @RequestMapping(value = "userTask/day/{day}", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)

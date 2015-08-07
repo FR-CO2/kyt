@@ -28,16 +28,16 @@
                         {{task.name}}
                     </td>
                     <td class="col-md-2">
-                        <input type="number" class="form-control" min="0" max="1" step="0.1" ng-model="tsCtrl.assignation[task.id].timeSpent"/>
+                        <input type="number" class="form-control" min="0" max="1" step="0.1" ng-model="task.timeSpent"/>
                     </td>
                     <td class="col-md-2">
-                        <input type="number" class="form-control" min="0" step="0.1" ng-model="tsCtrl.assignation[task.id].timeRemains"/>
+                        <input type="number" class="form-control" min="0" step="0.1" ng-model="task.timeRemains"/>
                     </td>
                     <td>
                         {{task.estimatedLoad}}
                     </td>
                     <td>
-                        {{task.estimatedLoad- task.timeRemains}}
+                        {{task.timeRemains}}
                     </td>
                 </tr>
                 <tr>

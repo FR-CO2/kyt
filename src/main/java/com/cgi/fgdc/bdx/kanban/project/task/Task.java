@@ -90,11 +90,11 @@ public class Task implements Serializable {
     
     @JsonView(ControllerViews.TaskList.class)
     @Transient
-    private Long timeSpent = 0L;
+    private Float timeSpent = 0F;
     
     @JsonView(ControllerViews.TaskList.class)
     @Transient
-    private Long timeRemains = 0L;
+    private Float timeRemains = 0F;
     
     @JsonIgnore
     @OneToMany(mappedBy = "task")
@@ -267,19 +267,19 @@ public class Task implements Serializable {
         this.allocations = allocations;
     }
     
-    public Long getTimeSpent() {
+    public Float getTimeSpent() {
         return timeSpent;
     }
 
-    public void setTimeSpent(Long timeSpent) {
+    public void setTimeSpent(Float timeSpent) {
         this.timeSpent = timeSpent;
     }
 
-    public Long getTimeRemains() {
+    public Float getTimeRemains() {
         return timeRemains;
     }
 
-    public void setTimeRemains(Long timeRemains) {
+    public void setTimeRemains(Float timeRemains) {
         this.timeRemains = timeRemains;
-    }   
-}
+    }  
+    }
