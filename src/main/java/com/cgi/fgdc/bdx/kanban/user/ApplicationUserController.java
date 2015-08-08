@@ -5,6 +5,8 @@
  */
 package com.cgi.fgdc.bdx.kanban.user;
 
+import com.cgi.fgdc.bdx.kanban.ControllerViews;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
@@ -38,11 +40,13 @@ public class ApplicationUserController {
     private ApplicationUserRepository repository;
 
     @RequestMapping(method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    @JsonView(ControllerViews.UserList.class)
     public Iterable<ApplicationUser> list() {
         return repository.findAll();
     }
 
     @RequestMapping(value = "page", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    @JsonView(ControllerViews.UserList.class)
     public Page<ApplicationUser> page(Pageable p) {
         return repository.findAll(p);
     }
@@ -64,6 +68,7 @@ public class ApplicationUserController {
     }
 
     @RequestMapping(method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    @JsonView(ControllerViews.CreateUser.class)
     public ResponseEntity<ApplicationUser> create(@RequestBody ApplicationUser newUser) {
         return new ResponseEntity<>(repository.save(newUser), HttpStatus.CREATED);
     }

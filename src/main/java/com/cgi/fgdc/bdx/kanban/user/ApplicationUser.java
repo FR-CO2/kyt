@@ -24,17 +24,19 @@ public class ApplicationUser implements Serializable {
 
     @Id
     @GeneratedValue
-    @JsonView(ControllerViews.Task.class)
+    @JsonView(ControllerViews.User.class)
     private Long id;
 
-    @JsonView(ControllerViews.TaskList.class)
+    @JsonView(ControllerViews.User.class)
     private String username;
 
+    @JsonView(ControllerViews.UserList.class)
     private String email;
 
-    @JsonIgnore
+    @JsonView(ControllerViews.CreateUser.class)
     private String password;
 
+    @JsonView(ControllerViews.UserList.class)
     private ApplicationUserRole applicationRole;
 
     public Long getId() {

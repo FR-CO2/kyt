@@ -5,24 +5,38 @@
  */
 package com.cgi.fgdc.bdx.kanban;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 /**
  *
  * @author ben
  */
 public interface ControllerViews {
 
-    public interface ProjectList extends Project{
+    public interface ProjectList extends Project {
     };
 
     public interface Project {
     };
 
-    public interface TaskList extends Project{
+    public interface TaskList extends Project, User {
     };
 
-    public interface Task extends TaskList{
+    public interface Task extends TaskList {
     };
 
     public interface UserTask extends Project, TaskList {
+    };
+
+    public interface User {
+
+    };
+
+    public interface UserList extends User{
+
+    };
+
+    public interface CreateUser extends UserList {
+
     };
 }
