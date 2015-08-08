@@ -1,5 +1,5 @@
 <div class="panel kanban-card">
-    <div class="panel-heading kanban-card__heading center-block" style="background-color: {{task.category.bgcolor}}">
+    <div class="panel-heading kanban-card__heading center-block" style="border-left: 0.5em solid {{task.category.bgcolor}}">
         <div class="row">
             <a ng-click="kanbanCtrl.goToTask(task.id)">#{{task.id}}</a>
             {{task.name}}

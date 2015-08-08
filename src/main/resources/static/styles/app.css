@@ -5,7 +5,7 @@
   clear: both;
 }
 
-/* line 14, ../../../../../../co2themes/sass/_utilities.sass */
+/* line 20, ../../../../../../co2themes/sass/_utilities.sass */
 [ng-click] {
   cursor: pointer;
 }
@@ -85,16 +85,23 @@ input, .form-control {
   font-family: oswald, Helvetica Neue, Helvetica, Arial, sans-serif;
   font-size: 16px;
   background: #FFF;
+  text-shadow: none;
+  text-transform: uppercase;
+  box-shadow: 0px 0.125em 0.125em 0em rgba(0, 0, 0, 0.3);
 }
-/* line 5, ../../../../../../co2themes/sass/bootstrap/_button.sass */
+/* line 8, ../../../../../../co2themes/sass/bootstrap/_button.sass */
+.btn:hover, .fc-button:hover {
+  box-shadow: 0px 0.25em 0.25em 0em rgba(0, 0, 0, 0.3);
+}
+/* line 10, ../../../../../../co2themes/sass/bootstrap/_button.sass */
 .btn-info, .fc-button-info {
   background: #168ACE;
 }
-/* line 7, ../../../../../../co2themes/sass/bootstrap/_button.sass */
+/* line 12, ../../../../../../co2themes/sass/bootstrap/_button.sass */
 .btn-info:hover, .fc-button-info:hover {
-  background: #42AFEE;
+  background: #168ACE;
 }
-/* line 9, ../../../../../../co2themes/sass/bootstrap/_button.sass */
+/* line 14, ../../../../../../co2themes/sass/bootstrap/_button.sass */
 .btn > .glyphicon, .fc-button > .glyphicon {
   margin-right: 0.5em;
 }
@@ -114,30 +121,31 @@ input, .form-control {
   vertical-align: middle;
 }
 
-/* line 16, ../../../../../../co2themes/sass/bootstrap/_navbar.sass */
+/* line 17, ../../../../../../co2themes/sass/bootstrap/_navbar.sass */
 .nav {
   padding: 0 1em;
 }
 
-/* line 19, ../../../../../../co2themes/sass/bootstrap/_navbar.sass */
+/* line 20, ../../../../../../co2themes/sass/bootstrap/_navbar.sass */
 .navbar-default {
+  padding: 1em;
+  border-bottom: 2px solid #0172B4;
   background: #168ACE;
   color: #FFF;
-  border-bottom: 2px solid #0172B4;
   height: auto;
-  padding: 1em;
+  box-shadow: 0px 0.25em 0.25em 0.1em rgba(0, 0, 0, 0.3);
 }
-/* line 25, ../../../../../../co2themes/sass/bootstrap/_navbar.sass */
+/* line 27, ../../../../../../co2themes/sass/bootstrap/_navbar.sass */
 .navbar-default .navbar-header {
   position: relative;
 }
-/* line 27, ../../../../../../co2themes/sass/bootstrap/_navbar.sass */
+/* line 29, ../../../../../../co2themes/sass/bootstrap/_navbar.sass */
 .navbar-default .navbar-brand {
   font-size: 2em;
   font-family: oswald-demi, Helvetica Neue, Helvetica, Arial, sans-serif;
   color: #FFF;
 }
-/* line 31, ../../../../../../co2themes/sass/bootstrap/_navbar.sass */
+/* line 33, ../../../../../../co2themes/sass/bootstrap/_navbar.sass */
 .navbar-default .navbar-text {
   font-size: 1.5em;
   cursor: pointer;
@@ -145,12 +153,13 @@ input, .form-control {
   color: #FFF;
 }
 
-/* line 36, ../../../../../../co2themes/sass/bootstrap/_navbar.sass */
+/* line 39, ../../../../../../co2themes/sass/bootstrap/_navbar.sass */
 .navbar-default .navbar-nav > li > a, .navbar-default a, .open > a, .navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:focus {
   color: #FFF;
   background: none;
+  text-shadow: none;
 }
-/* line 39, ../../../../../../co2themes/sass/bootstrap/_navbar.sass */
+/* line 43, ../../../../../../co2themes/sass/bootstrap/_navbar.sass */
 .navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus, .navbar-default a:hover, .navbar-default a:focus, .open > a:hover, .open > a:focus, .navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:focus, .navbar-default .navbar-nav > .open > a:hover:hover, .navbar-default .navbar-nav > .open > a:hover:focus, .navbar-default .navbar-nav > .open > a:focus:hover, .navbar-default .navbar-nav > .open > a:focus:focus {
   color: #D4EFFF;
 }
@@ -212,8 +221,9 @@ h1, h2, h3, h4, h5, h6 {
   flex-grow: 1;
   order: 1;
   transition: ease 1s all;
+  box-shadow: -1em 1em 1em -0.5em #000 inset;
 }
-/* line 13, ../../../../../../co2themes/sass/theme/_off-canvas.sass */
+/* line 14, ../../../../../../co2themes/sass/theme/_off-canvas.sass */
 .offcanvas__content {
   width: 80%;
   float: left;
@@ -222,7 +232,7 @@ h1, h2, h3, h4, h5, h6 {
   order: 3;
   min-height: 600px;
 }
-/* line 20, ../../../../../../co2themes/sass/theme/_off-canvas.sass */
+/* line 21, ../../../../../../co2themes/sass/theme/_off-canvas.sass */
 .offcanvas__label {
   font-size: 2em;
   color: #0172B4;
@@ -230,19 +240,34 @@ h1, h2, h3, h4, h5, h6 {
   font-family: oswald, Helvetica Neue, Helvetica, Arial, sans-serif;
   text-transform: uppercase;
 }
-/* line 26, ../../../../../../co2themes/sass/theme/_off-canvas.sass */
+/* line 27, ../../../../../../co2themes/sass/theme/_off-canvas.sass */
 .offcanvas__checkbox {
   display: none;
 }
-/* line 29, ../../../../../../co2themes/sass/theme/_off-canvas.sass */
+/* line 30, ../../../../../../co2themes/sass/theme/_off-canvas.sass */
 .offcanvas__checkbox:checked ~ .offcanvas__menu {
   transform: translate3d(-20%, 0, 0);
   width: 0;
+  padding: 0;
   overflow: hidden;
 }
-/* line 33, ../../../../../../co2themes/sass/theme/_off-canvas.sass */
+/* line 35, ../../../../../../co2themes/sass/theme/_off-canvas.sass */
 .offcanvas__checkbox:checked ~ .offcanvas__content {
   width: 100%;
+}
+
+/* line 38, ../../../../../../co2themes/sass/theme/_off-canvas.sass */
+.nav--offcanvas {
+  margin: 2em 1em;
+  color: #FFF;
+}
+/* line 41, ../../../../../../co2themes/sass/theme/_off-canvas.sass */
+.nav--offcanvas > li > a {
+  color: #FFF;
+}
+/* line 43, ../../../../../../co2themes/sass/theme/_off-canvas.sass */
+.nav--offcanvas > li > a:hover, .nav--offcanvas > li > a:focus {
+  background: #000;
 }
 
 /* line 2, ../../../../../../co2themes/sass/theme/_kanban.sass */
@@ -254,59 +279,69 @@ h1, h2, h3, h4, h5, h6 {
 /* line 6, ../../../../../../co2themes/sass/theme/_kanban.sass */
 .kanban__column--title {
   text-align: center;
+  vertical-align: middle !important;
+  font-family: oswald, Helvetica Neue, Helvetica, Arial, sans-serif;
 }
 
-/* line 8, ../../../../../../co2themes/sass/theme/_kanban.sass */
+/* line 11, ../../../../../../co2themes/sass/theme/_kanban.sass */
 .as-sortable-placeholder {
   background: #D4EFFF;
   border: 2px dashed #0172B4;
 }
 
-/* line 12, ../../../../../../co2themes/sass/theme/_kanban.sass */
+/* line 15, ../../../../../../co2themes/sass/theme/_kanban.sass */
 td.column ul {
   min-height: 100px;
 }
 
-/* line 15, ../../../../../../co2themes/sass/theme/_kanban.sass */
+/* line 18, ../../../../../../co2themes/sass/theme/_kanban.sass */
 td.column ul .panel-heading {
   padding-left: 5px;
   padding-right: 5px;
 }
 
-/* line 19, ../../../../../../co2themes/sass/theme/_kanban.sass */
+/* line 22, ../../../../../../co2themes/sass/theme/_kanban.sass */
 td.column ul .panel-heading .row {
   margin-left: 0px;
   margin-right: 0px;
 }
 
-/* line 23, ../../../../../../co2themes/sass/theme/_kanban.sass */
+/* line 26, ../../../../../../co2themes/sass/theme/_kanban.sass */
 .kanban-card {
   border: none;
+  box-shadow: 0px 0.125em 0.125em 0em rgba(0, 0, 0, 0.3);
 }
-/* line 25, ../../../../../../co2themes/sass/theme/_kanban.sass */
+/* line 29, ../../../../../../co2themes/sass/theme/_kanban.sass */
 .kanban-card__heading {
   font-size: 16px;
   line-height: 1.2em;
+  border-bottom: none;
+  border-top: none;
 }
-/* line 27, ../../../../../../co2themes/sass/theme/_kanban.sass */
+/* line 33, ../../../../../../co2themes/sass/theme/_kanban.sass */
 .kanban-card .badge {
   background-color: transparent;
 }
 
-/* line 21, ../../../../../../co2themes/sass/app.sass */
+/* line 20, ../../../../../../co2themes/sass/app.sass */
+body {
+  font-weight: 300;
+}
+
+/* line 23, ../../../../../../co2themes/sass/app.sass */
 #board {
   height: 100%;
   width: 100%;
   display: table;
 }
 
-/* line 26, ../../../../../../co2themes/sass/app.sass */
+/* line 28, ../../../../../../co2themes/sass/app.sass */
 .app__content {
   padding: 1em 0;
   margin: 0;
 }
 
-/* line 30, ../../../../../../co2themes/sass/app.sass */
+/* line 32, ../../../../../../co2themes/sass/app.sass */
 .ui-autocomplete {
   z-index: 1051;
 }
