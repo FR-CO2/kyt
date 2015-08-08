@@ -54,11 +54,7 @@ public class ApplicationUserController {
         ObjectWriter writer = mapper.writer(schema.withLineSeparator("\n"));
         File exportUsers = new File("export-users.csv");
         Iterable<ApplicationUser> users = repository.findAll();
-        try {
-            writer.writeValue(exportUsers,users );
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        writer.writeValue(exportUsers, users);
         return new FileSystemResource(exportUsers);
     }
 

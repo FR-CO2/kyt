@@ -16,11 +16,17 @@ import com.cgi.fgdc.bdx.kanban.project.security.Member;
 import com.cgi.fgdc.bdx.kanban.project.security.MemberRepository;
 import com.cgi.fgdc.bdx.kanban.project.swimlane.Swimlane;
 import com.cgi.fgdc.bdx.kanban.project.swimlane.SwimlaneRepository;
-import com.cgi.fgdc.bdx.kanban.project.task.allocation.AllocationRepository;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.dataformat.csv.CsvMapper;
+import com.fasterxml.jackson.dataformat.csv.CsvSchema;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.Date;
+import javax.servlet.http.Part;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -29,6 +35,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -56,7 +63,7 @@ public class TaskController {
 
     @Autowired
     private MemberRepository memberRepository;
-    
+
     @RequestMapping(value = "page", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     @JsonView(ControllerViews.TaskList.class)
     public Page<Task> projectPage(@PathVariable("projectId") Long projectId, Pageable p) {
@@ -76,6 +83,24 @@ public class TaskController {
     public Iterable<Task> projectList(@PathVariable("projectId") Long projectId) {
         Project project = projectRepository.findOne(projectId);
         return repository.findByProject(project);
+    }
+
+    @RequestMapping(value = "export", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    @JsonView(ControllerViews.TaskList.class)
+    public FileSystemResource handleFileDownload(@PathVariable("projectId") Long projectId) throws IOException {
+        Project project = projectRepository.findOne(projectId);
+        CsvMapper mapper = new CsvMapper();
+        CsvSchema schema = mapper.schemaFor(Task.class);
+        ObjectWriter writer = mapper.writer(schema.withLineSeparator("\n"));
+        File exportTasks = new File("export-tasks.csv");
+        Iterable<Task> tasks = repository.findByProject(project);
+        writer.writeValue(exportTasks, tasks);
+        return new FileSystemResource(exportTasks);
+    }
+
+    @RequestMapping(value = "import", method = RequestMethod.POST, consumes = org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity handleFileUpload(@PathVariable("projectId") Long projectId, @RequestParam(value = "importfile", required = false) Part file) throws IOException {
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
@@ -184,8 +209,6 @@ public class TaskController {
         result.setPlannedStart(form.getPlannedStart());
         result.setPlannedEnding(form.getPlannedEnding());
         result.setEstimatedLoad(form.getEstimatedLoad());
-        result.setTimeRemains(form.getTimeRemains());
-        result.setTimeSpent(form.getTimeSpent());
         return result;
     }
 }

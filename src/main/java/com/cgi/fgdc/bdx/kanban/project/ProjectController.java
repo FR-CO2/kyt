@@ -44,18 +44,14 @@ public class ProjectController {
         return repository.findAll(p);
     }
 
-@RequestMapping(value = "export", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    @RequestMapping(value = "export", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public FileSystemResource handleFileDownload() throws IOException {
         CsvMapper mapper = new CsvMapper();
         CsvSchema schema = mapper.schemaFor(Project.class);
         ObjectWriter writer = mapper.writer(schema.withLineSeparator("\n"));
         File exportProjects = new File("export-projects.csv");
         Iterable<Project> users = repository.findAll();
-        try {
-            writer.writeValue(exportProjects,users );
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        writer.writeValue(exportProjects, users);
         return new FileSystemResource(exportProjects);
     }
 

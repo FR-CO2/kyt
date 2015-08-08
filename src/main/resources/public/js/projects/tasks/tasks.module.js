@@ -1,5 +1,25 @@
 (function () {
     "use strict";
+
+    function taskImportController($stateParams, $modalInstance, $http) {
+        var vm = this;
+        vm.title = "Importer des tâches";
+        vm.submit = function () {
+            var formData = new FormData();
+            formData.append("importfile", vm.fileInput);
+            $http({
+                method: 'POST',
+                url: '/api/project/' + $stateParams.id + '/task/import',
+                headers: {'Content-Type': undefined},
+                data: formData
+            }).success(function () {
+                $modalInstance.close();
+            }).error(function (e) {
+                vm.form = {error: e};
+            });
+        };
+    }
+
     function editTaskController($stateParams, taskResourceSrv, categoryResource,
             memberResource, stateResource, swimlaneResource) {
         var vm = this;
@@ -28,7 +48,7 @@
         };
     }
 
-    function taskListController($state, $stateParams, $modal, taskResourceSrv, taskStateResource, swimlaneResource, categoryResource, memberResource) {
+    function taskListController($state, $stateParams, $http, $modal, taskResourceSrv, taskStateResource, swimlaneResource, categoryResource, memberResource) {
         var vm = this;
         vm.nbElt = 10;
         vm.numPage = 1;
@@ -103,6 +123,30 @@
                 vm.numPage = result.number + 1;
             });
         };
+        vm.export = function () {
+            // Creating a Blob with our data for download
+            // this will parse the URL in ng-href such as: blob:http...
+            $http({method: 'GET',
+                url: '/api/project/'+$stateParams.id+'/task/export',
+                headers: {'Content-Type': undefined}})
+                    .then(function (response) {
+                        var blob = new Blob([response.data], {type: 'text/csv'});
+                        saveAs(blob, "export-tasks.csv");
+                    });
+        };
+
+        vm.import = function () {
+            var modalInstance = $modal.open({
+                animation: true,
+                templateUrl: "templates/common/import.html",
+                controller: "taskImportController",
+                controllerAs: "import",
+                size: "xs"
+            });
+            modalInstance.result.then(function () {
+                vm.users = taskResourceSrv.page(vm.paging);
+            });
+        };
     }
 
     function taskResource($resource) {
@@ -146,13 +190,15 @@
 
     taskConfig.$inject = ["$stateProvider"];
     newTaskController.$inject = ["$stateParams", "$modalInstance", "taskResource", "categoryResource", "memberResource"];
-    taskListController.$inject = ["$state", "$stateParams", "$modal", "taskResource", "taskStateResource", "swimlaneResource", "categoryResource", "memberResource"];
+    taskListController.$inject = ["$state", "$stateParams", "$http", "$modal", "taskResource", "taskStateResource", "swimlaneResource", "categoryResource", "memberResource"];
     editTaskController.$inject = ["$stateParams", "taskResource", "categoryResource", "memberResource", "taskStateResource", "swimlaneResource"];
+    taskImportController.$inject = ["$stateParams", "$modalInstance", "$http"];
     taskResource.$inject = ["$resource"];
     angular.module("kanban.project.task", [])
             .config(taskConfig)
             .controller("newTaskController", newTaskController)
             .controller("taskListController", taskListController)
             .controller("editTaskController", editTaskController)
+            .controller("taskImportController", taskImportController)
             .service("taskResource", taskResource);
 })();
