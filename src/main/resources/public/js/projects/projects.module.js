@@ -30,6 +30,26 @@
         });
     }
 
+
+    function projectImportController($modalInstance, $http) {
+        var vm = this;
+        vm.title = "Importer des projets";
+        vm.submit = function () {
+            var formData = new FormData();
+            formData.append("importfile", vm.fileInput);
+            $http({
+                method: 'POST',
+                url: '/api/project/import',
+                headers: {'Content-Type': undefined},
+                data: formData
+            }).success(function () {
+                $modalInstance.close();
+            }).error(function (e) {
+                vm.form = {error: e};
+            });
+        };
+    }
+
     function projectController($stateParams, projectResourceSrv) {
         var vm = this;
         vm.project = projectResourceSrv.get({id: $stateParams.id});
@@ -74,7 +94,7 @@
         vm.goToTask = function (taskId) {
             $state.transitionTo("app.project-detail.task", {id: $stateParams.id, taskId: taskId});
         };
-        vm.saveTask = function(task) {
+        vm.saveTask = function (task) {
             if (task.category) {
                 task.categoryId = task.category.id;
             }
@@ -95,7 +115,7 @@
         };
     }
 
-    function projectListController($state, $modal, projectResourceSrv) {
+    function projectListController($state, $modal, $http, projectResourceSrv) {
         var vm = this;
         vm.projects = projectResourceSrv.query();
         vm.add = function () {
@@ -117,6 +137,30 @@
         };
         vm.edit = function (projectId) {
             $state.transitionTo("app.project-detail.kanban", {id: projectId});
+        };
+        vm.export = function () {
+            // Creating a Blob with our data for download
+            // this will parse the URL in ng-href such as: blob:http...
+            $http({method: 'GET',
+                url: '/api/project/export',
+                headers: {'Content-Type': undefined}})
+                    .then(function (response) {
+                        var blob = new Blob([response.data], {type: 'text/csv'});
+                        saveAs(blob, "export-projects.csv");
+                    });
+        };
+
+        vm.import = function () {
+            var modalInstance = $modal.open({
+                animation: true,
+                templateUrl: "templates/common/import.html",
+                controller: "projectImportController",
+                controllerAs: "import",
+                size: "xs"
+            });
+            modalInstance.result.then(function () {
+                vm.users = projectResourceSrv.page(vm.paging);
+            });
         };
     }
 
@@ -150,12 +194,13 @@
     }
 
     projectConfig.$inject = ["$stateProvider"];
-    projectListController.$inject = ["$state", "$modal", "projectResource"];
+    projectListController.$inject = ["$state", "$modal", "$http", "projectResource"];
     projectController.$inject = ["$stateParams", "projectResource"];
     kanbanController.$inject = ["$state", "$stateParams", "$modal", "taskResource",
         "taskStateResource", "swimlaneResource",
         "categoryResource", "memberResource"];
     newProjectController.$inject = ["$modalInstance", "projectResource"];
+    projectImportController.$inject = ["$modalInstance", "$http"];
     projectResource.$inject = ["$resource"];
 
 
@@ -165,5 +210,6 @@
             .controller("projectController", projectController)
             .controller("kanbanController", kanbanController)
             .controller("newProjectController", newProjectController)
+            .controller("projectImportController", projectImportController)
             .service("projectResource", projectResource);
 })();
