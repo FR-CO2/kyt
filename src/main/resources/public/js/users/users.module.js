@@ -12,9 +12,9 @@
                 url: '/api/user/import',
                 headers: {'Content-Type': undefined},
                 data: formData
-            }).success(function() {
+            }).success(function () {
                 $modalInstance.close();
-            }).error(function(e) {
+            }).error(function (e) {
                 vm.form = {error: e};
             });
         };
@@ -40,7 +40,7 @@
         return $resource("/api/role");
     }
 
-    function userListController($modal, userResourceSrv) {
+    function userListController($modal, $window, $http, userResourceSrv) {
         var vm = this;
         vm.nbElt = 10;
         vm.numPage = 1;
@@ -80,8 +80,17 @@
             });
         };
         vm.export = function () {
-            window.open("api/user/export", '_blank', '');
+            // Creating a Blob with our data for download
+            // this will parse the URL in ng-href such as: blob:http...
+            $http({method: 'GET',
+                url: '/api/user/export',
+                headers: {'Content-Type': undefined}})
+                    .then(function(response) {
+                        var blob = new Blob([response.data], {type: 'text/csv'});
+                        saveAs(blob, "export.csv");
+            })
         };
+
         vm.import = function () {
             var modalInstance = $modal.open({
                 animation: true,
@@ -152,7 +161,7 @@
 
     userConfig.$inject = ["$stateProvider"];
     userResource.$inject = ["$resource"];
-    userListController.$inject = ["$modal", "userResource"];
+    userListController.$inject = ["$modal", "$window", "$http", "userResource"];
     userImportController.$inject = ["$modalInstance", "$http"];
     userAddController.$inject = ["$modalInstance", "userResource", "applicationRoleResource"];
     applicationRoleResource.$inject = ["$resource"];
