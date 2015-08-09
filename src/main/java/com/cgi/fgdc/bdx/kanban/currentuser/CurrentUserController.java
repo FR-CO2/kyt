@@ -42,7 +42,7 @@ public class CurrentUserController {
 
     @Autowired
     private ProjectRepository projectRepositoy;
-
+    
     @RequestMapping(value = "userProfile", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     @JsonView(ControllerViews.User.class)
     public ApplicationUser getCurrentUser(@AuthenticationPrincipal Principal user) {

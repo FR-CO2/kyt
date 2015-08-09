@@ -5,9 +5,8 @@
  */
 package com.cgi.fgdc.bdx.kanban.project.task.allocation;
 
-import com.cgi.fgdc.bdx.kanban.project.Project;
-import com.cgi.fgdc.bdx.kanban.project.swimlane.Swimlane;
-import java.sql.Timestamp;
+import com.cgi.fgdc.bdx.kanban.project.security.Member;
+import java.util.Date;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
@@ -17,4 +16,9 @@ import org.springframework.data.repository.PagingAndSortingRepository;
  */
 public interface AllocationRepository extends PagingAndSortingRepository<Allocation, Long> {
   
+    @Query(value = "SELECT MAX(a.id) + 1 FROM allocation a where a.project_id = ?1", nativeQuery = true)
+    Long getProjectMaxPosition(Long projectId);
+    
+    @Query(value = "select a from Allocation a WHERE a.member = ?1")
+    Iterable<Allocation> getListAllocationBeetweenPlannedStartAndPlannedEnding(Member member);
 }
