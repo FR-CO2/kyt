@@ -5,6 +5,7 @@
  */
 package com.cgi.fgdc.bdx.kanban.security;
 
+import com.cgi.fgdc.bdx.kanban.user.ApplicationUserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -44,7 +45,9 @@ public class OAuthServerConfiguration {
 
         @Override
         public void configure(HttpSecurity http) throws Exception {
-            http.authorizeRequests().antMatchers("/api/**").authenticated();
+            http.authorizeRequests()
+                    .antMatchers("/api/user/**").hasAuthority(ApplicationUserRole.ADMIN.name())
+                    .antMatchers("/api/**").authenticated();
         }
 
     }

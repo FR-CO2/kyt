@@ -74,11 +74,13 @@ public class ApplicationUserController {
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    @JsonView(ControllerViews.User.class)
     public ResponseEntity<ApplicationUser> get(@PathVariable("id") Long userId) {
         return new ResponseEntity<>(repository.findOne(userId), HttpStatus.OK);
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    @JsonView(ControllerViews.User.class)
     public ResponseEntity delete(@PathVariable("id") Long userId) {
         repository.delete(userId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
