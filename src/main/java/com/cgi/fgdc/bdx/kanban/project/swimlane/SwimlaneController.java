@@ -12,6 +12,7 @@ import com.cgi.fgdc.bdx.kanban.project.security.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping(value = "/api/project/{projectId}/swimlane")
+@PreAuthorize("@projectAccessExpression.hasMemberAccess(#projectId, principal.username)")
 public class SwimlaneController {
 
     @Autowired
@@ -42,12 +44,14 @@ public class SwimlaneController {
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("@projectAccessExpression.hasManagerAccess(#projectId, principal.username)")
     public ResponseEntity delete(@PathVariable("id") Long id) {
         repository.delete(id);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
     @RequestMapping(method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("@projectAccessExpression.hasManagerAccess(#projectId, principal.username)")
     public ResponseEntity<Swimlane> create(@PathVariable("projectId") Long projectId, @RequestBody SwimlaneForm swimlane) {
         Project project = projectRepository.findOne(projectId);
         Swimlane newLane = new Swimlane();
@@ -66,6 +70,7 @@ public class SwimlaneController {
     }
 
     @RequestMapping(value = "{swimlaneId}/position/{newPosition}", method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("@projectAccessExpression.hasManagerAccess(#projectId, principal.username)")
     public ResponseEntity updatePosition(@PathVariable("projectId") Long projectId, @PathVariable("swimlaneId") Long swimlaneId, @PathVariable("newPosition") Long newPosition) {
         Long position = newPosition;
         Project project = projectRepository.findOne(projectId);
@@ -91,6 +96,7 @@ public class SwimlaneController {
     }
     
     @RequestMapping(value = "{swimlaneId}/responsable/{newResponsable}", method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("@projectAccessExpression.hasManagerAccess(#projectId, principal.username)")
     public ResponseEntity updateResponsable(@PathVariable("projectId") Long projectId, @PathVariable("swimlaneId") Long swimlaneId, @PathVariable("newResponsable") Long newResponsable) {
         Swimlane swimlane = repository.findOne(swimlaneId);
         Member responsable = memberRepository.findOne(newResponsable);

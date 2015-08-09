@@ -31,6 +31,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,6 +45,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping(value = "/api/project/{projectId}/task")
+@PreAuthorize("@projectAccessExpression.hasMemberAccess(#projectId, principal.username)")
 public class TaskController {
 
     @Autowired
@@ -99,6 +101,7 @@ public class TaskController {
     }
 
     @RequestMapping(value = "import", method = RequestMethod.POST, consumes = org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("@projectAccessExpression.hasContributorAccess(#projectId, principal.username)")
     public ResponseEntity handleFileUpload(@PathVariable("projectId") Long projectId, @RequestParam(value = "importfile", required = false) Part file) throws IOException {
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -111,12 +114,14 @@ public class TaskController {
 
     @RequestMapping(method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     @JsonView(ControllerViews.Task.class)
+    @PreAuthorize("@projectAccessExpression.hasContributorAccess(#projectId, principal.username)")
     public ResponseEntity<Task> create(@PathVariable("projectId") Long projectId, @RequestBody TaskForm newTask) {
         Task result = repository.save(convertTaskForm(projectId, newTask));
         return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("@projectAccessExpression.hasContributorAccess(#projectId, principal.username)")
     public ResponseEntity delete(@PathVariable("id") Long id) {
         repository.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
