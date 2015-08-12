@@ -7,7 +7,7 @@
                     Mes projets
                 </h2>
 
-                <div class="panel-heading-action">
+                <div class="panel-heading-action" ng-if="$session.user.applicationRole === 'ADMIN'">
                     <a ui-sref="app.projects" title="Gérer les projets">
                         <span class="glyphicon glyphicon-wrench"></span>
                         <span class="hide">Gérer les projets</span>

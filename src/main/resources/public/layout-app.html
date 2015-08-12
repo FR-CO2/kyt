@@ -17,8 +17,11 @@
                 <span class="caret"></span>
             </a>
             <ul class="dropdown-menu" aria-labelledby="projectsDropdown">
-                <li>
+                <li ng-if="$session.user.applicationRole === 'ADMIN'">
                     <a ui-sref="app.projects">Tous les projets</a>
+                </li>
+                <li ng-if="$session.user.applicationRole !== 'ADMIN' && homeCtrl.projects.content.length === 0">
+                    <span class="no-project">Aucun projet</span>
                 </li>
                 <li ng-repeat="project in homeCtrl.projects.content">
                     <a ng-click="homeCtrl.goProject(project.id)">
@@ -41,7 +44,7 @@
                     <span>Profil</span>
                 </a>
             </li>
-            <li>
+            <li ng-if="$session.user.applicationRole === 'ADMIN'">
                 <a ui-sref="app.users">
                     <span class="glyphicon glyphicon-user"></span>
                     <span>Administrer utilisateurs</span>
