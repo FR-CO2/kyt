@@ -12,6 +12,7 @@ import com.cgi.fgdc.bdx.kanban.project.swimlane.Swimlane;
 import com.cgi.fgdc.bdx.kanban.project.task.Task;
 import com.cgi.fgdc.bdx.kanban.project.task.allocation.Allocation;
 import com.cgi.fgdc.bdx.kanban.user.ApplicationUser;
+import com.cgi.fgdc.bdx.kanban.user.ApplicationUserRole;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import java.io.Serializable;
@@ -141,4 +142,7 @@ public class Member implements Serializable {
         this.allocations = allocations;
     }
 
+    public boolean hasRole(ProjectRole role) {
+        return this.getProjectRole().equals(role);
+    }
 }

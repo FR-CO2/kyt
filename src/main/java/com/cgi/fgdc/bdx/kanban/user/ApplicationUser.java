@@ -6,6 +6,7 @@
 package com.cgi.fgdc.bdx.kanban.user;
 
 import com.cgi.fgdc.bdx.kanban.ControllerViews;
+import com.cgi.fgdc.bdx.kanban.project.security.ProjectRole;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import java.io.Serializable;
@@ -79,4 +80,7 @@ public class ApplicationUser implements Serializable {
         this.password = password;
     }
 
+     public boolean hasRole(ApplicationUserRole role) {
+        return this.getApplicationRole().equals(role);
+    }
 }
