@@ -5,8 +5,6 @@
  */
 package com.cgi.fgdc.bdx.kanban;
 
-import com.fasterxml.jackson.annotation.JsonView;
-
 /**
  *
  * @author ben

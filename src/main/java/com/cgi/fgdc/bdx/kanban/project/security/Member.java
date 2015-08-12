@@ -5,16 +5,15 @@
  */
 package com.cgi.fgdc.bdx.kanban.project.security;
 
-import com.cgi.fgdc.bdx.kanban.ControllerViews;
 import com.cgi.fgdc.bdx.kanban.project.Project;
 import com.cgi.fgdc.bdx.kanban.project.group.ProjectGroup;
 import com.cgi.fgdc.bdx.kanban.project.swimlane.Swimlane;
 import com.cgi.fgdc.bdx.kanban.project.task.Task;
 import com.cgi.fgdc.bdx.kanban.project.task.allocation.Allocation;
 import com.cgi.fgdc.bdx.kanban.user.ApplicationUser;
-import com.cgi.fgdc.bdx.kanban.user.ApplicationUserRole;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -31,6 +30,7 @@ import javax.persistence.Transient;
  * @author ben
  */
 @Entity
+@JsonIdentityInfo(generator=ObjectIdGenerators.UUIDGenerator.class, property = "@uuid")
 public class Member implements Serializable {
 
 
@@ -38,7 +38,6 @@ public class Member implements Serializable {
 
     @Id
     @GeneratedValue
-    @JsonView(ControllerViews.Task.class)
     private Long id;
 
     @ManyToOne(cascade = CascadeType.DETACH)
@@ -46,7 +45,6 @@ public class Member implements Serializable {
     private Project project;
 
     @ManyToOne(cascade = CascadeType.DETACH)
-    @JsonView(ControllerViews.TaskList.class)
     private ApplicationUser user;
 
     @OneToMany(mappedBy = "member")

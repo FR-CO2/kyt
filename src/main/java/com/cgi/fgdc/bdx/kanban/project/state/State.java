@@ -8,8 +8,10 @@ package com.cgi.fgdc.bdx.kanban.project.state;
 import com.cgi.fgdc.bdx.kanban.ControllerViews;
 import com.cgi.fgdc.bdx.kanban.project.Project;
 import com.cgi.fgdc.bdx.kanban.project.task.Task;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +29,7 @@ import javax.persistence.Transient;
  * @author ben
  */
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.UUIDGenerator.class, property = "@uuid")
 public class State implements Serializable {
 
     private static final long serialVersionUID = -1395350709593408519L;
@@ -78,7 +81,7 @@ public class State implements Serializable {
     @JsonIgnore
     private Project project;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy="state")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "state")
     @JsonIgnore
     private List<Task> tasks;
 

@@ -6,19 +6,26 @@
 package com.cgi.fgdc.bdx.kanban.user;
 
 import com.cgi.fgdc.bdx.kanban.ControllerViews;
-import com.cgi.fgdc.bdx.kanban.project.security.ProjectRole;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.cgi.fgdc.bdx.kanban.project.security.Member;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 /**
  *
  * @author ben
  */
 @Entity
+@JsonIdentityInfo(generator=ObjectIdGenerators.UUIDGenerator.class, property = "@uuid")
 public class ApplicationUser implements Serializable {
 
     private static final long serialVersionUID = 1590255859243784563L;
@@ -39,6 +46,11 @@ public class ApplicationUser implements Serializable {
 
     @JsonView(ControllerViews.UserList.class)
     private ApplicationUserRole applicationRole;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonView(ControllerViews.User.class)
+    @JsonManagedReference
+    private List<Member> members = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -80,7 +92,16 @@ public class ApplicationUser implements Serializable {
         this.password = password;
     }
 
-     public boolean hasRole(ApplicationUserRole role) {
+    public boolean hasRole(ApplicationUserRole role) {
         return this.getApplicationRole().equals(role);
     }
+
+    public List<Member> getMembers() {
+        return members;
+    }
+
+    public void setMembers(List<Member> members) {
+        this.members = members;
+    }
+
 }
