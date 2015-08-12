@@ -1,20 +1,22 @@
 <div class="panel kanban-card">
-    <div class="panel-heading kanban-card__heading center-block" style="border-left: 0.5em solid {{task.category.bgcolor}}">
-        <div class="row">
-            <a ng-click="kanbanCtrl.goToTask(task.id)">#{{task.id}}</a>
-            {{task.name}}
-        </div>
-        <div class="row">
+    <div class="panel-heading kanban-card__task center-block" style="border-left: 0.5em solid {{task.category.bgcolor}}">
+        <header class="kanban-card__heading">
+            <a ng-click="kanbanCtrl.goToTask(task.id)" title="Accéder au détail de la tâche">
+                <span>#{{task.id}}</span>
+                {{task.name}}
+            </a>
+        </header>
+        <div class="kanban-card__action">
             <span>
-                <a href="#" editable-select="task.assignee" onshow="kanbanCtrl.loadMember()" onaftersave="kanbanCtrl.saveTask(task)" e-ng-options="member as member.user.username for member in kanbanCtrl.members">
+                <a href="#" editable-select="task.assignee" onshow="kanbanCtrl.loadMember()" onaftersave="kanbanCtrl.saveTask(task)" e-ng-options="member as member.user.username for member in kanbanCtrl.members" title="Assigné à">
+                    <span class="glyphicon glyphicon-user"></span>
                     <span ng-if="!task.assignee">
                         -
                     </span>
                     {{task.assignee.user.username}}
                 </a>
             </span>
-        </div> 
-        <div class="row">
+
             <span class="badge pull-right">
                 <a href="#" editable-select="task.category" onshow="kanbanCtrl.loadCategory()" onaftersave="kanbanCtrl.saveTask(task)" e-ng-options="category as category.name for category in kanbanCtrl.categories">
                     <span ng-if="!task.category">
@@ -27,7 +29,7 @@
         </div>
     </div>
 
-    <div class="panel-footer text-right" ng-if="task.plannedEnding">
+    <div class="panel-footer kanban-card__date text-right" ng-if="task.plannedEnding">
         <span class="glyphicon glyphicon-calendar"></span> {{task.plannedEnding | date:'dd/MM/yyyy'}}
     </div>
 </div>
