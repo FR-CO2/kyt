@@ -3,12 +3,14 @@
 
     <div class="row">
         <div class="col-md-4 col-md-offset-8">
-            <button class="btn btn-info btn-sm" ng-click="taskCtrl.add()"><span class="glyphicon glyphicon-plus-sign"></span>Nouvelle tâche</button>
+            <button ng-if="projectCtrl.hasEditRights" class="btn btn-info btn-sm" ng-click="taskCtrl.add()"><span class="glyphicon glyphicon-plus-sign"></span>Nouvelle tâche</button>
+        </div>
+        <div class="col-md-2 col-md-offset-10">
             <button class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                 Import/Export <span class="caret"></span>
             </button>
             <ul class="dropdown-menu pull-right">
-                <li><a ng-click="taskCtrl.import()"><span class="glyphicon glyphicon-import"></span>Import</a></li>
+                <li ng-if="projectCtrl.hasEditRights"><a ng-click="taskCtrl.import()"><span class="glyphicon glyphicon-import"></span>Import</a></li>
                 <li><a ng-click="taskCtrl.export()"><span class="glyphicon glyphicon-export"></span>Export</a></li>
             </ul>
         </div>
@@ -34,21 +36,29 @@
                     <td>
                         {{task.name}}
                     </td>
-                    <td>
+                    <td ng-if="projectCtrl.hasEditRights" >
                         <a href="#" editable-select="task.state" onshow="taskCtrl.loadState()" onaftersave="taskCtrl.changeState(task)" e-ng-options="state as state.name for state in taskCtrl.states">
                             {{task.state.name}}
                         </a>
                     </td>
-                    <td>
+                    <td ng-if="!projectCtrl.hasEditRights" >
+                        {{task.state.name}}
+                    </td>
+                    <td ng-if="projectCtrl.hasEditRights" >
                         <a href="#" editable-select="task.swimlane" onshow="taskCtrl.loadSwimlane()" onaftersave="taskCtrl.changeSwimlane(task)" e-ng-options="swimlane as swimlane.name for swimlane in taskCtrl.swimlanes">
                             <span ng-if="!task.swimlane">
                                 -
                             </span>
                             {{task.swimlane.name}}
                         </a>
-
                     </td>
-                    <td>
+                    <td ng-if="!projectCtrl.hasEditRights" >
+                        <span ng-if="!task.swimlane">
+                            -
+                        </span>
+                        {{task.swimlane.name}}
+                    </td>
+                    <td ng-if="projectCtrl.hasEditRights" >
                         <a href="#" editable-select="task.category" onshow="taskCtrl.loadCategory()" onaftersave="taskCtrl.saveTask(task)" e-ng-options="category as category.name for category in taskCtrl.categories">
                             <span ng-if="!task.category">
                                 -
@@ -56,13 +66,25 @@
                             {{task.category.name}}
                         </a>
                     </td>
-                    <td>
+                    <td ng-if="!projectCtrl.hasEditRights" >
+                        <span ng-if="!task.category">
+                            -
+                        </span>
+                        {{task.category.name}}
+                    </td>
+                    <td ng-if="projectCtrl.hasEditRights" >
                         <a href="#" editable-select="task.assignee" onshow="taskCtrl.loadMember()" onaftersave="taskCtrl.saveTask(task)" e-ng-options="member as member.user.username for member in taskCtrl.members">
                             <span ng-if="!task.assignee">
                                 -
                             </span>
                             {{task.assignee.user.username}}
                         </a>
+                    </td>
+                    <td ng-if="!projectCtrl.hasEditRights" >
+                        <span ng-if="!task.assignee">
+                            -
+                        </span>
+                        {{task.assignee.user.username}}
                     </td>
                     <td>
                         {{task.plannedStart| date:'dd/MM/yyyy'}}
@@ -73,11 +95,11 @@
                     </td>
                     <td>{{task.estimatedLoad}}</td>
                     <td>-</td>
-                    <td>
+                    <td ng-if="projectCtrl.hasEditRights" >
                         <a ng-click="taskCtrl.edit(task.id)" title="edit">
                             <span class="glyphicon glyphicon-edit"></span>
                         </a>
-                        <a ng-if="$session.user.applicationRole === 'ADMIN'" ng-click="taskCtrl.delete(task.id)" title="delete">
+                        <a ng-click="taskCtrl.delete(task.id)" title="delete">
                             <span class="glyphicon glyphicon-trash"></span>
                         </a>
                     </td>

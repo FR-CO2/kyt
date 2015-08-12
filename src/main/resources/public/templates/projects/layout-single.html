@@ -7,7 +7,7 @@
             <li><a ui-sref="app.project-detail.tasks">Tâches</a></li>
             <li><a ng-click="">Calendrier</a></li>
             <li><a ui-sref="app.project-detail.report.state">Rapports</a></li>
-            <li><a ui-sref="app.project-detail.configure.state">Configurer</a></li>
+            <li ng-if="projectCtrl.hasAdminRights"><a ui-sref="app.project-detail.configure.state">Configurer</a></li>
         </ul>
     </div>
     <div class="offcanvas__content">

@@ -2,3 +2,7 @@
     padding-left : 10px;
     color : #000;
 }
+
+.kanban-card .badge{
+    color : #000;
+}

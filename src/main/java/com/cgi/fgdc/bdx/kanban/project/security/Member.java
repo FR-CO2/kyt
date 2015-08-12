@@ -41,7 +41,6 @@ public class Member implements Serializable {
     private Long id;
 
     @ManyToOne(cascade = CascadeType.DETACH)
-    @JsonIgnore
     private Project project;
 
     @ManyToOne(cascade = CascadeType.DETACH)
