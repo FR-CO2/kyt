@@ -120,6 +120,11 @@
         };
     }
 
+    function profilController() {
+        var vm = this;
+
+    }
+
     function runApp($rootScope, $state, $modal, $sessionStorage, $localStorage, editableOptions, authService) {
         $rootScope.$storage = $localStorage;
         $rootScope.$session = $sessionStorage;
@@ -215,6 +220,12 @@
             controllerAs: "homeCtrl",
             url: "home"
         });
+        $stateProvider.state("app.profil", {
+            templateUrl: "templates/users/profil.html",
+            controller: "profilController",
+            controllerAs: "profilCtrl",
+            url: "profil"
+        });
         $stateProvider.state("login", {
             templateUrl: "login.html",
             controller: "loginController",
@@ -250,6 +261,7 @@
             .controller("headerController", headerController)
             .controller("homeController", homeController)
             .controller("loginController", loginController)
+            .controller("profilController", profilController)
             .service("appAuthService", appAuthService)
             .service("userProfile", userProfile)
             .directive("fileread", fileread);
