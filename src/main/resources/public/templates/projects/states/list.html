@@ -1,43 +1,48 @@
-<div class="row">
-    <div class="col-md-4 col-md-offset-8">
-        <button class="btn btn-info btn-sm" ng-click="configStateCtrl.add()"><span class="glyphicon glyphicon-plus-sign"></span>Nouveau état</button>
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-12" as-sortable="configStateCtrl.stateListSortOptions" ng-model="configStateCtrl.states">
-        <div class="row">
-            <div class="col-md-10">
-                <div class="row">
-                    <div class="col-md-3">Nom</div>
-                    <div class="col-md-3 text-center">Etat de fermeture</div>
-                    <div class="col-md-3 text-center">Masqué dans Kanban</div>
-                </div>
+<div class="col-md-12">
+    <div class="panel">
+        <div class="panel-heading">
+            <h2 class="panel-heading-title">Couloirs du projet</h2>
+            <div class="panel-heading-action">
+                <button class="btn btn-info btn-sm" ng-click="configStateCtrl.add()"><span class="glyphicon glyphicon-plus-sign"></span>Nouvel état</button>
             </div>
         </div>
-        <div class="row" ng-repeat="state in configStateCtrl.states" as-sortable-item>
-            <div class="col-md-10">
-                <div class="panel panel-default" as-sortable-item-handle>
-                    <div class="row">
-                        <div class="col-md-3">
-                            {{state.name}} 
-                        </div>
-                        <div class="col-md-3 text-center">
-                            <input class="form-control" type="checkbox" ng-model="state.closeState"/>
-                        </div>
-                        <div class="col-md-3 text-center">
-                            <input class="form-control" type="checkbox" ng-model="state.kanbanHide"/>
-                        </div>
-                        <div class="col-md-3">
-                            <span class="badge  pull-right">
-                                {{state.taskCount}}</span>
+        <div class="panel-body">
+            <div class="col-md-12" as-sortable="configStateCtrl.stateListSortOptions" ng-model="configStateCtrl.states">
+                <div class="row">
+                    <div class="col-md-10">
+                        <div class="row">
+                            <div class="col-md-3">Nom</div>
+                            <div class="col-md-3 text-center">Etat de fermeture</div>
+                            <div class="col-md-3 text-center">Masqué dans Kanban</div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-2">
-                <a ng-click="configStateCtrl.delete(state.id)">
-                    <span class="glyphicon glyphicon-trash"></span>
-                </a>
+                <div class="row" ng-repeat="state in configStateCtrl.states" as-sortable-item>
+                    <div class="col-md-10">
+                        <div class="panel panel-default" as-sortable-item-handle>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    {{state.name}} 
+                                </div>
+                                <div class="col-md-3 text-center">
+                                    <input class="form-control" type="checkbox" ng-model="state.closeState"/>
+                                </div>
+                                <div class="col-md-3 text-center">
+                                    <input class="form-control" type="checkbox" ng-model="state.kanbanHide"/>
+                                </div>
+                                <div class="col-md-3">
+                                    <span class="badge  pull-right">
+                                        {{state.taskCount}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <a ng-click="configStateCtrl.delete(state.id)">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

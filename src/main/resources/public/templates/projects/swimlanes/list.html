@@ -1,37 +1,42 @@
-<div class="row">
-    <div class="col-md-4 col-md-offset-8">
-        <button class="btn btn-info btn-sm" ng-click="configCtrl.add()"><span class="glyphicon glyphicon-plus-sign"></span>Nouveau couloir</button>
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-12" as-sortable="configCtrl.swimlaneListSortOptions" ng-model="configCtrl.swimlanes">
-        <div class="row" ng-repeat="swimlane in configCtrl.swimlanes" as-sortable-item>
-            <div class="col-md-8">
-                <div class="panel panel-default" as-sortable-item-handle>
-                    <div class="row">
-                        <div class="col-md-4">
-                            {{swimlane.name}} 
-                        </div>
-                        <div class="col-md-4">
-                            <a href="#" editable-select="swimlane.responsable" onshow="configCtrl.loadMember()" onaftersave="configCtrl.save(swimlane)" e-ng-options="member as member.user.username for member in configCtrl.members">
-                                <span ng-if="!swimlane.responsable">
-                                    -
-                                </span>
-                                {{swimlane.responsable.user.username}} 
-                            </a>
-                        </div>
-                        <div class="col-md-4">
-                            <span class="badge  pull-right">
-                                {{swimlane.taskCount}}
-                            </span>
+<div class="col-md-12">
+    <div class="panel">
+        <div class="panel-heading">
+            <h2 class="panel-heading-title">Couloirs du projet</h2>
+            <div class="panel-heading-action">
+                <button class="btn btn-info btn-sm" ng-click="configCtrl.add()"><span class="glyphicon glyphicon-plus-sign"></span>Nouveau couloir</button>
+            </div>
+        </div>
+        <div class="panel-body">
+            <div class="col-md-12" as-sortable="configCtrl.swimlaneListSortOptions" ng-model="configCtrl.swimlanes">
+                <div class="row" ng-repeat="swimlane in configCtrl.swimlanes" as-sortable-item>
+                    <div class="col-md-8">
+                        <div class="panel panel-default" as-sortable-item-handle>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    {{swimlane.name}} 
+                                </div>
+                                <div class="col-md-4">
+                                    <a href="#" editable-select="swimlane.responsable" onshow="configCtrl.loadMember()" onaftersave="configCtrl.save(swimlane)" e-ng-options="member as member.user.username for member in configCtrl.members">
+                                        <span ng-if="!swimlane.responsable">
+                                            -
+                                        </span>
+                                        {{swimlane.responsable.user.username}} 
+                                    </a>
+                                </div>
+                                <div class="col-md-4">
+                                    <span class="badge  pull-right">
+                                        {{swimlane.taskCount}}
+                                    </span>
+                                </div>
+                            </div>
                         </div>
                     </div>
+                    <div class="col-md-4">
+                        <a ng-click="configCtrl.delete(swimlane.id)">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </a>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <a ng-click="configCtrl.delete(swimlane.id)">
-                    <span class="glyphicon glyphicon-trash"></span>
-                </a>
             </div>
         </div>
     </div>
