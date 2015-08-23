@@ -33,7 +33,6 @@ import javax.persistence.Transient;
 @JsonIdentityInfo(generator=ObjectIdGenerators.UUIDGenerator.class, property = "@uuid")
 public class Member implements Serializable {
 
-
     private static final long serialVersionUID = 4462667625489059354L;
 
     @Id

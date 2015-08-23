@@ -49,7 +49,6 @@ public class ApplicationUser implements Serializable {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonView(ControllerViews.User.class)
-    @JsonManagedReference
     private List<Member> members = new ArrayList<>();
 
     public Long getId() {
