@@ -271,10 +271,10 @@ h1, h2, h3, h4, h5, h6 {
   width: 20%;
   float: left;
   background: #172B36;
-  flex-grow: 1;
-  order: 1;
-  transition: ease 1s all;
+  flex-grow: 0;
+  transition: ease-out 1s width;
   box-shadow: -1em 1em 1em -0.5em #000 inset;
+  overflow: hidden;
 }
 /* line 14, ../../../../../../co2themes/sass/theme/_off-canvas.sass */
 .offcanvas__content {
@@ -299,7 +299,6 @@ h1, h2, h3, h4, h5, h6 {
 }
 /* line 30, ../../../../../../co2themes/sass/theme/_off-canvas.sass */
 .offcanvas__checkbox:checked ~ .offcanvas__menu {
-  transform: translate3d(-20%, 0, 0);
   width: 0;
   padding: 0;
   overflow: hidden;
