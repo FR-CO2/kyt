@@ -8,7 +8,7 @@ package org.co2.kanban.user;
 import org.co2.kanban.ControllerViews;
 import org.co2.kanban.project.security.Member;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.io.Serializable;
@@ -25,17 +25,16 @@ import javax.persistence.OneToMany;
  * @author ben
  */
 @Entity
-@JsonIdentityInfo(generator=ObjectIdGenerators.UUIDGenerator.class, property = "@uuid")
 public class ApplicationUser implements Serializable {
 
     private static final long serialVersionUID = 1590255859243784563L;
-
+    
     @Id
     @GeneratedValue
-    @JsonView(ControllerViews.User.class)
+    @JsonView(ControllerViews.UserList.class)
     private Long id;
 
-    @JsonView(ControllerViews.User.class)
+    @JsonView(ControllerViews.UserList.class)
     private String username;
 
     @JsonView(ControllerViews.UserList.class)
@@ -48,7 +47,7 @@ public class ApplicationUser implements Serializable {
     private ApplicationUserRole applicationRole;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    @JsonView(ControllerViews.User.class)
+    @JsonIgnore
     private List<Member> members = new ArrayList<>();
 
     public Long getId() {

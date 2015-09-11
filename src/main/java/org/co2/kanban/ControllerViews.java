@@ -26,11 +26,11 @@ public interface ControllerViews {
     public interface UserTask extends Project, TaskList {
     };
 
-    public interface User {
+    public interface User extends UserList {
 
     };
 
-    public interface UserList extends User{
+    public interface UserList {
 
     };
 

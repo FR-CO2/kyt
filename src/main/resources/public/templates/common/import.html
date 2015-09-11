@@ -4,9 +4,7 @@
     </div>
     <div class="panel-body">
         <alert type="danger" ng-if="import.form.error">{{import.form.error}}</alert>
-        <input type="file" name="importfile" fileread ng-model="import.fileInput" accept="*" required/>
-        <div>
-            <button type="submit" class="btn btn-info center-block" ng-click="import.submit()">valider</button>
-        </div>
+        <div class="button" ngf-select ng-model="import.file">Choisir le fichier</div>
+        <input type="submit" ng-click="import.submit()" value="importer"/>
     </div>
 </div>

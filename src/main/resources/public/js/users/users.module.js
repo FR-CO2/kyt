@@ -1,21 +1,17 @@
 (function () {
     "use strict";
 
-    function userImportController($modalInstance, $http) {
+    function userImportController($modalInstance, Upload) {
         var vm = this;
         vm.title = "Importer des utilisateurs";
-        vm.submit = function () {
-            var formData = new FormData();
-            formData.append("importfile", vm.fileInput);
-            $http({
-                method: 'POST',
+        vm.submit = function() {
+            Upload.upload({
                 url: '/api/user/import',
-                headers: {'Content-Type': undefined},
-                data: formData
+                file: vm.file
             }).success(function () {
-                $modalInstance.close();
-            }).error(function (e) {
-                vm.form = {error: e};
+                    $modalInstance.close();
+                }).error(function (e) {
+                    vm.form = {error: e};
             });
         };
     }
@@ -85,10 +81,10 @@
             $http({method: 'GET',
                 url: '/api/user/export',
                 headers: {'Content-Type': undefined}})
-                    .then(function(response) {
+                    .then(function (response) {
                         var blob = new Blob([response.data], {type: 'text/csv'});
                         saveAs(blob, "export-users.csv");
-            })
+                    })
         };
 
         vm.import = function () {
@@ -117,11 +113,11 @@
     userConfig.$inject = ["$stateProvider"];
     userResource.$inject = ["$resource"];
     userListController.$inject = ["$modal", "$window", "$http", "userResource"];
-    userImportController.$inject = ["$modalInstance", "$http"];
+    userImportController.$inject = ["$modalInstance", "Upload"];
     userAddController.$inject = ["$modalInstance", "userResource", "applicationRoleResource"];
     applicationRoleResource.$inject = ["$resource"];
 
-    angular.module("kanban.user", [])
+    angular.module("kanban.user", ["ngFileUpload"])
             .config(userConfig)
             .controller("userListController", userListController)
             .controller("userAddController", userAddController)

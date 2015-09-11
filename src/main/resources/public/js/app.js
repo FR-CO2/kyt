@@ -164,51 +164,6 @@
         $state.go("login");
     }
 
-    function fileread($q) {
-        var slice = Array.prototype.slice;
-
-        return {
-            restrict: 'A',
-            require: '?ngModel',
-            link: function (scope, element, attrs, ngModel) {
-                if (!ngModel)
-                    return;
-
-                ngModel.$render = function () {
-                };
-
-                element.bind('change', function (e) {
-                    var element = e.target;
-
-                    $q.all(slice.call(element.files, 0).map(readFile))
-                            .then(function (values) {
-                                if (element.multiple)
-                                    ngModel.$setViewValue(values);
-                                else
-                                    ngModel.$setViewValue(values.length ? values[0] : null);
-                            });
-
-                    function readFile(file) {
-                        var deferred = $q.defer();
-
-                        var reader = new FileReader();
-                        reader.onload = function (e) {
-                            deferred.resolve(e.target.result);
-                        };
-                        reader.onerror = function (e) {
-                            deferred.reject(e);
-                        };
-                        reader.readAsDataURL(file);
-
-                        return deferred.promise;
-                    }
-
-                }); //change
-
-            } //link
-        }; //return
-    }
-
     function applicationConfig($stateProvider, $httpProvider) {
         $stateProvider.state("app", {
             templateUrl: "layout-app.html",
@@ -251,7 +206,6 @@
     headerController.$inject = ["$scope", "$state"];
     homeController.$inject = ["$state", "$modal", "projectResource", "taskResource", "$sessionStorage"];
     appAuthService.$inject = ["$http"];
-    fileread.$inject = ["$q"];
     userProfile.$inject = ["$resource"];
     angular.module("kaban", ["ngResource", "ngRoute", "ui.router", "ui.bootstrap", "ui.calendar",
         "ui.sortable", "ngStorage", "http-auth-interceptor", "xeditable", "chart.js",
@@ -263,6 +217,5 @@
             .controller("loginController", loginController)
             .controller("profilController", profilController)
             .service("appAuthService", appAuthService)
-            .service("userProfile", userProfile)
-            .directive("fileread", fileread);
+            .service("userProfile", userProfile);
 })();

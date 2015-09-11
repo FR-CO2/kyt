@@ -7,13 +7,16 @@ package org.co2.kanban.user;
 
 import org.co2.kanban.ControllerViews;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.MappingIterator;
+import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
+import com.fasterxml.jackson.dataformat.csv.CsvParser;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import java.io.File;
 import java.io.IOException;
 import java.security.Principal;
-import javax.servlet.http.Part;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.data.domain.Page;
@@ -27,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -55,16 +59,24 @@ public class ApplicationUserController {
     public FileSystemResource handleFileDownload(@AuthenticationPrincipal Principal user) throws IOException {
         CsvMapper mapper = new CsvMapper();
         CsvSchema schema = mapper.schemaFor(ApplicationUser.class);
-        ObjectWriter writer = mapper.writer(schema.withLineSeparator("\n"));
+        ObjectWriter writer = mapper.writer(schema);
+        writer.withView(ControllerViews.UserList.class);
         File exportUsers = new File("export-users.csv");
         Iterable<ApplicationUser> users = repository.findAll();
         writer.writeValue(exportUsers, users);
         return new FileSystemResource(exportUsers);
     }
 
-    @RequestMapping(value = "import", method = RequestMethod.POST, consumes = org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity handleFileUpload(@RequestParam(value = "importfile", required = false) Part file) throws IOException {
-        
+    @RequestMapping(value = "import", method = RequestMethod.POST)
+    public ResponseEntity handleFileUpload(@RequestParam(value = "file") MultipartFile multipartFile) throws IOException {
+        CsvMapper mapper = new CsvMapper();
+        mapper.enable(CsvParser.Feature.WRAP_AS_ARRAY);
+        ObjectReader reader = mapper.reader(String[].class);
+        reader.withView(ControllerViews.UserList.class);
+        MappingIterator<String[]> it = reader.readValues(multipartFile.getInputStream());
+        while (it.hasNext()) {
+            String[] row = it.next();
+        }
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
