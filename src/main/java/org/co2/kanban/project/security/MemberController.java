@@ -57,10 +57,16 @@ public class MemberController {
     }
 
     @RequestMapping(value = "member", method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Member> create(@PathVariable("projectId") Long projectId, @RequestBody Member member) {
+    public ResponseEntity<Member> create(@PathVariable("projectId") Long projectId, @RequestBody MemberForm memberForm) {
         Project project = projectRepository.findOne(projectId);
+        ApplicationUser user = userRepository.findOne(memberForm.getApplicationUserId());
+        Member member = repository.findByProjectIdAndUserUsername(projectId, user.getUsername());
+        if (member != null) {
+            return new ResponseEntity<>(member, HttpStatus.CONFLICT);
+        }
+        member = new Member();
+        member.setProjectRole(memberForm.getProjectRole());
         member.setProject(project);
-        ApplicationUser user = userRepository.findOne(member.getApplicationUserId());
         member.setUser(user);
         Member result = repository.save(member);
         return new ResponseEntity<>(result, HttpStatus.CREATED);
