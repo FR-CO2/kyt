@@ -156,8 +156,11 @@
                 vm.projects = projectResourceSrv.query();
             });
         };
-        vm.edit = function (projectId) {
+        vm.goProject = function (projectId) {
             $state.transitionTo("app.project-detail.kanban", {id: projectId});
+        };
+        vm.edit = function (projectId) {
+            //TODO : Ecran edition projet
         };
         vm.export = function () {
             // Creating a Blob with our data for download

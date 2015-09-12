@@ -25,10 +25,10 @@
                     </thead>
                     <tbody>
                         <tr ng-repeat="project in projectCtrl.projects.content">
-                            <td>
+                            <td ng-click="projectCtrl.goProject(project.id)">
                                 {{project.name}}
                             </td>
-                            <td class="text-justify">
+                            <td class="text-justify" ng-click="projectCtrl.goProject(project.id)">
                                 <ul class="list-inline">
                                     <li ng-repeat="state in project.states" ng-if="!state.kanbanHide">
                                         {{state.name}} <span class="badge alert-info">{{state.taskCount}}</span>
