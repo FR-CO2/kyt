@@ -16,6 +16,9 @@ import org.co2.kanban.user.ApplicationUserRole;
 import com.fasterxml.jackson.annotation.JsonView;
 import java.security.Principal;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import org.co2.kanban.project.security.Member;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -65,7 +68,13 @@ public class CurrentUserController {
         }
         return projectRepositoy.findByMembersUser(getCurrentUser(user), page);
     }
-
+    
+    @RequestMapping(value = "userProjectRole", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    @JsonView(ControllerViews.ProjectList.class)
+    public List<Member> listProjectRole(@AuthenticationPrincipal Principal user) {
+        return getCurrentUser(user).getMembers();
+    }
+    
     @RequestMapping(value = "userEvent", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     @JsonView(ControllerViews.TaskList.class)
     public Iterable<Task> listTasksEvents(@AuthenticationPrincipal Principal user, @RequestParam Long start, @RequestParam Long end) {

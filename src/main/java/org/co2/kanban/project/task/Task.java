@@ -13,10 +13,8 @@ import org.co2.kanban.project.security.Member;
 import org.co2.kanban.project.swimlane.Swimlane;
 import org.co2.kanban.project.task.allocation.Allocation;
 import org.co2.kanban.project.task.allocation.AllocationDateComparator;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Collections;
@@ -35,7 +33,6 @@ import javax.persistence.Transient;
  * @author ben
  */
 @Entity
-@JsonIdentityInfo(generator=ObjectIdGenerators.UUIDGenerator.class, property = "@uuid")
 public class Task implements Serializable {
 
     private static final long serialVersionUID = -7133694782401886935L;

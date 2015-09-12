@@ -50,7 +50,7 @@
         };
     }
 
-    function projectController($sessionStorage, $stateParams, projectResourceSrv) {
+    function projectController($sessionStorage, $stateParams, projectResourceSrv, userProjectsRoles) {
         var vm = this;
         vm.project = projectResourceSrv.get({id: $stateParams.id});
         vm.hasEditRights = false;
@@ -59,17 +59,20 @@
             vm.hasEditRights = true;
             vm.hasAdminRights = true;
         } else {
-            for (var i in $sessionStorage.user.members) {
-                if ($sessionStorage.user.members[i].project.id === $stateParams.id) {
-                    if ($sessionStorage.user.members[i].projectRole === 'CONTRIBUTOR') {
-                        vm.hasEditRights = true;
-                    }
-                    if ($sessionStorage.user.members[i].projectRole === 'MANAGER') {
-                        vm.hasEditRights = true;
-                        vm.hasAdminRights = true;
+            var projectsRoles = userProjectsRoles.query();
+            projectsRoles.$promise.then(function () {
+                for (var i = 0; i < projectsRoles.length; i++) {
+                    if (projectsRoles[i].project.id == $stateParams.id) {
+                        if (projectsRoles[i].projectRole === 'CONTRIBUTOR') {
+                            vm.hasEditRights = true;
+                        }
+                        if (projectsRoles[i].projectRole === 'MANAGER') {
+                            vm.hasEditRights = true;
+                            vm.hasAdminRights = true;
+                        }
                     }
                 }
-            }
+            });
         }
     }
 
@@ -213,7 +216,7 @@
 
     projectConfig.$inject = ["$stateProvider"];
     projectListController.$inject = ["$state", "$modal", "$http", "projectResource"];
-    projectController.$inject = ["$sessionStorage", "$stateParams", "projectResource"];
+    projectController.$inject = ["$sessionStorage", "$stateParams", "projectResource", "userProjectsRoles"];
     kanbanController.$inject = ["$state", "$stateParams", "$modal", "taskResource",
         "taskStateResource", "swimlaneResource",
         "categoryResource", "memberResource"];

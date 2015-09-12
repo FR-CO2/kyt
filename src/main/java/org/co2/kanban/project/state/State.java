@@ -8,10 +8,8 @@ package org.co2.kanban.project.state;
 import org.co2.kanban.ControllerViews;
 import org.co2.kanban.project.Project;
 import org.co2.kanban.project.task.Task;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +27,6 @@ import javax.persistence.Transient;
  * @author ben
  */
 @Entity
-@JsonIdentityInfo(generator = ObjectIdGenerators.UUIDGenerator.class, property = "@uuid")
 public class State implements Serializable {
 
     private static final long serialVersionUID = -1395350709593408519L;

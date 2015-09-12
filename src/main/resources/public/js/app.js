@@ -92,6 +92,10 @@
         return $resource("/api/userProfile");
     }
 
+    function userProjectsRoles($resource) {
+        return $resource("/api/userProjectRole");
+    }
+    
     function loginController($state, $scope, userProfileSrv, appAuthService) {
         var vm = this;
         vm.authenticate = function () {
@@ -120,9 +124,9 @@
         };
     }
 
-    function profilController() {
+    function profilController(userProjectsRoles) {
         var vm = this;
-
+        vm.projectsRoles = userProjectsRoles.query();
     }
 
     function runApp($rootScope, $state, $modal, $sessionStorage, $localStorage, editableOptions, authService) {
@@ -205,8 +209,10 @@
     loginController.$inject = ["$state", "$scope", "userProfile", "appAuthService"];
     headerController.$inject = ["$scope", "$state"];
     homeController.$inject = ["$state", "$modal", "projectResource", "taskResource", "$sessionStorage"];
+    profilController.$inject = ["userProjectsRoles"];
     appAuthService.$inject = ["$http"];
     userProfile.$inject = ["$resource"];
+    userProjectsRoles.$inject = ["$resource"];
     angular.module("kaban", ["ngResource", "ngRoute", "ui.router", "ui.bootstrap", "ui.calendar",
         "ui.sortable", "ngStorage", "http-auth-interceptor", "xeditable", "chart.js",
         "kanban.project", "kanban.user", "kanban.user", "kaban.timesheet"])
@@ -217,5 +223,6 @@
             .controller("loginController", loginController)
             .controller("profilController", profilController)
             .service("appAuthService", appAuthService)
-            .service("userProfile", userProfile);
+            .service("userProfile", userProfile)
+            .service("userProjectsRoles", userProjectsRoles);
 })();

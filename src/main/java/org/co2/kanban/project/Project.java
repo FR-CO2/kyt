@@ -10,12 +10,8 @@ import org.co2.kanban.project.security.Member;
 import org.co2.kanban.project.state.State;
 import org.co2.kanban.project.swimlane.Swimlane;
 import org.co2.kanban.project.task.Task;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +26,6 @@ import javax.persistence.OneToMany;
  * @author ben
  */
 @Entity
-@JsonIdentityInfo(generator=ObjectIdGenerators.UUIDGenerator.class, property = "@uuid")
 public class Project implements Serializable {
 
     private static final long serialVersionUID = -5617478169888450195L;

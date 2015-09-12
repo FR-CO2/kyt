@@ -25,7 +25,7 @@
         <div>
             <h3>Mes projets</h3>
             <ul>
-                <li ng-repeat="member in $session.user.members">
+                <li ng-repeat="member in profilCtrl.projectsRoles">
                     {{member.project.name}} : {{member.projectRole}} 
                 </li>
             </ul>

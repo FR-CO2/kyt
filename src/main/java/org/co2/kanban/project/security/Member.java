@@ -11,9 +11,7 @@ import org.co2.kanban.project.swimlane.Swimlane;
 import org.co2.kanban.project.task.Task;
 import org.co2.kanban.project.task.allocation.Allocation;
 import org.co2.kanban.user.ApplicationUser;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -30,7 +28,6 @@ import javax.persistence.Transient;
  * @author ben
  */
 @Entity
-@JsonIdentityInfo(generator=ObjectIdGenerators.UUIDGenerator.class, property = "@uuid")
 public class Member implements Serializable {
 
     private static final long serialVersionUID = 4462667625489059354L;
