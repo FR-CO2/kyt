@@ -17,6 +17,8 @@ import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import java.io.File;
 import java.io.IOException;
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.data.domain.Page;
@@ -58,7 +60,7 @@ public class ApplicationUserController {
     @RequestMapping(value = "export", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public FileSystemResource handleFileDownload(@AuthenticationPrincipal Principal user) throws IOException {
         CsvMapper mapper = new CsvMapper();
-        CsvSchema schema = mapper.schemaFor(ApplicationUser.class);
+        CsvSchema schema =  mapper.schemaFor(ApplicationUser.class).withHeader().withColumnSeparator(';');
         ObjectWriter writer = mapper.writer(schema);
         writer.withView(ControllerViews.UserList.class);
         File exportUsers = new File("export-users.csv");
@@ -71,12 +73,18 @@ public class ApplicationUserController {
     public ResponseEntity handleFileUpload(@RequestParam(value = "file") MultipartFile multipartFile) throws IOException {
         CsvMapper mapper = new CsvMapper();
         mapper.enable(CsvParser.Feature.WRAP_AS_ARRAY);
-        ObjectReader reader = mapper.reader(String[].class);
-        reader.withView(ControllerViews.UserList.class);
-        MappingIterator<String[]> it = reader.readValues(multipartFile.getInputStream());
+        CsvSchema schema = CsvSchema.emptySchema().withHeader().withColumnSeparator(';');
+        ObjectReader reader = mapper.reader(ApplicationUser.class);
+        MappingIterator<ApplicationUser> it = reader.with(schema).readValues(multipartFile.getInputStream());
+        List<ApplicationUser> usersImport = new ArrayList<>();
         while (it.hasNext()) {
-            String[] row = it.next();
+            ApplicationUser row = it.next();
+            ApplicationUser user = repository.findByUsername(row.getUsername());
+            if (user == null) {
+                usersImport.add(row);
+            }
         }
+        repository.save(usersImport);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
