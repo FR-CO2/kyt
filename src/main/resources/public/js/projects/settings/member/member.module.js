@@ -1,7 +1,7 @@
 (function () {
     "use strict";
 
-    function userAutoCompleteCtrl($stateParams, $http, $scope) {
+    function userAutoCompleteCtrl($http, $scope) {
         var vm = this;
         var search = function (request, response) {
             var callback = function (data) {
@@ -110,7 +110,7 @@
 
     memberListController.$inject = ["$stateParams", "$modal", "memberResource"];
     memberAddController.$inject = ["$stateParams", "$modalInstance", "memberResource", "userResource", "memberRoleResource"];
-    userAutoCompleteCtrl.$inject = ["$stateParams", "$http", "$scope"];
+    userAutoCompleteCtrl.$inject = ["$http", "$scope"];
     memberRoleResource.$inject = ["$resource"];
     memberResource.$inject = ["$resource"];
 
