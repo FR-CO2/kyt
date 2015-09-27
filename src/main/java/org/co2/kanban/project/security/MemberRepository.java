@@ -18,6 +18,8 @@ public interface MemberRepository extends PagingAndSortingRepository<Member, Lon
 
     Page<Member> findByProject(Project project, Pageable p);
 
+    Iterable<Member> findByProjectAndUserUsernameLike(Project project, String username);
+
     Iterable<Member> findByProject(Project project);
 
     Member findByProjectIdAndUserUsername(Long projectId, String username);

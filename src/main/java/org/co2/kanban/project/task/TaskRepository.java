@@ -7,13 +7,11 @@ package org.co2.kanban.project.task;
 
 import org.co2.kanban.project.Project;
 import org.co2.kanban.user.ApplicationUser;
-import java.security.Principal;
 import java.util.Date;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
-import org.springframework.security.web.bind.annotation.AuthenticationPrincipal;
 
 /**
  *

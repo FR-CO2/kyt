@@ -50,6 +50,12 @@ public class MemberController {
         return repository.findByProject(project, page);
     }
 
+    @RequestMapping(value = "member/find/{username}", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    public Iterable<Member> findByUsername(@PathVariable("projectId") Long projectId, @PathVariable("username") String username) {
+        Project project = projectRepository.findOne(projectId);
+        return repository.findByProjectAndUserUsernameLike(project, username);
+    }
+
     @RequestMapping(value = "member", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public Iterable<Member> list(@PathVariable("projectId") Long projectId) {
         Project project = projectRepository.findOne(projectId);

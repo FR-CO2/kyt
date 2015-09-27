@@ -7,7 +7,6 @@ package org.co2.kanban.user;
 
 import org.co2.kanban.ControllerViews;
 import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -19,6 +18,8 @@ import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import org.co2.kanban.project.Project;
+import org.co2.kanban.project.security.Member;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.data.domain.Page;
@@ -56,7 +57,11 @@ public class ApplicationUserController {
     public Page<ApplicationUser> page(Pageable p) {
         return repository.findAll(p);
     }
-
+    @RequestMapping(value = "find/{username}", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    public Iterable<ApplicationUser> findByUsername(@PathVariable("username") String username) {
+        return repository.findByUsernameContaining(username);
+    }
+    
     @RequestMapping(value = "export", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public FileSystemResource handleFileDownload(@AuthenticationPrincipal Principal user) throws IOException {
         CsvMapper mapper = new CsvMapper();

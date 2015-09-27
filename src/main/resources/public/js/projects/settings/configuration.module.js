@@ -94,47 +94,7 @@
         };
     }
 
-    function memberListController($stateParams, $modal, memberResourceSrv) {
-        var vm = this;
-        vm.nbElt = 10;
-        vm.numPage = 1;
-        vm.paging = {
-            size: vm.nbElt,
-            page: 0
-        };
-        vm.members = memberResourceSrv.page({"projectId": $stateParams.id, size: vm.paging.size, page: vm.paging.page});
-        vm.add = function () {
-            var modalInstance = $modal.open({
-                animation: true,
-                templateUrl: "templates/projects/members/add.html",
-                controller: "memberAddController",
-                controllerAs: "add",
-                size: "md"
-            });
-            modalInstance.result.then(function () {
-                vm.members = memberResourceSrv.page({"projectId": $stateParams.id, size: vm.paging.size, page: vm.paging.page});
-            });
-        };
-        vm.delete = function (memberId) {
-            memberResourceSrv.delete({projectId: $stateParams.id, id: memberId}, function () {
-                vm.members = memberResourceSrv.page({"projectId": $stateParams.id, size: vm.paging.size, page: vm.paging.page});
-            });
-        };
-        vm.pageChanged = function () {
-            if (vm.nbElt !== vm.paging.size) {
-                vm.numPage = 1;
-            }
-            ;
-            vm.paging = {
-                size: vm.nbElt,
-                page: vm.numPage - 1
-            };
-            vm.members = memberResourceSrv.page({projectId: $stateParams.id, size: vm.paging.size, page: vm.paging.page}, function (result) {
-                vm.numPage = result.number + 1;
-            });
-        };
-    }
-
+    
     function stateAddController($stateParams, $modalInstance, stateResourceSrv) {
         var vm = this;
         vm.submit = function () {
@@ -163,31 +123,10 @@
         };
     }
 
-    function memberAddController($stateParams, $modalInstance, memberResourceSrv, userResource, memberRoleResourceSrv) {
-        var vm = this;
-        vm.users = userResource.query();
-        vm.roles = memberRoleResourceSrv.query({"projectId": $stateParams.id});
-        vm.submit = function () {
-            memberResourceSrv.save({"projectId": $stateParams.id}, vm.member, function () {
-                $modalInstance.close();
-            });
-        };
-    }
 
     function categoryResource($resource) {
         return $resource("/api/project/:projectId/category/:id", {projectId: "projectId", id: "@id"});
     }
-
-    function memberResource($resource) {
-        return $resource("/api/project/:projectId/member/:id", {projectId: "projectId", id: "@id"}, {
-            page: {url: "/api/project/:projectId/member/page", method: "GET", isArray: false}
-        });
-    }
-
-    function memberRoleResource($resource) {
-        return $resource("/api/project/:projectId/memberrole", {projectId: "projectId"});
-    }
-
 
     function taskStateResource($resource) {
         return $resource("/api/project/:projectId/state/:id", {projectId: "@id", id: "@id"}, {
@@ -232,12 +171,7 @@
             controllerAs: "configCtrl",
             url: "/swimlane"
         });
-        $stateProvider.state("app.project-detail.configure.member", {
-            templateUrl: "templates/projects/members/list.html",
-            controller: "memberListController",
-            controllerAs: "configMemberCtrl",
-            url: "/member"
-        });
+
         $stateProvider.state("app.project-detail.configure.category", {
             templateUrl: "templates/projects/categories/list.html",
             controller: "categoryListController",
@@ -252,28 +186,20 @@
     swimlaneListController.$inject = ["$stateParams", "$modal", "swimlaneResource", "memberResource"];
     swimlaneAddController.$inject = ["$stateParams", "$modalInstance", "swimlaneResource", "memberResource"];
     categoryListController.$inject = ["$stateParams", "$modal", "categoryResource"];
-    memberListController.$inject = ["$stateParams", "$modal", "memberResource"];
     categoryAddController.$inject = ["$stateParams", "$modalInstance", "categoryResource"];
-    memberAddController.$inject = ["$stateParams", "$modalInstance", "memberResource", "userResource", "memberRoleResource"];
     categoryResource.$inject = ["$resource"];
-    memberResource.$inject = ["$resource"];
-    memberRoleResource.$inject = ["$resource"];
     taskStateResource.$inject = ["$resource"];
     swimlaneResource.$inject = ["$resource"];
 
-    angular.module("kanban.project.configure", [])
+    angular.module("kanban.project.configure", ["kanban.project.configure.member"])
             .config(projectSettingsConfig)
             .controller("stateListController", stateListController)
             .controller("stateAddController", stateAddController)
             .controller("swimlaneListController", swimlaneListController)
             .controller("swimlaneAddController", swimlaneAddController)
             .controller("categoryListController", categoryListController)
-            .controller("memberListController", memberListController)
             .controller("categoryAddController", categoryAddController)
-            .controller("memberAddController", memberAddController)
             .service("categoryResource", categoryResource)
-            .service("memberResource", memberResource)
-            .service("memberRoleResource", memberRoleResource)
             .service("taskStateResource", taskStateResource)
             .service("swimlaneResource", swimlaneResource);
 
