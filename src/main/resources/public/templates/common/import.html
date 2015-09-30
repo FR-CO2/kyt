@@ -4,7 +4,7 @@
     </div>
     <div class="panel-body">
         <alert type="danger" ng-if="import.form.error">{{import.form.error}}</alert>
-        <div class="button" ngf-select ng-model="import.file">Choisir le fichier</div>
-        <input type="submit" ng-click="import.submit()" value="importer"/>
+        <div class="btn btn-default" ngf-select ng-model="import.file">Choisir le fichier</div>
+        <input type="submit" class="btn btn-info" ng-click="import.submit()" value="importer"/>
     </div>
 </div>
