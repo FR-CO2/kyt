@@ -51,7 +51,7 @@
         };
     };
     
-    function timesheetController($scope, taskResource, dateTS) {
+    function timesheetController($scope, taskResource,allocationResource, dateTS) {
         var vm = this;
         vm.dateTS = dateTS;
         vm.tasks = taskResource.userDay({day: dateTS.getTime()});
@@ -75,7 +75,7 @@
                     vm.tasks[i].timeSpent = parseFloat(mapTimespent.get(vm.tasks[i].id));
                     vm.tasks[i].timeRemains = parseFloat(mapTimeremains.get(vm.tasks[i].id));
                     vm.tasks[i].allocationId = parseFloat(mapAllocationId.get(vm.tasks[i].id));
-                    taskResource.save({"projectId": vm.tasks[i].id}, vm.tasks[i]);
+                    allocationResource.save({"projectId": vm.tasks[i].project.id}, vm.tasks[i]);
                 }
             }
         };
@@ -90,7 +90,7 @@
         };
     }
 
-    timesheetController.$inject = ["$scope", "taskResource", "dateTS"];
+    timesheetController.$inject = ["$scope", "taskResource", "allocationResource", "dateTS"];
     autoCompleteCtrl.$inject = ["$scope", "$http"];
     
     angular.module("kaban.timesheet", [])

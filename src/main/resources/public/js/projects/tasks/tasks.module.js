@@ -172,6 +172,12 @@
             searchByName: {url: "/api/userTask/search/:day/:name", method: "GET", params: {day: "@day", name: "@name"}, isArray: true}
         });
     }
+    
+    function allocationResource($resource){
+        return $resource("/api/project/:projectId/allocation/", {projectId: "@projectId"}, {
+            
+        });
+    }
 
     function taskConfig($stateProvider) {
         $stateProvider.state("app.project-detail.tasks", {
@@ -194,11 +200,13 @@
     editTaskController.$inject = ["$stateParams", "taskResource", "categoryResource", "memberResource", "taskStateResource", "swimlaneResource"];
     taskImportController.$inject = ["$stateParams", "$modalInstance", "$http"];
     taskResource.$inject = ["$resource"];
+    allocationResource.$inject = ["$resource"];
     angular.module("kanban.project.task", [])
             .config(taskConfig)
             .controller("newTaskController", newTaskController)
             .controller("taskListController", taskListController)
             .controller("editTaskController", editTaskController)
             .controller("taskImportController", taskImportController)
-            .service("taskResource", taskResource);
+            .service("taskResource", taskResource)
+            .service("allocationResource", allocationResource);
 })();
