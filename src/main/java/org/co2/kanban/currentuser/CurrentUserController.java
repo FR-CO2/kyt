@@ -17,7 +17,6 @@ import com.fasterxml.jackson.annotation.JsonView;
 import java.security.Principal;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import org.co2.kanban.project.security.Member;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -81,7 +80,7 @@ public class CurrentUserController {
         ApplicationUser appUser = getCurrentUser(user);
         Date startTime = new Date(start * 1000);
         Date endTime = new Date(end * 1000);
-        return taskRepositoy.findByAssigneeUserAndPlannedEndingBetweenAndPlannedStartBetween(appUser, startTime, endTime, startTime, endTime);
+        return taskRepositoy.findByAssigneeUserAndPlannedEndingBetweenOrPlannedStartBetween(appUser, startTime, endTime, startTime, endTime);
     }
 
     @RequestMapping(value = "userTask/day/{day}", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
