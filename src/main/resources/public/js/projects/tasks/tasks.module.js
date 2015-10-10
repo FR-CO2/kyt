@@ -28,9 +28,13 @@
         vm.states = stateResource.query({"projectId": $stateParams.id});
         vm.swimlanes = swimlaneResource.query({"projectId": $stateParams.id});
         vm.task = taskResourceSrv.get({"projectId": $stateParams.id, "id": $stateParams.taskId},
-        function (result) {
-            vm.plannedStartFmt = new Date(result.plannedStart);
-            vm.plannedEndingFmt = new Date(result.plannedEnding);
+        function (data) {
+            if (data.plannedStart) {
+                vm.task.plannedStart = new Date(data.plannedStart);
+            }
+            if (data.plannedEnding) {
+                vm.task.plannedEnding = new Date(data.plannedEnding);
+            }
         });
         vm.submit = function () {
             taskResourceSrv.save({"projectId": $stateParams.id}, vm.task);
@@ -127,7 +131,7 @@
             // Creating a Blob with our data for download
             // this will parse the URL in ng-href such as: blob:http...
             $http({method: 'GET',
-                url: '/api/project/'+$stateParams.id+'/task/export',
+                url: '/api/project/' + $stateParams.id + '/task/export',
                 headers: {'Content-Type': undefined}})
                     .then(function (response) {
                         var blob = new Blob([response.data], {type: 'text/csv'});
@@ -172,10 +176,9 @@
             searchByName: {url: "/api/userTask/search/:day/:name", method: "GET", params: {day: "@day", name: "@name"}, isArray: true}
         });
     }
-    
-    function allocationResource($resource){
+
+    function allocationResource($resource) {
         return $resource("/api/project/:projectId/allocation/", {projectId: "@projectId"}, {
-            
         });
     }
 

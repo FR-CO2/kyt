@@ -5,6 +5,7 @@
  */
 package org.co2.kanban.project.task;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.co2.kanban.ControllerViews;
 import org.co2.kanban.project.Project;
 import org.co2.kanban.project.state.State;
