@@ -54,7 +54,7 @@
     function timesheetController($scope, taskResource,allocationResource, dateTS) {
         var vm = this;
         vm.dateTS = dateTS;
-        vm.tasks = taskResource.userDay({day: dateTS.getTime()});
+        vm.allocations = taskResource.userDay({day: dateTS.getTime()});
         vm.assignation = {};
         vm.submit = function() {
             var keys = Object.keys(vm.assignation);
@@ -71,11 +71,8 @@
             if (assignationSum > 10) {
                 vm.formError = "Les temps saisis sur une journÃ©e ne peut excÃ©der 10";
             } else{
-                for(i = 0; i < vm.tasks.length; i++){
-                    vm.tasks[i].timeSpent = parseFloat(mapTimespent.get(vm.tasks[i].id));
-                    vm.tasks[i].timeRemains = parseFloat(mapTimeremains.get(vm.tasks[i].id));
-                    vm.tasks[i].allocationId = parseFloat(mapAllocationId.get(vm.tasks[i].id));
-                    allocationResource.save({"projectId": vm.tasks[i].project.id, "taskId": vm.tasks[i].id}, vm.tasks[i]);
+                for(i = 0; i < vm.allocations.length; i++){
+                    allocationResource.save({"projectId": vm.allocations[i].project.id, "taskId": vm.allocations[i].task.id}, vm.allocations[i]);
                 }
             }
         };

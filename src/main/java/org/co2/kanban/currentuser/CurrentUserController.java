@@ -15,9 +15,14 @@ import org.co2.kanban.user.ApplicationUserRepository;
 import org.co2.kanban.user.ApplicationUserRole;
 import com.fasterxml.jackson.annotation.JsonView;
 import java.security.Principal;
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.co2.kanban.project.security.Member;
+import org.co2.kanban.project.security.MemberRepository;
+import org.co2.kanban.project.task.allocation.Allocation;
+import org.co2.kanban.project.task.allocation.AllocationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -44,7 +49,13 @@ public class CurrentUserController {
 
     @Autowired
     private ProjectRepository projectRepositoy;
-    
+
+    @Autowired
+    private MemberRepository memberRepository;
+
+    @Autowired
+    private AllocationRepository allocationRepository;
+
     @RequestMapping(value = "userProfile", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     @JsonView(ControllerViews.User.class)
     public ApplicationUser getCurrentUser(@AuthenticationPrincipal Principal user) {
@@ -67,13 +78,13 @@ public class CurrentUserController {
         }
         return projectRepositoy.findByMembersUser(getCurrentUser(user), page);
     }
-    
+
     @RequestMapping(value = "userProjectRole", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     @JsonView(ControllerViews.ProjectList.class)
     public List<Member> listProjectRole(@AuthenticationPrincipal Principal user) {
         return getCurrentUser(user).getMembers();
     }
-    
+
     @RequestMapping(value = "userEvent", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     @JsonView(ControllerViews.TaskList.class)
     public Iterable<Task> listTasksEvents(@AuthenticationPrincipal Principal user, @RequestParam Long start, @RequestParam Long end) {
@@ -85,11 +96,25 @@ public class CurrentUserController {
 
     @RequestMapping(value = "userTask/day/{day}", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     @JsonView(ControllerViews.TaskList.class)
-    public Iterable<Task> listTaskOfDay(@AuthenticationPrincipal Principal user, @PathVariable("day") Long day) {
+    public Iterable<Allocation> listTaskOfDay(@AuthenticationPrincipal Principal user, @PathVariable("day") Long day) {
         ApplicationUser appUser = getCurrentUser(user);
-        Date startTime = new Date(day);
-        Date endTime = new Date(day);
-        return taskRepositoy.findByAssigneeUserAndPlannedEndingAfterAndPlannedStartBefore(appUser, endTime, startTime);
+        Date startTime = new Date(day-3600);
+        Date endTime = new Date(day+3600);
+        List<Allocation> allocations = new ArrayList<>();
+        Iterable<Task> tasks = taskRepositoy.findByAssigneeUserAndPlannedEndingAfterAndPlannedStartBefore(appUser, startTime, endTime);
+        for (Task task : tasks) {
+            Member member = memberRepository.findByProjectIdAndUserUsername(task.getProject().getId(), user.getName());
+            Allocation allocation = allocationRepository.findByTaskIdAndAllocationDateAndMember(task.getId(), new Timestamp(day), member);
+            if (allocation == null) {
+                allocation = new Allocation();
+                allocation.setAllocationDate(new Timestamp(day));
+                allocation.setTask(task);
+                allocation.setMember(member);
+                allocation.setProject(task.getProject());
+            }
+            allocations.add(allocation);
+        }
+        return allocations;
     }
 
     @RequestMapping(value = "userTask/search/{day}/{name}", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)

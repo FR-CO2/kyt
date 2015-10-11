@@ -17,28 +17,27 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="task in tsCtrl.tasks">
+                <tr ng-repeat="allocation in tsCtrl.allocations">
                     <td class="col-md-3">
-                        {{task.project.name}}
+                        {{allocation.project.name}}
                     </td>
                     <td class="col-md-1">
-                        #{{task.id}}
+                        #{{allocation.task.id}}
                     </td>
                     <td class="col-md-4">
-                        {{task.name}}
+                        {{allocation.task.name}}
                     </td>
                     <td class="col-md-2">
-                        <input type="number" class="form-control" min="0" max="1" step="0.1" ng-model="tsCtrl.assignation[task.id].timeSpent"/>
+                        <input type="number" class="form-control" min="0" max="1" step="0.1" ng-model="allocation.timeSpent"/>
                     </td>
                     <td class="col-md-2">
-                        <input type="number" class="form-control" min="0" step="0.1" ng-model="tsCtrl.assignation[task.id].timeRemains"/>
-                        <input type="hidden" class="form-control" ng-model="tsCtrl.assignation[task.id].allocationId"/>
+                        <input type="number" class="form-control" min="0" step="0.1" ng-model="allocation.timeRemains"/>
                     </td>
                     <td>
-                        {{task.estimatedLoad}}
+                        {{allocation.task.estimatedLoad}}
                     </td>
                     <td>
-                        {{task.timeRemains}}
+                        {{allocation.task.timeRemains}}
                     </td>
                 </tr>
                 <tr>

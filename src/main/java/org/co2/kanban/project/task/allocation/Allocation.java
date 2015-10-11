@@ -36,7 +36,6 @@ public class Allocation implements Serializable {
     private Timestamp allocationDate;
 
     @ManyToOne
-    @JsonIgnore
     private Task task;
 
     @ManyToOne(cascade = CascadeType.DETACH)
