@@ -12,6 +12,7 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import org.co2.kanban.project.Project;
@@ -21,26 +22,28 @@ import org.co2.kanban.project.Project;
  * @author ben
  */
 @Entity
-public class Allocation implements Serializable{
+public class Allocation implements Serializable {
+
     private static final long serialVersionUID = -4133209060738613597L;
-    
+
     @Id
+    @GeneratedValue
     private Long id;
-    
+
     @ManyToOne
     private Member member;
-    
+
     private Timestamp allocationDate;
-    
+
     @ManyToOne
     @JsonIgnore
     private Task task;
-    
+
     @ManyToOne(cascade = CascadeType.DETACH)
     private Project project;
-    
+
     private Float timeSpent;
-    
+
     private Float timeRemains;
 
     public Long getId() {
@@ -98,5 +101,5 @@ public class Allocation implements Serializable{
     public void setProject(Project project) {
         this.project = project;
     }
-   
+
 }

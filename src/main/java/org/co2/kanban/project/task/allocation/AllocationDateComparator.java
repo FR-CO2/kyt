@@ -15,6 +15,9 @@ public class AllocationDateComparator implements Comparator<Allocation>{
 
     @Override
     public int compare(Allocation o1, Allocation o2) {
+        if (o2.getAllocationDate() == null || o1.getAllocationDate() == null ) {
+            return 0;
+        } 
         return  o1.getAllocationDate().compareTo(o2.getAllocationDate());
     }
     

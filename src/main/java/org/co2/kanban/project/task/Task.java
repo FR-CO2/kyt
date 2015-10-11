@@ -108,7 +108,6 @@ public class Task implements Serializable {
                 }
             }
 
-            Collections.sort(allocations, new AllocationDateComparator());
             this.timeRemains = allocations.get(allocations.size() - 1).getTimeRemains();
         }
     }

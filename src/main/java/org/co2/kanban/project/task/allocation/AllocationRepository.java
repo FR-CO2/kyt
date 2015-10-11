@@ -5,6 +5,7 @@
  */
 package org.co2.kanban.project.task.allocation;
 
+import java.sql.Timestamp;
 import org.co2.kanban.project.security.Member;
 import java.util.Date;
 import org.springframework.data.jpa.repository.Query;
@@ -21,6 +22,8 @@ public interface AllocationRepository extends PagingAndSortingRepository<Allocat
 
     @Query(value = "select a from Allocation a WHERE a.member = ?1")
     Iterable<Allocation> getListAllocationBeetweenPlannedStartAndPlannedEnding(Member member);
+
+    Allocation findByTaskIdAndAllocationDateAndMember(Long taskId, Timestamp date, Member member);
 
     Iterable<Allocation> findByTaskId(Long taskId);
 }

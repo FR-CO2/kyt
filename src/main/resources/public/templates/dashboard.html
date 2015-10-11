@@ -64,8 +64,9 @@
                             <th>Etat</th>
                             <th>Catégorie</th>
                             <th>Date fin</th>
-                            <th>Charge estimée</th>
                             <th>Consommée</th>
+                            <th>Charge estimée</th>
+                            <th>Charge réevaluée</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -86,6 +87,9 @@
                                 {{task.plannedEnding| date:'dd/MM/yyyy'}}
                             </td>
                             <td>
+                                {{task.timeSpent}}
+                            </td>
+                            <td>
                                 {{task.estimatedLoad}}
                             </td>
                             <td>
@@ -94,7 +98,7 @@
                         </tr>
                     </tbody>
                     <tfoot>
-                    <td colspan="7">
+                    <td colspan="8">
                         <div class="center-block text-center">
                             <pagination total-items="homeCtrl.tasks.nbElt" ng-model="homeCtrl.tasks.number" items-per-page="homeCtrl.tasks.size" max-size="5" class="pagination-sm" boundary-links="true" rotate="false" num-pages="homeCtrl.tasks.totalPages" ng-change="homeCtrl.pageTasksChanged()"></pagination>
                         </div>

@@ -9,6 +9,7 @@ import java.security.Principal;
 import org.co2.kanban.project.security.MemberRepository;
 import java.sql.Timestamp;
 import java.util.Date;
+import org.co2.kanban.project.security.Member;
 import org.co2.kanban.project.task.Task;
 import org.co2.kanban.project.task.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,25 +42,25 @@ public class AllocationController {
     @RequestMapping(method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Allocation> create(@AuthenticationPrincipal Principal user,
             @PathVariable("projectId") Long projectId, @PathVariable("taskId") Long taskId, @RequestBody AllocationForm allocationForm) {
-        Allocation newAllocation = new Allocation();
-        newAllocation.setMember(memberRepository.findByProjectIdAndUserUsername(projectId, user.getName()));
-        newAllocation.setAllocationDate(new Timestamp(new Date().getTime()));
+        Member currentMember = memberRepository.findByProjectIdAndUserUsername(projectId, user.getName());
+        Task task = repository.findOne(taskId);
+        Timestamp date = new Timestamp(new Date().getTime());
+        Allocation newAllocation = allocationRepository.findByTaskIdAndAllocationDateAndMember(taskId, date, currentMember);
+        if (newAllocation == null) {
+            newAllocation = new Allocation();
+        }
+        newAllocation.setMember(currentMember);
+        newAllocation.setAllocationDate(date);
         newAllocation.setTimeRemains(allocationForm.getTimeRemains());
         newAllocation.setTimeSpent(allocationForm.getTimeSpent());
-        Task task = repository.findOne(taskId);
         newAllocation.setTask(task);
-        Long maxPosition = allocationRepository.getProjectMaxPosition(projectId);
-        if (maxPosition == null) {
-            maxPosition = 0L;
-        }
-        newAllocation.setId(maxPosition);
         allocationRepository.save(newAllocation);
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
     @RequestMapping(method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public Iterable<Allocation> list(@PathVariable("projectId") Long projectId, @PathVariable("taskId") Long taskId) {
-      
+
         return allocationRepository.findByTaskId(taskId);
     }
 }
