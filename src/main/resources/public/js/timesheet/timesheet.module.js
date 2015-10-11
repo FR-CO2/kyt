@@ -32,7 +32,7 @@
         _renderItem = function (ul, item) {
             return $("<li>")
                 .data("item.autocomplete", item)
-                .append("<span ng-click='tsCtrl.addTask("+item.id+")'>" + item.name + "</span>")
+                .append("<span>" + item.name + "</span>")
                 .appendTo(ul);
         },
 
@@ -51,22 +51,14 @@
         };
     };
     
-    function timesheetController($scope, taskResource,allocationResource, dateTS) {
+    function timesheetController($scope, $modalInstance, taskResource,allocationResource, dateTS) {
         var vm = this;
         vm.dateTS = dateTS;
         vm.allocations = taskResource.userDay({day: dateTS.getTime()});
-        vm.assignation = {};
         vm.submit = function() {
-            var keys = Object.keys(vm.assignation);
             var assignationSum = 0;
-            var mapTimespent = new Map();
-            var mapTimeremains = new Map();
-            var mapAllocationId = new Map();
-            for (var i = 0; i < keys.length; i++) {
-                assignationSum += vm.assignation[keys[i]].timespend;
-                mapTimespent.set(parseInt(keys[i]), vm.assignation[keys[i]].timeSpent);
-                mapTimeremains.set(parseInt(keys[i]), vm.assignation[keys[i]].timeRemains);
-                mapAllocationId.set(parseInt(keys[i]), vm.assignation[keys[i]].allocationId);
+            for (i = 0; i < vm.allocations.length; i++) {
+                assignationSum += vm.allocations[i].timespend;
             }
             if (assignationSum > 10) {
                 vm.formError = "Les temps saisis sur une journÃ©e ne peut excÃ©der 10";
@@ -74,6 +66,7 @@
                 for(i = 0; i < vm.allocations.length; i++){
                     allocationResource.save({"projectId": vm.allocations[i].task.project.id, "taskId": vm.allocations[i].task.id}, vm.allocations[i]);
                 }
+                $modalInstance.close();
             }
         };
         
@@ -91,7 +84,7 @@
         };
     }
 
-    timesheetController.$inject = ["$scope", "taskResource", "allocationResource", "dateTS"];
+    timesheetController.$inject = ["$scope", "$modalInstance", "taskResource", "allocationResource", "dateTS"];
     autoCompleteCtrl.$inject = ["$scope", "$http"];
     
     angular.module("kaban.timesheet", [])
