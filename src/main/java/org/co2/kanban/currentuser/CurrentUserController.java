@@ -110,7 +110,6 @@ public class CurrentUserController {
                 allocation.setAllocationDate(new Timestamp(day));
                 allocation.setTask(task);
                 allocation.setMember(member);
-                allocation.setProject(task.getProject());
             }
             allocations.add(allocation);
         }

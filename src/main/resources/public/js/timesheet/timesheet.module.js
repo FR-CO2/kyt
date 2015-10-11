@@ -72,7 +72,7 @@
                 vm.formError = "Les temps saisis sur une journÃ©e ne peut excÃ©der 10";
             } else{
                 for(i = 0; i < vm.allocations.length; i++){
-                    allocationResource.save({"projectId": vm.allocations[i].project.id, "taskId": vm.allocations[i].task.id}, vm.allocations[i]);
+                    allocationResource.save({"projectId": vm.allocations[i].task.project.id, "taskId": vm.allocations[i].task.id}, vm.allocations[i]);
                 }
             }
         };
@@ -82,7 +82,11 @@
         };
         
         vm.addTask =function(task){
-            vm.tasks.push(task);
+            var allocation = {
+                task: task,
+                allocationDate: dateTS
+            }
+            vm.allocations.push(allocation);
             $scope.$apply();
         };
     }

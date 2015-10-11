@@ -5,17 +5,14 @@
  */
 package org.co2.kanban.project.task.allocation;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.co2.kanban.project.security.Member;
 import org.co2.kanban.project.task.Task;
 import java.io.Serializable;
 import java.sql.Timestamp;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import org.co2.kanban.project.Project;
 
 /**
  *
@@ -37,10 +34,7 @@ public class Allocation implements Serializable {
 
     @ManyToOne
     private Task task;
-
-    @ManyToOne(cascade = CascadeType.DETACH)
-    private Project project;
-
+    
     private Float timeSpent;
 
     private Float timeRemains;
@@ -91,14 +85,6 @@ public class Allocation implements Serializable {
 
     public void setTimeRemains(Float timeRemains) {
         this.timeRemains = timeRemains;
-    }
-
-    public Project getProject() {
-        return project;
-    }
-
-    public void setProject(Project project) {
-        this.project = project;
     }
 
 }

@@ -44,13 +44,12 @@ public class AllocationController {
             @PathVariable("projectId") Long projectId, @PathVariable("taskId") Long taskId, @RequestBody AllocationForm allocationForm) {
         Member currentMember = memberRepository.findByProjectIdAndUserUsername(projectId, user.getName());
         Task task = repository.findOne(taskId);
-        Timestamp date = new Timestamp(new Date().getTime());
-        Allocation newAllocation = allocationRepository.findByTaskIdAndAllocationDateAndMember(taskId, date, currentMember);
+        Allocation newAllocation = allocationRepository.findByTaskIdAndAllocationDateAndMember(taskId, allocationForm.getAllocationDate(), currentMember);
         if (newAllocation == null) {
             newAllocation = new Allocation();
         }
         newAllocation.setMember(currentMember);
-        newAllocation.setAllocationDate(date);
+        newAllocation.setAllocationDate(allocationForm.getAllocationDate());
         newAllocation.setTimeRemains(allocationForm.getTimeRemains());
         newAllocation.setTimeSpent(allocationForm.getTimeSpent());
         newAllocation.setTask(task);
