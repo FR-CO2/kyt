@@ -1,5 +1,6 @@
 <alert type="danger" ng-if="edit.form.error">{{edit.form.error}}</alert>
-<form id="login" role="form" ng-submit="edit.submit()">
+
+<form id="edittask" role="form" ng-submit="edit.submit()">
     <div class="form-group">
         <label for="taskname">Nom de la tâche</label>
         <input type="text" required ng-model="edit.task.name" class="form-control" id="taskname" name="taskName" placeholder="Nom de la tâche"/>

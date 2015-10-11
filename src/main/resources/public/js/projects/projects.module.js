@@ -113,7 +113,7 @@
             });
         };
         vm.goToTask = function (taskId) {
-            $state.transitionTo("app.project-detail.task", {id: $stateParams.id, taskId: taskId});
+            $state.transitionTo("app.project-detail.task.general", {id: $stateParams.id, taskId: taskId});
         };
         vm.saveTask = function (task) {
             if (task.category) {

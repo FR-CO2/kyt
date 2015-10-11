@@ -1,5 +1,27 @@
 (function () {
     "use strict";
+
+    function uiAutocomplete() {
+        return {
+            require: '?ngModel',
+            link: function (scope, element, attrs, controller) {
+                var getOptions = function () {
+                    return angular.extend({}, scope.$eval(attrs.uiAutocomplete));
+                };
+                var initAutocompleteWidget = function () {
+                    var opts = getOptions();
+                    element.autocomplete(opts);
+                    if (opts._renderItem) {
+                        element.data("ui-autocomplete")._renderItem = opts._renderItem;
+                    }
+                };
+                // Watch for changes to the directives options
+                scope.$watch(getOptions, initAutocompleteWidget, true);
+            }
+        };
+    }
+    ;
+
     function homeController($state, $modal, projectResource, taskResource, $sessionStorage) {
         var vm = this;
         vm.uiConfig = {
@@ -52,7 +74,7 @@
                         if (cat.bgcolor) {
                             eventTransform.backgroundColor = cat.bgcolor;
                         }
-                        eventTransform.url = "#/project/" + event.project.id + "/task/" + event.id;
+                        eventTransform.url = "#/project/" + event.project.id + "/task/" + event.id + "/general";
                     }
                     return eventTransform;
                 }
@@ -62,7 +84,7 @@
             $state.transitionTo("app.project-detail.kanban", {id: projectId});
         };
         vm.goTask = function (projectId, taskId) {
-            $state.transitionTo("app.project-detail.task", {"id": projectId, "taskId": taskId});
+            $state.transitionTo("app.project-detail.task.general", {"id": projectId, "taskId": taskId});
         };
     }
 
@@ -95,7 +117,7 @@
     function userProjectsRoles($resource) {
         return $resource("/api/userProjectRole");
     }
-    
+
     function loginController($state, $scope, userProfileSrv, appAuthService) {
         var vm = this;
         vm.authenticate = function () {
@@ -224,5 +246,6 @@
             .controller("profilController", profilController)
             .service("appAuthService", appAuthService)
             .service("userProfile", userProfile)
-            .service("userProjectsRoles", userProjectsRoles);
+            .service("userProjectsRoles", userProjectsRoles)
+            .directive('uiAutocomplete', uiAutocomplete);
 })();

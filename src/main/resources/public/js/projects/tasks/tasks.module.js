@@ -74,7 +74,7 @@
             });
         };
         vm.edit = function (taskId) {
-            $state.transitionTo("app.project-detail.task", {"id": $stateParams.id, "taskId": taskId});
+            $state.transitionTo("app.project-detail.task.general", {"id": $stateParams.id, "taskId": taskId});
         };
         vm.delete = function (taskId) {
             taskResourceSrv.delete({projectId: $stateParams.id, id: taskId}, function () {
@@ -190,10 +190,22 @@
             url: "/tasks"
         });
         $stateProvider.state("app.project-detail.task", {
-            templateUrl: "templates/projects/tasks/edit.html",
+            templateUrl: "templates/projects/tasks/task-layout.html",
             controller: "editTaskController",
             controllerAs: "edit",
             url: "/task/:taskId"
+        });
+        $stateProvider.state("app.project-detail.task.general", {
+            templateUrl: "templates/projects/tasks/edit.html",
+            controller: "editTaskController",
+            controllerAs: "edit",
+            url: "/general"
+        });
+        $stateProvider.state("app.project-detail.task.allocation", {
+            templateUrl: "templates/projects/tasks/edit.html",
+            controller: "editTaskController",
+            controllerAs: "edit",
+            url: "/allocation"
         });
     }
 
