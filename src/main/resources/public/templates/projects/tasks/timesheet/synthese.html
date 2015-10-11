@@ -1,0 +1,36 @@
+ <div class="col-md-12">
+        <div class="panel">
+            <div class="panel-heading">
+                <h2 class="panel-heading-title">Liste des tâches</h2>
+            </div>
+            <div class="panel-body">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Utilisateur</th>
+                            <th>Date</th>
+                            <th>Consommé</th>
+                            <th>Reste à faire</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="allocation in allocation.allocations">
+                            <td>
+                                {{allocation.member.user.username}}
+                            </td>
+                            <td>
+                                {{allocation.allocationDate | date:'dd-MM-yyyy'}}
+                            </td>
+                            <td>
+                                {{allocation.timeSpent}}
+                            </td>
+                            <td>
+                                {{allocation.timeRemains}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+ </div>

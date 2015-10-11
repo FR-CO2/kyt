@@ -15,10 +15,12 @@ import org.springframework.data.repository.PagingAndSortingRepository;
  * @author ben
  */
 public interface AllocationRepository extends PagingAndSortingRepository<Allocation, Long> {
-  
+
     @Query(value = "SELECT MAX(a.id) + 1 FROM allocation a where a.project_id = ?1", nativeQuery = true)
     Long getProjectMaxPosition(Long projectId);
-    
+
     @Query(value = "select a from Allocation a WHERE a.member = ?1")
     Iterable<Allocation> getListAllocationBeetweenPlannedStartAndPlannedEnding(Member member);
+
+    Iterable<Allocation> findByTaskId(Long taskId);
 }

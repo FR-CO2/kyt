@@ -6,7 +6,6 @@
 package org.co2.kanban.project.task.allocation;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonView;
 import org.co2.kanban.project.security.Member;
 import org.co2.kanban.project.task.Task;
 import java.io.Serializable;
@@ -15,7 +14,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import org.co2.kanban.ControllerViews;
 import org.co2.kanban.project.Project;
 
 /**
@@ -35,6 +33,7 @@ public class Allocation implements Serializable{
     private Timestamp allocationDate;
     
     @ManyToOne
+    @JsonIgnore
     private Task task;
     
     @ManyToOne(cascade = CascadeType.DETACH)

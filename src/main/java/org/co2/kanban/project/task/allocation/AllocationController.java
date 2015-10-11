@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author ben
  */
 @RestController
-@RequestMapping(value = "/api/project/{projectId}/allocation")
+@RequestMapping(value = "/api/project/{projectId}/task/{taskId}/allocation")
 public class AllocationController {
 
     @Autowired
@@ -40,13 +40,13 @@ public class AllocationController {
 
     @RequestMapping(method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Allocation> create(@AuthenticationPrincipal Principal user,
-        @PathVariable("projectId") Long projectId, @RequestBody AllocationForm allocationForm) {
+            @PathVariable("projectId") Long projectId, @PathVariable("taskId") Long taskId, @RequestBody AllocationForm allocationForm) {
         Allocation newAllocation = new Allocation();
         newAllocation.setMember(memberRepository.findByProjectIdAndUserUsername(projectId, user.getName()));
         newAllocation.setAllocationDate(new Timestamp(new Date().getTime()));
         newAllocation.setTimeRemains(allocationForm.getTimeRemains());
         newAllocation.setTimeSpent(allocationForm.getTimeSpent());
-        Task task = repository.findOne(allocationForm.getId());
+        Task task = repository.findOne(taskId);
         newAllocation.setTask(task);
         Long maxPosition = allocationRepository.getProjectMaxPosition(projectId);
         if (maxPosition == null) {
@@ -55,5 +55,11 @@ public class AllocationController {
         newAllocation.setId(maxPosition);
         allocationRepository.save(newAllocation);
         return new ResponseEntity(HttpStatus.CREATED);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    public Iterable<Allocation> list(@PathVariable("projectId") Long projectId, @PathVariable("taskId") Long taskId) {
+      
+        return allocationRepository.findByTaskId(taskId);
     }
 }

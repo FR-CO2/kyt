@@ -75,7 +75,7 @@
                     vm.tasks[i].timeSpent = parseFloat(mapTimespent.get(vm.tasks[i].id));
                     vm.tasks[i].timeRemains = parseFloat(mapTimeremains.get(vm.tasks[i].id));
                     vm.tasks[i].allocationId = parseFloat(mapAllocationId.get(vm.tasks[i].id));
-                    allocationResource.save({"projectId": vm.tasks[i].project.id}, vm.tasks[i]);
+                    allocationResource.save({"projectId": vm.tasks[i].project.id, "taskId": vm.tasks[i].id}, vm.tasks[i]);
                 }
             }
         };

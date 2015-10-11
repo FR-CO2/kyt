@@ -86,28 +86,30 @@ public class Task implements Serializable {
 
     @JsonView(ControllerViews.TaskList.class)
     private String description;
-    
+
     @JsonView(ControllerViews.TaskList.class)
     @Transient
     private Float timeSpent = 0F;
-    
+
     @JsonView(ControllerViews.TaskList.class)
     @Transient
     private Float timeRemains = 0F;
-    
+
     @JsonIgnore
     @OneToMany(mappedBy = "task")
     private List<Allocation> allocations;
-    
+
     @PostLoad
-    public void onLoad(){
-        if(!allocations.isEmpty()){
-            for(Allocation alloc : this.allocations) {
-                this.timeSpent += alloc.getTimeSpent();
+    public void onLoad() {
+        if (!allocations.isEmpty()) {
+            for (Allocation alloc : this.allocations) {
+                if (alloc.getTimeSpent() != null) {
+                    this.timeSpent += alloc.getTimeSpent();
+                }
             }
 
             Collections.sort(allocations, new AllocationDateComparator());
-            this.timeRemains = allocations.get(allocations.size()-1).getTimeRemains();
+            this.timeRemains = allocations.get(allocations.size() - 1).getTimeRemains();
         }
     }
 
@@ -265,7 +267,7 @@ public class Task implements Serializable {
     public void setAllocations(List<Allocation> allocations) {
         this.allocations = allocations;
     }
-    
+
     public Float getTimeSpent() {
         return timeSpent;
     }
@@ -280,5 +282,5 @@ public class Task implements Serializable {
 
     public void setTimeRemains(Float timeRemains) {
         this.timeRemains = timeRemains;
-    }  
     }
+}

@@ -177,10 +177,6 @@
         });
     }
 
-    function allocationResource($resource) {
-        return $resource("/api/project/:projectId/allocation/", {projectId: "@projectId"}, {
-        });
-    }
 
     function taskConfig($stateProvider) {
         $stateProvider.state("app.project-detail.tasks", {
@@ -202,9 +198,9 @@
             url: "/general"
         });
         $stateProvider.state("app.project-detail.task.allocation", {
-            templateUrl: "templates/projects/tasks/edit.html",
-            controller: "editTaskController",
-            controllerAs: "edit",
+            templateUrl: "templates/projects/tasks/timesheet/synthese.html",
+            controller: "timesheetSynthese",
+            controllerAs: "allocation",
             url: "/allocation"
         });
     }
@@ -215,13 +211,12 @@
     editTaskController.$inject = ["$stateParams", "taskResource", "categoryResource", "memberResource", "taskStateResource", "swimlaneResource"];
     taskImportController.$inject = ["$stateParams", "$modalInstance", "$http"];
     taskResource.$inject = ["$resource"];
-    allocationResource.$inject = ["$resource"];
-    angular.module("kanban.project.task", [])
+
+    angular.module("kanban.project.task", ["kanban.project.task.timesheet"])
             .config(taskConfig)
             .controller("newTaskController", newTaskController)
             .controller("taskListController", taskListController)
             .controller("editTaskController", editTaskController)
             .controller("taskImportController", taskImportController)
-            .service("taskResource", taskResource)
-            .service("allocationResource", allocationResource);
+            .service("taskResource", taskResource);
 })();
