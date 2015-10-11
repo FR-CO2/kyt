@@ -93,7 +93,7 @@
                                 {{task.plannedEnding| date:'dd/MM/yyyy'}}
                             </td>
                             <td>{{task.estimatedLoad}}</td>
-                            <td>-</td>
+                            <td>{{task.timeRemains}}</td>
                             <td ng-if="projectCtrl.hasEditRights" >
                                 <a ng-click="taskCtrl.edit(task.id)" title="edit">
                                     <span class="glyphicon glyphicon-edit"></span>
