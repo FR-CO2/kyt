@@ -3,16 +3,16 @@
         <div class="panel">
             <div class="panel-heading">
                 <h2 class="panel-heading-title">Liste des tâches</h2>
-                    <div class="panel-heading-action">
-                        <button ng-if="projectCtrl.hasEditRights" class="btn btn-info btn-sm" ng-click="taskCtrl.add()"><span class="glyphicon glyphicon-plus-sign"></span>Nouvelle tâche</button>
-                        <button class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                            Import/Export <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu pull-right">
-                            <li ng-if="projectCtrl.hasEditRights"><a ng-click="taskCtrl.import()"><span class="glyphicon glyphicon-import"></span>Import</a></li>
-                            <li><a ng-click="taskCtrl.export()"><span class="glyphicon glyphicon-export"></span>Export</a></li>
-                        </ul>
-                    </div>
+                <div class="panel-heading-action">
+                    <button ng-if="projectCtrl.hasEditRights" class="btn btn-info btn-sm" ng-click="taskCtrl.add()"><span class="glyphicon glyphicon-plus-sign"></span>Nouvelle tâche</button>
+                    <button class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                        Import/Export <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu pull-right">
+                        <li ng-if="projectCtrl.hasEditRights"><a ng-click="taskCtrl.import()"><span class="glyphicon glyphicon-import"></span>Import</a></li>
+                        <li><a ng-click="taskCtrl.export()"><span class="glyphicon glyphicon-export"></span>Export</a></li>
+                    </ul>
+                </div>
             </div>
             <div class="panel-body">
                 <table class="table table-hover">
@@ -25,8 +25,9 @@
                             <th>assignee</th>
                             <th>Date début</th>
                             <th>Date fin</th>
+                            <th>Consommée</th>
                             <th>Charge estimée</th>
-                            <th>Consommé</th>
+                            <th>Charge réevaluée</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -89,11 +90,17 @@
                                 {{task.plannedStart| date:'dd/MM/yyyy'}}
                             </td>
                             <td>
-
                                 {{task.plannedEnding| date:'dd/MM/yyyy'}}
                             </td>
-                            <td>{{task.estimatedLoad}}</td>
-                            <td>{{task.timeRemains}}</td>
+                            <td>
+                                {{task.timeSpent}}
+                            </td>
+                            <td>
+                                {{task.estimatedLoad}}
+                            </td>
+                            <td>
+                                {{task.timeRemains}}
+                            </td>
                             <td ng-if="projectCtrl.hasEditRights" >
                                 <a ng-click="taskCtrl.edit(task.id)" title="edit">
                                     <span class="glyphicon glyphicon-edit"></span>
