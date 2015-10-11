@@ -55,7 +55,7 @@ public class CurrentUserController {
     @JsonView(ControllerViews.UserTask.class)
     public Page<Task> listTask(@AuthenticationPrincipal Principal user, Pageable page) {
         ApplicationUser appUser = getCurrentUser(user);
-        return taskRepositoy.findByAssigneeUserOrBackupUser(appUser, appUser, page);
+        return taskRepositoy.findByStateCloseStateFalseAndAssigneeUserOrBackupUser(appUser, appUser, page);
     }
 
     @RequestMapping(value = "userProject", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
@@ -80,7 +80,7 @@ public class CurrentUserController {
         ApplicationUser appUser = getCurrentUser(user);
         Date startTime = new Date(start * 1000);
         Date endTime = new Date(end * 1000);
-        return taskRepositoy.findByAssigneeUserAndPlannedEndingBetweenOrPlannedStartBetween(appUser, startTime, endTime, startTime, endTime);
+        return taskRepositoy.findByAssigneeUserAndStateCloseStateFalseAndPlannedEndingBetweenOrPlannedStartBetween(appUser, startTime, endTime, startTime, endTime);
     }
 
     @RequestMapping(value = "userTask/day/{day}", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)

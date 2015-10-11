@@ -36,17 +36,6 @@ public class TimesheetController {
     @Autowired
     private TaskRepository taskRepository;
 
-    @RequestMapping(method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public Iterable<TimesheetForm> list(@AuthenticationPrincipal Principal user, @RequestParam("month") Long day) {
-        ApplicationUser appUser = getCurrentUser(user);
-        return null;
-    }
-
-    @RequestMapping(method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity createDay(@AuthenticationPrincipal Principal user, @RequestBody Iterable<TimesheetForm> form) {
-        return new ResponseEntity(HttpStatus.CREATED);
-    }
-
     @RequestMapping(value = "/api/timesheet/tasks/{day}", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public Iterable<Task> taskList(@AuthenticationPrincipal Principal user, @PathVariable("day") Long day) {
         ApplicationUser appUser = getCurrentUser(user);
