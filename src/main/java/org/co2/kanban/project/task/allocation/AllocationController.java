@@ -7,8 +7,6 @@ package org.co2.kanban.project.task.allocation;
 
 import java.security.Principal;
 import org.co2.kanban.project.security.MemberRepository;
-import java.sql.Timestamp;
-import java.util.Date;
 import org.co2.kanban.project.security.Member;
 import org.co2.kanban.project.task.Task;
 import org.co2.kanban.project.task.TaskRepository;
@@ -53,8 +51,11 @@ public class AllocationController {
         newAllocation.setTimeRemains(allocationForm.getTimeRemains());
         newAllocation.setTimeSpent(allocationForm.getTimeSpent());
         newAllocation.setTask(task);
-        allocationRepository.save(newAllocation);
-        return new ResponseEntity(HttpStatus.CREATED);
+        if (newAllocation.getTimeRemains() != null || newAllocation.getTimeSpent() != null) {
+            allocationRepository.save(newAllocation);
+            return new ResponseEntity(HttpStatus.CREATED);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
     }
 
     @RequestMapping(method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
