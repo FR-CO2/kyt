@@ -11,6 +11,7 @@ import java.sql.Timestamp;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import org.co2.kanban.project.task.Task;
 
 /**
  *
@@ -27,6 +28,9 @@ public class Comment implements Serializable{
     private Member writer;
     
     private Timestamp writingDate;
+    
+    @ManyToOne
+    private Task task;
     
     private String comment;
 
@@ -61,6 +65,13 @@ public class Comment implements Serializable{
     public void setComment(String comment) {
         this.comment = comment;
     }
-    
+
+    public Task getTask() {
+        return task;
+    }
+
+    public void setTask(Task task) {
+        this.task = task;
+    }
     
 }

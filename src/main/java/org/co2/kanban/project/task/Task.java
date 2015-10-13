@@ -12,12 +12,10 @@ import org.co2.kanban.project.category.Category;
 import org.co2.kanban.project.security.Member;
 import org.co2.kanban.project.swimlane.Swimlane;
 import org.co2.kanban.project.task.allocation.Allocation;
-import org.co2.kanban.project.task.allocation.AllocationDateComparator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.Collections;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -27,6 +25,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PostLoad;
 import javax.persistence.Transient;
+import org.co2.kanban.project.task.comment.Comment;
 
 /**
  *
@@ -99,6 +98,17 @@ public class Task implements Serializable {
     @OneToMany(mappedBy = "task")
     private List<Allocation> allocations;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "task")
+    private List<Comment> comments;
+    
+    @ManyToOne
+    private Task linkedTask;
+
+    @OneToMany(mappedBy = "linkedTask")
+    @JsonIgnore
+    private List<Task> childrenTask;
+    
     @PostLoad
     public void onLoad() {
         if (!allocations.isEmpty()) {
@@ -282,4 +292,29 @@ public class Task implements Serializable {
     public void setTimeRemains(Float timeRemains) {
         this.timeRemains = timeRemains;
     }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
+    public Task getLinkedTask() {
+        return linkedTask;
+    }
+
+    public void setLinkedTask(Task linkedTask) {
+        this.linkedTask = linkedTask;
+    }
+
+    public List<Task> getChildrenTask() {
+        return childrenTask;
+    }
+
+    public void setChildrenTask(List<Task> childrenTask) {
+        this.childrenTask = childrenTask;
+    }
+    
 }

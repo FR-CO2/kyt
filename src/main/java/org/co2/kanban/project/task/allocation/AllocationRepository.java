@@ -7,7 +7,6 @@ package org.co2.kanban.project.task.allocation;
 
 import java.sql.Timestamp;
 import org.co2.kanban.project.security.Member;
-import java.util.Date;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 

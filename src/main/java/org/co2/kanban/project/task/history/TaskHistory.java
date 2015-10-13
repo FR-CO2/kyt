@@ -26,10 +26,11 @@ public class TaskHistory implements Serializable{
 
     private Timestamp modification;
     
-    private String actor;
+    private String username;
+    
+    private String description;
     
     @ManyToOne
-    @JoinColumn(name = "TASK_PARENT_ID")
     private Task parent;
 
     public Long getId() {
@@ -56,13 +57,20 @@ public class TaskHistory implements Serializable{
         this.modification = modification;
     }
 
-    public String getActor() {
-        return actor;
+    public String getUsername() {
+        return username;
     }
 
-    public void setActor(String actor) {
-        this.actor = actor;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
 }

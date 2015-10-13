@@ -203,6 +203,18 @@
             controllerAs: "allocation",
             url: "/allocation"
         });
+        $stateProvider.state("app.project-detail.task.comment", {
+            templateUrl: "templates/projects/tasks/comment/list.html",
+            controller: "commentListController",
+            controllerAs: "comment",
+            url: "/comment"
+        });
+        $stateProvider.state("app.project-detail.task.history", {
+            templateUrl: "templates/projects/tasks/history/list.html",
+            controller: "historyListController",
+            controllerAs: "history",
+            url: "/history"
+        });
     }
 
     taskConfig.$inject = ["$stateProvider"];
@@ -212,7 +224,7 @@
     taskImportController.$inject = ["$stateParams", "$modalInstance", "$http"];
     taskResource.$inject = ["$resource"];
 
-    angular.module("kanban.project.task", ["kanban.project.task.timesheet"])
+    angular.module("kanban.project.task", ["kanban.project.task.timesheet","kanban.project.task.comment","kanban.project.task.history"])
             .config(taskConfig)
             .controller("newTaskController", newTaskController)
             .controller("taskListController", taskListController)
