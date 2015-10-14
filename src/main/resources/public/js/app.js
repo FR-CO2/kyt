@@ -22,7 +22,7 @@
     }
     ;
 
-    function homeController($state, $modal, projectResource, taskResource, $sessionStorage) {
+    function homeController($scope, $state, $modal, projectResource, taskResource, $sessionStorage) {
         var vm = this;
         vm.uiConfig = {
             calendar: {
@@ -86,6 +86,17 @@
         vm.goTask = function (projectId, taskId) {
             $state.transitionTo("app.project-detail.task.general", {"id": projectId, "taskId": taskId});
         };
+        $scope.$on("event:auth-loginConfirmed", function () {
+            vm.events[0].headers = {
+                Authorization: (function () {
+                    if ($sessionStorage.oauth) {
+                        return $sessionStorage.oauth.token_type + " " + $sessionStorage.oauth.access_token;
+                    }
+                    return "";
+                })()
+            };
+            $scope.userCalendar.fullCalendar('refetchEvents');
+        });
     }
 
     function appAuthService($http) {
@@ -230,7 +241,7 @@
     runApp.$inject = ["$rootScope", "$state", "$modal", "$sessionStorage", "$localStorage", "editableOptions", "authService"];
     loginController.$inject = ["$state", "$scope", "userProfile", "appAuthService"];
     headerController.$inject = ["$scope", "$state"];
-    homeController.$inject = ["$state", "$modal", "projectResource", "taskResource", "$sessionStorage"];
+    homeController.$inject = ["$scope", "$state", "$modal", "projectResource", "taskResource", "$sessionStorage"];
     profilController.$inject = ["userProjectsRoles"];
     appAuthService.$inject = ["$http"];
     userProfile.$inject = ["$resource"];
