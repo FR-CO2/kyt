@@ -22,7 +22,7 @@
     }
     ;
 
-    function homeController($scope, $state, $modal, projectResource, taskResource, $sessionStorage) {
+    function homeController($rootScope, $scope, $state, $modal, projectResource, taskResource, $sessionStorage) {
         var vm = this;
         vm.uiConfig = {
             calendar: {
@@ -51,6 +51,9 @@
         };
         vm.projects = projectResource.user();
         vm.tasks = taskResource.user();
+        $rootScope.$on("event:allocationUpdated", function() {
+            vm.tasks = taskResource.user();
+        });
         vm.events = [{
                 url: "/api/userEvent",
                 headers: {
@@ -241,7 +244,7 @@
     runApp.$inject = ["$rootScope", "$state", "$modal", "$sessionStorage", "$localStorage", "editableOptions", "authService"];
     loginController.$inject = ["$state", "$scope", "userProfile", "appAuthService"];
     headerController.$inject = ["$scope", "$state"];
-    homeController.$inject = ["$scope", "$state", "$modal", "projectResource", "taskResource", "$sessionStorage"];
+    homeController.$inject = ["$rootScope", "$scope", "$state", "$modal", "projectResource", "taskResource", "$sessionStorage"];
     profilController.$inject = ["userProjectsRoles"];
     appAuthService.$inject = ["$http"];
     userProfile.$inject = ["$resource"];

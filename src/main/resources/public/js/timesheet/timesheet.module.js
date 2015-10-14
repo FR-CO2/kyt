@@ -66,6 +66,7 @@
                 for(i = 0; i < vm.allocations.length; i++){
                     allocationResource.save({"projectId": vm.allocations[i].task.project.id, "taskId": vm.allocations[i].task.id}, vm.allocations[i]);
                 }
+                $scope.$emit("event:allocationUpdated");
                 $modalInstance.close();
             }
         };
