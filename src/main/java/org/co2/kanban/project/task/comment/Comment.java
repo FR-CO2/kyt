@@ -9,6 +9,7 @@ import org.co2.kanban.project.security.Member;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import org.co2.kanban.project.task.Task;
@@ -22,6 +23,7 @@ public class Comment implements Serializable{
     private static final long serialVersionUID = 351144123076183094L;
     
     @Id
+    @GeneratedValue
     private Long id;
     
     @ManyToOne
