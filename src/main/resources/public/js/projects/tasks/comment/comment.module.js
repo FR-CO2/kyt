@@ -19,6 +19,11 @@
         vm.update = function(taskComment) {
             taskCommentResource.save({projectId: $stateParams.id, taskId: $stateParams.taskId, id: taskComment.id}, taskComment.comment);
         };
+        vm.delete = function(id) {
+            taskCommentResource.delete({projectId: $stateParams.id, taskId: $stateParams.taskId, id: id}, function () {
+                vm.comments = taskCommentResource.query({projectId: $stateParams.id, taskId: $stateParams.taskId});
+            });
+        };
     }
 
     function newCommentController($modalInstance, $stateParams, taskCommentResource) {

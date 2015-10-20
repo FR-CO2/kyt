@@ -8,7 +8,6 @@ package org.co2.kanban.project.task.comment;
 import java.security.Principal;
 import java.sql.Timestamp;
 import java.util.Date;
-import org.co2.kanban.project.security.Member;
 import org.co2.kanban.project.security.MemberRepository;
 import org.co2.kanban.project.task.Task;
 import org.co2.kanban.project.task.TaskRepository;
@@ -36,9 +35,6 @@ public class CommentController {
     private TaskRepository taskRepository;
 
     @Autowired
-    private MemberRepository memberRepository;
-
-    @Autowired
     private CommentRepository repository;
 
     @RequestMapping(method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
@@ -60,11 +56,22 @@ public class CommentController {
     }
 
     @RequestMapping(value = "{commentId}", method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Comment> update(@AuthenticationPrincipal Principal user, @PathVariable("taskId") Long taskId, @PathVariable("commentId") Long commentId, @RequestBody String form) {
+    public ResponseEntity<Comment> update(@AuthenticationPrincipal Principal user, @PathVariable("commentId") Long commentId, @RequestBody String form) {
         Comment comment = repository.findOne(commentId);
-        comment.setComment(form);
-        comment.setWritingDate(new Timestamp(new Date().getTime()));
-        repository.save(comment);
+        if (comment.getWriter().equals(user.getName())) {
+            comment.setComment(form);
+            comment.setWritingDate(new Timestamp(new Date().getTime()));
+            repository.save(comment);
+        }
+        return new ResponseEntity<>(comment, HttpStatus.OK);
+    }
+    
+    @RequestMapping(value = "{commentId}", method = RequestMethod.DELETE, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Comment> delete(@AuthenticationPrincipal Principal user, @PathVariable("commentId") Long commentId) {
+        Comment comment = repository.findOne(commentId);
+        if (comment.getWriter().equals(user.getName())) {
+            repository.delete(comment);
+        }
         return new ResponseEntity<>(comment, HttpStatus.OK);
     }
 }
