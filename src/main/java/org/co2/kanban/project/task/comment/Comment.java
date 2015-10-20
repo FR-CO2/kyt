@@ -25,9 +25,8 @@ public class Comment implements Serializable{
     @Id
     @GeneratedValue
     private Long id;
-    
-    @ManyToOne
-    private Member writer;
+
+    private String writer;
     
     private Timestamp writingDate;
     
@@ -44,11 +43,11 @@ public class Comment implements Serializable{
         this.id = id;
     }
 
-    public Member getWriter() {
+    public String getWriter() {
         return writer;
     }
 
-    public void setWriter(Member writer) {
+    public void setWriter(String writer) {
         this.writer = writer;
     }
 

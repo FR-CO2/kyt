@@ -16,24 +16,26 @@
                 vm.comments = taskCommentResource.query({projectId: $stateParams.id, taskId: $stateParams.taskId});
             });
         };
+        vm.update = function(taskComment) {
+            taskCommentResource.save({projectId: $stateParams.id, taskId: $stateParams.taskId, id: taskComment.id}, taskComment.comment);
+        };
     }
 
-    function newCommentController($stateParams, taskCommentResource) {
+    function newCommentController($modalInstance, $stateParams, taskCommentResource) {
         var vm = this;
-        vm.comment = {
-            writingDate: new Date()
-        };
         vm.submit = function() {
-            taskCommentResource.save({projectId: $stateParams.id, taskId: $stateParams.taskId}, vm.comment);
+            taskCommentResource.save({projectId: $stateParams.id, taskId: $stateParams.taskId}, vm.comment, function () {
+                $modalInstance.close();
+            });
         };
     }
 
     function taskCommentResource($resource) {
-        return $resource("/api/project/:projectId/task/:taskId/comment", {projectId: "@projectId", taskId: "@id"});
+        return $resource("/api/project/:projectId/task/:taskId/comment/:id", {projectId: "@projectId", taskId: "@id", id: "@id"});
     }
 
     commentListController.$inject = ["$stateParams", "$modal", "taskCommentResource"];
-    newCommentController.$inject = ["$stateParams", "taskCommentResource"];
+    newCommentController.$inject = ["$modalInstance", "$stateParams", "taskCommentResource"];
     taskCommentResource.$inject = ["$resource"];
 
     angular.module("kanban.project.task.comment", [])

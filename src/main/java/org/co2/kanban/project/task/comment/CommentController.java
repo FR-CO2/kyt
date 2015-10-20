@@ -6,6 +6,8 @@
 package org.co2.kanban.project.task.comment;
 
 import java.security.Principal;
+import java.sql.Timestamp;
+import java.util.Date;
 import org.co2.kanban.project.security.Member;
 import org.co2.kanban.project.security.MemberRepository;
 import org.co2.kanban.project.task.Task;
@@ -35,7 +37,7 @@ public class CommentController {
 
     @Autowired
     private MemberRepository memberRepository;
-    
+
     @Autowired
     private CommentRepository repository;
 
@@ -46,25 +48,23 @@ public class CommentController {
     }
 
     @RequestMapping(method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Comment> create(@AuthenticationPrincipal Principal user, @PathVariable("taskId") Long taskId, @RequestBody Comment form) {
+    public ResponseEntity<Comment> create(@AuthenticationPrincipal Principal user, @PathVariable("taskId") Long taskId, @RequestBody String form) {
         Task task = taskRepository.findOne(taskId);
-        Member member = memberRepository.findByProjectIdAndUserUsername(task.getProject().getId(), user.getName());
-        form.setTask(task);
-        form.setWriter(member);
-        Comment comment = repository.save(form);
+        Comment comment = new Comment();
+        comment.setTask(task);
+        comment.setWriter(user.getName());
+        comment.setWritingDate(new Timestamp(new Date().getTime()));
+        comment.setComment(form);
+        comment = repository.save(comment);
         return new ResponseEntity<>(comment, HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "{commentId}", method = RequestMethod.PUT, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Comment> update(@AuthenticationPrincipal Principal user, @PathVariable("taskId") Long taskId, @PathVariable("commentId") Long commentId, Comment form) {
-        Task task = taskRepository.findOne(taskId);
+    @RequestMapping(value = "{commentId}", method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Comment> update(@AuthenticationPrincipal Principal user, @PathVariable("taskId") Long taskId, @PathVariable("commentId") Long commentId, @RequestBody String form) {
         Comment comment = repository.findOne(commentId);
-        Member member = memberRepository.findByProjectIdAndUserUsername(task.getProject().getId(), user.getName());
-        comment.setTask(task);
-        comment.setWriter(member);
-        comment.setComment(form.getComment());
-        comment.setWritingDate(form.getWritingDate());
-        repository.save(form);
+        comment.setComment(form);
+        comment.setWritingDate(new Timestamp(new Date().getTime()));
+        repository.save(comment);
         return new ResponseEntity<>(comment, HttpStatus.OK);
     }
 }
