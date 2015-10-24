@@ -5,7 +5,7 @@
  */
 package org.co2.kanban.security;
 
-import org.co2.kanban.user.ApplicationUserRole;
+import org.co2.kanban.repository.user.ApplicationUserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;

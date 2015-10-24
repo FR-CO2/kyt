@@ -26,10 +26,39 @@
                                 -
                             </span>
                         </a>
+                        <div ng-repeat="taskComment in taskComment.reply">
+                            <div class="panel panel-default"> 
+                                <div class=" panel-heading">
+                                    <div class="col-md-7">
+                                        Commentaire #{{taskComment.id}}
+                                    </div>
+                                    <div class="pull-right">
+                                        <a ng-click="comment.delete(taskComment.id)" title="delete">
+                                            <span class="glyphicon glyphicon-trash"></span>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <a href="#" editable-textarea="taskComment.comment" e-row="5" e-cols="60" onaftersave="comment.update(taskComment)" >
+                                        {{taskComment.comment}}
+                                        <span ng-if="!taskComment.comment">
+                                            -
+                                        </span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="panel-footer">
-                        <span> De {{taskComment.writer}}</span>
-                        <span> le {{taskComment.writingDate| date:'dd-MM-yyyy'}}</span>
+                        <div class="col-md-7">
+                            <span> De {{taskComment.writer}}</span>
+                            <span> le {{taskComment.writingDate| date:'dd-MM-yyyy'}}</span>
+                        </div>
+                        <div class="pull-right">
+                            <a ng-click="comment.reply(taskComment.id)" title="reply">
+                                Répondre <span class="glyphicon glyphicon-comment"></span>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>

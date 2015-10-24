@@ -204,7 +204,7 @@
         $state.go("login");
     }
 
-    function applicationConfig($stateProvider, $httpProvider) {
+    function applicationConfig($stateProvider, $httpProvider, HateoasInterceptorProvider) {
         $stateProvider.state("app", {
             templateUrl: "layout-app.html",
             url: "/"
@@ -238,9 +238,10 @@
                 }
             };
         });
+        HateoasInterceptorProvider.transformAllResponses();
     }
 
-    applicationConfig.$inject = ["$stateProvider", "$httpProvider"];
+    applicationConfig.$inject = ["$stateProvider", "$httpProvider", "HateoasInterceptorProvider"];
     runApp.$inject = ["$rootScope", "$state", "$modal", "$sessionStorage", "$localStorage", "editableOptions", "authService"];
     loginController.$inject = ["$state", "$scope", "userProfile", "appAuthService"];
     headerController.$inject = ["$scope", "$state"];
@@ -250,7 +251,7 @@
     userProfile.$inject = ["$resource"];
     userProjectsRoles.$inject = ["$resource"];
     angular.module("kaban", ["ngResource", "ngRoute", "ui.router", "ui.bootstrap", "ui.calendar",
-        "ui.sortable", "ngStorage", "http-auth-interceptor", "xeditable", "chart.js",
+        "ui.sortable", "ngStorage", "http-auth-interceptor", "xeditable", "chart.js", "hateoas",
         "kanban.project", "kanban.user", "kanban.user", "kaban.timesheet"])
             .config(applicationConfig)
             .run(runApp)

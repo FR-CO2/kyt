@@ -5,8 +5,8 @@
  */
 package org.co2.kanban.security;
 
-import org.co2.kanban.user.ApplicationUser;
-import org.co2.kanban.user.ApplicationUserRepository;
+import org.co2.kanban.repository.user.ApplicationUser;
+import org.co2.kanban.repository.user.ApplicationUserRepository;
 import java.util.ArrayList;
 import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
