@@ -8,7 +8,7 @@ package org.co2.kanban.rest.project.state;
 import org.co2.kanban.repository.state.State;
 import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
 import org.co2.kanban.rest.project.ProjectController;
-import org.co2.kanban.rest.project.task.TaskController;
+import org.co2.kanban.rest.project.task.TaskListController;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
@@ -31,7 +31,7 @@ public class StateAssembler extends ResourceAssemblerSupport<State, StateResourc
         resource.setCloseState(state.getCloseState());
         resource.setKanbanHide(state.getKanbanHide());
         resource.add(linkTo(methodOn(ProjectController.class).get(state.getProject().getId())).withRel("project"));
-        resource.add(linkTo(methodOn(TaskController.class).filterBySwimlane(state.getProject().getId(), state.getId())).withRel("tasks"));
+        resource.add(linkTo(methodOn(TaskListController.class).filterBySwimlane(state.getProject().getId(), state.getId())).withRel("tasks"));
         return resource;
     }
 
