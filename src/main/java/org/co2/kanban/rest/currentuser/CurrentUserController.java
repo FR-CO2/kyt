@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.co2.kanban.rest.dashboard;
+package org.co2.kanban.rest.currentuser;
 
 import org.co2.kanban.repository.project.Project;
 import org.co2.kanban.repository.project.ProjectRepository;
@@ -58,7 +58,5 @@ public class CurrentUserController {
     public UserResource getCurrentUser(@AuthenticationPrincipal Principal user) {
         return userAssembler.toResource(userRepository.findByUsername(user.getName()));
     }
-
-
 
 }

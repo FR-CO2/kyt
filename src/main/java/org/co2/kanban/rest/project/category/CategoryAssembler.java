@@ -7,6 +7,7 @@ package org.co2.kanban.rest.project.category;
 
 import org.co2.kanban.repository.category.Category;
 import org.co2.kanban.rest.project.ProjectController;
+import org.co2.kanban.rest.project.task.TaskController;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
@@ -30,7 +31,7 @@ public class CategoryAssembler extends ResourceAssemblerSupport<Category, Catego
         resource.setBgcolor(category.getBgcolor());
         resource.setColor(category.getColor());
         resource.add(linkTo(methodOn(ProjectController.class).get(category.getProject().getId())).withRel("project"));
-        resource.add(linkTo(methodOn(ProjectController.class).get(category.getProject().getId())).withRel("project"));
+        resource.add(linkTo(methodOn(TaskController.class).filterByCategory(category.getProject().getId(), category.getId())).withRel("tasks"));
         return resource;
     }
 }

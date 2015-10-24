@@ -8,6 +8,9 @@ package org.co2.kanban.repository.task;
 import org.co2.kanban.repository.project.Project;
 import org.co2.kanban.repository.user.ApplicationUser;
 import java.util.Date;
+import org.co2.kanban.repository.category.Category;
+import org.co2.kanban.repository.state.State;
+import org.co2.kanban.repository.swimlane.Swimlane;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
@@ -22,6 +25,13 @@ public interface TaskRepository extends PagingAndSortingRepository<Task, Long> {
     Iterable<Task> findByProjectAndStateKanbanHideFalse(Project project);
 
     Iterable<Task> findByProject(Project project);
+
+    Iterable<Task> findByProjectAndSwimlane(Project project, Swimlane swimlane);
+    
+    Iterable<Task> findByProjectAndState(Project project, State state);
+    
+    Iterable<Task> findByProjectAndCategory(Project project, Category category);
+    
     
     @Query("select t from Task t where UPPER(t.name) like %?1% and "
             + "assignee.user = ?3 and (t.plannedStart > ?2 or t.plannedEnding < ?2)")

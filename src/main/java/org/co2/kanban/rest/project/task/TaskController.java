@@ -5,6 +5,9 @@
  */
 package org.co2.kanban.rest.project.task;
 
+import java.util.List;
+import org.co2.kanban.repository.category.Category;
+import org.co2.kanban.repository.category.CategoryRepository;
 import org.co2.kanban.repository.task.Task;
 import org.co2.kanban.repository.task.TaskRepository;
 import org.co2.kanban.repository.project.Project;
@@ -13,15 +16,7 @@ import org.co2.kanban.repository.state.State;
 import org.co2.kanban.repository.state.StateRepository;
 import org.co2.kanban.repository.swimlane.Swimlane;
 import org.co2.kanban.repository.swimlane.SwimlaneRepository;
-import com.fasterxml.jackson.databind.ObjectWriter;
-import com.fasterxml.jackson.dataformat.csv.CsvMapper;
-import com.fasterxml.jackson.dataformat.csv.CsvSchema;
-import java.io.File;
-import java.io.IOException;
-import javax.servlet.http.Part;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedResources;
@@ -32,7 +27,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -58,8 +52,11 @@ public class TaskController {
 
     
     @Autowired
-    private PagedResourcesAssembler<Task> pagedAssembler;
+    private CategoryRepository categoryRepository;
     
+    @Autowired
+    private PagedResourcesAssembler<Task> pagedAssembler;
+
     @Autowired
     private TaskAssembler assembler;
 
@@ -73,6 +70,30 @@ public class TaskController {
     public Iterable<TaskResource> kanbanList(@PathVariable("projectId") Long projectId) {
         Project project = projectRepository.findOne(projectId);
         return assembler.toResources(repository.findByProjectAndStateKanbanHideFalse(project));
+    }
+
+    @RequestMapping(value = "swimlane/{swimlaneId}", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<TaskResource>> filterBySwimlane(@PathVariable("projectId") Long projectId, @PathVariable("swimlaneId") Long swimlaneId) {
+        Swimlane swimlane = swimlaneRepository.findOne(swimlaneId);
+        Project project = projectRepository.findOne(projectId);
+        Iterable<Task> tasks = repository.findByProjectAndSwimlane(project, swimlane);
+        return new ResponseEntity<>(assembler.toResources(tasks), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "state/{stateId}", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<TaskResource>> filterByState(@PathVariable("projectId") Long projectId, @PathVariable("stateId") Long stateId) {
+        State state = taskStateRepository.findOne(stateId);
+        Project project = projectRepository.findOne(projectId);
+        Iterable<Task> tasks = repository.findByProjectAndState(project, state);
+        return new ResponseEntity<>(assembler.toResources(tasks), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "category/{categoryId}", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<TaskResource>> filterByCategory(@PathVariable("projectId") Long projectId, @PathVariable("categoryId") Long categoryId) {
+        Category category = categoryRepository.findOne(categoryId);
+        Project project = projectRepository.findOne(projectId);
+        Iterable<Task> tasks = repository.findByProjectAndCategory(project, category);
+        return new ResponseEntity<>(assembler.toResources(tasks), HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
