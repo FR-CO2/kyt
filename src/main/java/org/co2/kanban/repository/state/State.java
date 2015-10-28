@@ -69,7 +69,7 @@ public class State implements Serializable {
     @ManyToOne
     private Project project;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "state")
+    @OneToMany(mappedBy = "state")
     private List<Task> tasks;
 
     public Long getId() {

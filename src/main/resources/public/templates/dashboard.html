@@ -23,7 +23,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="project in homeCtrl.projects.content" ng-click="homeCtrl.goProject(project.id)">
+                        <tr ng-repeat="project in homeCtrl.projectsList.projects" ng-click="homeCtrl.goProject(project.id)">
                             <td>
                                 {{project.name}}
                             </td>
@@ -109,6 +109,6 @@
         </div>
     </div>
     <div class="col-md-5">
-        <div ui-calendar="homeCtrl.uiConfig.calendar" class="calendar" ng-model="homeCtrl.events" calendar="userCalendar"></div> 
+
     </div>
 </section>

@@ -15,7 +15,7 @@ public class StateResource extends ResourceSupport {
 
     private String name;
 
-    private int taskCount = 0;
+    private Integer taskCount = 0;
 
     private Long position;
 
@@ -23,11 +23,11 @@ public class StateResource extends ResourceSupport {
 
     private Boolean closeState = Boolean.FALSE;
 
-    public int getTaskCount() {
+    public Integer getTaskCount() {
         return taskCount;
     }
 
-    public void setTaskCount(int taskCount) {
+    public void setTaskCount(Integer taskCount) {
         this.taskCount = taskCount;
     }
 

@@ -5,9 +5,9 @@
  */
 package org.co2.kanban.rest.project.state;
 
+import java.util.List;
 import org.co2.kanban.repository.state.State;
 import org.co2.kanban.repository.state.StateRepository;
-import java.util.List;
 import org.co2.kanban.repository.project.Project;
 import org.co2.kanban.repository.project.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,23 +36,26 @@ public class StateController {
 
     @Autowired
     private ProjectRepository projectRepository;
+    
+    @Autowired
+    private StateAssembler assembler;
 
     @RequestMapping(method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public Resources<Resource<State>> projectList(@PathVariable("projectId") Long projectId) {
+    public List<StateResource> projectList(@PathVariable("projectId") Long projectId) {
         Project project = projectRepository.findOne(projectId);
-        return getStateResourceList(repository.findByProjectOrderByPositionAsc(project));
+        return assembler.toResources(repository.findByProjectOrderByPositionAsc(project));
     }
 
     @RequestMapping(value = "kanban", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public Resources<Resource<State>> kanbanList(@PathVariable("projectId") Long projectId) {
+    public List<StateResource> kanbanList(@PathVariable("projectId") Long projectId) {
         Project project = projectRepository.findOne(projectId);
-        return getStateResourceList(repository.findByProjectAndKanbanHideFalseOrderByPositionAsc(project));
+        return assembler.toResources(repository.findByProjectAndKanbanHideFalseOrderByPositionAsc(project));
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<State> get(@PathVariable("id") Long id) {
+    public ResponseEntity<StateResource> get(@PathVariable("id") Long id) {
         State state = repository.findOne(id);
-        return new ResponseEntity(state, HttpStatus.OK);
+        return new ResponseEntity(assembler.toResource(state), HttpStatus.OK);
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
@@ -100,13 +103,5 @@ public class StateController {
             }
         }
         return new ResponseEntity(HttpStatus.NO_CONTENT);
-    }
-
-    private Resource<State> getStateResource(State state) {
-        return new Resource(state);
-    }
-
-    private Resources<Resource<State>> getStateResourceList(Iterable<State> state) {
-        return new Resources(state);
     }
 }
