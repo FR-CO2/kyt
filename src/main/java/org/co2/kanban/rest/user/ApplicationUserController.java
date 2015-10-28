@@ -30,6 +30,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -87,8 +88,9 @@ public class ApplicationUserController {
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserResource> create(@RequestBody ApplicationUser newUser) {
         ApplicationUser user = repository.save(newUser);
-        ResponseEntity resp = new ResponseEntity(HttpStatus.CREATED);
-        resp.getHeaders().add(HttpHeaders.LOCATION, linkTo(methodOn(ApplicationUserController.class).get(user.getId())).toString());
+        MultiValueMap<String, String> headers = new HttpHeaders();
+        headers.add(HttpHeaders.LOCATION, linkTo(methodOn(ApplicationUserController.class).get(user.getId())).toString());
+        ResponseEntity resp = new ResponseEntity(headers, HttpStatus.CREATED);
         return resp;
     }
 

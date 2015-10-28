@@ -28,6 +28,7 @@ public class UserAssembler extends ResourceAssemblerSupport<ApplicationUser, Use
         UserResource resource = createResourceWithId(user.getId(), user);
         resource.setUsername(user.getUsername());
         resource.setEmail(user.getEmail());
+        resource.setResourceId(user.getId());
         resource.setApplicationRole(user.getApplicationRole());
         resource.add(linkTo(methodOn(ApplicationUserController.class).memberOf(user.getId())).withRel("members"));
         resource.add(linkTo(methodOn(ApplicationUserController.class).listProject(user.getId(), null)).withRel("project"));

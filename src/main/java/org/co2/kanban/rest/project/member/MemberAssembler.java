@@ -27,9 +27,8 @@ public class MemberAssembler extends ResourceAssemblerSupport<Member, MemberReso
 
     @Override
     public MemberResource toResource(Member member) {
-        MemberResource resource = createResourceWithId(member.getId(), member);
+        MemberResource resource = createResourceWithId(member.getId(), member, member.getProject().getId());
         resource.setProjectRole(member.getProjectRole());
-        resource.add(linkTo(methodOn(ProjectController.class).get(member.getProject().getId())).withRel("project"));
         resource.add(linkTo(methodOn(ApplicationUserController.class).get(member.getUser().getId())).withRel("user"));
         return resource;
     }
