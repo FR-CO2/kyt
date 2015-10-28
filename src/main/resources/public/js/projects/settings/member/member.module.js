@@ -99,15 +99,6 @@
         });
     }
 
-    function projectMemberConfig($stateProvider) {
-        $stateProvider.state("app.project-detail.configure.member", {
-            templateUrl: "templates/projects/members/list.html",
-            controller: "memberListController",
-            controllerAs: "configMemberCtrl",
-            url: "/member"
-        });
-    }
-
     memberListController.$inject = ["$stateParams", "$modal", "memberResource"];
     memberAddController.$inject = ["$stateParams", "$modalInstance", "memberResource", "userResource", "memberRoleResource"];
     userAutoCompleteCtrl.$inject = ["$http", "$scope"];
@@ -115,7 +106,6 @@
     memberResource.$inject = ["$resource"];
 
     angular.module("kanban.project.configure.member", [])
-            .config(projectMemberConfig)
             .controller("memberListController", memberListController)
             .controller("memberAddController", memberAddController)
             .controller("userAutoCompleteCtrl", userAutoCompleteCtrl)

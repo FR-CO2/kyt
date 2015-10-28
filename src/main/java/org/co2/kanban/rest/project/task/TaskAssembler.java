@@ -30,7 +30,16 @@ public class TaskAssembler extends ResourceAssemblerSupport<Task, TaskResource> 
     @Override
     public TaskResource toResource(Task task) {
         TaskResource resource = createResourceWithId(task.getId(), task);
+        resource.setResourceId(task.getId());
         resource.setName(task.getName());
+        resource.setCreated(task.getCreated());
+        resource.setDescription(task.getDescription());
+        resource.setEstimatedLoad(task.getEstimatedLoad());
+        resource.setPlannedEnding(task.getPlannedEnding());
+        resource.setPlannedStart(task.getPlannedStart());
+        //TODO report calcul time remains & time spent
+        resource.setTimeRemains(0F);
+        resource.setTimeSpent(0F);
         resource.add(linkTo(methodOn(ProjectController.class).get(task.getProject().getId())).withRel("project"));
         resource.add(linkTo(methodOn(StateController.class, task.getProject().getId()).get(task.getState().getId())).withRel("state"));
         if (task.getAssignee() != null) {

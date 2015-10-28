@@ -14,6 +14,7 @@ import org.springframework.hateoas.ResourceSupport;
  */
 public class ProjectResource extends ResourceSupport {
     
+    @JsonProperty("id")
     private Long resourceId;
     
     private String name;
@@ -26,7 +27,6 @@ public class ProjectResource extends ResourceSupport {
         this.name = name;
     }
 
-    @JsonProperty("id")
     public Long getResourceId() {
         return resourceId;
     }

@@ -45,7 +45,7 @@
         }
     }
 
-    function homeController($rootScope, $state, $sessionStorage, userLinksService) {
+    function homeController($rootScope, $sessionStorage, userLinksService) {
         var vm = this;
         userLinksService.retrieveProjects($sessionStorage.user).then(
                 function (data) {
@@ -61,16 +61,10 @@
                         vm.tasks = data;
                     });
         });
-        vm.goProject = function (projectId) {
-            $state.transitionTo("app.project-detail.kanban", {id: projectId});
-        };
-        vm.goTask = function (projectId, taskId) {
-            $state.transitionTo("app.project-detail.task.general", {"id": projectId, "taskId": taskId});
-        };
     }
-    homeController.$inject = ["$rootScope", "$state", "$sessionStorage", "userLinksService"];
+    homeController.$inject = ["$rootScope", "$sessionStorage", "userLinksService"];
     userLinksService.$inject = ["$q", "$resource"];
-    angular.module("kanban.dashboard", ["ui.router", "ui.bootstrap", "kanban.user"])
+    angular.module("kanban.dashboard", ["ui.router", "ui.bootstrap", "kanban.user", "kanban.project"])
             .controller("homeController", homeController)
             .service("userLinksService", userLinksService);
 })();

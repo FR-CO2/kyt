@@ -202,14 +202,14 @@
             controllerAs: "projectCtrl",
             url: "projects"
         });
-        $stateProvider.state("app.project-detail", {
+        $stateProvider.state("app.project", {
             abstract: true,
             controller: "projectController",
             controllerAs: "projectCtrl",
             templateUrl: "templates/projects/layout-single.html",
             url: "project/:id"
         });
-        $stateProvider.state("app.project-detail.kanban", {
+        $stateProvider.state("app.project.kanban", {
             templateUrl: "templates/projects/kanban.html",
             controller: "kanbanController",
             controllerAs: "kanbanCtrl",

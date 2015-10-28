@@ -94,7 +94,7 @@
         };
     }
 
-    
+
     function stateAddController($stateParams, $modalInstance, stateResourceSrv) {
         var vm = this;
         vm.submit = function () {
@@ -155,28 +155,34 @@
     }
 
     function projectSettingsConfig($stateProvider) {
-        $stateProvider.state("app.project-detail.configure", {
+        $stateProvider.state("app.project.configure", {
             templateUrl: "templates/projects/configure-layout.html",
             url: "/configure"
         });
-        $stateProvider.state("app.project-detail.configure.state", {
+        $stateProvider.state("app.project.configure.state", {
             templateUrl: "/templates/projects/states/list.html",
             controller: "stateListController",
             controllerAs: "configStateCtrl",
             url: "/state"
         });
-        $stateProvider.state("app.project-detail.configure.swimlane", {
+        $stateProvider.state("app.project.configure.swimlane", {
             templateUrl: "/templates/projects/swimlanes/list.html",
             controller: "swimlaneListController",
             controllerAs: "configCtrl",
             url: "/swimlane"
         });
 
-        $stateProvider.state("app.project-detail.configure.category", {
+        $stateProvider.state("app.project.configure.category", {
             templateUrl: "templates/projects/categories/list.html",
             controller: "categoryListController",
             controllerAs: "configCategoryCtrl",
             url: "/category"
+        });
+        $stateProvider.state("app.project.configure.member", {
+            templateUrl: "templates/projects/members/list.html",
+            controller: "memberListController",
+            controllerAs: "configMemberCtrl",
+            url: "/member"
         });
     }
 

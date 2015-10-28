@@ -5,6 +5,8 @@
  */
 package org.co2.kanban.rest.project.task;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.sql.Timestamp;
 import org.springframework.hateoas.ResourceSupport;
 
 /**
@@ -12,8 +14,27 @@ import org.springframework.hateoas.ResourceSupport;
  * @author ben
  */
 public class TaskResource extends ResourceSupport {
-      
+
+    @JsonProperty("id")
+    private Long resourceId;
+
     private String name;
+
+    private Timestamp created;
+
+    private Timestamp lastModified;
+
+    private Timestamp plannedStart;
+
+    private Timestamp plannedEnding;
+
+    private Long estimatedLoad;
+
+    private String description;
+
+    private Float timeRemains;
+
+    private Float timeSpent;
 
     public String getName() {
         return name;
@@ -22,6 +43,77 @@ public class TaskResource extends ResourceSupport {
     public void setName(String name) {
         this.name = name;
     }
-    
-    
+
+    public Float getTimeSpent() {
+        return timeSpent;
+    }
+
+    public void setTimeSpent(Float timeSpent) {
+        this.timeSpent = timeSpent;
+    }
+
+    public Float getTimeRemains() {
+        return timeRemains;
+    }
+
+    public void setTimeRemains(Float timeRemains) {
+        this.timeRemains = timeRemains;
+    }
+
+    public Long getResourceId() {
+        return resourceId;
+    }
+
+    public void setResourceId(Long resourceId) {
+        this.resourceId = resourceId;
+    }
+
+    public Timestamp getCreated() {
+        return created;
+    }
+
+    public void setCreated(Timestamp created) {
+        this.created = created;
+    }
+
+    public Timestamp getLastModified() {
+        return lastModified;
+    }
+
+    public void setLastModified(Timestamp lastModified) {
+        this.lastModified = lastModified;
+    }
+
+    public Timestamp getPlannedStart() {
+        return plannedStart;
+    }
+
+    public void setPlannedStart(Timestamp plannedStart) {
+        this.plannedStart = plannedStart;
+    }
+
+    public Timestamp getPlannedEnding() {
+        return plannedEnding;
+    }
+
+    public void setPlannedEnding(Timestamp plannedEnding) {
+        this.plannedEnding = plannedEnding;
+    }
+
+    public Long getEstimatedLoad() {
+        return estimatedLoad;
+    }
+
+    public void setEstimatedLoad(Long estimatedLoad) {
+        this.estimatedLoad = estimatedLoad;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
 }

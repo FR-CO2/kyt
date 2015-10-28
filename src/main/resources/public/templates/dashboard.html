@@ -23,7 +23,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="project in homeCtrl.projectsList.projects" ng-click="homeCtrl.goProject(project.id)">
+                        <tr ng-repeat="project in homeCtrl.projectsList.projects" ui-sref="app.project.kanban({id: project.id })">
                             <td>
                                 {{project.name}}
                             </td>
@@ -70,7 +70,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="task in homeCtrl.tasks.content" ng-click="homeCtrl.goTask(task.project.id, task.id)">
+                        <tr ng-repeat="task in homeCtrl.tasks.content" ui-sref="app.project.task.general({id: task.project.id, taskId: task.id })">
                             <td>
                                 {{task.project.name}}
                             </td>
