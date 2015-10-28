@@ -17,13 +17,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import org.springframework.hateoas.Identifiable;
 
 /**
  *
  * @author ben
  */
 @Entity
-public class Project implements Serializable {
+public class Project implements Serializable, Identifiable<Long> {
 
     private static final long serialVersionUID = -5617478169888450195L;
 

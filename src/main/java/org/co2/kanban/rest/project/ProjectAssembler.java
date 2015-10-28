@@ -12,7 +12,7 @@ import org.co2.kanban.rest.project.swimlane.SwimlaneController;
 import org.co2.kanban.rest.project.task.TaskListController;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
-import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
+import org.springframework.hateoas.mvc.IdentifiableResourceAssemblerSupport;
 import org.springframework.stereotype.Component;
 
 /**
@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
  * @author ben
  */
 @Component
-public class ProjectAssembler extends ResourceAssemblerSupport<Project, ProjectResource> {
+public class ProjectAssembler extends IdentifiableResourceAssemblerSupport<Project, ProjectResource> {
 
     public ProjectAssembler() {
         super(ProjectController.class, ProjectResource.class);
@@ -30,6 +30,7 @@ public class ProjectAssembler extends ResourceAssemblerSupport<Project, ProjectR
     public ProjectResource toResource(Project project) {
         ProjectResource resource = createResourceWithId(project.getId(), project);
         resource.setName(project.getName());
+        resource.setResourceId(project.getId());
         resource.add(linkTo(methodOn(MemberController.class).list(project.getId())).withRel("members"));
         resource.add(linkTo(methodOn(StateController.class).projectList(project.getId())).withRel("states"));
         resource.add(linkTo(methodOn(SwimlaneController.class).projectList(project.getId())).withRel("swimlanes"));
