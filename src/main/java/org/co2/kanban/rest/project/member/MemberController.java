@@ -43,8 +43,10 @@ public class MemberController {
     @Autowired
     private ApplicationUserRepository userRepository;
 
+    @Autowired
     private MemberAssembler assembler;
 
+    @Autowired
     private PagedResourcesAssembler<Member> pagedAssembler;
 
     @RequestMapping(value = "page", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)

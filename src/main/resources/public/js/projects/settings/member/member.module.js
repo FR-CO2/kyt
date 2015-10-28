@@ -90,7 +90,7 @@
 
 
     function memberRoleResource($resource) {
-        return $resource("/api/project/:projectId/memberrole", {projectId: "projectId"});
+        return $resource("/api/role/project");
     }
 
     function memberResource($resource) {
