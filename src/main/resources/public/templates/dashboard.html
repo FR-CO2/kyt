@@ -23,7 +23,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="project in homeCtrl.projectsList.projects" ui-sref="app.project.kanban({id: project.id })">
+                        <tr ng-repeat="project in homeCtrl.projectsPage.projects" ui-sref="app.project.kanban({id: project.id })">
                             <td>
                                 {{project.name}}
                             </td>
@@ -40,7 +40,7 @@
                         <tr>
                             <td colspan="2">
                                 <div class="center-block text-center">
-                                    <pagination total-items="homeCtrl.projects.nbElt" ng-model="homeCtrl.projects.number" items-per-page="homeCtrl.projects.size" max-size="5" class="pagination-sm" boundary-links="true" rotate="false" num-pages="homeCtrl.projects.totalPages" ng-change="homeCtrl.pageProjectChanged()"></pagination>
+                                    <pagination total-items="homeCtrl.projectsPage.page.nbElt" ng-model="homeCtrl.projectsPage.page.number" items-per-page="homeCtrl.projectsPage.page.size" max-size="5" class="pagination-sm" boundary-links="true" rotate="false" num-pages="homeCtrl.projectsPage.page.totalPages" ng-change="homeCtrl.pageProjectChanged()"></pagination>
                                 </div>
                             </td>
                         </tr>

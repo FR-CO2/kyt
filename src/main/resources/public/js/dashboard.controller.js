@@ -6,65 +6,17 @@
 (function () {
     "use strict";
 
-    function userLinksService($q, $resource) {
-        return {
-            retrieveProjects: function (user) {
-                var defer = $q.defer();
-                $resource(user._links.project.href).get(function (response) {
-                    var projectPage = {
-                        page: response.page,
-                        projects: []
-                    };
-                    if (response._embedded) {
-                        angular.forEach(response._embedded.projectResources, function (project) {
-                            project.states = $resource(project._links.states.href).query();
-                            projectPage.projects.push(project);
-                        });
-                    }
-                    defer.resolve(projectPage);
-                });
-                return defer.promise;
-            },
-            retrieveTasks: function (user) {
-                var defer = $q.defer();
-                $resource(user._links.task.href).get(function (response) {
-                    var taskPage = {
-                        page: response.page,
-                        tasks: []
-                    };
-                    if (response._embedded) {
-                        angular.forEach(response._embedded.stateResource, function (task) {
-                            task.state = $resource(task._links.state.href).get();
-                            taskPage.projects.push(task);
-                        });
-                    }
-                    defer.resolve(taskPage);
-                });
-                return defer.promise;
-            }
-        }
-    }
-
-    function homeController($rootScope, $sessionStorage, userLinksService) {
+    function homeController($rootScope, $sessionStorage, userResourceAssembler) {
         var vm = this;
-        userLinksService.retrieveProjects($sessionStorage.user).then(
-                function (data) {
-                    vm.projectsList = data;
-                });
-        userLinksService.retrieveTasks($sessionStorage.user).then(
-                function (data) {
-                    vm.tasks = data;
-                });
+        userResourceAssembler.projects($sessionStorage.user, {}).then(function(data) {
+            vm.projectsPage = data;
+        });
+        vm.tasks = userResourceAssembler.tasks($sessionStorage.user, {});
         $rootScope.$on("event:allocationUpdated", function () {
-            userLinksService.retrieveTasks($sessionStorage.user).then(
-                    function (data) {
-                        vm.tasks = data;
-                    });
+            vm.tasks = userResourceAssembler.tasks($sessionStorage.user, {});
         });
     }
-    homeController.$inject = ["$rootScope", "$sessionStorage", "userLinksService"];
-    userLinksService.$inject = ["$q", "$resource"];
-    angular.module("kanban.dashboard", ["ui.router", "ui.bootstrap", "kanban.user", "kanban.project"])
-            .controller("homeController", homeController)
-            .service("userLinksService", userLinksService);
+    homeController.$inject = ["$rootScope", "$sessionStorage", "currentUserResourceAssembler"];
+    angular.module("kanban.dashboard", ["ui.router", "ui.bootstrap", "kanban.api", "kanban.user", "kanban.project"])
+            .controller("homeController", homeController);
 })();

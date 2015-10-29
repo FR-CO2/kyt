@@ -26,17 +26,7 @@
         };
     }
 
-    function userResource($resource) {
-        return $resource("/api/user/:id", {id: "@id"}, {
-            page: {url: "/api/user/page", method: "GET", isArray: false}
-        });
-    }
-
-    function applicationRoleResource($resource) {
-        return $resource("/api/role");
-    }
-
-    function userListController($modal, $window, $http, userResourceSrv) {
+    function userListController($modal, $http, userResourceSrv) {
         var vm = this;
         vm.nbElt = 10;
         vm.numPage = 1;
@@ -111,17 +101,14 @@
     }
 
     userConfig.$inject = ["$stateProvider"];
-    userResource.$inject = ["$resource"];
-    userListController.$inject = ["$modal", "$window", "$http", "userResource"];
+    userListController.$inject = ["$modal", "$http", "userResourceAssembler"];
     userImportController.$inject = ["$modalInstance", "Upload"];
-    userAddController.$inject = ["$modalInstance", "userResource", "applicationRoleResource"];
-    applicationRoleResource.$inject = ["$resource"];
+    userAddController.$inject = ["$modalInstance", "userResourceAssembler", "applicationRoleResource"];
 
-    angular.module("kanban.user", ["ngFileUpload"])
+
+    angular.module("kanban.user", ["kanban.api", "ngFileUpload"])
             .config(userConfig)
             .controller("userListController", userListController)
             .controller("userAddController", userAddController)
-            .controller("userImportController", userImportController)
-            .service("userResource", userResource)
-            .service("applicationRoleResource", applicationRoleResource);
+            .controller("userImportController", userImportController);
 })();

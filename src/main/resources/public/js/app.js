@@ -114,8 +114,7 @@
     headerController.$inject = ["$scope", "$state"];
 
     angular.module("kanban", ["ngRoute", "ui.router", "ui.bootstrap", "ui.calendar",
-        "ngStorage", "http-auth-interceptor", "xeditable", "kanban.login",
-        "kanban.user", "kanban.dashboard"])
+        "ngStorage", "http-auth-interceptor", "xeditable", "kanban.login", "kanban.dashboard"])
             .config(applicationConfig)
             .run(runApp)
             .controller("headerController", headerController)
