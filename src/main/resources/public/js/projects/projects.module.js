@@ -50,9 +50,9 @@
         };
     }
 
-    function projectController($sessionStorage, $stateParams, projectResourceSrv, userProjectsRoles) {
+    function projectController($sessionStorage, resolvedProject, userProjectsRoles) {
         var vm = this;
-        vm.project = projectResourceSrv.get({id: $stateParams.id});
+        vm.project = resolvedProject;
         vm.hasEditRights = false;
         vm.hasAdminRights = false;
         if ($sessionStorage.user.applicationRole === 'ADMIN') {
@@ -62,7 +62,7 @@
             var projectsRoles = userProjectsRoles.query();
             projectsRoles.$promise.then(function () {
                 for (var i = 0; i < projectsRoles.length; i++) {
-                    if (projectsRoles[i].project.id == $stateParams.id) {
+                    if (projectsRoles[i].project.id == resolvedProject.id) {
                         if (projectsRoles[i].projectRole === 'CONTRIBUTOR') {
                             vm.hasEditRights = true;
                         }
@@ -79,12 +79,6 @@
     function kanbanController($state, $stateParams, $modal, taskResource, taskStateResource, swimlaneResource, categoryResource, memberResource) {
         var vm = this;
         kanbanLoader(vm, taskStateResource, swimlaneResource, taskResource, $stateParams.id);
-        vm.loadCategory = function () {
-            return vm.categories ? null : vm.categories = categoryResource.query({projectId: $stateParams.id});
-        };
-        vm.loadMember = function () {
-            return vm.members ? null : vm.members = memberResource.query({projectId: $stateParams.id});
-        };
         vm.kanbanSortOptions = {
             itemMoved: function (event) {
                 var taskUpdated = event.source.itemScope.modelValue;
@@ -111,9 +105,6 @@
             modalInstance.result.then(function () {
                 kanbanLoader(vm, taskStateResource, swimlaneResource, taskResource, $stateParams.id);
             });
-        };
-        vm.goToTask = function (taskId) {
-            $state.transitionTo("app.project-detail.task.general", {id: $stateParams.id, taskId: taskId});
         };
         vm.saveTask = function (task) {
             if (task.category) {
@@ -156,43 +147,6 @@
                 vm.projects = projectResourceSrv.query();
             });
         };
-        vm.goProject = function (projectId) {
-            $state.transitionTo("app.project-detail.kanban", {id: projectId});
-        };
-        vm.edit = function (projectId) {
-            //TODO : Ecran edition projet
-        };
-        vm.export = function () {
-            // Creating a Blob with our data for download
-            // this will parse the URL in ng-href such as: blob:http...
-            $http({method: 'GET',
-                url: '/api/project/export',
-                headers: {'Content-Type': undefined}})
-                    .then(function (response) {
-                        var blob = new Blob([response.data], {type: 'text/csv'});
-                        saveAs(blob, "export-projects.csv");
-                    });
-        };
-
-        vm.import = function () {
-            var modalInstance = $modal.open({
-                animation: true,
-                templateUrl: "templates/common/import.html",
-                controller: "projectImportController",
-                controllerAs: "import",
-                size: "xs"
-            });
-            modalInstance.result.then(function () {
-                vm.users = projectResourceSrv.page(vm.paging);
-            });
-        };
-    }
-
-    function projectResource($resource) {
-        return $resource("/api/project/:id", {id: "@id"}, {
-            query: {isArray: false},
-            user: {url: "/api/userProject", method: "GET"}
-        });
     }
 
     function projectConfig($stateProvider) {
@@ -207,7 +161,12 @@
             controller: "projectController",
             controllerAs: "projectCtrl",
             templateUrl: "templates/projects/layout-single.html",
-            url: "project/:id"
+            url: "project/:id",
+            resolve: {
+                project: ["$stateParams", "projectResource", function ($stateParams, projectResource) {
+                    return projectResource.get({id: $stateParams.id});
+                }]
+            }
         });
         $stateProvider.state("app.project.kanban", {
             templateUrl: "templates/projects/kanban.html",
@@ -219,14 +178,12 @@
 
     projectConfig.$inject = ["$stateProvider"];
     projectListController.$inject = ["$state", "$modal", "$http", "projectResource"];
-    projectController.$inject = ["$sessionStorage", "$stateParams", "projectResource", "userProjectsRoles"];
+    projectController.$inject = ["$sessionStorage", "project", "userProjectsRoles"];
     kanbanController.$inject = ["$state", "$stateParams", "$modal", "taskResource",
         "taskStateResource", "swimlaneResource",
         "categoryResource", "memberResource"];
     newProjectController.$inject = ["$modalInstance", "projectResource"];
     projectImportController.$inject = ["$modalInstance", "$http"];
-    projectResource.$inject = ["$resource"];
-
 
     angular.module("kanban.project", ["kanban.project.task", "kanban.project.configure", "kanban.project.reports"])
             .config(projectConfig)
@@ -234,6 +191,5 @@
             .controller("projectController", projectController)
             .controller("kanbanController", kanbanController)
             .controller("newProjectController", newProjectController)
-            .controller("projectImportController", projectImportController)
-            .service("projectResource", projectResource);
+            .controller("projectImportController", projectImportController);
 })();

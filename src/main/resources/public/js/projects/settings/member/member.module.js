@@ -34,7 +34,7 @@
     }
     ;
 
-    function memberListController($stateParams, $modal, memberResourceSrv) {
+    function memberListController(project, $modal, projectResourceAssembler, memberResourceSrv) {
         var vm = this;
         vm.nbElt = 10;
         vm.numPage = 1;
@@ -42,7 +42,7 @@
             size: vm.nbElt,
             page: 0
         };
-        vm.members = memberResourceSrv.page({"projectId": $stateParams.id, size: vm.paging.size, page: vm.paging.page});
+        vm.members = projectResourceAssembler.members(project, {size: vm.paging.size, page: vm.paging.page});
         vm.add = function () {
             var modalInstance = $modal.open({
                 animation: true,
@@ -52,12 +52,12 @@
                 size: "md"
             });
             modalInstance.result.then(function () {
-                vm.members = memberResourceSrv.page({"projectId": $stateParams.id, size: vm.paging.size, page: vm.paging.page});
+                vm.members = projectResourceAssembler.members(project, {size: vm.paging.size, page: vm.paging.page});
             });
         };
         vm.delete = function (memberId) {
-            memberResourceSrv.delete({projectId: $stateParams.id, id: memberId}, function () {
-                vm.members = memberResourceSrv.page({"projectId": $stateParams.id, size: vm.paging.size, page: vm.paging.page});
+            memberResourceSrv.delete({projectId: project.id, id: memberId}, function () {
+                vm.members = projectResourceAssembler.members(project, {size: vm.paging.size, page: vm.paging.page});
             });
         };
         vm.pageChanged = function () {
@@ -69,20 +69,18 @@
                 size: vm.nbElt,
                 page: vm.numPage - 1
             };
-            vm.members = memberResourceSrv.page({projectId: $stateParams.id, size: vm.paging.size, page: vm.paging.page}, function (result) {
-                vm.numPage = result.number + 1;
-            });
+            vm.members = projectResourceAssembler.members(project, {size: vm.paging.size, page: vm.paging.page});
         };
     }
 
 
-    function memberAddController($stateParams, $modalInstance, memberResourceSrv, userResource, memberRoleResourceSrv) {
+    function memberAddController(project, $modalInstance, memberResourceSrv, userResource, memberRoleResourceSrv) {
         var vm = this;
         vm.member = {};
         vm.users = userResource.query();
-        vm.roles = memberRoleResourceSrv.query({"projectId": $stateParams.id});
+        vm.roles = memberRoleResourceSrv.query({"projectId": project.id});
         vm.submit = function () {
-            memberResourceSrv.save({"projectId": $stateParams.id}, vm.member, function () {
+            memberResourceSrv.save({"projectId": project.id}, vm.member, function () {
                 $modalInstance.close();
             });
         };
@@ -99,8 +97,8 @@
         });
     }
 
-    memberListController.$inject = ["$stateParams", "$modal", "memberResource"];
-    memberAddController.$inject = ["$stateParams", "$modalInstance", "memberResource", "userResource", "memberRoleResource"];
+    memberListController.$inject = ["project", "$modal", "projectResourceAssembler", "memberResource"];
+    memberAddController.$inject = ["project", "$modalInstance", "memberResource", "userResource", "memberRoleResource"];
     userAutoCompleteCtrl.$inject = ["$http", "$scope"];
     memberRoleResource.$inject = ["$resource"];
     memberResource.$inject = ["$resource"];

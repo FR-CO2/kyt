@@ -148,11 +148,17 @@
         };
     }
 
+    function projectResource($resource) {
+        return $resource("/api/project/:id", {id: "@id"}, {
+            query: {isArray: false}
+        });
+    }
 
     function applicationRoleResource($resource) {
         return $resource("/api/role");
     }
 
+    projectResource.$inject = ["$resource"];
     applicationRoleResource.$inject = ["$resource"];
     userResourceAssembler.$inject = ["$q", "$resource"];
     projectResourceAssembler.$inject = ["$q", "$resource", "taskResourceAssembler"];
@@ -160,6 +166,7 @@
     currentUserResourceAssembler.$inject = ["$q", "$resource", "projectResourceAssembler"];
     angular.module("kanban.api", ["ngResource"])
             .service("projectResourceAssembler", projectResourceAssembler)
+            .service("projectResource", projectResource)
             .service("taskResourceAssembler", taskResourceAssembler)
             .service("currentUserResourceAssembler", currentUserResourceAssembler)
             .service("userResourceAssembler", userResourceAssembler)

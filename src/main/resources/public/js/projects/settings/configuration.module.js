@@ -1,16 +1,16 @@
 (function () {
     "use strict";
 
-    function stateListController($stateParams, $modal, stateResourceSrv) {
+    function stateListController(project, $modal, projectResourceAssembler, stateResourceSrv) {
         var vm = this;
         vm.stateListSortOptions = {
             orderChanged: function (event) {
                 var stateUpdated = event.source.itemScope.modelValue;
                 var newPosition = event.dest.index;
-                stateResourceSrv.updatePosition({projectId: $stateParams.id, id: stateUpdated.id, newPosition: newPosition});
+                stateResourceSrv.updatePosition({projectId: project.id, id: stateUpdated.id, newPosition: newPosition});
             }
         };
-        vm.states = stateResourceSrv.query({"projectId": $stateParams.id});
+        vm.states = projectResourceAssembler.states(project);
         vm.add = function () {
             var modalInstance = $modal.open({
                 animation: true,
@@ -20,28 +20,28 @@
                 size: "md"
             });
             modalInstance.result.then(function () {
-                vm.states = stateResourceSrv.query({"projectId": $stateParams.id});
+                vm.states = projectResourceAssembler.states(project);
             });
         };
         vm.delete = function (stateId) {
-            stateResourceSrv.delete({projectId: $stateParams.id, id: stateId}, function () {
-                vm.states = stateResourceSrv.query({"projectId": $stateParams.id});
+            stateResourceSrv.delete({projectId: project.id, id: stateId}, function () {
+                vm.states = projectResourceAssembler.states(project);
             });
         };
     }
 
-    function swimlaneListController($stateParams, $modal, swimlaneResourceSrv, memberResourceSrv) {
+    function swimlaneListController(project, $modal, projectResourceAssembler, swimlaneResourceSrv, memberResourceSrv) {
         var vm = this;
         vm.swimlaneListSortOptions = {
             orderChanged: function (event) {
                 var swimlaneUpdated = event.source.itemScope.modelValue;
                 var newPosition = event.dest.index;
-                swimlaneResourceSrv.updatePosition({projectId: $stateParams.id, id: swimlaneUpdated.id, newPosition: newPosition});
+                swimlaneResourceSrv.updatePosition({projectId: project.id, id: swimlaneUpdated.id, newPosition: newPosition});
             }
         };
-        vm.swimlanes = swimlaneResourceSrv.query({"projectId": $stateParams.id});
+        vm.swimlanes = projectResourceAssembler.swimlane(project);
         vm.loadMember = function () {
-            vm.members = memberResourceSrv.query({"projectId": $stateParams.id});
+            vm.members = memberResourceSrv.query({"projectId": project.id});
         };
         vm.add = function () {
             var modalInstance = $modal.open({
@@ -52,24 +52,24 @@
                 size: "md"
             });
             modalInstance.result.then(function () {
-                vm.swimlanes = swimlaneResourceSrv.query({"projectId": $stateParams.id});
+                vm.swimlanes = projectResourceAssembler.swimlane(project);
             });
         };
         vm.delete = function (swimlaneId) {
-            swimlaneResourceSrv.delete({projectId: $stateParams.id, id: swimlaneId}, function () {
-                vm.swimlanes = swimlaneResourceSrv.query({"projectId": $stateParams.id});
+            swimlaneResourceSrv.delete({projectId: project.id, id: swimlaneId}, function () {
+                vm.swimlanes = projectResourceAssembler.swimlane(project);
             });
         };
         vm.save = function (swimlane) {
-            swimlaneResourceSrv.updateResponable({projectId: $stateParams.id, id: swimlane.id, newResponsable: swimlane.responsable.id}, function () {
-                vm.swimlanes = swimlaneResourceSrv.query({"projectId": $stateParams.id});
+            swimlaneResourceSrv.updateResponable({projectId: project.id, id: swimlane.id, newResponsable: swimlane.responsable.id}, function () {
+                vm.swimlanes = projectResourceAssembler.swimlane(project);
             });
         };
     }
 
-    function categoryListController($stateParams, $modal, categoryResourceSrv) {
+    function categoryListController(project, $modal, projectResourceAssembler, categoryResourceSrv) {
         var vm = this;
-        vm.categories = categoryResourceSrv.query({"projectId": $stateParams.id});
+        vm.categories = projectResourceAssembler.category(project);
         vm.add = function () {
             var modalInstance = $modal.open({
                 animation: true,
@@ -79,17 +79,17 @@
                 size: "md"
             });
             modalInstance.result.then(function () {
-                vm.categories = categoryResourceSrv.query({"projectId": $stateParams.id});
+                vm.categories = projectResourceAssembler.category(project);
             });
         };
         vm.delete = function (categoryId) {
-            categoryResourceSrv.delete({projectId: $stateParams.id, id: categoryId}, function () {
-                vm.categories = categoryResourceSrv.query({"projectId": $stateParams.id});
+            categoryResourceSrv.delete({projectId: project.id, id: categoryId}, function () {
+                vm.categories = projectResourceAssembler.category(project);
             });
         };
         vm.save = function (category) {
-            categoryResourceSrv.save({projectId: $stateParams.id, id: category.id}, category, function () {
-                vm.categories = categoryResourceSrv.query({"projectId": $stateParams.id});
+            categoryResourceSrv.save({projectId: project.id, id: category.id}, category, function () {
+                vm.categories = projectResourceAssembler.category(project);
             });
         };
     }
@@ -187,11 +187,11 @@
     }
 
     projectSettingsConfig.$inject = ["$stateProvider"];
-    stateListController.$inject = ["$stateParams", "$modal", "taskStateResource"];
+    stateListController.$inject = ["project", "$modal", "projectResourceAssembler", "taskStateResource"];
     stateAddController.$inject = ["$stateParams", "$modalInstance", "taskStateResource"];
-    swimlaneListController.$inject = ["$stateParams", "$modal", "swimlaneResource", "memberResource"];
+    swimlaneListController.$inject = ["project", "$modal", "projectResourceAssembler", "swimlaneResource", "memberResource"];
     swimlaneAddController.$inject = ["$stateParams", "$modalInstance", "swimlaneResource", "memberResource"];
-    categoryListController.$inject = ["$stateParams", "$modal", "categoryResource"];
+    categoryListController.$inject = ["project", "$modal", "projectResourceAssembler", "categoryResource"];
     categoryAddController.$inject = ["$stateParams", "$modalInstance", "categoryResource"];
     categoryResource.$inject = ["$resource"];
     taskStateResource.$inject = ["$resource"];
