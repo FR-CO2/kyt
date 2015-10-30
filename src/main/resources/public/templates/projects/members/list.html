@@ -16,15 +16,15 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="member in configMemberCtrl.members.content">
+                    <tr ng-repeat="member in configMemberCtrl.members.members">
                         <td>
-                            {{member.user.username}}
+                            {{member.username}}
                         </td>
                         <td>
                             {{member.projectRole}}
                         </td>
                         <td>
-                            <a ng-click="configMemberCtrl.delete(member.id)">
+                            <a ng-click="configMemberCtrl.delete(member)">
                                 <span class="glyphicon glyphicon-trash"></span>
                             </a>
                         </td>
@@ -36,13 +36,13 @@
                             <div class="row">
                                 <div class="col-md-6 col-md-offset-3" >
                                     <div class="center-block text-center">
-                                        <pagination total-items="configMemberCtrl.members.totalElements" ng-model="configMemberCtrl.numPage" items-per-page="configMemberCtrl.members.size" max-size="5" class="pagination-sm" boundary-links="true" rotate="false" num-pages="configMemberCtrl.members.totalPages" ng-click="configMemberCtrl.pageChanged()"></pagination>
+                                        <pagination total-items="configMemberCtrl.members.page.totalElements" ng-model="configMemberCtrl.members.page.numPage" items-per-page="configMemberCtrl.members.page.size" max-size="5" class="pagination-sm" boundary-links="true" rotate="false" num-pages="configMemberCtrl.members.page.totalPages" ng-click="configMemberCtrl.pageChanged()"></pagination>
                                     </div>
                                 </div>
                                 <div class="col-md-3 form-inline"> 
                                     <div class="form-group pull-right">
                                         <label for="nbEltUser">Nb élements :</label>
-                                        <select id="nbEltUser" ng-model="configMemberCtrl.nbElt" class="form-control input-sm" style="margin: 20px;"  ng-change="configMemberCtrl.pageChanged()">
+                                        <select id="nbEltUser" ng-model="configMemberCtrl.members.page.nbElt" class="form-control input-sm" style="margin: 20px;"  ng-change="configMemberCtrl.pageChanged()">
                                             <option value="10">10</option>
                                             <option value="20">20</option>
                                             <option value="50">50</option>

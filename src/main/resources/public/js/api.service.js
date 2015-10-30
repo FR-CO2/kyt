@@ -157,8 +157,13 @@
     function applicationRoleResource($resource) {
         return $resource("/api/role");
     }
+    
+    function projectRoleResource($resource) {
+        return $resource("/api/role/project");
+    }
 
     projectResource.$inject = ["$resource"];
+    projectRoleResource.$inject = ["$resource"];
     applicationRoleResource.$inject = ["$resource"];
     userResourceAssembler.$inject = ["$q", "$resource"];
     projectResourceAssembler.$inject = ["$q", "$resource", "taskResourceAssembler"];
@@ -167,6 +172,7 @@
     angular.module("kanban.api", ["ngResource"])
             .service("projectResourceAssembler", projectResourceAssembler)
             .service("projectResource", projectResource)
+            .service("projectRoleResource", projectRoleResource)
             .service("taskResourceAssembler", taskResourceAssembler)
             .service("currentUserResourceAssembler", currentUserResourceAssembler)
             .service("userResourceAssembler", userResourceAssembler)

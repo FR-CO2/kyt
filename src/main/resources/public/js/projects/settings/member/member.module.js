@@ -20,7 +20,7 @@
             if (ui.item) {
                 $scope.add.member.applicationUserId = ui.item.id;
                 vm.term = event.target.value = ui.item.username;
-                return false;   
+                return false;
             }
         };
 
@@ -34,7 +34,7 @@
     }
     ;
 
-    function memberListController(project, $modal, projectResourceAssembler, memberResourceSrv) {
+    function memberListController(project, $modal, projectResourceAssembler) {
         var vm = this;
         vm.nbElt = 10;
         vm.numPage = 1;
@@ -42,53 +42,47 @@
             size: vm.nbElt,
             page: 0
         };
-        vm.members = projectResourceAssembler.members(project, {size: vm.paging.size, page: vm.paging.page});
+        projectResourceAssembler.members(project, {size: vm.paging.size, page: vm.paging.page}).then(function (data) {
+            vm.members = data;
+        });
         vm.add = function () {
             var modalInstance = $modal.open({
                 animation: true,
                 templateUrl: "templates/projects/members/add.html",
                 controller: "memberAddController",
                 controllerAs: "add",
-                size: "md"
+                size: "md",
+                resolve: {
+                    project: function () {
+                        return project;
+                    }
+                }
+
             });
-            modalInstance.result.then(function () {
-                vm.members = projectResourceAssembler.members(project, {size: vm.paging.size, page: vm.paging.page});
+            projectResourceAssembler.members(project, {size: vm.members.page.size, page: vm.members.page.page}).then(function (data) {
+                vm.members = data;
             });
         };
         vm.delete = function (memberId) {
-            memberResourceSrv.delete({projectId: project.id, id: memberId}, function () {
-                vm.members = projectResourceAssembler.members(project, {size: vm.paging.size, page: vm.paging.page});
-            });
+
         };
         vm.pageChanged = function () {
-            if (vm.nbElt !== vm.paging.size) {
-                vm.numPage = 1;
-            }
-            ;
-            vm.paging = {
-                size: vm.nbElt,
-                page: vm.numPage - 1
-            };
-            vm.members = projectResourceAssembler.members(project, {size: vm.paging.size, page: vm.paging.page});
+            projectResourceAssembler.members(project, {size: vm.members.page.size, page: vm.members.page.page}).then(function (data) {
+                vm.members = data;
+            });
         };
     }
 
 
-    function memberAddController(project, $modalInstance, memberResourceSrv, userResource, memberRoleResourceSrv) {
+    function memberAddController(project, $modalInstance, memberResourceSrv, projectRoleResource) {
         var vm = this;
         vm.member = {};
-        vm.users = userResource.query();
-        vm.roles = memberRoleResourceSrv.query({"projectId": project.id});
+        vm.roles = projectRoleResource.query();
         vm.submit = function () {
             memberResourceSrv.save({"projectId": project.id}, vm.member, function () {
                 $modalInstance.close();
             });
         };
-    }
-
-
-    function memberRoleResource($resource) {
-        return $resource("/api/role/project");
     }
 
     function memberResource($resource) {
@@ -97,16 +91,14 @@
         });
     }
 
-    memberListController.$inject = ["project", "$modal", "projectResourceAssembler", "memberResource"];
-    memberAddController.$inject = ["project", "$modalInstance", "memberResource", "userResource", "memberRoleResource"];
+    memberListController.$inject = ["project", "$modal", "projectResourceAssembler"];
+    memberAddController.$inject = ["project", "$modalInstance", "memberResource", "projectRoleResource"];
     userAutoCompleteCtrl.$inject = ["$http", "$scope"];
-    memberRoleResource.$inject = ["$resource"];
     memberResource.$inject = ["$resource"];
 
     angular.module("kanban.project.configure.member", [])
             .controller("memberListController", memberListController)
             .controller("memberAddController", memberAddController)
             .controller("userAutoCompleteCtrl", userAutoCompleteCtrl)
-            .service("memberResource", memberResource)
-            .service("memberRoleResource", memberRoleResource);
+            .service("memberResource", memberResource);
 })();
