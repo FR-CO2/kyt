@@ -38,11 +38,10 @@
         var vm = this;
         vm.nbElt = 10;
         vm.numPage = 1;
-        vm.paging = {
-            size: vm.nbElt,
-            page: 0
+        vm.members = {
+            page : {}
         };
-        projectResourceAssembler.members(project, {size: vm.paging.size, page: vm.paging.page}).then(function (data) {
+        projectResourceAssembler.members(project, vm.members.page).then(function (data) {
             vm.members = data;
         });
         vm.add = function () {
@@ -59,7 +58,7 @@
                 }
 
             });
-            projectResourceAssembler.members(project, {size: vm.members.page.size, page: vm.members.page.page}).then(function (data) {
+            projectResourceAssembler.members(project, vm.members.page).then(function (data) {
                 vm.members = data;
             });
         };
@@ -67,7 +66,7 @@
 
         };
         vm.pageChanged = function () {
-            projectResourceAssembler.members(project, {size: vm.members.page.size, page: vm.members.page.page}).then(function (data) {
+            projectResourceAssembler.members(project, vm.members.page).then(function (data) {
                 vm.members = data;
             });
         };

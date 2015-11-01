@@ -127,7 +127,7 @@
     }
 
     function userResourceAssembler($q, $resource) {
-        var userResource = $resource("/api/user");
+        var userResource = $resource("/api/user/:id");
         return {
             page: function (page) {
                 var defer = $q.defer();
@@ -137,11 +137,26 @@
                         users: []
                     };
                     if (response._embedded) {
-                        angular.forEach(response._embedded.taskResources, function (user) {
+                        angular.forEach(response._embedded.userResources, function (user) {
                             userPage.users.push(user);
                         });
                     }
                     defer.resolve(userPage);
+                });
+                return defer.promise;
+            },
+            add: function (user) {
+                var defer = $q.defer();
+                userResource.save(user, function (data) {
+                    defer.resolve(data);
+                });
+                return defer.promise;
+            }
+            ,
+            delete: function (id) {
+                var defer = $q.defer();
+                userResource.delete({id: id}, function (data) {
+                    defer.resolve(data);
                 });
                 return defer.promise;
             }
@@ -157,7 +172,7 @@
     function applicationRoleResource($resource) {
         return $resource("/api/role");
     }
-    
+
     function projectRoleResource($resource) {
         return $resource("/api/role/project");
     }

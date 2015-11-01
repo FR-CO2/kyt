@@ -25,7 +25,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="user in userCtrl.users.content">
+                        <tr ng-repeat="user in userCtrl.users.users">
                             <td>
                                 {{user.username}}
                             </td>
@@ -46,13 +46,13 @@
                                 <div class="row">
                                     <div class="col-md-6 col-md-offset-3" >
                                         <div class="center-block text-center">
-                                            <pagination total-items="userCtrl.users.totalElements" ng-model="userCtrl.numPage" items-per-page="userCtrl.users.size" max-size="5" class="pagination-sm" boundary-links="true" rotate="false" num-pages="userCtrl.users.totalPages" ng-click="userCtrl.pageChanged()"></pagination>
+                                            <pagination total-items="userCtrl.users.page.totalElements" ng-model="userCtrl.users.page.numPage" items-per-page="userCtrl.users.page.size" max-size="5" class="pagination-sm" boundary-links="true" rotate="false" num-pages="userCtrl.users.page.totalPages" ng-click="userCtrl.pageChanged()"></pagination>
                                         </div>
                                     </div>
                                     <div class="col-md-3 form-inline"> 
                                         <div class="form-group pull-right">
                                             <label for="nbEltUser">Nb élements :</label>
-                                            <select id="nbEltUser" ng-model="userCtrl.nbElt" class="form-control input-sm" style="margin: 20px;" ng-change="userCtrl.pageChanged()">
+                                            <select id="nbEltUser" ng-model="userCtrl.users.page.nbElt" class="form-control input-sm" style="margin: 20px;" ng-change="userCtrl.pageChanged()">
                                                 <option value="10">10</option>
                                                 <option value="20">20</option>
                                                 <option value="50">50</option>

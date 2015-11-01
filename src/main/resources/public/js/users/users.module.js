@@ -1,26 +1,11 @@
 (function () {
     "use strict";
 
-    function userImportController($modalInstance, Upload) {
-        var vm = this;
-        vm.title = "Importer des utilisateurs";
-        vm.submit = function() {
-            Upload.upload({
-                url: '/api/user/import',
-                file: vm.file
-            }).success(function () {
-                    $modalInstance.close();
-                }).error(function (e) {
-                    vm.form = {error: e};
-            });
-        };
-    }
-
     function userAddController($modalInstance, userResourceSrv, applicationRoleResourceSrv) {
         var vm = this;
         vm.roles = applicationRoleResourceSrv.query();
         vm.submit = function () {
-            userResourceSrv.save(vm.user, function () {
+            userResourceSrv.add(vm.user).then(function (data) {
                 $modalInstance.close();
             });
         };
@@ -28,13 +13,12 @@
 
     function userListController($modal, $http, userResourceSrv) {
         var vm = this;
-        vm.nbElt = 10;
-        vm.numPage = 1;
-        vm.paging = {
-            size: vm.nbElt,
-            page: 0
+        vm.users = {
+            page: {}
         };
-        vm.users = userResourceSrv.page(vm.paging);
+        userResourceSrv.page(vm.users.page).then(function (data) {
+            vm.users = data;
+        });
         vm.add = function () {
             var modalInstance = $modal.open({
                 animation: true,
@@ -44,51 +28,24 @@
                 size: "md"
             });
             modalInstance.result.then(function () {
-                vm.users = userResourceSrv.page(vm.paging);
+                userResourceSrv.page(vm.users.page).then(function (data) {
+                    vm.users = data;
+                });
             });
         };
         vm.delete = function (userId) {
-            userResourceSrv.delete({id: userId}, function () {
-                vm.users = userResourceSrv.page(vm.paging);
+            userResourceSrv.delete(userId).then(function () {
+                userResourceSrv.page(vm.users.page).then(function (data) {
+                    vm.users = data;
+                });
             });
         };
         vm.pageChanged = function () {
-            if (vm.nbElt !== vm.paging.size) {
-                vm.numPage = 1;
-            }
-            ;
-            vm.paging = {
-                size: vm.nbElt,
-                page: vm.numPage - 1
-            };
-            vm.users = userResourceSrv.page(vm.paging, function (result) {
-                vm.numPage = result.number + 1;
+            userResourceSrv.page(vm.users.page).then(function (data) {
+                vm.users = data;
             });
         };
-        vm.export = function () {
-            // Creating a Blob with our data for download
-            // this will parse the URL in ng-href such as: blob:http...
-            $http({method: 'GET',
-                url: '/api/user/export',
-                headers: {'Content-Type': undefined}})
-                    .then(function (response) {
-                        var blob = new Blob([response.data], {type: 'text/csv'});
-                        saveAs(blob, "export-users.csv");
-                    })
-        };
-
-        vm.import = function () {
-            var modalInstance = $modal.open({
-                animation: true,
-                templateUrl: "templates/common/import.html",
-                controller: "userImportController",
-                controllerAs: "import",
-                size: "xs"
-            });
-            modalInstance.result.then(function () {
-                vm.users = userResourceSrv.page(vm.paging);
-            });
-        };
+        ;
     }
 
     function userConfig($stateProvider) {
@@ -102,13 +59,11 @@
 
     userConfig.$inject = ["$stateProvider"];
     userListController.$inject = ["$modal", "$http", "userResourceAssembler"];
-    userImportController.$inject = ["$modalInstance", "Upload"];
     userAddController.$inject = ["$modalInstance", "userResourceAssembler", "applicationRoleResource"];
 
 
     angular.module("kanban.user", ["kanban.api", "ngFileUpload"])
             .config(userConfig)
             .controller("userListController", userListController)
-            .controller("userAddController", userAddController)
-            .controller("userImportController", userImportController);
+            .controller("userAddController", userAddController);
 })();

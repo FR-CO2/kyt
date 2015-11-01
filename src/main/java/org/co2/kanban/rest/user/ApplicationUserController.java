@@ -75,7 +75,7 @@ public class ApplicationUserController {
     @Autowired
     private PagedResourcesAssembler<Task> pagedTaskAssembler;
 
-    @RequestMapping(value = "/page", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public PagedResources<UserResource> page(Pageable p) {
         return pagedAssembler.toResource(repository.findAll(p), userAssembler);
     }
