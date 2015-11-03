@@ -32,7 +32,7 @@ public class ProjectAssembler extends ResourceAssemblerSupport<Project, ProjectR
         ProjectResource resource = createResourceWithId(project.getId(), project);
         resource.setName(project.getName());
         resource.setResourceId(project.getId());
-        resource.add(linkTo(methodOn(MemberController.class).page(project.getId(), null)).withRel("members"));
+        resource.add(linkTo(methodOn(MemberController.class).list(project.getId(), null)).withRel("members"));
         resource.add(linkTo(methodOn(StateController.class).projectList(project.getId())).withRel("states"));
         resource.add(linkTo(methodOn(SwimlaneController.class).projectList(project.getId())).withRel("swimlanes"));
         resource.add(linkTo(methodOn(CategoryController.class).list(project.getId())).withRel("category"));

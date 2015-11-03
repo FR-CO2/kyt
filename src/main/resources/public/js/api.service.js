@@ -6,6 +6,25 @@
 (function () {
     "use strict";
 
+    function projectMember($q, $resource) {
+        return {
+            add: function (project, member) {
+                var defer = $q.defer();
+                $resource(project._links.members.href).save(member, function(data) {
+                    defer.resolve(data);
+                });
+                return defer.promise;
+            },
+            remove: function (member) {
+                var defer = $q.defer();
+                $resource(member._links.self.href).delete(function(data) {
+                    defer.resolve(data);
+                });
+                return defer.promise;
+            }
+        };
+    }
+    
     function projectResourceAssembler($q, $resource, taskResourceAssembler) {
         return {
             assemble: function (project, withSwimlanes) {
@@ -182,12 +201,14 @@
     applicationRoleResource.$inject = ["$resource"];
     userResourceAssembler.$inject = ["$q", "$resource"];
     projectResourceAssembler.$inject = ["$q", "$resource", "taskResourceAssembler"];
+    projectMember.$inject = ["$q", "$resource"];
     taskResourceAssembler.$inject = ["$resource"];
     currentUserResourceAssembler.$inject = ["$q", "$resource", "projectResourceAssembler"];
     angular.module("kanban.api", ["ngResource"])
             .service("projectResourceAssembler", projectResourceAssembler)
             .service("projectResource", projectResource)
             .service("projectRoleResource", projectRoleResource)
+            .service("projectMember", projectMember)
             .service("taskResourceAssembler", taskResourceAssembler)
             .service("currentUserResourceAssembler", currentUserResourceAssembler)
             .service("userResourceAssembler", userResourceAssembler)

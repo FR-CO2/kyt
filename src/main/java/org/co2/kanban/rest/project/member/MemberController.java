@@ -49,8 +49,8 @@ public class MemberController {
     @Autowired
     private PagedResourcesAssembler<Member> pagedAssembler;
 
-    @RequestMapping(value = "/page", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public PagedResources<MemberResource> page(@PathVariable("projectId") Long projectId, Pageable page) {
+    @RequestMapping(method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    public PagedResources<MemberResource> list(@PathVariable("projectId") Long projectId, Pageable page) {
         Project project = projectRepository.findOne(projectId);
         return pagedAssembler.toResource(repository.findByProject(project, page), assembler);
     }
@@ -59,12 +59,6 @@ public class MemberController {
     public List<MemberResource> findByUsername(@PathVariable("projectId") Long projectId, @PathVariable("username") String username) {
         Project project = projectRepository.findOne(projectId);
         return assembler.toResources(repository.findByProjectAndUserUsernameLike(project, username));
-    }
-
-    @RequestMapping(method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public List<MemberResource> list(@PathVariable("projectId") Long projectId) {
-        Project project = projectRepository.findOne(projectId);
-        return assembler.toResources(repository.findByProject(project));
     }
 
     @RequestMapping(method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)

@@ -34,12 +34,12 @@
     }
     ;
 
-    function memberListController(project, $modal, projectResourceAssembler) {
+    function memberListController(project, $modal, projectResourceAssembler, projectMember) {
         var vm = this;
         vm.nbElt = 10;
         vm.numPage = 1;
         vm.members = {
-            page : {}
+            page: {}
         };
         projectResourceAssembler.members(project, vm.members.page).then(function (data) {
             vm.members = data;
@@ -58,12 +58,18 @@
                 }
 
             });
-            projectResourceAssembler.members(project, vm.members.page).then(function (data) {
-                vm.members = data;
+            modalInstance.result.then(function () {
+                projectResourceAssembler.members(project, vm.members.page).then(function (data) {
+                    vm.members = data;
+                });
             });
         };
-        vm.delete = function (memberId) {
-
+        vm.delete = function (member) {
+            projectMember.remove(member).then(function () {
+                projectResourceAssembler.members(project, vm.members.page).then(function (data) {
+                    vm.members = data;
+                });
+            });
         };
         vm.pageChanged = function () {
             projectResourceAssembler.members(project, vm.members.page).then(function (data) {
@@ -73,31 +79,23 @@
     }
 
 
-    function memberAddController(project, $modalInstance, memberResourceSrv, projectRoleResource) {
+    function memberAddController(project, $modalInstance, projectMember, projectRoleResource) {
         var vm = this;
         vm.member = {};
         vm.roles = projectRoleResource.query();
         vm.submit = function () {
-            memberResourceSrv.save({"projectId": project.id}, vm.member, function () {
+            projectMember.add(project, vm.member).then(function () {
                 $modalInstance.close();
             });
         };
     }
 
-    function memberResource($resource) {
-        return $resource("/api/project/:projectId/member/:id", {projectId: "projectId", id: "@id"}, {
-            page: {url: "/api/project/:projectId/member/page", method: "GET", isArray: false}
-        });
-    }
-
-    memberListController.$inject = ["project", "$modal", "projectResourceAssembler"];
-    memberAddController.$inject = ["project", "$modalInstance", "memberResource", "projectRoleResource"];
+    memberListController.$inject = ["project", "$modal", "projectResourceAssembler", "projectMember"];
+    memberAddController.$inject = ["project", "$modalInstance", "projectMember", "projectRoleResource"];
     userAutoCompleteCtrl.$inject = ["$http", "$scope"];
-    memberResource.$inject = ["$resource"];
 
     angular.module("kanban.project.configure.member", [])
             .controller("memberListController", memberListController)
             .controller("memberAddController", memberAddController)
-            .controller("userAutoCompleteCtrl", userAutoCompleteCtrl)
-            .service("memberResource", memberResource);
+            .controller("userAutoCompleteCtrl", userAutoCompleteCtrl);
 })();
