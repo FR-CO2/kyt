@@ -6,25 +6,40 @@
 (function () {
     "use strict";
 
-    function projectMember($q, $resource) {
+    function projectElement($q, $resource, linkName) {
         return {
-            add: function (project, member) {
+            add: function (project, element) {
                 var defer = $q.defer();
-                $resource(project._links.members.href).save(member, function(data) {
+                $resource(project._links[linkName].href).save(element, function (data) {
                     defer.resolve(data);
                 });
                 return defer.promise;
             },
-            remove: function (member) {
+            remove: function (element) {
                 var defer = $q.defer();
-                $resource(member._links.self.href).delete(function(data) {
+                $resource(element._links.self.href).delete(function (data) {
                     defer.resolve(data);
                 });
                 return defer.promise;
             }
         };
     }
-    
+
+    function projectMember($q, $resource) {
+        return projectElement($q, $resource, "members");
+    }
+
+    function projectCategory($q, $resource) {
+        return projectElement($q, $resource, "category");
+    }
+
+    function projectState($q, $resource) {
+        return projectElement($q, $resource, "states");
+    }
+    function projectSwimlane($q, $resource) {
+        return projectElement($q, $resource, "swimlanes");
+    }
+
     function projectResourceAssembler($q, $resource, taskResourceAssembler) {
         return {
             assemble: function (project, withSwimlanes) {
@@ -202,6 +217,9 @@
     userResourceAssembler.$inject = ["$q", "$resource"];
     projectResourceAssembler.$inject = ["$q", "$resource", "taskResourceAssembler"];
     projectMember.$inject = ["$q", "$resource"];
+    projectCategory.$inject = ["$q", "$resource"];
+    projectState.$inject = ["$q", "$resource"];
+    projectSwimlane.$inject = ["$q", "$resource"];
     taskResourceAssembler.$inject = ["$resource"];
     currentUserResourceAssembler.$inject = ["$q", "$resource", "projectResourceAssembler"];
     angular.module("kanban.api", ["ngResource"])
@@ -209,6 +227,9 @@
             .service("projectResource", projectResource)
             .service("projectRoleResource", projectRoleResource)
             .service("projectMember", projectMember)
+            .service("projectCategory", projectCategory)
+            .service("projectState", projectState)
+            .service("projectSwimlane", projectSwimlane)
             .service("taskResourceAssembler", taskResourceAssembler)
             .service("currentUserResourceAssembler", currentUserResourceAssembler)
             .service("userResourceAssembler", userResourceAssembler)

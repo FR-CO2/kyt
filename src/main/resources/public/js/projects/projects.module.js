@@ -76,7 +76,7 @@
         }
     }
 
-    function kanbanController($state, $stateParams, $modal, taskResource, taskStateResource, swimlaneResource, categoryResource, memberResource) {
+    function kanbanController($stateParams, $modal, taskResource, taskStateResource, swimlaneResource) {
         var vm = this;
         kanbanLoader(vm, taskStateResource, swimlaneResource, taskResource, $stateParams.id);
         vm.kanbanSortOptions = {
@@ -90,7 +90,6 @@
                     } else {
                         taskResource.removeSwimlane({projectId: $stateParams.id, id: taskUpdated.id});
                     }
-                    //Todo mise à jour nb tâche par état
                 });
             }
         };
@@ -179,9 +178,8 @@
     projectConfig.$inject = ["$stateProvider"];
     projectListController.$inject = ["$state", "$modal", "$http", "projectResource"];
     projectController.$inject = ["$sessionStorage", "project", "userProjectsRoles"];
-    kanbanController.$inject = ["$state", "$stateParams", "$modal", "taskResource",
-        "taskStateResource", "swimlaneResource",
-        "categoryResource", "memberResource"];
+    kanbanController.$inject = ["$stateParams", "$modal", "taskResource",
+        "taskStateResource", "swimlaneResource"];
     newProjectController.$inject = ["$modalInstance", "projectResource"];
     projectImportController.$inject = ["$modalInstance", "$http"];
 
