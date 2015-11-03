@@ -5,13 +5,6 @@
                     <h2 class="panel-heading-title">Liste des projets</h2>
                     <div class="panel-heading-action">
                         <button class="btn btn-info" ng-click="projectCtrl.add()"><span class="glyphicon glyphicon-plus-sign"></span>Ajouter</button>
-                        <button class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                            Import/Export <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu pull-right">
-                            <li><a ng-click="projectCtrl.import()"><span class="glyphicon glyphicon-import"></span>Import</a></li>
-                            <li><a ng-click="projectCtrl.export()"><span class="glyphicon glyphicon-export"></span>Export</a></li>
-                        </ul>
                     </div>
             </div>
             <div class="panel-body">
@@ -24,7 +17,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="project in projectCtrl.projects.content">
+                        <tr ng-repeat="project in projectCtrl.projects.projects">
                             <td ng-click="projectCtrl.goProject(project.id)">
                                 {{project.name}}
                             </td>
@@ -50,13 +43,13 @@
                             <td colspan="3">
                                 <div class="col-md-6 col-md-offset-3" >
                                     <div class="center-block text-center">
-                                        <pagination total-items="projectCtrl.projects.nbElt" ng-model="projectCtrl.projects.number" items-per-page="projectCtrl.projects.size" max-size="5" class="pagination-sm" boundary-links="true" rotate="false" num-pages="projectCtrl.projects.totalPages" ng-change="projectCtrl.pageChanged()"></pagination>
+                                        <pagination total-items="projectCtrl.projects.page.nbElt" ng-model="projectCtrl.projects.page.number" items-per-page="projectCtrl.projects.page.size" max-size="5" class="pagination-sm" boundary-links="true" rotate="false" num-pages="projectCtrl.projects.page.totalPages" ng-change="projectCtrl.pageChanged()"></pagination>
                                     </div>
                                 </div>
                                 <div class="col-md-3 form-inline">
                                     <div class="form-group pull-right">
                                         <label for="nbEltUser">Nb élements :</label>
-                                        <select id="nbEltUser" ng-model="projectCtrl.nbElt" class="form-control input-sm" style="margin: 20px;">
+                                        <select id="nbEltUser" ng-model="projectCtrl.page.nbElt" class="form-control input-sm" style="margin: 20px;">
                                             <option value="10">10</option>
                                             <option value="20">20</option>
                                             <option value="50">50</option>

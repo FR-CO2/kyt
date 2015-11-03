@@ -197,10 +197,48 @@
         };
     }
 
-    function projectResource($resource) {
-        return $resource("/api/project/:id", {id: "@id"}, {
-            query: {isArray: false}
-        });
+    function projectResource($q, $resource, projectResourceAssembler) {
+        var resource = $resource("/api/project/:id", {id: "@id"}, {
+            query: {isArray: false}});
+        return {
+            query: function(page) {
+                var defer = $q.defer();
+                resource.query(page, function (response) {
+                    var projectPage = {
+                        page: response.page,
+                        projects: []
+                    };
+                    if (response._embedded) {
+                        angular.forEach(response._embedded.projectResources, function (project) {
+                            projectPage.projects.push(projectResourceAssembler.assemble(project));
+                        });
+                    }
+                    defer.resolve(projectPage);
+                });
+                return defer.promise;
+            },
+            get: function(id) {
+                var defer = $q.defer();
+                resource.get({id: id}, function(response) {
+                    return defer.resolve(response);
+                });
+                return defer.promise;
+            },
+            save: function(project) {
+                var defer = $q.defer();
+                resource.save(project, function(response) {
+                    return defer.resolve(response);
+                });
+                return defer.promise;
+            },
+            remove: function(id) {
+                var defer = $q.defer();
+                resource.delete({id: id}, function(response) {
+                    return defer.resolve(response);
+                });
+                return defer.promise;
+            }
+        };
     }
 
     function applicationRoleResource($resource) {
@@ -211,7 +249,7 @@
         return $resource("/api/role/project");
     }
 
-    projectResource.$inject = ["$resource"];
+    projectResource.$inject = ["$q", "$resource", "projectResourceAssembler"];
     projectRoleResource.$inject = ["$resource"];
     applicationRoleResource.$inject = ["$resource"];
     userResourceAssembler.$inject = ["$q", "$resource"];

@@ -120,15 +120,18 @@
         var vm = this;
         vm.project = {};
         vm.submit = function () {
-            projectResourceSrv.save(vm.project, function () {
+            projectResourceSrv.save(vm.project).then(function() {
                 $modalInstance.close();
             });
         };
     }
 
-    function projectListController($state, $modal, $http, projectResourceSrv) {
+    function projectListController($modal, projectResourceSrv) {
         var vm = this;
-        vm.projects = projectResourceSrv.query();
+        vm.projects = {};
+        projectResourceSrv.query(vm.projects.page).then(function (data) {
+            vm.projects = data;
+        });
         vm.add = function () {
             var modalInstance = $modal.open({
                 animation: true,
@@ -138,12 +141,16 @@
                 size: "md"
             });
             modalInstance.result.then(function () {
-                vm.projects = projectResourceSrv.query();
+                projectResourceSrv.query(vm.projects.page).then(function (data) {
+                    vm.projects = data;
+                });
             });
         };
         vm.delete = function (projectId) {
-            projectResourceSrv.delete({id: projectId}, function () {
-                vm.projects = projectResourceSrv.query();
+            projectResourceSrv.remove(projectId).then(function () {
+                projectResourceSrv.query(vm.projects.page).then(function (data) {
+                    vm.projects = data;
+                });
             });
         };
     }
@@ -163,8 +170,8 @@
             url: "project/:id",
             resolve: {
                 project: ["$stateParams", "projectResource", function ($stateParams, projectResource) {
-                    return projectResource.get({id: $stateParams.id});
-                }]
+                        return projectResource.get($stateParams.id);
+                    }]
             }
         });
         $stateProvider.state("app.project.kanban", {
@@ -176,18 +183,16 @@
     }
 
     projectConfig.$inject = ["$stateProvider"];
-    projectListController.$inject = ["$state", "$modal", "$http", "projectResource"];
+    projectListController.$inject = ["$modal", "projectResource"];
     projectController.$inject = ["$sessionStorage", "project", "userProjectsRoles"];
     kanbanController.$inject = ["$stateParams", "$modal", "taskResource",
         "taskStateResource", "swimlaneResource"];
     newProjectController.$inject = ["$modalInstance", "projectResource"];
-    projectImportController.$inject = ["$modalInstance", "$http"];
 
     angular.module("kanban.project", ["kanban.project.task", "kanban.project.configure", "kanban.project.reports"])
             .config(projectConfig)
             .controller("projectListController", projectListController)
             .controller("projectController", projectController)
             .controller("kanbanController", kanbanController)
-            .controller("newProjectController", newProjectController)
-            .controller("projectImportController", projectImportController);
+            .controller("newProjectController", newProjectController);
 })();
