@@ -1,13 +1,11 @@
 (function () {
     "use strict";
 
-    function editTaskController($stateParams, taskResourceSrv, categoryResource,
-            memberResource, stateResource, swimlaneResource) {
+    function editTaskController($stateParams, taskResourceSrv, project, projectResourceAssembler) {
         var vm = this;
-        vm.categories = categoryResource.query({"projectId": $stateParams.id});
-        vm.members = memberResource.query({"projectId": $stateParams.id});
-        vm.states = stateResource.query({"projectId": $stateParams.id});
-        vm.swimlanes = swimlaneResource.query({"projectId": $stateParams.id});
+        vm.categories = projectResourceAssembler.category(project);
+        vm.states =  projectResourceAssembler.states(project);
+        vm.swimlanes = projectResourceAssembler.swimlane(project);
         vm.task = taskResourceSrv.get({"projectId": $stateParams.id, "id": $stateParams.taskId},
         function (data) {
             if (data.plannedStart) {
@@ -172,7 +170,7 @@
     taskConfig.$inject = ["$stateProvider"];
     newTaskController.$inject = ["$modalInstance", "project", "projectResourceAssembler", "projectTask"];
     taskListController.$inject = ["$stateParams", "$modal", "project", "projectResourceAssembler"];
-    editTaskController.$inject = ["$stateParams", "taskResource"];
+    editTaskController.$inject = ["$stateParams", "taskResource",  "project", "projectResourceAssembler"];
     taskResource.$inject = ["$resource"];
 
     angular.module("kanban.project.task", ["kanban.project.task.timesheet", "kanban.project.task.comment", "kanban.project.task.history"])

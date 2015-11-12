@@ -95,7 +95,7 @@
                                 {{task.timeRemains}}
                             </td>
                             <td ng-if="projectCtrl.hasEditRights" >
-                                <a ng-click="taskCtrl.edit(task.id)" title="edit">
+                                <a ui-sref="app.project.task.general({id: projectCtrl.project.id, taskId: task.id })" title="edit">
                                     <span class="glyphicon glyphicon-edit"></span>
                                 </a>
                                 <a ng-click="taskCtrl.delete(task.id)" title="delete">
