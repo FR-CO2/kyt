@@ -26,7 +26,7 @@ public class CategoryAssembler extends ResourceAssemblerSupport<Category, Catego
     
     @Override
     public CategoryResource toResource(Category category) {
-        CategoryResource resource = createResourceWithId(category.getId(), category);
+        CategoryResource resource = createResourceWithId(category.getId(), category, category.getProject().getId());
         resource.setName(category.getName());
         resource.setBgcolor(category.getBgcolor());
         resource.setColor(category.getColor());

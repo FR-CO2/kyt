@@ -17,11 +17,11 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="project in projectCtrl.projects.projects">
-                            <td ng-click="projectCtrl.goProject(project.id)">
+                        <tr ng-repeat="project in projectCtrl.projects.projects" >
+                            <td ui-sref="app.project.kanban({id: project.id })">
                                 {{project.name}}
                             </td>
-                            <td class="text-justify" ng-click="projectCtrl.goProject(project.id)">
+                            <td class="text-justify" ui-sref="app.project.kanban({id: project.id })">
                                 <ul class="list-inline">
                                     <li ng-repeat="state in project.states" ng-if="!state.kanbanHide">
                                         {{state.name}} <span class="badge alert-info">{{state.taskCount}}</span>
@@ -49,7 +49,7 @@
                                 <div class="col-md-3 form-inline">
                                     <div class="form-group pull-right">
                                         <label for="nbEltUser">Nb élements :</label>
-                                        <select id="nbEltUser" ng-model="projectCtrl.page.nbElt" class="form-control input-sm" style="margin: 20px;">
+                                        <select id="nbEltUser" ng-model="projectCtrl.projects.page.nbElt" class="form-control input-sm" style="margin: 20px;">
                                             <option value="10">10</option>
                                             <option value="20">20</option>
                                             <option value="50">50</option>

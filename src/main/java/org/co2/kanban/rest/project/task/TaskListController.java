@@ -23,6 +23,7 @@ import org.springframework.hateoas.PagedResources;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.util.NumberUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -50,20 +51,19 @@ public class TaskListController {
     @Autowired
     private SwimlaneRepository swimlaneRepository;
 
-    
     @Autowired
     private CategoryRepository categoryRepository;
-    
+
     @Autowired
     private PagedResourcesAssembler<Task> pagedAssembler;
 
     @Autowired
     private TaskAssembler assembler;
 
-    @RequestMapping(value = "page", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public PagedResources<TaskResource> projectPage(@PathVariable("projectId") Long projectId, Pageable p) {
+    @RequestMapping(method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    public PagedResources<TaskResource> projectPage(@PathVariable("projectId") Long projectId, Pageable page) {
         Project project = projectRepository.findOne(projectId);
-        return pagedAssembler.toResource(repository.findByProject(project, p), assembler);
+        return pagedAssembler.toResource(repository.findByProject(project, page), assembler);
     }
 
     @RequestMapping(value = "kanban", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
@@ -96,15 +96,13 @@ public class TaskListController {
         return new ResponseEntity<>(assembler.toResources(tasks), HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public Iterable<TaskResource> projectList(@PathVariable("projectId") Long projectId) {
-        Project project = projectRepository.findOne(projectId);
-        return assembler.toResources(repository.findByProject(project));
-    }
-
     @RequestMapping(method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("@projectAccessExpression.hasContributorAccess(#projectId, principal.username)")
     public TaskResource create(@PathVariable("projectId") Long projectId, @RequestBody Task newTask) {
+        Project project = projectRepository.findOne(projectId);
+        newTask.setProject(project);
+        State state = taskStateRepository.findByProjectAndPosition(project, 0L);
+        newTask.setState(state);
         Task result = repository.save(newTask);
         return assembler.toResource(result);
     }

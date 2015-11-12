@@ -30,26 +30,6 @@
         });
     }
 
-
-    function projectImportController($modalInstance, $http) {
-        var vm = this;
-        vm.title = "Importer des projets";
-        vm.submit = function () {
-            var formData = new FormData();
-            formData.append("importfile", vm.fileInput);
-            $http({
-                method: 'POST',
-                url: '/api/project/import',
-                headers: {'Content-Type': undefined},
-                data: formData
-            }).success(function () {
-                $modalInstance.close();
-            }).error(function (e) {
-                vm.form = {error: e};
-            });
-        };
-    }
-
     function projectController($sessionStorage, resolvedProject, userProjectsRoles) {
         var vm = this;
         vm.project = resolvedProject;

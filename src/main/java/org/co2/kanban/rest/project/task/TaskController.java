@@ -5,21 +5,13 @@
  */
 package org.co2.kanban.rest.project.task;
 
-import java.util.List;
-import org.co2.kanban.repository.category.Category;
-import org.co2.kanban.repository.category.CategoryRepository;
 import org.co2.kanban.repository.task.Task;
 import org.co2.kanban.repository.task.TaskRepository;
-import org.co2.kanban.repository.project.Project;
-import org.co2.kanban.repository.project.ProjectRepository;
 import org.co2.kanban.repository.state.State;
 import org.co2.kanban.repository.state.StateRepository;
 import org.co2.kanban.repository.swimlane.Swimlane;
 import org.co2.kanban.repository.swimlane.SwimlaneRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PagedResourcesAssembler;
-import org.springframework.hateoas.PagedResources;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -42,25 +34,15 @@ public class TaskController {
     private TaskRepository repository;
 
     @Autowired
-    private ProjectRepository projectRepository;
-
-    @Autowired
     private StateRepository taskStateRepository;
 
     @Autowired
     private SwimlaneRepository swimlaneRepository;
 
-    
-    @Autowired
-    private CategoryRepository categoryRepository;
-    
-    @Autowired
-    private PagedResourcesAssembler<Task> pagedAssembler;
 
     @Autowired
     private TaskAssembler assembler;
 
-    
     @RequestMapping(value = "{id}", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public TaskResource get(@PathVariable("id") Long taskId) {
         return assembler.toResource(repository.findOne(taskId));

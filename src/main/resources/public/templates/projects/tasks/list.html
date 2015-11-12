@@ -5,13 +5,6 @@
                 <h2 class="panel-heading-title">Liste des tâches</h2>
                 <div class="panel-heading-action">
                     <button ng-if="projectCtrl.hasEditRights" class="btn btn-info btn-sm" ng-click="taskCtrl.add()"><span class="glyphicon glyphicon-plus-sign"></span>Nouvelle tâche</button>
-                    <button class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                        Import/Export <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu pull-right">
-                        <li ng-if="projectCtrl.hasEditRights"><a ng-click="taskCtrl.import()"><span class="glyphicon glyphicon-import"></span>Import</a></li>
-                        <li><a ng-click="taskCtrl.export()"><span class="glyphicon glyphicon-export"></span>Export</a></li>
-                    </ul>
                 </div>
             </div>
             <div class="panel-body">
@@ -32,7 +25,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="task in taskCtrl.tasks.content">
+                        <tr ng-repeat="task in taskCtrl.tasks.tasks">
                             <td>
                                 {{task.name}}
                             </td>

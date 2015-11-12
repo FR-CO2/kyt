@@ -25,6 +25,10 @@
         };
     }
 
+    function projectTask($q, $resource) {
+        return projectElement($q, $resource, "tasks");
+    }
+
     function projectMember($q, $resource) {
         return projectElement($q, $resource, "members");
     }
@@ -103,9 +107,15 @@
                     task.state = $resource(task._links.state.href).get();
                     task.swimlane = $resource(task._links.swimlane.href).get();
                 }
-                task.assignee = $resource(task._links.assignee.href).get();
-                task.backup = $resource(task._links.backup.href).get();
-                task.category = $resource(task._links.category.href).get();
+                if (task._links.assignee) {
+                    task.assignee = $resource(task._links.assignee.href).get();
+                }
+                if (task._links.backup) {
+                    task.backup = $resource(task._links.backup.href).get();
+                }
+                if (task._links.category) {
+                    task.category = $resource(task._links.category.href).get();
+                }
                 return task;
             },
             allocations: function (task) {
@@ -201,7 +211,7 @@
         var resource = $resource("/api/project/:id", {id: "@id"}, {
             query: {isArray: false}});
         return {
-            query: function(page) {
+            query: function (page) {
                 var defer = $q.defer();
                 resource.query(page, function (response) {
                     var projectPage = {
@@ -217,23 +227,23 @@
                 });
                 return defer.promise;
             },
-            get: function(id) {
+            get: function (id) {
                 var defer = $q.defer();
-                resource.get({id: id}, function(response) {
+                resource.get({id: id}, function (response) {
                     return defer.resolve(response);
                 });
                 return defer.promise;
             },
-            save: function(project) {
+            save: function (project) {
                 var defer = $q.defer();
-                resource.save(project, function(response) {
+                resource.save(project, function (response) {
                     return defer.resolve(response);
                 });
                 return defer.promise;
             },
-            remove: function(id) {
+            remove: function (id) {
                 var defer = $q.defer();
-                resource.delete({id: id}, function(response) {
+                resource.delete({id: id}, function (response) {
                     return defer.resolve(response);
                 });
                 return defer.promise;
@@ -257,6 +267,7 @@
     projectMember.$inject = ["$q", "$resource"];
     projectCategory.$inject = ["$q", "$resource"];
     projectState.$inject = ["$q", "$resource"];
+    projectTask.$inject = ["$q", "$resource"];
     projectSwimlane.$inject = ["$q", "$resource"];
     taskResourceAssembler.$inject = ["$resource"];
     currentUserResourceAssembler.$inject = ["$q", "$resource", "projectResourceAssembler"];
@@ -267,6 +278,7 @@
             .service("projectMember", projectMember)
             .service("projectCategory", projectCategory)
             .service("projectState", projectState)
+            .service("projectTask", projectTask)
             .service("projectSwimlane", projectSwimlane)
             .service("taskResourceAssembler", taskResourceAssembler)
             .service("currentUserResourceAssembler", currentUserResourceAssembler)

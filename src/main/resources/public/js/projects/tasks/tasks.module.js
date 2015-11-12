@@ -1,25 +1,6 @@
 (function () {
     "use strict";
 
-    function taskImportController($stateParams, $modalInstance, $http) {
-        var vm = this;
-        vm.title = "Importer des tâches";
-        vm.submit = function () {
-            var formData = new FormData();
-            formData.append("importfile", vm.fileInput);
-            $http({
-                method: 'POST',
-                url: '/api/project/' + $stateParams.id + '/task/import',
-                headers: {'Content-Type': undefined},
-                data: formData
-            }).success(function () {
-                $modalInstance.close();
-            }).error(function (e) {
-                vm.form = {error: e};
-            });
-        };
-    }
-
     function editTaskController($stateParams, taskResourceSrv, categoryResource,
             memberResource, stateResource, swimlaneResource) {
         var vm = this;
@@ -41,57 +22,47 @@
         };
     }
 
-    function newTaskController($stateParams, $modalInstance, taskResourceSrv, categoryResource, memberResource) {
+    function newTaskController($modalInstance, project, projectResourceAssembler, projectTask) {
         var vm = this;
-        vm.categories = categoryResource.query({"projectId": $stateParams.id});
-        vm.members = memberResource.query({"projectId": $stateParams.id});
+        vm.categories = projectResourceAssembler.category(project);
         vm.submit = function () {
-            taskResourceSrv.save({"projectId": $stateParams.id}, vm.task, function () {
+            projectTask.add(project, vm.task).then(function () {
                 $modalInstance.close();
             });
         };
     }
 
-    function taskListController($state, $stateParams, $http, $modal, taskResourceSrv, taskStateResource, swimlaneResource, categoryResource, memberResource) {
+    function taskListController($stateParams, $modal, project, projectResourceAssembler) {
         var vm = this;
-        vm.nbElt = 10;
-        vm.numPage = 1;
-        vm.paging = {
-            size: vm.nbElt,
-            page: 0
+        vm.tasks = {
+            page: {}
         };
-        vm.tasks = taskResourceSrv.page({projectId: $stateParams.id, size: vm.paging.size, page: vm.paging.page});
+        projectResourceAssembler.tasks(project, vm.tasks.page).then(function (data) {
+            vm.tasks = data;
+        });
         vm.add = function () {
             var modalInstance = $modal.open({
                 animation: true,
                 templateUrl: "templates/projects/tasks/add.html",
                 controller: "newTaskController",
                 controllerAs: "add",
+                resolve: {
+                    project: function () {
+                        return project;
+                    }
+                },
                 size: "md"
             });
             modalInstance.result.then(function () {
-                vm.tasks = taskResourceSrv.page({projectId: $stateParams.id, size: vm.paging.size, page: vm.paging.page});
+                projectResourceAssembler.tasks(project, vm.tasks.page).then(function (data) {
+                    vm.taks = data;
+                });
             });
-        };
-        vm.edit = function (taskId) {
-            $state.transitionTo("app.project-detail.task.general", {"id": $stateParams.id, "taskId": taskId});
         };
         vm.delete = function (taskId) {
             taskResourceSrv.delete({projectId: $stateParams.id, id: taskId}, function () {
                 vm.tasks = taskResourceSrv.page({projectId: $stateParams.id, size: vm.paging.size, page: vm.paging.page});
             });
-        };
-        vm.loadState = function () {
-            return vm.states ? null : vm.states = taskStateResource.query({projectId: $stateParams.id});
-        };
-        vm.loadSwimlane = function () {
-            return vm.swimlanes ? null : vm.swimlanes = swimlaneResource.query({projectId: $stateParams.id});
-        };
-        vm.loadCategory = function () {
-            return vm.categories ? null : vm.categories = categoryResource.query({projectId: $stateParams.id});
-        };
-        vm.loadMember = function () {
-            return vm.members ? null : vm.members = memberResource.query({projectId: $stateParams.id});
         };
         vm.saveTask = function (task) {
             if (task.category) {
@@ -127,30 +98,6 @@
                 vm.numPage = result.number + 1;
             });
         };
-        vm.export = function () {
-            // Creating a Blob with our data for download
-            // this will parse the URL in ng-href such as: blob:http...
-            $http({method: 'GET',
-                url: '/api/project/' + $stateParams.id + '/task/export',
-                headers: {'Content-Type': undefined}})
-                    .then(function (response) {
-                        var blob = new Blob([response.data], {type: 'text/csv'});
-                        saveAs(blob, "export-tasks.csv");
-                    });
-        };
-
-        vm.import = function () {
-            var modalInstance = $modal.open({
-                animation: true,
-                templateUrl: "templates/common/import.html",
-                controller: "taskImportController",
-                controllerAs: "import",
-                size: "xs"
-            });
-            modalInstance.result.then(function () {
-                vm.users = taskResourceSrv.page(vm.paging);
-            });
-        };
     }
 
     function taskResource($resource) {
@@ -179,37 +126,42 @@
 
 
     function taskConfig($stateProvider) {
-        $stateProvider.state("app.project-detail.tasks", {
+        $stateProvider.state("app.project.tasks", {
             templateUrl: "templates/projects/tasks/list.html",
             controller: "taskListController",
             controllerAs: "taskCtrl",
             url: "/tasks"
         });
-        $stateProvider.state("app.project-detail.task", {
+        $stateProvider.state("app.project.task", {
             templateUrl: "templates/projects/tasks/task-layout.html",
             controller: "editTaskController",
             controllerAs: "edit",
+            resolve: {
+                task: ["$stateParams", "taskResource", function ($stateParams, taskResource) {
+                        return taskResource.get($stateParams.taskId);
+                    }]
+            },
             url: "/task/:taskId"
         });
-        $stateProvider.state("app.project-detail.task.general", {
+        $stateProvider.state("app.project.task.general", {
             templateUrl: "templates/projects/tasks/edit.html",
             controller: "editTaskController",
             controllerAs: "edit",
             url: "/general"
         });
-        $stateProvider.state("app.project-detail.task.allocation", {
+        $stateProvider.state("app.project.task.allocation", {
             templateUrl: "templates/projects/tasks/timesheet/synthese.html",
             controller: "timesheetSynthese",
             controllerAs: "allocation",
             url: "/allocation"
         });
-        $stateProvider.state("app.project-detail.task.comment", {
+        $stateProvider.state("app.project.task.comment", {
             templateUrl: "templates/projects/tasks/comment/list.html",
             controller: "commentListController",
             controllerAs: "comment",
             url: "/comment"
         });
-        $stateProvider.state("app.project-detail.task.history", {
+        $stateProvider.state("app.project.task.history", {
             templateUrl: "templates/projects/tasks/history/list.html",
             controller: "historyListController",
             controllerAs: "history",
@@ -218,17 +170,15 @@
     }
 
     taskConfig.$inject = ["$stateProvider"];
-    newTaskController.$inject = ["$stateParams", "$modalInstance", "taskResource", "categoryResource", "memberResource"];
-    taskListController.$inject = ["$state", "$stateParams", "$http", "$modal", "taskResource", "taskStateResource", "swimlaneResource", "categoryResource", "memberResource"];
-    editTaskController.$inject = ["$stateParams", "taskResource", "categoryResource", "memberResource", "taskStateResource", "swimlaneResource"];
-    taskImportController.$inject = ["$stateParams", "$modalInstance", "$http"];
+    newTaskController.$inject = ["$modalInstance", "project", "projectResourceAssembler", "projectTask"];
+    taskListController.$inject = ["$stateParams", "$modal", "project", "projectResourceAssembler"];
+    editTaskController.$inject = ["$stateParams", "taskResource"];
     taskResource.$inject = ["$resource"];
 
-    angular.module("kanban.project.task", ["kanban.project.task.timesheet","kanban.project.task.comment","kanban.project.task.history"])
+    angular.module("kanban.project.task", ["kanban.project.task.timesheet", "kanban.project.task.comment", "kanban.project.task.history"])
             .config(taskConfig)
             .controller("newTaskController", newTaskController)
             .controller("taskListController", taskListController)
             .controller("editTaskController", editTaskController)
-            .controller("taskImportController", taskImportController)
             .service("taskResource", taskResource);
 })();

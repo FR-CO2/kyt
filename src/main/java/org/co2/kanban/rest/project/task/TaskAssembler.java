@@ -29,7 +29,7 @@ public class TaskAssembler extends ResourceAssemblerSupport<Task, TaskResource> 
 
     @Override
     public TaskResource toResource(Task task) {
-        TaskResource resource = createResourceWithId(task.getId(), task);
+        TaskResource resource = createResourceWithId(task.getId(), task, task.getProject().getId(), task.getId());
         resource.setResourceId(task.getId());
         resource.setName(task.getName());
         resource.setCreated(task.getCreated());

@@ -11,8 +11,6 @@ import org.co2.kanban.repository.state.StateRepository;
 import org.co2.kanban.repository.project.Project;
 import org.co2.kanban.repository.project.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.Resource;
-import org.springframework.hateoas.Resources;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -46,19 +44,19 @@ public class StateController {
         return assembler.toResources(repository.findByProjectOrderByPositionAsc(project));
     }
 
-    @RequestMapping(value = "kanban", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/kanban", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public List<StateResource> kanbanList(@PathVariable("projectId") Long projectId) {
         Project project = projectRepository.findOne(projectId);
         return assembler.toResources(repository.findByProjectAndKanbanHideFalseOrderByPositionAsc(project));
     }
 
-    @RequestMapping(value = "{id}", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<StateResource> get(@PathVariable("id") Long id) {
         State state = repository.findOne(id);
         return new ResponseEntity(assembler.toResource(state), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "{id}", method = RequestMethod.DELETE, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("@projectAccessExpression.hasManagerAccess(#projectId, principal.username)")
     public ResponseEntity delete(@PathVariable("id") Long id) {
         repository.delete(id);
@@ -79,7 +77,7 @@ public class StateController {
         return new ResponseEntity(state, HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "{stateId}/position/{newPosition}", method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{stateId}/position/{newPosition}", method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("@projectAccessExpression.hasManagerAccess(#projectId, principal.username)")
     public ResponseEntity updatePosition(@PathVariable("projectId") Long projectId, @PathVariable("stateId") Long stateId, @PathVariable("newPosition") Long newPosition) {
         Long position = newPosition;
