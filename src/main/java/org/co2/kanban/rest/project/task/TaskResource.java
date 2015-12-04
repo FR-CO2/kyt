@@ -35,6 +35,16 @@ public class TaskResource extends ResourceSupport {
     private Float timeRemains;
 
     private Float timeSpent;
+    
+    private Long stateId;
+    
+    private Long categoryId;
+    
+    private Long assigneeId;
+    
+    private Long backupId;
+    
+    private Long swimlaneId;
 
     public String getName() {
         return name;
@@ -116,4 +126,45 @@ public class TaskResource extends ResourceSupport {
         this.description = description;
     }
 
+    public Long getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public Long getAssigneeId() {
+        return assigneeId;
+    }
+
+    public void setAssigneeId(Long assigneeId) {
+        this.assigneeId = assigneeId;
+    }
+
+    public Long getBackupId() {
+        return backupId;
+    }
+
+    public void setBackupId(Long backupId) {
+        this.backupId = backupId;
+    }
+
+    public Long getSwimlaneId() {
+        return swimlaneId;
+    }
+
+    public void setSwimlaneId(Long swimlaneId) {
+        this.swimlaneId = swimlaneId;
+    }
+
+    public Long getStateId() {
+        return stateId;
+    }
+
+    public void setStateId(Long stateId) {
+        this.stateId = stateId;
+    }
+
+    
 }

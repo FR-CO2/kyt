@@ -23,7 +23,6 @@ import org.springframework.hateoas.PagedResources;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.util.NumberUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -98,11 +97,9 @@ public class TaskListController {
 
     @RequestMapping(method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("@projectAccessExpression.hasContributorAccess(#projectId, principal.username)")
-    public TaskResource create(@PathVariable("projectId") Long projectId, @RequestBody Task newTask) {
-        Project project = projectRepository.findOne(projectId);
-        newTask.setProject(project);
-        State state = taskStateRepository.findByProjectAndPosition(project, 0L);
-        newTask.setState(state);
+    public TaskResource create(@PathVariable("projectId") Long projectId, @RequestBody TaskResource task) {
+        Task newTask = new Task();
+        assembler.updateEntity(newTask, projectId, task);
         Task result = repository.save(newTask);
         return assembler.toResource(result);
     }

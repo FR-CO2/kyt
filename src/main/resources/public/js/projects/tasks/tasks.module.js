@@ -1,20 +1,24 @@
 (function () {
     "use strict";
 
-    function editTaskController($stateParams, taskResourceSrv, project, projectResourceAssembler) {
+    function editTaskController($stateParams, taskResourceSrv, project, projectResourceAssembler, taskResourceAssembler) {
         var vm = this;
         vm.categories = projectResourceAssembler.category(project);
-        vm.states =  projectResourceAssembler.states(project);
+        vm.states = projectResourceAssembler.states(project);
         vm.swimlanes = projectResourceAssembler.swimlane(project);
-        vm.task = taskResourceSrv.get({"projectId": $stateParams.id, "id": $stateParams.taskId},
+        vm.task = {};
+        taskResourceSrv.get({"projectId": $stateParams.id, "id": $stateParams.taskId},
         function (data) {
+            vm.task = taskResourceAssembler.assemble(data, false);
             if (data.plannedStart) {
                 vm.task.plannedStart = new Date(data.plannedStart);
             }
             if (data.plannedEnding) {
                 vm.task.plannedEnding = new Date(data.plannedEnding);
             }
+            
         });
+
         vm.submit = function () {
             taskResourceSrv.save({"projectId": $stateParams.id}, vm.task);
         };
@@ -170,7 +174,7 @@
     taskConfig.$inject = ["$stateProvider"];
     newTaskController.$inject = ["$modalInstance", "project", "projectResourceAssembler", "projectTask"];
     taskListController.$inject = ["$stateParams", "$modal", "project", "projectResourceAssembler"];
-    editTaskController.$inject = ["$stateParams", "taskResource",  "project", "projectResourceAssembler"];
+    editTaskController.$inject = ["$stateParams", "taskResource", "project", "projectResourceAssembler", "taskResourceAssembler"];
     taskResource.$inject = ["$resource"];
 
     angular.module("kanban.project.task", ["kanban.project.task.timesheet", "kanban.project.task.comment", "kanban.project.task.history"])
