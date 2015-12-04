@@ -56,8 +56,9 @@
         }
     }
 
-    function kanbanController($stateParams, $modal, taskResource, taskStateResource, swimlaneResource) {
+    function kanbanController($stateParams, $modal, project, projectResourceAssembler, taskResource, taskStateResource, swimlaneResource) {
         var vm = this;
+        projectResourceAssembler.kanban(project);
         kanbanLoader(vm, taskStateResource, swimlaneResource, taskResource, $stateParams.id);
         vm.kanbanSortOptions = {
             itemMoved: function (event) {
@@ -165,7 +166,7 @@
     projectConfig.$inject = ["$stateProvider"];
     projectListController.$inject = ["$modal", "projectResource"];
     projectController.$inject = ["$sessionStorage", "project", "userProjectsRoles"];
-    kanbanController.$inject = ["$stateParams", "$modal", "taskResource",
+    kanbanController.$inject = ["$stateParams", "$modal", "project", "projectResourceAssembler", "taskResource",
         "taskStateResource", "swimlaneResource"];
     newProjectController.$inject = ["$modalInstance", "projectResource"];
 

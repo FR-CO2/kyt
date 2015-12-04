@@ -70,7 +70,30 @@
                 return defer.promise;
             },
             kanban: function (project) {
-
+                var tasksByState = {};
+                var tabDefer = [];
+                for (var i = 0; i < project._links.taskByState.length; i++) {
+                    var deferState = $q.defer();
+                    var state = project._links.taskByState[i];
+                    $resource(state.href).get(function(data){
+                        tasksByState[data.id] = data;
+                        tasksByState[data.id].tasks = [];
+                        deferState.resolve(tasksByState[data.id]);
+                    });
+                    deferState.promise.then(function(data){
+                        if(data._links){
+                            for(var j=0; j< data._links.tasks.length; j++){
+                                var task = data._links.tasks[j];
+                                $resource(task.href).get(function(result){
+                                    tasksByState[data.id].tasks.push(result);
+                                });
+                            }
+                        }
+                    });
+                    tabDefer.push(deferState.promise);
+                }
+                var defer = $q.all(tabDefer);
+                return defer.promise;
             },
             members: function (project, page) {
                 var defer = $q.defer();
