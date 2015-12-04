@@ -78,7 +78,7 @@
                     $resource(state.href).get(function (data) {
                         tasksByState[data.id] = data;
                         tasksByState[data.id].tasks = [];
-                        deferState.resolve(tasksByState);
+                        deferState.resolve(tasksByState[data.id]);
                     });
                     deferState.promise.then(function (data) {
                         if (data._links) {
