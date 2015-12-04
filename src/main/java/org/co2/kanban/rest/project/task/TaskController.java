@@ -91,8 +91,10 @@ public class TaskController {
     }
 
     @RequestMapping(method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public TaskResource update(@PathVariable("projectId") Long projectId, @PathVariable("id") Long taskId, @RequestBody Task editTask) {
-        Task result = repository.save(editTask);
+    public TaskResource update(@PathVariable("projectId") Long projectId, @PathVariable("id") Long taskId, @RequestBody TaskResource editTask) {
+        Task task = repository.findOne(taskId);
+        assembler.updateEntity(task, projectId, editTask);
+        Task result = repository.save(task);
         return assembler.toResource(result);
     }
 
