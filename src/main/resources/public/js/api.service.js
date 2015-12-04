@@ -75,17 +75,17 @@
                 for (var i = 0; i < project._links.taskByState.length; i++) {
                     var deferState = $q.defer();
                     var state = project._links.taskByState[i];
-                    $resource(state.href).get(function(data){
+                    $resource(state.href).get(function (data) {
                         tasksByState[data.id] = data;
                         tasksByState[data.id].tasks = [];
-                        deferState.resolve(tasksByState[data.id]);
+                        deferState.resolve(tasksByState);
                     });
-                    deferState.promise.then(function(data){
-                        if(data._links){
-                            for(var j=0; j< data._links.tasks.length; j++){
+                    deferState.promise.then(function (data) {
+                        if (data._links) {
+                            for (var j = 0; j < data._links.tasks.length; j++) {
                                 var task = data._links.tasks[j];
-                                $resource(task.href).get(function(result){
-                                    tasksByState[data.id].tasks.push(result);
+                                $resource(task.href).get(function (result) {
+                                    tasksByState[data.id].tasks.push(taskResourceAssembler.assemble(result));
                                 });
                             }
                         }
@@ -93,7 +93,7 @@
                     tabDefer.push(deferState.promise);
                 }
                 var defer = $q.all(tabDefer);
-                return defer.promise;
+                return defer;
             },
             members: function (project, page) {
                 var defer = $q.defer();
@@ -154,7 +154,7 @@
     }
 
     function currentUserResourceAssembler($q, $resource, projectResourceAssembler,
-        taskResourceAssembler) {
+            taskResourceAssembler) {
         return {
             projects: function (user, page) {
                 var defer = $q.defer();
@@ -294,7 +294,7 @@
     projectTask.$inject = ["$q", "$resource"];
     projectSwimlane.$inject = ["$q", "$resource"];
     taskResourceAssembler.$inject = ["$resource"];
-    currentUserResourceAssembler.$inject = ["$q", "$resource", "projectResourceAssembler", 
+    currentUserResourceAssembler.$inject = ["$q", "$resource", "projectResourceAssembler",
         "taskResourceAssembler"];
     angular.module("kanban.api", ["ngResource"])
             .service("projectResourceAssembler", projectResourceAssembler)

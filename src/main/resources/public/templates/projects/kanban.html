@@ -17,16 +17,18 @@
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="swimlane in kanbanCtrl.swimlanes">
-                <td class="kanban__column kanban__column--title column">{{swimlane.name}}</td>
-                <td class="kanban__column column" ng-repeat="taskState in kanbanCtrl.states">
-                    <ul class="list-unstyled" as-sortable="kanbanCtrl.kanbanSortOptions" data-rowindex="{{swimlane.id}}" data-columnindex="{{taskState.id}}" ng-model="kanbanCtrl.tasks[taskState.position][swimlane.position]">
-                        <li ng-repeat="task in kanbanCtrl.tasks[taskState.position][swimlane.position]" as-sortable-item>
-                            <div ng-include="'/templates/projects/tasks/kanban-card.html'" as-sortable-item-handle></div>
-                        </li>
+            <tr ng-repeat="task in kanbanCtrl.tasksByState">
+                <tr ng-repeat="swimlane in task">
+                    <td class="kanban__column kanban__column--title column">{{swimlane.name}}</td>
+                    <td class="kanban__column column" ng-repeat="taskState in kanbanCtrl.states">
+                        <ul class="list-unstyled" as-sortable="kanbanCtrl.kanbanSortOptions" data-rowindex="{{swimlane.id}}" data-columnindex="{{taskState.id}}" ng-model="kanbanCtrl.tasks[taskState.position][swimlane.position]">
+                            <li ng-repeat="task in kanbanCtrl.tasks[taskState.position][swimlane.position]" as-sortable-item>
+                                <div ng-include="'/templates/projects/tasks/kanban-card.html'" as-sortable-item-handle></div>
+                            </li>
 
-                    </ul>
-                </td>
+                        </ul>
+                    </td>
+                </tr>
             </tr>
         </tbody>
     </table>

@@ -1,35 +1,6 @@
 (function () {
     "use strict";
 
-    function kanbanLoader(vm, taskStateResource, swimlaneResource, taskResource, projectId) {
-        vm.tasks = [];
-        taskStateResource.kanban({projectId: projectId}, function (states) {
-            vm.nbState = states.length;
-            vm.states = states;
-            vm.swimlanes = swimlaneResource.query({projectId: projectId}, function (swimlanes) {
-                var defaultSwimlanePos = swimlanes.length;
-                for (var i = 0; i < states.length; i++) {
-                    vm.tasks[states[i].position] = new Array();
-                    for (var j = 0; j < swimlanes.length; j++) {
-                        vm.tasks[states[i].position][swimlanes[j]] = new Array();
-                    }
-                    vm.tasks[states[i].position][defaultSwimlanePos] = new Array();
-                }
-                vm.swimlanes[defaultSwimlanePos] = {name: "", position: defaultSwimlanePos};
-                taskResource.kanban({projectId: projectId}, function (tasks) {
-                    for (var i = 0; i < tasks.length; i++) {
-                        var task = tasks[i];
-                        var lanePos = defaultSwimlanePos;
-                        if (task.swimlane) {
-                            lanePos = task.swimlane.position;
-                        }
-                        vm.tasks[task.state.position][lanePos].push(task);
-                    }
-                });
-            });
-        });
-    }
-
     function projectController($sessionStorage, resolvedProject, userProjectsRoles) {
         var vm = this;
         vm.project = resolvedProject;
@@ -58,8 +29,10 @@
 
     function kanbanController($stateParams, $modal, project, projectResourceAssembler, taskResource, taskStateResource, swimlaneResource) {
         var vm = this;
-        projectResourceAssembler.kanban(project);
-        kanbanLoader(vm, taskStateResource, swimlaneResource, taskResource, $stateParams.id);
+        vm.tasksByState = [];
+        projectResourceAssembler.kanban(project).then(function(data){
+            vm.tasksByState = data;
+        });
         vm.kanbanSortOptions = {
             itemMoved: function (event) {
                 var taskUpdated = event.source.itemScope.modelValue;
