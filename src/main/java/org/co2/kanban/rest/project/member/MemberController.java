@@ -77,7 +77,7 @@ public class MemberController {
         return new ResponseEntity<>(assembler.toResource(result), HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "{memberId}", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{memberId}", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public MemberResource get(@PathVariable("memberId") Long memberId) {
         Member member = repository.findOne(memberId);
         return assembler.toResource(member);
