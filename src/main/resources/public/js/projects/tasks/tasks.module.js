@@ -36,6 +36,7 @@
 
     function taskListController($stateParams, $modal, project, projectResourceAssembler) {
         var vm = this;
+        vm.categories = projectResourceAssembler.category(project);
         vm.tasks = {
             page: {}
         };
