@@ -130,7 +130,8 @@
         };
     }
 
-    function currentUserResourceAssembler($q, $resource, projectResourceAssembler) {
+    function currentUserResourceAssembler($q, $resource, projectResourceAssembler,
+        taskResourceAssembler) {
         return {
             projects: function (user, page) {
                 var defer = $q.defer();
@@ -270,7 +271,8 @@
     projectTask.$inject = ["$q", "$resource"];
     projectSwimlane.$inject = ["$q", "$resource"];
     taskResourceAssembler.$inject = ["$resource"];
-    currentUserResourceAssembler.$inject = ["$q", "$resource", "projectResourceAssembler"];
+    currentUserResourceAssembler.$inject = ["$q", "$resource", "projectResourceAssembler", 
+        "taskResourceAssembler"];
     angular.module("kanban.api", ["ngResource"])
             .service("projectResourceAssembler", projectResourceAssembler)
             .service("projectResource", projectResource)
