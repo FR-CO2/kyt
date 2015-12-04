@@ -11,7 +11,6 @@ import java.util.List;
 import org.co2.kanban.repository.project.Project;
 import org.co2.kanban.repository.project.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.Resources;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -45,7 +44,7 @@ public class CategoryController {
         return assembler.toResources(repository.findByProject(project));
     }
 
-     @RequestMapping(value = "{id}", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CategoryResource> get(@PathVariable("id") Long id) {
         Category category = repository.findOne(id);
         return new ResponseEntity(assembler.toResource(category), HttpStatus.OK);
