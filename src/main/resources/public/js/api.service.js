@@ -78,17 +78,14 @@
                     $resource(state.href).get(function (data) {
                         tasksByState[data.id] = data;
                         tasksByState[data.id].tasks = [];
-                        deferState.resolve(tasksByState[data.id]);
-                    });
-                    deferState.promise.then(function (data) {
                         if (data._links) {
-                            for (var j = 0; j < data._links.tasks.length; j++) {
-                                var task = data._links.tasks[j];
-                                $resource(task.href).get(function (result) {
+                            angular.forEach(data._links.tasks, function(task) {
+                                $resource(task).get(function (result) {
                                     tasksByState[data.id].tasks.push(taskResourceAssembler.assemble(result));
                                 });
-                            }
+                            });
                         }
+                        deferState.resolve(tasksByState);
                     });
                     tabDefer.push(deferState.promise);
                 }
@@ -158,18 +155,22 @@
         return {
             projects: function (user, page) {
                 var defer = $q.defer();
-                $resource(user._links.project.href).get({page: page.page, size: page.size}, function (response) {
-                    var projectPage = {
-                        page: response.page,
-                        projects: []
-                    };
-                    if (response._embedded) {
-                        angular.forEach(response._embedded.projectResources, function (project) {
-                            projectPage.projects.push(projectResourceAssembler.assemble(project));
-                        });
-                    }
-                    defer.resolve(projectPage);
-                });
+                if (user._links && user._links.project) {
+                    $resource(user._links.project.href).get({page: page.page, size: page.size}, function (response) {
+                        var projectPage = {
+                            page: response.page,
+                            projects: []
+                        };
+                        if (response._embedded) {
+                            angular.forEach(response._embedded.projectResources, function (project) {
+                                projectPage.projects.push(projectResourceAssembler.assemble(project));
+                            });
+                        }
+                        defer.resolve(projectPage);
+                    });
+                } else {
+                    defer.resolve();
+                }
                 return defer.promise;
             },
             tasks: function (user, page) {
