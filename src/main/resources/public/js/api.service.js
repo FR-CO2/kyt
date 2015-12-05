@@ -80,7 +80,7 @@
                         tasksByState[data.id].tasks = [];
                         if (data._links) {
                             angular.forEach(data._links.tasks, function (task) {
-                                $resource(task).get(function (result) {
+                                $resource(task.href).get(function (result) {
                                     tasksByState[data.id].tasks.push(taskResourceAssembler.assemble(result));
                                 });
                             });
