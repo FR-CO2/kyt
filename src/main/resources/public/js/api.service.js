@@ -73,24 +73,22 @@
                 var tasksByState = {};
                 var tabDefer = [];
                 for (var i = 0; i < project._links.taskByState.length; i++) {
-                    var deferState = $q.defer();
                     var state = project._links.taskByState[i];
-                    $resource(state.href).get(function (data) {
+                    var deferState = $resource(state.href).get();
+                    deferState.$promise.then(function (data) {
                         tasksByState[data.id] = data;
                         tasksByState[data.id].tasks = [];
                         if (data._links) {
-                            angular.forEach(data._links.tasks, function(task) {
+                            angular.forEach(data._links.tasks, function (task) {
                                 $resource(task).get(function (result) {
                                     tasksByState[data.id].tasks.push(taskResourceAssembler.assemble(result));
                                 });
                             });
                         }
-                        deferState.resolve(tasksByState);
                     });
-                    tabDefer.push(deferState.promise);
+                    tabDefer.push(deferState.$promise);
                 }
-                var defer = $q.all(tabDefer);
-                return defer;
+                return $q.all(tabDefer);
             },
             members: function (project, page) {
                 var defer = $q.defer();

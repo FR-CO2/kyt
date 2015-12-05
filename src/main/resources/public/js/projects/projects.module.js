@@ -30,7 +30,7 @@
     function kanbanController($stateParams, $modal, project, projectResourceAssembler, taskResource, taskStateResource, swimlaneResource) {
         var vm = this;
         vm.tasksByState = [];
-        projectResourceAssembler.kanban(project).then(function(data){
+        projectResourceAssembler.kanban(project).then(function (data) {
             vm.tasksByState = data;
         });
         vm.kanbanSortOptions = {
@@ -74,7 +74,7 @@
         var vm = this;
         vm.project = {};
         vm.submit = function () {
-            projectResourceSrv.save(vm.project).then(function() {
+            projectResourceSrv.save(vm.project).then(function () {
                 $modalInstance.close();
             });
         };
