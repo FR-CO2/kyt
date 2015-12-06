@@ -150,6 +150,9 @@
             },
             comments: function (task) {
                 return $resource(task._links.comments.href).query();
+            },
+            update: function(task) {
+                return $resource(task._links.self.href).save(task);
             }
         };
     }

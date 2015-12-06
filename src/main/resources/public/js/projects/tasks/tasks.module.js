@@ -16,7 +16,7 @@
             if (data.plannedEnding) {
                 vm.task.plannedEnding = new Date(data.plannedEnding);
             }
-            
+
         });
 
         vm.submit = function () {
@@ -34,7 +34,7 @@
         };
     }
 
-    function taskListController($stateParams, $modal, project, projectResourceAssembler) {
+    function taskListController($stateParams, $modal, project, projectResourceAssembler, taskResourceAssembler) {
         var vm = this;
         vm.categories = projectResourceAssembler.category(project);
         vm.tasks = {
@@ -43,6 +43,9 @@
         projectResourceAssembler.tasks(project, vm.tasks.page).then(function (data) {
             vm.tasks = data;
         });
+        vm.categories = projectResourceAssembler.category(project);
+        vm.states = projectResourceAssembler.states(project);
+        vm.swimlanes = projectResourceAssembler.swimlane(project);
         vm.add = function () {
             var modalInstance = $modal.open({
                 animation: true,
@@ -74,7 +77,7 @@
             if (task.assignee) {
                 task.assigneeId = task.assignee.id;
             }
-            task = taskResourceSrv.save({projectId: $stateParams.id, id: task.id}, task);
+            taskResourceAssembler.update(task);
         };
         vm.changeState = function (task) {
             if (task.state) {
@@ -174,7 +177,7 @@
 
     taskConfig.$inject = ["$stateProvider"];
     newTaskController.$inject = ["$modalInstance", "project", "projectResourceAssembler", "projectTask"];
-    taskListController.$inject = ["$stateParams", "$modal", "project", "projectResourceAssembler"];
+    taskListController.$inject = ["$stateParams", "$modal", "project", "projectResourceAssembler", "taskResourceAssembler"];
     editTaskController.$inject = ["$stateParams", "taskResource", "project", "projectResourceAssembler", "taskResourceAssembler"];
     taskResource.$inject = ["$resource"];
 

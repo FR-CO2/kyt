@@ -51,7 +51,7 @@ public class TaskAssembler extends ResourceAssemblerSupport<Task, TaskResource> 
 
     @Override
     public TaskResource toResource(Task task) {
-        TaskResource resource = createResourceWithId(task.getId(), task, task.getProject().getId(), task.getId());
+        TaskResource resource = instantiateResource(task);
         resource.setResourceId(task.getId());
         resource.setName(task.getName());
         resource.setCreated(task.getCreated());
@@ -65,6 +65,8 @@ public class TaskAssembler extends ResourceAssemblerSupport<Task, TaskResource> 
         resource.add(linkTo(methodOn(ProjectController.class).get(task.getProject().getId())).withRel("project"));
         resource.setStateId(task.getState().getId());
         resource.add(linkTo(methodOn(StateController.class, task.getProject().getId()).get(resource.getStateId())).withRel("state"));
+        resource.add(linkTo(methodOn(TaskController.class, task.getProject().getId(), task.getId()).get(task.getId())).withSelfRel());
+        
         if (task.getAssignee() != null) {
             resource.setAssigneeId(task.getAssignee().getId());
             resource.add(linkTo(methodOn(MemberController.class, task.getProject().getId()).get(resource.getAssigneeId())).withRel("assignee"));
