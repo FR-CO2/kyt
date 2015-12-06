@@ -85,7 +85,7 @@
                                     link = task.href;
                                 }
                                 $resource(link).get(function (result) {
-                                    tasksByState[data.id].tasks.push(taskResourceAssembler.assemble(result));
+                                    tasksByState[data.id].tasks.push(taskResourceAssembler.assemble(result, true));
                                 });
                             });
                         }
