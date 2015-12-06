@@ -62,7 +62,7 @@
                     };
                     if (response._embedded) {
                         angular.forEach(response._embedded.taskResources, function (task) {
-                            taskPage.tasks.push(taskResourceAssembler.assemble(task));
+                            taskPage.tasks.push(taskResourceAssembler.assemble(task, true));
                         });
                     }
                     defer.resolve(taskPage);
@@ -127,7 +127,9 @@
             assemble: function (task, withStateAndSwimlane) {
                 if (withStateAndSwimlane) {
                     task.state = $resource(task._links.state.href).get();
-                    task.swimlane = $resource(task._links.swimlane.href).get();
+                    if (task._links.swimlane) {
+                        task.swimlane = $resource(task._links.swimlane.href).get();
+                    }
                 }
                 if (task._links.assignee) {
                     task.assignee = $resource(task._links.assignee.href).get();
