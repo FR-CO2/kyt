@@ -32,6 +32,8 @@ public class TasksByStateAssembler extends ResourceAssemblerSupport<State, Tasks
     public TasksByStateResource toResource(State t) {
         TasksByStateResource resource = new TasksByStateResource();
         resource.setStateId(t.getId());
+        resource.setName(t.getName());
+        resource.setPosition(t.getPosition());
         Iterable<Task> tasks = repository.findByProjectAndState(t.getProject(), t);
         for (Task task : tasks) {
             resource.add(linkTo(methodOn(TaskController.class, task.getProject().getId()).get(task.getId())).withRel("tasks"));

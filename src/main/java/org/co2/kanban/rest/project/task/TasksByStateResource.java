@@ -16,6 +16,10 @@ public class TasksByStateResource extends ResourceSupport {
 
     @JsonProperty("id")
     private Long stateId;
+    
+    private String name;
+    
+    private Long position;
 
     public Long getStateId() {
         return stateId;
@@ -25,4 +29,19 @@ public class TasksByStateResource extends ResourceSupport {
         this.stateId = stateId;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Long getPosition() {
+        return position;
+    }
+
+    public void setPosition(Long position) {
+        this.position = position;
+    }
 }

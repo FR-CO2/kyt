@@ -33,6 +33,7 @@
         projectResourceAssembler.kanban(project).then(function (data) {
             vm.tasksByState = data;
         });
+        vm.swimlanes= projectResourceAssembler.swimlane(project);
         vm.kanbanSortOptions = {
             itemMoved: function (event) {
                 var taskUpdated = event.source.itemScope.modelValue;
