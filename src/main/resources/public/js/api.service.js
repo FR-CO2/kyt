@@ -84,9 +84,12 @@
                                 if (task.href) {
                                     link = task.href;
                                 }
-                                $resource(link).get(function (result) {
-                                    tasksByState[data.id].tasks.push(taskResourceAssembler.assemble(result, true));
+                                var result = $resource(link).get();
+                                result.$promise.then(function (data)
+                                {
+                                    result = taskResourceAssembler.assemble(data, true);
                                 });
+                                tasksByState[data.id].tasks.push(result);
                             });
                         }
                     });
@@ -151,7 +154,7 @@
             comments: function (task) {
                 return $resource(task._links.comments.href).query();
             },
-            update: function(task) {
+            update: function (task) {
                 return $resource(task._links.self.href).save(task);
             }
         };
@@ -182,18 +185,22 @@
             },
             tasks: function (user, page) {
                 var defer = $q.defer();
-                $resource(user._links.task.href).get({page: page.page, size: page.size}, function (response) {
-                    var taskPage = {
-                        page: response.page,
-                        tasks: []
-                    };
-                    if (response._embedded) {
-                        angular.forEach(response._embedded.taskResources, function (task) {
-                            taskPage.tasks.push(taskResourceAssembler.assemble(task));
-                        });
-                    }
-                    defer.resolve(taskPage);
-                });
+                if (user._links && user._links.task) {
+                    $resource(user._links.task.href).get({page: page.page, size: page.size}, function (response) {
+                        var taskPage = {
+                            page: response.page,
+                            tasks: []
+                        };
+                        if (response._embedded) {
+                            angular.forEach(response._embedded.taskResources, function (task) {
+                                taskPage.tasks.push(taskResourceAssembler.assemble(task));
+                            });
+                        }
+                        defer.resolve(taskPage);
+                    });
+                } else {
+                    defer.resolve();
+                }
                 return defer.promise;
             },
             projectsrole: function (user) {
