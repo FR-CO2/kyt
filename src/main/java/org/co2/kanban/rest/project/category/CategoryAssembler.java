@@ -31,7 +31,6 @@ public class CategoryAssembler extends ResourceAssemblerSupport<Category, Catego
         resource.setBgcolor(category.getBgcolor());
         resource.setColor(category.getColor());
         resource.add(linkTo(methodOn(ProjectController.class).get(category.getProject().getId())).withRel("project"));
-        resource.add(linkTo(methodOn(TaskListController.class).filterByCategory(category.getProject().getId(), category.getId())).withRel("tasks"));
         return resource;
     }
 }

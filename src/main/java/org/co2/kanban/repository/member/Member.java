@@ -18,13 +18,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import org.co2.kanban.repository.Identifiable;
 
 /**
  *
  * @author ben
  */
 @Entity
-public class Member implements Serializable {
+public class Member implements Serializable, Identifiable {
 
     private static final long serialVersionUID = 4462667625489059354L;
 

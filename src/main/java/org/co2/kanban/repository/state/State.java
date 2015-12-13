@@ -11,20 +11,18 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.PostLoad;
-import javax.persistence.Transient;
+import org.co2.kanban.repository.Identifiable;
 
 /**
  *
  * @author ben
  */
 @Entity
-public class State implements Serializable {
+public class State implements Serializable, Identifiable {
 
     private static final long serialVersionUID = -1395350709593408519L;
 

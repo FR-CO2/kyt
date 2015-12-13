@@ -59,41 +59,17 @@ public class TaskListController {
     @Autowired
     private TaskAssembler assembler;
 
-    @Autowired
-    private TasksByStateAssembler tasksByStateAssembler;
         
-    @RequestMapping(method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value="/paged", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public PagedResources<TaskResource> projectPage(@PathVariable("projectId") Long projectId, Pageable page) {
         Project project = projectRepository.findOne(projectId);
         return pagedAssembler.toResource(repository.findByProject(project, page), assembler);
     }
 
-    @RequestMapping(value = "/kanban", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public Iterable<TaskResource> kanbanList(@PathVariable("projectId") Long projectId) {
         Project project = projectRepository.findOne(projectId);
         return assembler.toResources(repository.findByProjectAndStateKanbanHideFalse(project));
-    }
-
-    @RequestMapping(value = "/swimlane/{swimlaneId}", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<TaskResource>> filterBySwimlane(@PathVariable("projectId") Long projectId, @PathVariable("swimlaneId") Long swimlaneId) {
-        Swimlane swimlane = swimlaneRepository.findOne(swimlaneId);
-        Project project = projectRepository.findOne(projectId);
-        Iterable<Task> tasks = repository.findByProjectAndSwimlane(project, swimlane);
-        return new ResponseEntity<>(assembler.toResources(tasks), HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/state/{stateId}", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<TasksByStateResource> filterByState(@PathVariable("projectId") Long projectId, @PathVariable("stateId") Long stateId) {
-        State state = taskStateRepository.findOne(stateId);
-        return new ResponseEntity<>(tasksByStateAssembler.toResource(state), HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/category/{categoryId}", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<TaskResource>> filterByCategory(@PathVariable("projectId") Long projectId, @PathVariable("categoryId") Long categoryId) {
-        Category category = categoryRepository.findOne(categoryId);
-        Project project = projectRepository.findOne(projectId);
-        Iterable<Task> tasks = repository.findByProjectAndCategory(project, category);
-        return new ResponseEntity<>(assembler.toResources(tasks), HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)

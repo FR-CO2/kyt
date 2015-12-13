@@ -5,35 +5,22 @@
  */
 package org.co2.kanban.rest.project;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import org.springframework.hateoas.ResourceSupport;
+import org.co2.kanban.repository.project.Project;
+import org.co2.kanban.rest.IdentifiableResourceSupport;
 
 /**
  *
  * @author ben
  */
-public class ProjectResource extends ResourceSupport {
+public class ProjectResource extends IdentifiableResourceSupport<Project> {
+
+    public ProjectResource(Project project) {
+        super(project);
+    }
     
-    @JsonProperty("id")
-    private Long resourceId;
-    
-    private String name;
 
     public String getName() {
-        return name;
+        return this.getBean().getName();
     }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Long getResourceId() {
-        return resourceId;
-    }
-
-    public void setResourceId(Long id) {
-        this.resourceId = id;
-    }
-    
     
 }

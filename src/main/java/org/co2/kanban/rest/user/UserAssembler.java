@@ -25,11 +25,7 @@ public class UserAssembler extends ResourceAssemblerSupport<ApplicationUser, Use
 
     @Override
     public UserResource toResource(ApplicationUser user) {
-        UserResource resource = createResourceWithId(user.getId(), user);
-        resource.setUsername(user.getUsername());
-        resource.setEmail(user.getEmail());
-        resource.setResourceId(user.getId());
-        resource.setApplicationRole(user.getApplicationRole());
+        UserResource resource = new UserResource(user);
         resource.add(linkTo(methodOn(ApplicationUserController.class).memberOf(user.getId())).withRel("members"));
         resource.add(linkTo(methodOn(ApplicationUserController.class).listProject(user.getId(), null)).withRel("project"));
         resource.add(linkTo(methodOn(ApplicationUserController.class).listTask(user.getId(), null)).withRel("task"));

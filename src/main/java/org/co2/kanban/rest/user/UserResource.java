@@ -5,55 +5,31 @@
  */
 package org.co2.kanban.rest.user;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import org.co2.kanban.repository.user.ApplicationUser;
 import org.co2.kanban.repository.user.ApplicationUserRole;
-import org.springframework.hateoas.ResourceSupport;
+import org.co2.kanban.rest.IdentifiableResourceSupport;
 
 /**
  *
  * @author ben
  */
-public class UserResource extends ResourceSupport {
+public class UserResource extends IdentifiableResourceSupport <ApplicationUser>{
     
-    @JsonProperty("id")
-    private Long resourceId;
-    
-    private String username;
-    
-    private String email;
-    
-    private ApplicationUserRole applicationRole;
+    public UserResource(ApplicationUser user) {
+        super(user);
+    }
 
     public String getUsername() {
-        return username;
+        return this.getBean().getUsername();
     }
 
-    public void setUsername(String name) {
-        this.username = name;
-    }
 
     public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
+        return this.getBean().getEmail();
     }
 
     public ApplicationUserRole getApplicationRole() {
-        return applicationRole;
-    }
-
-    public void setApplicationRole(ApplicationUserRole applicationRole) {
-        this.applicationRole = applicationRole;
-    }
-
-    public Long getResourceId() {
-        return resourceId;
-    }
-
-    public void setResourceId(Long resourceId) {
-        this.resourceId = resourceId;
+        return this.getBean().getApplicationRole();
     }
     
 }

@@ -5,23 +5,21 @@
  */
 package org.co2.kanban.rest.project.state;
 
-import org.springframework.hateoas.ResourceSupport;
+import org.co2.kanban.repository.state.State;
+import org.co2.kanban.rest.IdentifiableResourceSupport;
 
 /**
  *
  * @author ben
  */
-public class StateResource extends ResourceSupport {
-
-    private String name;
+public class StateResource extends IdentifiableResourceSupport<State> {
 
     private Integer taskCount = 0;
-
-    private Long position;
-
-    private Boolean kanbanHide = Boolean.FALSE;
-
-    private Boolean closeState = Boolean.FALSE;
+    
+    public StateResource(State state) {
+        super(state);
+    }
+    
 
     public Integer getTaskCount() {
         return taskCount;
@@ -32,36 +30,18 @@ public class StateResource extends ResourceSupport {
     }
 
     public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+        return this.getBean().getName();
     }
 
     public Long getPosition() {
-        return position;
-    }
-
-    public void setPosition(Long position) {
-        this.position = position;
+        return this.getBean().getPosition();
     }
 
     public Boolean getKanbanHide() {
-        return kanbanHide;
-    }
-
-    public void setKanbanHide(Boolean kanbanHide) {
-        this.kanbanHide = kanbanHide;
+        return this.getBean().getKanbanHide();
     }
 
     public Boolean getCloseState() {
-        return closeState;
+        return this.getBean().getCloseState();
     }
-
-    public void setCloseState(Boolean closeState) {
-        this.closeState = closeState;
-    }
-    
-    
 }

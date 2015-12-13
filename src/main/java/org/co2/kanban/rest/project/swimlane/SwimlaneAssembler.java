@@ -32,7 +32,6 @@ public class SwimlaneAssembler extends ResourceAssemblerSupport<Swimlane, Swimla
         resource.setPosition(swimlane.getPosition());
         resource.setTaskCount(swimlane.getTasks().size());
         resource.add(linkTo(methodOn(ProjectController.class).get(swimlane.getProject().getId())).withRel("project"));
-        resource.add(linkTo(methodOn(TaskListController.class).filterBySwimlane(swimlane.getProject().getId(), swimlane.getId())).withRel("tasks"));
         return resource;
     }
 }

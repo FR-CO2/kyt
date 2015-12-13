@@ -15,14 +15,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import org.co2.kanban.rest.project.category.CategoryResource;
+import org.co2.kanban.repository.Identifiable;
 
 /**
  *
  * @author ben
  */
 @Entity
-public class Category implements Serializable {
+public class Category implements Serializable, Identifiable {
 
     private static final long serialVersionUID = 8473515701046153275L;
 
