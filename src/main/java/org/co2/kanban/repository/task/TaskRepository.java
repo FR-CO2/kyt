@@ -26,16 +26,14 @@ public interface TaskRepository extends PagingAndSortingRepository<Task, Long> {
 
     Iterable<Task> findByProject(Project project);
 
-    Iterable<Task> findByProjectAndSwimlane(Project project, Swimlane swimlane);
+    Iterable<Task> findByProjectAndStateAndSwimlane(Project project, State state, Swimlane swimlane);
     
     Iterable<Task> findByProjectAndState(Project project, State state);
-    
-    Iterable<Task> findByProjectAndCategory(Project project, Category category);
     
     
     @Query("select t from Task t where UPPER(t.name) like %?1% and "
             + "assignee.user = ?3 and (t.plannedStart > ?2 or t.plannedEnding < ?2)")
-    Iterable<Task> searchByName(String name,Date dateTask, ApplicationUser appUser);
+    Iterable<Task> searchByName(String name, Date dateTask, ApplicationUser appUser);
 
     Page<Task> findByProject(Project project, Pageable p);
 

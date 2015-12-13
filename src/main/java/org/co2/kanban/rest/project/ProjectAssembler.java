@@ -6,7 +6,6 @@
 package org.co2.kanban.rest.project;
 
 import org.co2.kanban.repository.project.Project;
-import org.co2.kanban.repository.state.State;
 import org.co2.kanban.rest.project.category.CategoryController;
 import org.co2.kanban.rest.project.member.MemberController;
 import org.co2.kanban.rest.project.state.StateController;
@@ -30,12 +29,12 @@ public class ProjectAssembler extends ResourceAssemblerSupport<Project, ProjectR
 
     @Override
     public ProjectResource toResource(Project project) {
-        ProjectResource resource = createResourceWithId(project.getId(), project);
+        ProjectResource resource = new ProjectResource(project);
         resource.add(linkTo(methodOn(MemberController.class).list(project.getId(), null)).withRel("members"));
         resource.add(linkTo(methodOn(StateController.class).projectList(project.getId())).withRel("states"));
         resource.add(linkTo(methodOn(SwimlaneController.class).projectList(project.getId())).withRel("swimlanes"));
         resource.add(linkTo(methodOn(CategoryController.class).list(project.getId())).withRel("category"));
-        resource.add(linkTo(methodOn(TaskListController.class).projectPage(project.getId(), null)).withRel("tasks"));
+        resource.add(linkTo(methodOn(TaskListController.class).page(project.getId(), null)).withRel("tasks"));
         return resource;
     }
     
