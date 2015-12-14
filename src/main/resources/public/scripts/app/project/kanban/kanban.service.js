@@ -6,7 +6,36 @@
 
 (function () {
     define(["angular"], function (angular) {
+
         var kanbanService = function ($q, taskService) {
+
+            var fetchKanbanTask = function (tasks) {
+                angular.forEach(tasks, function (task) {
+                    if (task._links.assignee) {
+                        task.assignee = task.resource("assignee").get();
+                    }
+                    ;
+                    if (task._links.category) {
+                        task.category = task.resource("category").get();
+                    }
+                    ;
+                });
+                return tasks;
+            };
+
+            var retrieveTaskBySwimlane = function (project, states, swimlaneId) {
+                var result = [];
+                var i = 0;
+                angular.forEach(states, function (state) {
+                    result[i] = {id: state.id};
+                    result[i].tasks = taskService.query(
+                            {"projectId": project.id,
+                                "swimlane": swimlaneId,
+                                "state": state.id}, fetchKanbanTask);
+                    i++;
+                });
+                return result;
+            };
             return {
                 load: function (project) {
                     var tasks = [];
@@ -18,29 +47,15 @@
                             var swimlanes = data[1];
                             angular.forEach(swimlanes, function (swimlane) {
                                 tasks.push(swimlane);
-                                swimlane.states = [];
-                                angular.forEach(states, function (state) {
-                                    swimlane.states.push(state);
-                                    state.tasks = taskService.query(
-                                            {"projectId": project.id,
-                                                "swimlane": swimlane.id,
-                                                "state": state.id});
-                                });
+                                swimlane.states = retrieveTaskBySwimlane(project, states, swimlane.id);
                             });
-                            var noswimlane = {states: []};
-                            angular.forEach(states, function (state) {
-                                noswimlane.states.push(state);
-                                state.tasks = taskService.query(
-                                        {"projectId": project.id,
-                                            "swimlane": "",
-                                            "state": state.id});
-                            });
+                            var noswimlane = {states: states = retrieveTaskBySwimlane(project, states, null)};
                             tasks.push(noswimlane);
                         });
                     });
                     return tasks;
                 }
-            }
+            };
         };
         kanbanService.$inject = ["$q", "taskService"];
         return kanbanService;

@@ -5,7 +5,6 @@
  */
 package org.co2.kanban.rest.project.task;
 
-import org.co2.kanban.repository.category.CategoryRepository;
 import org.co2.kanban.repository.task.Task;
 import org.co2.kanban.repository.task.TaskRepository;
 import org.co2.kanban.repository.project.Project;
@@ -62,8 +61,8 @@ public class TaskListController {
     @RequestMapping(method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public Iterable<TaskResource> list(@PathVariable("projectId") Long projectId,
             @RequestParam("state") Long stateId,
-            @RequestParam("swimlane") Long swimlaneId) {
-        Iterable<TaskResource> tasks = null;
+            @RequestParam(name="swimlane", required = false) Long swimlaneId) {
+        Iterable<TaskResource> tasks;
         Project project = projectRepository.findOne(projectId);
         State state = stateRepository.findOne(stateId);
         if (swimlaneId == null) {

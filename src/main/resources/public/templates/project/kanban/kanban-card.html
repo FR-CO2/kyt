@@ -1,13 +1,13 @@
 <div class="kanban-card">
     <div class="kanban-card__task center-block" style="border-left: 0.5em solid {{task.category.bgcolor}}">
         <header class="kanban-card__heading">
-            <a ng-click="kanbanCtrl.goToTask(task.id)" title="Accéder au détail de la tâche">
+            <a ui-sref="app.project.task({projectId: project.id, taskId: task.id })" title="Accéder au détail de la tâche">
                 <span>#{{task.id}}</span>
                 {{task.name}}
             </a>
         </header>
         <div class="kanban-card__action">
-            <span ng-if="projectCtrl.hasEditRights" >
+            <span ng-if="projectCtrl.rights.hasEditRights" >
                 <a href="#" editable-select="task.assignee" onshow="kanbanCtrl.loadMember()" onaftersave="kanbanCtrl.saveTask(task)" e-ng-options="member as member.user.username for member in kanbanCtrl.members" title="Assigné à">
                     <span class="glyphicon glyphicon-user"></span>
                     <span ng-if="!task.assignee">
@@ -16,14 +16,14 @@
                     {{task.assignee.user.username}}
                 </a>
             </span>
-            <span ng-if="!projectCtrl.hasEditRights" >
+            <span ng-if="!projectCtrl.rights.hasEditRights" >
                 <span class="glyphicon glyphicon-user"></span>
                 <span ng-if="!task.assignee">
                     -
                 </span>
                 {{task.assignee.user.username}}
             </span>
-            <span class="badge pull-right" ng-if="projectCtrl.hasEditRights">
+            <span class="badge pull-right" ng-if="projectCtrl.rights.hasEditRights">
                 <a href="#" editable-select="task.category" onshow="kanbanCtrl.loadCategory()" onaftersave="kanbanCtrl.saveTask(task)" e-ng-options="category as category.name for category in kanbanCtrl.categories">
                     <span ng-if="!task.category">
                         -
@@ -31,7 +31,7 @@
                     <span class="glyphicon glyphicon-tag" ng-if="task.category"></span> {{task.category.name}}
                 </a>
             </span>
-            <span class="badge pull-right" ng-if="!projectCtrl.hasEditRights" >
+            <span class="badge pull-right" ng-if="!projectCtrl.rights.hasEditRights" >
                 <span ng-if="!task.category">
                     -
                 </span>

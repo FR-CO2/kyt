@@ -1,10 +1,11 @@
 (function () {
     define([], function () {
-        var projectController = function (userRights) {
+        var projectController = function (project, userRights) {
             var vm = this;
+            vm.project = project;
             vm.rights = userRights;
         };
-        projectController.$inject = ["userRights"];
+        projectController.$inject = ["project", "userRights"];
         return projectController;
     });
 })();
