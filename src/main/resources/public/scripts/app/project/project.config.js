@@ -20,7 +20,7 @@
                 abstract: true,
                 controller: "projectController",
                 controllerAs: "projectCtrl",
-                templateUrl: "templates/projects/layout-single.html",
+                templateUrl: "templates/project/layout-single.html",
                 url: "project/:projectId/",
                 resolve: {
                     project: resolveProject,
@@ -28,7 +28,7 @@
                 }
             });
             $stateProvider.state("app.project.kanban", {
-                templateUrl: "templates/projects/kanban.html",
+                templateUrl: "templates/project/kanban/kanban.html",
                 controller: "kanbanController",
                 controllerAs: "kanbanCtrl",
                 url: "kanban"

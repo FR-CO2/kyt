@@ -35,7 +35,7 @@
                 url: "dashboard"
             });
             $stateProvider.state("app.profil", {
-                templateUrl: "templates/users/profil.html",
+                templateUrl: "templates/profil/profil.html",
                 controller: "profilController",
                 controllerAs: "profilCtrl",
                 url: "profil"
