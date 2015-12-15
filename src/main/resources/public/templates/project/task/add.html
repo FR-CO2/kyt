@@ -3,43 +3,43 @@
         <span class="glyphicon glyphicon-plus-sign"></span> Nouvelle tâche
     </div>
     <div class="panel-body">
-        <alert type="danger" ng-if="add.form.error">{{add.form.error}}</alert>
-        <form id="task" role="form" ng-submit="add.submit()">
+        <alert type="danger" ng-if="addTaskCtrl.form.error">{{addTaskCtrl.form.error}}</alert>
+        <form id="task" role="form" ng-submit="addTaskCtrl.submit()">
             <div class="form-group">
-                <input type="text" required ng-model="add.task.name" class="form-control" name="taskName" placeholder="Nom de la tâche"/>
+                <input type="text" required ng-model="addTaskCtrl.task.name" class="form-control" name="taskName" placeholder="Nom de la tâche"/>
             </div>
             <div class="form-group">
                 <label for="category">Catégorie</label>
-                <select ng-model="add.task.categoryId" class="form-control" id="category" name="category" placeholder="Catégorie">
-                    <option value="{{category.id}}" ng-repeat="category in add.categories">{{category.name}}</option>
+                <select ng-model="addTaskCtrl.task.categoryId" class="form-control" id="category" name="category" placeholder="Catégorie">
+                    <option value="{{category.id}}" ng-repeat="category in addTaskCtrl.categories">{{category.name}}</option>
                 </select>
             </div>
             <div class="form-group">
                 <label for="description">Description</label>
-                <textarea col="100" rows="10" id="description" ng-model="add.task.description" class="form-control" name="description" placeholder="Description"/>
+                <textarea col="100" rows="10" id="description" ng-model="addTaskCtrl.task.description" class="form-control" name="description" placeholder="Description"/>
             </div>
             <div class="form-group">
                 <label for="assignee">Assigné à </label>
-                <select ng-model="add.task.assigneeId" id="assignee" class="form-control" name="assignee" placeholder="Assigné à">
-                    <option value="{{member.id}}" ng-repeat="member in add.members">{{member.user.username}}</option>
+                <select ng-model="addTaskCtrl.task.assigneeId" id="assignee" class="form-control" name="assignee" placeholder="Assigné à">
+                    <option value="{{member.id}}" ng-repeat="member in addTaskCtrl.members">{{member.user.username}}</option>
                 </select>
             </div>
             <div class="form-group">
                 <label for="backup">Backup </label>
-                <select ng-model="add.task.backupId" id="backup" class="form-control" name="backup" placeholder="Backup">
-                    <option value="{{member.id}}" ng-repeat="member in add.members">{{member.user.username}}</option>
+                <select ng-model="addTaskCtrl.task.backupId" id="backup" class="form-control" name="backup" placeholder="Backup">
+                    <option value="{{member.id}}" ng-repeat="member in addTaskCtrl.members">{{member.user.username}}</option>
                 </select>
             </div>
             <div class="form-group">
                 <label for="plannedStart">Date de début prévue </label>
-            <input type="date" id="plannedStart" class="form-control" ng-model="add.task.plannedStart" />
+            <input type="date" id="plannedStart" class="form-control" ng-model="addTaskCtrl.task.plannedStart" />
             </div>
             <div class="form-group">
                 <label for="plannedEnding">Date de fin prévue </label>
-                <input type="date" id="plannedEnding" class="form-control" ng-model="add.task.plannedEnding" />
+                <input type="date" id="plannedEnding" class="form-control" ng-model="addTaskCtrl.task.plannedEnding" />
             </div>
             <div>
-                <button type="submit"  class="btn btn-info center-block">valider</button>
+                <button type="submit"  class="btn btn-info center-block">Créer</button>
             </div>
         </form>
     </div>
