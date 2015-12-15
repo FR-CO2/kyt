@@ -15,7 +15,8 @@
             });
             $stateProvider.state("app.project.task", {
                 templateUrl: "templates/project/task/task.html",
-                controllerAs: "task",
+                controller: "taskController",
+                controllerAs: "taskCtrl",
                 resolve: {
                     task: resolveTask
                 },

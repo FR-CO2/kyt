@@ -1,9 +1,12 @@
 (function () {
-    define([], function () {
-        var taskController = function () {
+    define(["angular"], function (angular) {
+        var taskController = function (project, taskAssemblerService) {
             var vm = this;
+            vm.tasks = project.resource("tasks").get(function() {
+                return angular.forEach(vm.tasks._embedded.taskResourceList, taskAssemblerService);
+            });
         };
-        taskController.$inject = [];
+        taskController.$inject = ["project", "taskAssemblerService"];
         return taskController;
     });
 })();

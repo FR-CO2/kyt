@@ -10,7 +10,6 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 import org.co2.kanban.repository.swimlane.Swimlane;
 import org.co2.kanban.rest.project.ProjectController;
-import org.co2.kanban.rest.project.task.TaskListController;
 import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
 import org.springframework.stereotype.Component;
 
@@ -31,6 +30,7 @@ public class SwimlaneAssembler extends ResourceAssemblerSupport<Swimlane, Swimla
         resource.setName(swimlane.getName());
         resource.setPosition(swimlane.getPosition());
         resource.setTaskCount(swimlane.getTasks().size());
+        resource.add(linkTo(methodOn(SwimlaneController.class, swimlane.getProject().getId()).get(swimlane.getId())).withSelfRel());
         resource.add(linkTo(methodOn(ProjectController.class).get(swimlane.getProject().getId())).withRel("project"));
         return resource;
     }

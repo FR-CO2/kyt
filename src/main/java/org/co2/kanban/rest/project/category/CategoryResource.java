@@ -5,42 +5,29 @@
  */
 package org.co2.kanban.rest.project.category;
 
-import org.springframework.hateoas.ResourceSupport;
+import org.co2.kanban.repository.category.Category;
+import org.co2.kanban.rest.IdentifiableResourceSupport;
 
 /**
  *
  * @author ben
  */
-public class CategoryResource extends ResourceSupport {
-    private String name;
+public class CategoryResource extends IdentifiableResourceSupport<Category> {
 
-    private String bgcolor;
-    
-    private String color;
+    public CategoryResource(Category category) {
+        super(category);
+    }
     
     public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+        return this.getBean().getName();
     }
 
     public String getBgcolor() {
-        return bgcolor;
-    }
-
-    public void setBgcolor(String bgcolor) {
-        this.bgcolor = bgcolor;
+        return this.getBean().getBgcolor();
     }
 
     public String getColor() {
-        return color;
+        return this.getBean().getColor();
     }
-
-    public void setColor(String color) {
-        this.color = color;
-    }
-    
     
 }

@@ -1,67 +1,73 @@
 <div class="row" id="task">
-    <alert type="danger" ng-if="edit.form.error">{{edit.form.error}}</alert>
-
-    <form id="edittask" role="form" ng-submit="edit.submit()">
+    <alert type="danger" ng-if="taskCtrl.form.error">{{taskCtrl.form.error}}</alert>
+    <h2>
+        #{{taskCtrl.task.id}}
+    </h2>
+    <form id="edittask" role="form" ng-submit="taskCtrl.submit()">
         <fieldset>
             <div class="form-group col-md-3">
                 <label for="taskname">Nom de la tâche</label>
-                <input type="text" required ng-model="edit.task.name" class="form-control" id="taskname" name="taskName" placeholder="Nom de la tâche"/>
+                <input type="text" required ng-model="taskCtrl.task.name" class="form-control" id="taskname" name="taskName" placeholder="Nom de la tâche"/>
             </div>
             <div class="form-group col-md-3">
                 <label for="state">Etat</label>
-                <select ng-model="edit.task.stateId" required class="form-control" name="state" id="state" placeholder="Etat">
-                    <option ng-selected="edit.task.stateId === state.id" value="{{state.id}}" ng-repeat="state in edit.states">{{state.name}}</option>
+
+                <select ng-model="taskCtrl.task.stateId" required class="form-control" name="state" id="state" placeholder="Etat">
+                    <option ng-selected="taskCtrl.task._links.state === state._links.self" value="{{state.id}}" ng-repeat="state in taskCtrl.states">
+                        {{state.name}}
+                    </option>
                 </select>
             </div>
             <div class="form-group col-md-3">
                 <label for="swimlane">Couloir</label>
                 <select ng-model="edit.task.swimlaneId" class="form-control" id="swimlane" name="swimlane" placeholder="Etat">
-                    <option ng-selected="edit.task.swimlaneId === swimlane.id" value="{{swimlane.id}}" ng-repeat="swimlane in edit.swimlanes">{{swimlane.name}}</option>
+                    <option ng-selected="taskCtrl.task._links.swimlane === swimlane._links.self" value="{{swimlane.id}}" ng-repeat="swimlane in taskCtrl.swimlanes">{{swimlane.name}}</option>
                 </select>
             </div>
             <div class="form-group col-md-3">
                 <label for="category">Catégorie</label>
                 <select ng-model="edit.task.categoryId" class="form-control" id="category" name="category" placeholder="Catégorie">
-                    <option ng-selected="edit.task.categoryId === category.id" value="{{category.id}}" ng-repeat="category in edit.categories">{{category.name}}</option>
+                    <option ng-selected="taskCtrl.task._links.category === category._links.self" value="{{category.id}}" ng-repeat="category in taskCtrl.categories">{{category.name}}</option>
                 </select>
             </div>
         </fieldset>
         <fieldset>
             <div class="form-group col-md-12">
                 <label for="description">Description</label>
-                <textarea rows="10" class="col-md-12" ng-model="edit.task.description" class="form-control" id="description" name="description" placeholder="Description"/>
+                <textarea rows="10" class="col-md-12" ng-model="taskCtrl.task.description" class="form-control" id="description" name="description" placeholder="Description"/>
             </div>
         </fieldset>
         <fieldset>
             <div class="form-group col-md-3">
                 <label for="assignee">Assigné à </label>
-                <select ng-model="edit.task.assigneeId" class="form-control" id="assignee" name="assignee" placeholder="Assigné à">
-                    <option value="{{member.id}}" ng-repeat="member in edit.members">{{member.user.username}}</option>
+                <select ng-model="taskCtrl.task.assigneeId" class="form-control" id="assignee" name="assignee" placeholder="Assigné à">
+                    <option ng-selected="taskCtrl.task._links.assignee === member._links.self" value="{{member.id}}" ng-repeat="member in edit.members">{{member.user.username}}</option>
                 </select>
             </div>
             <div class="form-group col-md-3">
                 <label for="backup">Backup </label>
-                <select ng-model="edit.task.backupId" class="form-control" id="backup" name="backup" placeholder="Backup">
-                    <option value="{{member.id}}" ng-repeat="member in edit.members">{{member.user.username}}</option>
+                <select ng-model="taskCtrl.task.backupId" class="form-control" id="backup" name="backup" placeholder="Backup">
+                    <option ng-selected="taskCtrl.task._links.backup === member._links.self" value="{{member.id}}" ng-repeat="member in edit.members">{{member.user.username}}</option>
                 </select>
             </div>
         </fieldset>
         <fieldset>
             <div class="form-group  col-md-3">
                 <label for="plannedStart">Date de début prévue </label>
-                <input type="date" id="plannedStart" class="form-control" ng-model="edit.task.plannedStart"/>
+                <input type="date" id="plannedStart" class="form-control" ng-model="taskCtrl.task.plannedStart"/>
             </div>
             <div class="form-group col-md-3">
                 <label for="plannedEnding">Date de fin prévue </label>
-                <input type="date" id="plannedEnding" class="form-control" ng-model="edit.task.plannedEnding"/>
+                <input type="date" id="plannedEnding" class="form-control" ng-model="taskCtrl.task.plannedEnding"/>
             </div>
             <div class="form-group col-md-3">
                 <label for="estimatedLoad">Charge totale prévue</label>
-                <input type="number" id="estimatedLoad" class="form-control" ng-model="edit.task.estimatedLoad" min="0" step="1"/>
+                <input type="number" id="estimatedLoad" class="form-control" ng-model="taskCtrl.task.estimatedLoad" min="0" step="1"/>
             </div>
         </fieldset>
-        <div>
-            <button type="submit"  class="btn btn-info center-block">valider</button>
+        <div class="col-md-offset-9 col-md-3 inline">
+            <button type="button" onClick="history.back()" class="btn btn-info">Annuler</button>
+            <button type="submit" class="btn btn-info">Enregistrer</button>
         </div>
     </form>
     <div class="panel">
