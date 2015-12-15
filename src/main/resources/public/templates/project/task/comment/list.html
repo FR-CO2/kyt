@@ -1,47 +1,47 @@
-<div class="col-md-12">
+<div class="col-md-12" >
     <div class="panel">
         <div class="panel-heading">
-            <h2 class="panel-heading-title">Commentaires de la tâche #{{edit.task.id}}</h2>
+            <h3 class="panel-heading-title">Commentaires </h3>
             <div class="panel-heading-action">
-                <button class="btn btn-info btn-sm" ng-click="comment.add()"><span class="glyphicon glyphicon-plus-sign"></span>Nouveau commentaire</button>
+                <button class="btn btn-info btn-sm" ng-click="commentCtrl.add()"><span class="glyphicon glyphicon-plus-sign"></span>Nouveau commentaire</button>
             </div>
         </div>
         <div class="panel-body">
-            <div ng-repeat="taskComment in comment.comments">
+            <div ng-repeat="comment in commentCtrl.comments">
                 <div class="panel panel-default"> 
                     <div class=" panel-heading">
                         <div class="col-md-7">
-                            Commentaire #{{taskComment.id}}
+                            Commentaire #{{comment.id}}
                         </div>
                         <div class="pull-right">
-                            <a ng-click="comment.delete(taskComment.id)" title="delete">
+                            <a ng-click="commentCtrl.delete(comment.id)" title="delete">
                                 <span class="glyphicon glyphicon-trash"></span>
                             </a>
                         </div>
                     </div>
                     <div class="panel-body">
-                        <a href="#" editable-textarea="taskComment.comment" e-row="5" e-cols="60" onaftersave="comment.update(taskComment)" >
-                            {{taskComment.comment}}
-                            <span ng-if="!taskComment.comment">
+                        <a href="#" editable-textarea="comment.comment" e-row="5" e-cols="60" onaftersave="commentCtrl.update(comment)" >
+                            {{comment.comment}}
+                            <span ng-if="!comment.comment">
                                 -
                             </span>
                         </a>
-                        <div ng-repeat="taskComment in taskComment.reply">
+                        <div ng-repeat="comment in comment.reply">
                             <div class="panel panel-default"> 
                                 <div class=" panel-heading">
                                     <div class="col-md-7">
-                                        Commentaire #{{taskComment.id}}
+                                        Commentaire #{{comment.id}}
                                     </div>
                                     <div class="pull-right">
-                                        <a ng-click="comment.delete(taskComment.id)" title="delete">
+                                        <a ng-click="commentCtrl.delete(comment.id)" title="delete">
                                             <span class="glyphicon glyphicon-trash"></span>
                                         </a>
                                     </div>
                                 </div>
                                 <div class="panel-body">
-                                    <a href="#" editable-textarea="taskComment.comment" e-row="5" e-cols="60" onaftersave="comment.update(taskComment)" >
-                                        {{taskComment.comment}}
-                                        <span ng-if="!taskComment.comment">
+                                    <a href="#" editable-textarea="comment.comment" e-row="5" e-cols="60" onaftersave="commentCtrl.update(comment)" >
+                                        {{comment.comment}}
+                                        <span ng-if="!comment.comment">
                                             -
                                         </span>
                                     </a>
@@ -51,11 +51,11 @@
                     </div>
                     <div class="panel-footer">
                         <div class="col-md-7">
-                            <span> De {{taskComment.writer}}</span>
-                            <span> le {{taskComment.writingDate| date:'dd-MM-yyyy'}}</span>
+                            <span> De {{comment.writer}}</span>
+                            <span> le {{comment.writingDate| date:'dd-MM-yyyy'}}</span>
                         </div>
                         <div class="pull-right">
-                            <a ng-click="comment.reply(taskComment.id)" title="reply">
+                            <a ng-click="commentCtrl.reply(comment.id)" title="reply">
                                 Répondre <span class="glyphicon glyphicon-comment"></span>
                             </a>
                         </div>

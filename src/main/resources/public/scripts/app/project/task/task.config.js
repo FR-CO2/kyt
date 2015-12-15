@@ -21,24 +21,6 @@
                 },
                 url: "task/:taskId"
             });
-            $stateProvider.state("app.project.task.allocation", {
-                templateUrl: "templates/project/task/allocation/list.html",
-                controller: "allocationController",
-                controllerAs: "allocation",
-                url: "/allocation"
-            });
-            $stateProvider.state("app.project.task.comment", {
-                templateUrl: "templates/project/task/comment/list.html",
-                controller: "commentController",
-                controllerAs: "comment",
-                url: "/comment"
-            });
-            $stateProvider.state("app.project.task.history", {
-                templateUrl: "templates/project/task/history/list.html",
-                controller: "historyController",
-                controllerAs: "history",
-                url: "/history"
-            });
         };
         config.$inject = ["$stateProvider"];
         return config;

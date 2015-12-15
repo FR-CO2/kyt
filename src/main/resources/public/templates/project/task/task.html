@@ -1,13 +1,4 @@
-<div class="row">
-    <ul class="nav nav-tabs">
-        <li><a ui-sref="app.project.task">General</a></li>
-        <li><a ui-sref="app.project.task.comment">Commentaires</a></li>
-        <li><a ui-sref="app.project.task.allocation">Consommations</a></li>
-        <li><a ui-sref="app.project.task.history">Historique</a></li>
-    </ul>
-</div>
-
-<div class="row" ui-view >
+<div class="row" id="task">
     <alert type="danger" ng-if="edit.form.error">{{edit.form.error}}</alert>
 
     <form id="edittask" role="form" ng-submit="edit.submit()">
@@ -73,4 +64,19 @@
             <button type="submit"  class="btn btn-info center-block">valider</button>
         </div>
     </form>
+    <div class="panel">
+        <div class="panel-body">
+            <tabset>
+                <tab heading="Commentaires" ng-controller="commentController as commentCtrl">
+                    <div ng-include="'templates/project/task/comment/list.html'"></div>
+                </tab> 
+                <tab heading="Consommations" ng-controller="allocationController as allocationCtrl">
+                    <div ng-include="'templates/project/task/allocation/list.html'"></div>
+                </tab> 
+                <tab heading="Historique" ng-controller="historyController as historyCtrl">
+                    <div ng-include="'templates/project/task/history/list.html'"></div>
+                </tab> 
+            </tabset>
+        </div>
+    </div>
 </div>
