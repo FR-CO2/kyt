@@ -7,6 +7,9 @@
             vm.states = project.resource("states").query();
             vm.swimlanes = project.resource("swimlanes").query();
             vm.members = project.resource("members").get();
+            vm.submit = function() {
+                task.resource("self").save(vm.task);
+            }
         };
         taskController.$inject = ["project", "task"];
         return taskController;
