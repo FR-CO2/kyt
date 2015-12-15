@@ -2,7 +2,7 @@
     define([], function () {
 
         var resolveTask = function ($stateParams, taskService) {
-            return taskService.get($stateParams.taskId);
+            return taskService.get({"projectId": $stateParams.projectId, "taskId": $stateParams.taskId});
         };
         resolveTask.$inject = ["$stateParams", "taskService"];
 
@@ -11,21 +11,15 @@
                 templateUrl: "templates/project/task/list.html",
                 controller: "tasklistController",
                 controllerAs: "tasksCtrl",
-                url: "/tasks"
+                url: "tasks"
             });
             $stateProvider.state("app.project.task", {
-                templateUrl: "templates/project/task/task-layout.html",
-                controllerAs: "edit",
+                templateUrl: "templates/project/task/task.html",
+                controllerAs: "task",
                 resolve: {
                     task: resolveTask
                 },
-                url: "/task/:taskId"
-            });
-            $stateProvider.state("app.project.task.general", {
-                templateUrl: "templates/project/task/edit.html",
-                controller: "taskController",
-                controllerAs: "task",
-                url: ""
+                url: "task/:taskId"
             });
             $stateProvider.state("app.project.task.allocation", {
                 templateUrl: "templates/project/task/allocation/list.html",

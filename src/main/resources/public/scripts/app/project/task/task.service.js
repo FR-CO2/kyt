@@ -7,7 +7,7 @@
 (function () {
     define([], function () {
         var taskService = function ($resource) {
-            return $resource("/api/project/:projectId/task/:taskId");
+            return $resource("/api/project/:projectId/task/:taskId", {projectId: "@projectId", id: "@taskId"});
         };
         taskService.$inject = ["$resource"];
         return taskService;

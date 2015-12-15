@@ -1,7 +1,7 @@
 <div class="kanban-card">
     <div class="kanban-card__task center-block" style="border-left: 0.5em solid {{task.category.bgcolor}}">
         <header class="kanban-card__heading">
-            <a ui-sref="app.project.task({projectId: project.id, taskId: task.id })" title="Accéder au détail de la tâche">
+            <a ui-sref="app.project.task({projectId: projectCtrl.project.id, taskId: task.id })" title="Accéder au détail de la tâche">
                 <span>#{{task.id}}</span>
                 {{task.name}}
             </a>

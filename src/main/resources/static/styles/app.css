@@ -1,426 +1,438 @@
 /* line 2, ../../../../../../co2themes/sass/_utilities.sass */
 .clearChild:after {
-  content: "";
-  display: table;
-  clear: both;
+    content: "";
+    display: table;
+    clear: both;
 }
 
 /* line 20, ../../../../../../co2themes/sass/_utilities.sass */
 [ng-click] {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 @font-face {
-  font-family: "oswald-demi-italic";
-  src: url('/fonts/oswald/oswald-demi-bolditalic-webfont.eot?1437026646');
-  src: url('/fonts/oswald/oswald-demi-bolditalic-webfont.eot?&1437026646#iefix') format('embedded-opentype'), url('/fonts/oswald/oswald-demi-bolditalic-webfont.svg?1437026646') format('svg'), url('/fonts/oswald/oswald-demi-bolditalic-webfont.ttf?1437026646') format('truetype'), url('/fonts/oswald/oswald-demi-bolditalic-webfont.woff?1437026646') format('woff'), url('/fonts/oswald/oswald-demi-bolditalic-webfont.woff2?1437026646') format('woff2');
+    font-family: "oswald-demi-italic";
+    src: url('/fonts/oswald/oswald-demi-bolditalic-webfont.eot?1437026646');
+    src: url('/fonts/oswald/oswald-demi-bolditalic-webfont.eot?&1437026646#iefix') format('embedded-opentype'), url('/fonts/oswald/oswald-demi-bolditalic-webfont.svg?1437026646') format('svg'), url('/fonts/oswald/oswald-demi-bolditalic-webfont.ttf?1437026646') format('truetype'), url('/fonts/oswald/oswald-demi-bolditalic-webfont.woff?1437026646') format('woff'), url('/fonts/oswald/oswald-demi-bolditalic-webfont.woff2?1437026646') format('woff2');
 }
 @font-face {
-  font-family: "oswald-demi";
-  src: url('/fonts/oswald/oswald-demibold-webfont.eot?1437026646');
-  src: url('/fonts/oswald/oswald-demibold-webfont.eot?&1437026646#iefix') format('embedded-opentype'), url('/fonts/oswald/oswald-demibold-webfont.svg?1437026646') format('svg'), url('/fonts/oswald/oswald-demibold-webfont.ttf?1437026646') format('truetype'), url('/fonts/oswald/oswald-demibold-webfont.woff?1437026646') format('woff'), url('/fonts/oswald/oswald-demibold-webfont.woff2?1437026646') format('woff2');
+    font-family: "oswald-demi";
+    src: url('/fonts/oswald/oswald-demibold-webfont.eot?1437026646');
+    src: url('/fonts/oswald/oswald-demibold-webfont.eot?&1437026646#iefix') format('embedded-opentype'), url('/fonts/oswald/oswald-demibold-webfont.svg?1437026646') format('svg'), url('/fonts/oswald/oswald-demibold-webfont.ttf?1437026646') format('truetype'), url('/fonts/oswald/oswald-demibold-webfont.woff?1437026646') format('woff'), url('/fonts/oswald/oswald-demibold-webfont.woff2?1437026646') format('woff2');
 }
 @font-face {
-  font-family: "oswald";
-  src: url('/fonts/oswald/oswald-light-webfont.eot?1437026646');
-  src: url('/fonts/oswald/oswald-light-webfont.eot?&1437026646#iefix') format('embedded-opentype'), url('/fonts/oswald/oswald-light-webfont.svg?1437026646') format('svg'), url('/fonts/oswald/oswald-light-webfont.ttf?1437026646') format('truetype'), url('/fonts/oswald/oswald-light-webfont.woff?1437026646') format('woff'), url('/fonts/oswald/oswald-light-webfont.woff2?1437026646') format('woff2');
+    font-family: "oswald";
+    src: url('/fonts/oswald/oswald-light-webfont.eot?1437026646');
+    src: url('/fonts/oswald/oswald-light-webfont.eot?&1437026646#iefix') format('embedded-opentype'), url('/fonts/oswald/oswald-light-webfont.svg?1437026646') format('svg'), url('/fonts/oswald/oswald-light-webfont.ttf?1437026646') format('truetype'), url('/fonts/oswald/oswald-light-webfont.woff?1437026646') format('woff'), url('/fonts/oswald/oswald-light-webfont.woff2?1437026646') format('woff2');
 }
 @font-face {
-  font-family: "oswald-italic";
-  src: url('/fonts/oswald/oswald-lightitalic-webfont.eot?1437026646');
-  src: url('/fonts/oswald/oswald-lightitalic-webfont.eot?&1437026646#iefix') format('embedded-opentype'), url('/fonts/oswald/oswald-lightitalic-webfont.svg?1437026646') format('svg'), url('/fonts/oswald/oswald-lightitalic-webfont.ttf?1437026646') format('truetype'), url('/fonts/oswald/oswald-lightitalic-webfont.woff?1437026646') format('woff'), url('/fonts/oswald/oswald-lightitalic-webfont.woff2?1437026646') format('woff2');
+    font-family: "oswald-italic";
+    src: url('/fonts/oswald/oswald-lightitalic-webfont.eot?1437026646');
+    src: url('/fonts/oswald/oswald-lightitalic-webfont.eot?&1437026646#iefix') format('embedded-opentype'), url('/fonts/oswald/oswald-lightitalic-webfont.svg?1437026646') format('svg'), url('/fonts/oswald/oswald-lightitalic-webfont.ttf?1437026646') format('truetype'), url('/fonts/oswald/oswald-lightitalic-webfont.woff?1437026646') format('woff'), url('/fonts/oswald/oswald-lightitalic-webfont.woff2?1437026646') format('woff2');
 }
 /* line 1, ../../../../../../co2themes/sass/bootstrap/_form.sass */
 input, .form-control {
-  border: 1px solid #42AFEE;
-  color: #0172B4;
+    border: 1px solid #42AFEE;
+    color: #0172B4;
 }
 
 /* line 5, ../../../../../../co2themes/sass/bootstrap/_form.sass */
 .editable-wrap {
-  width: 100%;
-  margin: 1em 0;
-  text-align: center;
+    width: 100%;
+    margin: 1em 0;
+    text-align: center;
 }
 
 /* line 1, ../../../../../../co2themes/sass/bootstrap/_panel.sass */
 [class^=panel-heading-] {
-  margin: 0;
-  padding: 0;
+    margin: 0;
+    padding: 0;
 }
 
 /* line 6, ../../../../../../co2themes/sass/bootstrap/_panel.sass */
 .panel-heading {
-  padding: 0.5em;
-  font-family: oswald, Helvetica Neue, Helvetica, Arial, sans-serif;
-  font-size: 2em;
-  line-height: 1.5em;
+    padding: 0.5em;
+    font-family: oswald, Helvetica Neue, Helvetica, Arial, sans-serif;
+    font-size: 2em;
+    line-height: 1.5em;
 }
 /* line 2, ../../../../../../co2themes/sass/_utilities.sass */
 .panel-heading:after {
-  content: "";
-  display: table;
-  clear: both;
+    content: "";
+    display: table;
+    clear: both;
 }
 /* line 12, ../../../../../../co2themes/sass/bootstrap/_panel.sass */
 .panel-heading-title {
-  display: inline-block;
-  float: left;
+    display: inline-block;
+    float: left;
 }
 /* line 15, ../../../../../../co2themes/sass/bootstrap/_panel.sass */
 .panel-heading-action {
-  float: right;
-  font-size: 1.5rem;
-  position: relative;
+    float: right;
+    font-size: 1.5rem;
+    position: relative;
 }
 /* line 19, ../../../../../../co2themes/sass/bootstrap/_panel.sass */
 .panel-info {
-  border: none;
+    border: none;
 }
 /* line 21, ../../../../../../co2themes/sass/bootstrap/_panel.sass */
 .panel-info > .panel-heading {
-  background: #D4EFFF;
+    background: #D4EFFF;
 }
 /* line 23, ../../../../../../co2themes/sass/bootstrap/_panel.sass */
 .panel-body {
-  font-size: 0.875em;
-  line-height: 1.2em;
+    font-size: 0.875em;
+    line-height: 1.2em;
 }
 
 /* line 1, ../../../../../../co2themes/sass/bootstrap/_button.sass */
 .btn, .fc-button {
-  font-family: oswald, Helvetica Neue, Helvetica, Arial, sans-serif;
-  font-size: 16px;
-  background: #FFF;
-  text-shadow: none;
-  text-transform: uppercase;
-  box-shadow: 0px 0.125em 0.125em 0em rgba(0, 0, 0, 0.3);
+    font-family: oswald, Helvetica Neue, Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    background: #FFF;
+    text-shadow: none;
+    text-transform: uppercase;
+    box-shadow: 0px 0.125em 0.125em 0em rgba(0, 0, 0, 0.3);
 }
 /* line 8, ../../../../../../co2themes/sass/bootstrap/_button.sass */
 .btn:hover, .fc-button:hover {
-  box-shadow: 0px 0.25em 0.25em 0em rgba(0, 0, 0, 0.3);
+    box-shadow: 0px 0.25em 0.25em 0em rgba(0, 0, 0, 0.3);
 }
 /* line 10, ../../../../../../co2themes/sass/bootstrap/_button.sass */
 .btn-info, .btn-primary, .fc-button-info, .fc-button-primary {
-  background: #168ACE;
+    background: #168ACE;
 }
 /* line 12, ../../../../../../co2themes/sass/bootstrap/_button.sass */
 .btn-info:hover, .btn-primary:hover, .fc-button-info:hover, .fc-button-primary:hover {
-  background: #168ACE;
+    background: #168ACE;
 }
 /* line 14, ../../../../../../co2themes/sass/bootstrap/_button.sass */
 .btn > .glyphicon, .fc-button > .glyphicon {
-  margin-right: 0.5em;
+    margin-right: 0.5em;
 }
 
 /* line 19, ../../../../../../co2themes/sass/bootstrap/_button.sass */
 .editable-buttons .btn > .glyphicon {
-  margin: 0;
+    margin: 0;
 }
 
 /* line 9, ../../../../../../co2themes/sass/bootstrap/_navbar.sass */
 .navbar {
-  font-size: 16px;
-  font-family: oswald, Helvetica Neue, Helvetica, Arial, sans-serif;
-  line-height: 3em;
-  margin: 0;
+    font-size: 16px;
+    font-family: oswald, Helvetica Neue, Helvetica, Arial, sans-serif;
+    line-height: 3em;
+    margin: 0;
 }
 /* line 14, ../../../../../../co2themes/sass/bootstrap/_navbar.sass */
 .navbar-text, .navbar-header, .navbar-brand {
-  height: 100%;
-  padding: 0;
-  margin: 0;
-  vertical-align: middle;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    vertical-align: middle;
 }
 
 /* line 17, ../../../../../../co2themes/sass/bootstrap/_navbar.sass */
 .nav {
-  padding: 0 1em;
+    padding: 0 1em;
 }
 
 /* line 20, ../../../../../../co2themes/sass/bootstrap/_navbar.sass */
 .navbar-default {
-  padding: 1em;
-  border-bottom: 2px solid #0172B4;
-  background: #168ACE;
-  color: #FFF;
-  height: auto;
-  box-shadow: 0px 0.25em 0.25em 0.1em rgba(0, 0, 0, 0.3);
+    padding: 1em;
+    border-bottom: 2px solid #0172B4;
+    background: #168ACE;
+    color: #FFF;
+    height: auto;
+    box-shadow: 0px 0.25em 0.25em 0.1em rgba(0, 0, 0, 0.3);
 }
 /* line 27, ../../../../../../co2themes/sass/bootstrap/_navbar.sass */
 .navbar-default .navbar-header {
-  position: relative;
+    position: relative;
 }
 /* line 29, ../../../../../../co2themes/sass/bootstrap/_navbar.sass */
 .navbar-default .navbar-brand {
-  font-size: 2em;
-  font-family: oswald-demi, Helvetica Neue, Helvetica, Arial, sans-serif;
-  color: #FFF;
+    font-size: 2em;
+    font-family: oswald-demi, Helvetica Neue, Helvetica, Arial, sans-serif;
+    color: #FFF;
 }
 /* line 33, ../../../../../../co2themes/sass/bootstrap/_navbar.sass */
 .navbar-default .navbar-brand .logo {
-  margin-right: 1em;
+    margin-right: 1em;
 }
 /* line 36, ../../../../../../co2themes/sass/bootstrap/_navbar.sass */
 .navbar-default .navbar-text {
-  font-size: 1.5em;
-  cursor: pointer;
-  text-decoration: none;
-  color: #FFF;
+    font-size: 1.5em;
+    cursor: pointer;
+    text-decoration: none;
+    color: #FFF;
 }
 
 /* line 42, ../../../../../../co2themes/sass/bootstrap/_navbar.sass */
 .navbar-default .navbar-nav > li > a, .navbar-default a, .open > a, .navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:focus {
-  color: #FFF;
-  background: none;
-  text-shadow: none;
+    color: #FFF;
+    background: none;
+    text-shadow: none;
 }
 /* line 46, ../../../../../../co2themes/sass/bootstrap/_navbar.sass */
 .navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus, .navbar-default a:hover, .navbar-default a:focus, .open > a:hover, .open > a:focus, .navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:focus, .navbar-default .navbar-nav > .open > a:hover:hover, .navbar-default .navbar-nav > .open > a:hover:focus, .navbar-default .navbar-nav > .open > a:focus:hover, .navbar-default .navbar-nav > .open > a:focus:focus {
-  color: #D4EFFF;
+    color: #D4EFFF;
 }
 
 /* line 49, ../../../../../../co2themes/sass/bootstrap/_navbar.sass */
 .nav-tabs {
-  margin-bottom: 1em;
+    margin-bottom: 1em;
 }
 
 /* line 2, ../../../../../../co2themes/sass/bootstrap/_table.sass */
 .table > thead > tr > th {
-  font-family: oswald, Helvetica Neue, Helvetica, Arial, sans-serif;
-  font-size: 16px;
-  line-height: 1.2em;
+    font-family: oswald, Helvetica Neue, Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.2em;
 }
 
 /* line 1, ../../../../../../co2themes/sass/bootstrap/modal.sass */
 .modal {
-  cursor: default;
+    cursor: default;
 }
 
 /* line 2, ../../../../../../co2themes/sass/theme/_off-canvas.sass */
 .offcanvas__container {
-  min-height: 100%;
-  display: flex;
-  position: relative;
+    min-height: 100%;
+    display: flex;
+    position: relative;
 }
 /* line 6, ../../../../../../co2themes/sass/theme/_off-canvas.sass */
 .offcanvas__menu {
-  width: 20%;
-  float: left;
-  background: #172B36;
-  flex-grow: 0;
-  transition: ease-out 1s width;
-  box-shadow: -1em 1em 1em -0.5em #000 inset;
-  overflow: hidden;
+    width: 20%;
+    float: left;
+    background: #172B36;
+    flex-grow: 0;
+    transition: ease-out 1s width;
+    box-shadow: -1em 1em 1em -0.5em #000 inset;
+    overflow: hidden;
 }
 /* line 14, ../../../../../../co2themes/sass/theme/_off-canvas.sass */
 .offcanvas__content {
-  width: 80%;
-  float: left;
-  padding: 2em 1em;
-  flex-grow: 2;
-  order: 3;
-  min-height: 600px;
+    width: 80%;
+    float: left;
+    padding: 2em 1em;
+    flex-grow: 2;
+    order: 3;
+    min-height: 600px;
 }
 /* line 21, ../../../../../../co2themes/sass/theme/_off-canvas.sass */
 .offcanvas__label {
-  font-size: 2em;
-  color: #0172B4;
-  cursor: pointer;
-  font-family: oswald, Helvetica Neue, Helvetica, Arial, sans-serif;
-  text-transform: uppercase;
+    font-size: 2em;
+    color: #0172B4;
+    cursor: pointer;
+    font-family: oswald, Helvetica Neue, Helvetica, Arial, sans-serif;
+    text-transform: uppercase;
 }
 /* line 27, ../../../../../../co2themes/sass/theme/_off-canvas.sass */
 .offcanvas__checkbox {
-  display: none;
+    display: none;
 }
 /* line 30, ../../../../../../co2themes/sass/theme/_off-canvas.sass */
 .offcanvas__checkbox:checked ~ .offcanvas__menu {
-  width: 0;
-  padding: 0;
-  overflow: hidden;
+    width: 0;
+    padding: 0;
+    overflow: hidden;
 }
 /* line 35, ../../../../../../co2themes/sass/theme/_off-canvas.sass */
 .offcanvas__checkbox:checked ~ .offcanvas__content {
-  width: 100%;
+    width: 100%;
 }
 
 /* line 38, ../../../../../../co2themes/sass/theme/_off-canvas.sass */
 .nav--offcanvas {
-  margin: 2em 1em;
-  color: #FFF;
+    margin: 2em 1em;
+    color: #FFF;
 }
 /* line 41, ../../../../../../co2themes/sass/theme/_off-canvas.sass */
 .nav--offcanvas > li > a {
-  color: #FFF;
+    color: #FFF;
 }
 /* line 43, ../../../../../../co2themes/sass/theme/_off-canvas.sass */
 .nav--offcanvas > li > a:hover, .nav--offcanvas > li > a:focus {
-  background: #000;
+    background: #000;
 }
 
 /* line 1, ../../../../../../co2themes/sass/theme/_layout.sass */
 html {
-  height: 100%;
+    height: 100%;
 }
 
 /* line 3, ../../../../../../co2themes/sass/theme/_layout.sass */
 body {
-  height: 100%;
-  font-size: 16px;
-  font-weight: 300;
-  background: #E9F0F4;
-  color: #2D2D2D;
+    height: 100%;
+    font-size: 16px;
+    font-weight: 300;
+    background: #E9F0F4;
+    color: #2D2D2D;
 }
 
 /* line 9, ../../../../../../co2themes/sass/theme/_layout.sass */
 .wrapper {
-  height: 100%;
+    height: 100%;
 }
 
 /* line 12, ../../../../../../co2themes/sass/theme/_layout.sass */
 .heading {
-  padding: 0.5em 0;
-  font-family: oswald, Helvetica Neue, Helvetica, Arial, sans-serif;
-  font-size: 2em;
+    padding: 0.5em 0;
+    font-family: oswald, Helvetica Neue, Helvetica, Arial, sans-serif;
+    font-size: 2em;
 }
 /* line 2, ../../../../../../co2themes/sass/_utilities.sass */
 .heading:after {
-  content: "";
-  display: table;
-  clear: both;
+    content: "";
+    display: table;
+    clear: both;
 }
 /* line 17, ../../../../../../co2themes/sass/theme/_layout.sass */
 .heading__title {
-  display: inline-block;
-  float: left;
-  margin: 0;
+    display: inline-block;
+    float: left;
+    margin: 0;
 }
 /* line 21, ../../../../../../co2themes/sass/theme/_layout.sass */
 .heading__action {
-  float: right;
-  font-size: 1.5rem;
-  position: relative;
+    float: right;
+    font-size: 1.5rem;
+    position: relative;
 }
 
 /* line 1, ../../../../../../co2themes/sass/theme/_titles.sass */
 h1, h2, h3, h4, h5, h6 {
-  color: #168ACE;
-  font-family: oswald, Helvetica Neue, Helvetica, Arial, sans-serif;
+    color: #168ACE;
+    font-family: oswald, Helvetica Neue, Helvetica, Arial, sans-serif;
 }
 
 /* line 1, ../../../../../../co2themes/sass/theme/_calendar.sass */
 .fc-view {
-  background: #FFF;
+    background: #FFF;
 }
 
 /* line 1, ../../../../../../co2themes/sass/theme/_sortable.sass */
 .as-sortable-placeholder {
-  background: #D4EFFF;
-  border: 2px dashed #0172B4;
+    background: #D4EFFF;
+    border: 2px dashed #0172B4;
 }
 
 /* line 5, ../../../../../../co2themes/sass/theme/_sortable.sass */
 .as-sortable-drag {
-  box-shadow: 0px 0.25em 0.25em 0.25em rgba(0, 0, 0, 0.3);
+    box-shadow: 0px 0.25em 0.25em 0.25em rgba(0, 0, 0, 0.3);
 }
 
 /* line 1, ../../../../../../co2themes/sass/theme/_login.sass */
 .panel-login {
-  width: 60%;
-  margin: auto;
-  margin-top: 100px;
+    width: 60%;
+    margin: auto;
+    margin-top: 100px;
 }
 /* line 5, ../../../../../../co2themes/sass/theme/_login.sass */
 .panel-login .panel-body {
-  font-size: 2em;
-  line-height: 1.5em;
+    font-size: 2em;
+    line-height: 1.5em;
 }
 
 /* line 8, ../../../../../../co2themes/sass/theme/_login.sass */
 .modal .panel-login {
-  width: 100%;
-  margin: 0;
+    width: 100%;
+    margin: 0;
 }
 
 /* line 2, ../../../../../../co2themes/sass/theme/_kanban.sass */
 .kanban__column {
-  border-top: 2px solid #0172B4 !important;
-  border-left: 1px solid #D4EFFF !important;
-  padding: 1em;
+    border-top: 2px solid #0172B4 !important;
+    border-left: 1px solid #D4EFFF !important;
+    padding: 1em;
 }
 /* line 6, ../../../../../../co2themes/sass/theme/_kanban.sass */
 .kanban__column--title {
-  text-align: center;
-  vertical-align: middle !important;
-  font-family: oswald, Helvetica Neue, Helvetica, Arial, sans-serif;
+    text-align: center;
+    vertical-align: middle !important;
+    font-family: oswald, Helvetica Neue, Helvetica, Arial, sans-serif;
 }
 
 /* line 11, ../../../../../../co2themes/sass/theme/_kanban.sass */
 td.column ul {
-  min-height: 100px;
+    min-height: 100px;
 }
 
 /* line 14, ../../../../../../co2themes/sass/theme/_kanban.sass */
 .kanban-card {
-  border: none;
-  background: #FFF;
-  border-top: #E9F0F4 1px solid;
-  border-radius: 0.25em;
-  overflow: hidden;
-  box-shadow: 0px 0.125em 0.125em 0em rgba(0, 0, 0, 0.3);
+    border: none;
+    background: #FFF;
+    border-top: #E9F0F4 1px solid;
+    border-radius: 0.25em;
+    overflow: hidden;
+    box-shadow: 0px 0.125em 0.125em 0em rgba(0, 0, 0, 0.3);
 }
 /* line 21, ../../../../../../co2themes/sass/theme/_kanban.sass */
 .kanban-card__task {
-  font-size: 16px;
-  line-height: 1.2em;
-  border-bottom: none;
-  border-top: none;
-  padding: 0.5em;
+    font-size: 16px;
+    line-height: 1.2em;
+    border-bottom: none;
+    border-top: none;
+    padding: 0.5em;
 }
 /* line 26, ../../../../../../co2themes/sass/theme/_kanban.sass */
 .kanban-card__heading {
-  font-size: 1.2em;
-  line-height: 1.5em;
-  margin: 0.5em 0;
+    font-size: 1.2em;
+    line-height: 1.5em;
+    margin: 0.5em 0;
 }
 /* line 30, ../../../../../../co2themes/sass/theme/_kanban.sass */
 .kanban-card__heading a {
-  color: #000;
+    color: #000;
 }
 /* line 32, ../../../../../../co2themes/sass/theme/_kanban.sass */
 .kanban-card__heading a span {
-  color: #168ACE;
+    color: #168ACE;
 }
 /* line 34, ../../../../../../co2themes/sass/theme/_kanban.sass */
 .kanban-card__date {
-  padding: 0.5em;
-  background: #E9F0F4;
+    padding: 0.5em;
+    background: #E9F0F4;
 }
 /* line 37, ../../../../../../co2themes/sass/theme/_kanban.sass */
 .kanban-card .badge {
-  background-color: transparent;
+    background-color: transparent;
 }
 
 /* line 22, ../../../../../../co2themes/sass/app.sass */
 #board {
-  height: 100%;
-  width: 100%;
-  display: table;
+    height: 100%;
+    width: 100%;
+    display: table;
 }
 
 /* line 27, ../../../../../../co2themes/sass/app.sass */
 .app__container {
-  height: 100%;
+    height: 100%;
 }
 
 /* line 30, ../../../../../../co2themes/sass/app.sass */
 .app__content {
-  padding: 2em 0;
-  margin: 0;
+    padding: 2em 0;
+    margin: 0;
 }
 
 /* line 34, ../../../../../../co2themes/sass/app.sass */
 .ui-autocomplete {
-  z-index: 1051;
+    z-index: 1051;
+}
+
+fieldset {
+    border: 1px #ddd;
+    box-shadow:  0px 0px 0px 0px #000;
+}
+
+#edittask {
+    background-color: #FFF;
+    padding-top: 1.2em;
+    padding-bottom: 1.2em;
+    
 }

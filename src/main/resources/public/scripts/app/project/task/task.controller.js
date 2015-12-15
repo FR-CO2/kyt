@@ -1,9 +1,10 @@
 (function () {
     define([], function () {
-        var taskController = function () {
+        var taskController = function (task) {
             var vm = this;
+            vm.task = task;
         };
-        taskController.$inject = [];
+        taskController.$inject = ["task"];
         return taskController;
     });
 })();
