@@ -11,14 +11,16 @@
 
             var fetchKanbanTask = function (tasks) {
                 angular.forEach(tasks, function (task) {
+                    task.state = task.resource("state").get();
+                    if (task._links.swimlane) {
+                        task.swimlane = task.resource("swimlane").get();
+                    }
                     if (task._links.assignee) {
                         task.assignee = task.resource("assignee").get();
                     }
-                    ;
                     if (task._links.category) {
                         task.category = task.resource("category").get();
                     }
-                    ;
                 });
                 return tasks;
             };
@@ -29,8 +31,8 @@
                 angular.forEach(states, function (state) {
                     result[i] = {id: state.id};
                     result[i].tasks = project.resource("task", "kanban").query(
-                            {"swimlane": swimlaneId,"state": state.id},
-                            fetchKanbanTask);
+                            {"swimlane": swimlaneId, "state": state.id},
+                    fetchKanbanTask);
                     i++;
                 });
                 return result;

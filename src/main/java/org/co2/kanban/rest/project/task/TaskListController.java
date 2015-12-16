@@ -76,10 +76,12 @@ public class TaskListController {
 
     @RequestMapping(method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("@projectAccessExpression.hasContributorAccess(#projectId, principal.username)")
-    public TaskResource create(@PathVariable("projectId") Long projectId, @RequestBody TaskResource task) {
-        Task newTask = new Task();
-        assembler.updateEntity(newTask, projectId, task);
-        Task result = repository.save(newTask);
+    public TaskResource create(@PathVariable("projectId") Long projectId, @RequestBody Task task) {
+        Project project = projectRepository.findOne(projectId);
+        task.setProject(project);
+        State defaultState = stateRepository.findByProjectAndPosition(project, 0L);
+        task.setState(defaultState);
+        Task result = repository.save(task);
         return assembler.toResource(result);
     }
 

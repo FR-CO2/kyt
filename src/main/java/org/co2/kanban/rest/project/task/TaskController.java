@@ -5,11 +5,11 @@
  */
 package org.co2.kanban.rest.project.task;
 
+import org.co2.kanban.repository.project.Project;
+import org.co2.kanban.repository.project.ProjectRepository;
 import org.co2.kanban.repository.task.Task;
 import org.co2.kanban.repository.task.TaskRepository;
-import org.co2.kanban.repository.state.State;
 import org.co2.kanban.repository.state.StateRepository;
-import org.co2.kanban.repository.swimlane.Swimlane;
 import org.co2.kanban.repository.swimlane.SwimlaneRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,7 +32,10 @@ public class TaskController {
 
     @Autowired
     private TaskRepository repository;
-
+    
+    @Autowired
+    private ProjectRepository projectRepository;
+    
     @Autowired
     private StateRepository taskStateRepository;
 
@@ -55,45 +58,10 @@ public class TaskController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @RequestMapping(value = "/state/{stateId}", method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity updateState(@PathVariable("id") Long id, @PathVariable("stateId") Long stateId) {
-        State state = taskStateRepository.findOne(stateId);
-        Task task = repository.findOne(id);
-        if (state == null || task == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        task.setState(state);
-        repository.save(task);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
-    @RequestMapping(value = "/swimlane/{swimlaneId}", method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity updateSwimlane(@PathVariable("id") Long id, @PathVariable("swimlaneId") Long swimlaneId) {
-        Swimlane swimlane = swimlaneRepository.findOne(swimlaneId);
-        Task task = repository.findOne(id);
-        if (swimlane == null || task == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        task.setSwimlane(swimlane);
-        repository.save(task);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
-    @RequestMapping(value = "/swimlane", method = RequestMethod.DELETE, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity removeSwimlane(@PathVariable("id") Long id) {
-        Task task = repository.findOne(id);
-        if (task == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        task.setSwimlane(null);
-        repository.save(task);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
     @RequestMapping(method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public TaskResource update(@PathVariable("projectId") Long projectId, @PathVariable("id") Long taskId, @RequestBody TaskResource editTask) {
-        Task task = repository.findOne(taskId);
-        assembler.updateEntity(task, projectId, editTask);
+    public TaskResource update(@PathVariable("projectId") Long projectId, @PathVariable("id") Long taskId, @RequestBody Task task) {
+        Project project = projectRepository.findOne(projectId);
+        task.setProject(project);
         Task result = repository.save(task);
         return assembler.toResource(result);
     }

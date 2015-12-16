@@ -7,51 +7,26 @@ package org.co2.kanban.rest.project.task;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.sql.Timestamp;
-import org.springframework.hateoas.ResourceSupport;
+import org.co2.kanban.repository.task.Task;
+import org.co2.kanban.rest.IdentifiableResourceSupport;
 
 /**
  *
  * @author ben
  */
-public class TaskResource extends ResourceSupport {
+public class TaskResource extends IdentifiableResourceSupport<Task> {
 
-    @JsonProperty("id")
-    private Long resourceId;
-
-    private String name;
-
-    private Timestamp created;
-
-    private Timestamp lastModified;
-
-    private Timestamp plannedStart;
-
-    private Timestamp plannedEnding;
-
-    private Long estimatedLoad;
-
-    private String description;
 
     private Float timeRemains;
 
     private Float timeSpent;
-    
-    private Long stateId;
-    
-    private Long categoryId;
-    
-    private Long assigneeId;
-    
-    private Long backupId;
-    
-    private Long swimlaneId;
 
-    public String getName() {
-        return name;
+    public TaskResource(Task task) {
+        super(task);
     }
-
-    public void setName(String name) {
-        this.name = name;
+    
+    public String getName() {
+        return getBean().getName();
     }
 
     public Float getTimeSpent() {
@@ -70,101 +45,28 @@ public class TaskResource extends ResourceSupport {
         this.timeRemains = timeRemains;
     }
 
-    public Long getResourceId() {
-        return resourceId;
-    }
-
-    public void setResourceId(Long resourceId) {
-        this.resourceId = resourceId;
-    }
-
     public Timestamp getCreated() {
-        return created;
-    }
-
-    public void setCreated(Timestamp created) {
-        this.created = created;
+        return getBean().getCreated();
     }
 
     public Timestamp getLastModified() {
-        return lastModified;
-    }
-
-    public void setLastModified(Timestamp lastModified) {
-        this.lastModified = lastModified;
+        return getBean().getLastModified();
     }
 
     public Timestamp getPlannedStart() {
-        return plannedStart;
-    }
-
-    public void setPlannedStart(Timestamp plannedStart) {
-        this.plannedStart = plannedStart;
+        return getBean().getPlannedStart();
     }
 
     public Timestamp getPlannedEnding() {
-        return plannedEnding;
-    }
-
-    public void setPlannedEnding(Timestamp plannedEnding) {
-        this.plannedEnding = plannedEnding;
+        return getBean().getPlannedEnding();
     }
 
     public Long getEstimatedLoad() {
-        return estimatedLoad;
-    }
-
-    public void setEstimatedLoad(Long estimatedLoad) {
-        this.estimatedLoad = estimatedLoad;
+        return getBean().getEstimatedLoad();
     }
 
     public String getDescription() {
-        return description;
+        return getBean().getDescription();
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Long getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(Long categoryId) {
-        this.categoryId = categoryId;
-    }
-
-    public Long getAssigneeId() {
-        return assigneeId;
-    }
-
-    public void setAssigneeId(Long assigneeId) {
-        this.assigneeId = assigneeId;
-    }
-
-    public Long getBackupId() {
-        return backupId;
-    }
-
-    public void setBackupId(Long backupId) {
-        this.backupId = backupId;
-    }
-
-    public Long getSwimlaneId() {
-        return swimlaneId;
-    }
-
-    public void setSwimlaneId(Long swimlaneId) {
-        this.swimlaneId = swimlaneId;
-    }
-
-    public Long getStateId() {
-        return stateId;
-    }
-
-    public void setStateId(Long stateId) {
-        this.stateId = stateId;
-    }
-
-    
 }

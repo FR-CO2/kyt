@@ -51,66 +51,25 @@ public class TaskAssembler extends ResourceAssemblerSupport<Task, TaskResource> 
 
     @Override
     public TaskResource toResource(Task task) {
-        TaskResource resource = instantiateResource(task);
-        resource.setResourceId(task.getId());
-        resource.setName(task.getName());
-        resource.setCreated(task.getCreated());
-        resource.setDescription(task.getDescription());
-        resource.setEstimatedLoad(task.getEstimatedLoad());
-        resource.setPlannedEnding(task.getPlannedEnding());
-        resource.setPlannedStart(task.getPlannedStart());
+        TaskResource resource = new TaskResource(task);
         //TODO report calcul time remains & time spent
         resource.setTimeRemains(0F);
         resource.setTimeSpent(0F);
         resource.add(linkTo(methodOn(ProjectController.class).get(task.getProject().getId())).withRel("project"));
-        resource.setStateId(task.getState().getId());
-        resource.add(linkTo(methodOn(StateController.class, task.getProject().getId()).get(resource.getStateId())).withRel("state"));
+        resource.add(linkTo(methodOn(StateController.class, task.getProject().getId()).get(task.getState().getId())).withRel("state"));
         resource.add(linkTo(methodOn(TaskController.class, task.getProject().getId(), task.getId()).get(task.getId())).withSelfRel());
         if (task.getAssignee() != null) {
-            resource.setAssigneeId(task.getAssignee().getId());
-            resource.add(linkTo(methodOn(MemberController.class, task.getProject().getId()).get(resource.getAssigneeId())).withRel("assignee"));
+            resource.add(linkTo(methodOn(MemberController.class, task.getProject().getId()).get(task.getAssignee().getId())).withRel("assignee"));
         }
         if (task.getBackup() != null) {
-            resource.setBackupId(task.getBackup().getId());
-            resource.add(linkTo(methodOn(MemberController.class, task.getProject().getId()).get(resource.getBackupId())).withRel("backup"));
+            resource.add(linkTo(methodOn(MemberController.class, task.getProject().getId()).get(task.getBackup().getId())).withRel("backup"));
         }
         if (task.getSwimlane() != null) {
-            resource.setSwimlaneId(task.getSwimlane().getId());
-            resource.add(linkTo(methodOn(SwimlaneController.class, task.getProject().getId()).get(resource.getSwimlaneId())).withRel("swimlane"));
+            resource.add(linkTo(methodOn(SwimlaneController.class, task.getProject().getId()).get(task.getSwimlane().getId())).withRel("swimlane"));
         }
         if (task.getCategory() != null) {
-            resource.setCategoryId(task.getCategory().getId());
-            resource.add(linkTo(methodOn(CategoryController.class, task.getProject().getId()).get(resource.getCategoryId())).withRel("category"));
+            resource.add(linkTo(methodOn(CategoryController.class, task.getProject().getId()).get(task.getCategory().getId())).withRel("category"));
         }
         return resource;
     }
-
-    public void updateEntity(Task task, Long projectId, TaskResource resource) {
-        task.setName(resource.getName());
-        task.setCreated(resource.getCreated());
-        task.setDescription(resource.getDescription());
-        task.setEstimatedLoad(resource.getEstimatedLoad());
-        task.setPlannedEnding(resource.getPlannedEnding());
-        task.setPlannedStart(resource.getPlannedStart());
-        Project project = projectRepository.findOne(projectId);
-        task.setProject(project);
-        if (resource.getStateId() != null) {
-            task.setState(taskStateRepository.findOne(resource.getStateId()));
-        } else {
-            task.setState(taskStateRepository.findByProjectAndPosition(project, 0L));
-        }
-        if (resource.getAssigneeId() != null) {
-            task.setAssignee(memberRepository.findOne(resource.getAssigneeId()));
-        }
-        if (resource.getBackupId() != null) {
-            task.setBackup(memberRepository.findOne(resource.getBackupId()));
-        }
-        if (resource.getSwimlaneId() != null) {
-            task.setSwimlane(swimlaneRepository.findOne(resource.getSwimlaneId()));
-        }
-        if (resource.getCategoryId() != null) {
-            task.setCategory(categoryRepository.findOne(resource.getCategoryId()));
-        }
-    }
-
 }

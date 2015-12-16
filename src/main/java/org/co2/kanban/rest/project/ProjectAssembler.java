@@ -12,7 +12,6 @@ import org.co2.kanban.rest.project.member.MemberController;
 import org.co2.kanban.rest.project.state.StateController;
 import org.co2.kanban.rest.project.swimlane.SwimlaneController;
 import org.co2.kanban.rest.project.task.TaskListController;
-import org.springframework.hateoas.Link;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 import org.springframework.hateoas.mvc.ResourceAssemblerSupport;

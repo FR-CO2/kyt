@@ -25,9 +25,15 @@
             vm.kanbanSortOptions = {
                 itemMoved: function (event) {
                     var task = event.source.itemScope.modelValue;
-                    task.swimlaneId = event.dest.sortableScope.element.attr("data-rowindex");
-                    task.stateId = event.dest.sortableScope.element.attr("data-columnindex");
-                    task.resource("self").save(null, task, function() {
+                    task.state.id = event.dest.sortableScope.element.attr("data-columnindex");
+                    var swimlaneId = event.dest.sortableScope.element.attr("data-rowindex");
+                    if (swimlaneId) {
+                        if (!task.swimlane) {
+                            task.swimlane = {};
+                        }
+                        task.swimlane.id = event.dest.sortableScope.element.attr("data-rowindex");
+                    }
+                    task.resource("self").save(null, task, function () {
                         vm.states = project.resource("state").query({"order": "position"});
                     });
                 }
