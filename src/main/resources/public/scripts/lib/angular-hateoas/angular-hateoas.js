@@ -113,11 +113,29 @@ angular.module("hateoas", ["ngResource"])
 
 					return obj;
 				};
+                                var linksArrayToLinksObject = function (keyItem, valueItem, array) {
+					var obj = {};
+					angular.forEach(array, function (item, index) {
+                                                if (Array.isArray(item)) {
+                                                    obj[item[keyItem] || index] = linksArrayToLinksObject("name", "href", item);
+                                                } else if ((item[keyItem] || index) && item[valueItem]) {
+							obj[item[keyItem] || index] = item[valueItem];
+						}
+					});
 
-				var resource = function (linkName, bindings, httpMethods) {
+					return obj;
+				};
+
+				var resource = function (linkName, actionName, bindings, httpMethods) {
 					if (linkName in this[linksKey]) {
-						return $injector.get("$resource")(this[linksKey][linkName], bindings, httpMethods || globalHttpMethods);
-					} else {
+                                            if (actionName && this[linksKey][linkName][actionName]) {
+                                                return $injector.get("$resource")(this[linksKey][linkName][actionName], bindings, httpMethods || globalHttpMethods);
+                                            } else if (actionName) {
+                                                throw "Link '" + linkName + "' with action '" + actionName + "' is not present in object.";
+                                            } else {
+                                                return $injector.get("$resource")(this[linksKey][linkName], bindings, httpMethods || globalHttpMethods);
+                                            }	
+                                        } else {
 						throw "Link '" + linkName + "' is not present in object.";
 					}
 				};
@@ -127,7 +145,7 @@ angular.module("hateoas", ["ngResource"])
 					// if links are present, consume object and convert links
 					if (data[linksKey]) {
 						var links = {};
-						links[linksKey] = arrayToObject("rel", "href", data[linksKey]);
+						links[linksKey] = linksArrayToLinksObject("rel", "href", data[linksKey]);
 						data = angular.extend(this, data, links, { resource: resource });
 					}
 

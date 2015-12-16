@@ -3,7 +3,7 @@
         var kanbanController = function ($modal, project, kanbanService) {
             var vm = this;
             var loadKanban = function () {
-                vm.states = project.resource("states").query({"order": "position"});
+                vm.states = project.resource("state").query({"order": "position"});
                 vm.swimlanes = kanbanService.load(project);
             };
             project.$promise.then(loadKanban);

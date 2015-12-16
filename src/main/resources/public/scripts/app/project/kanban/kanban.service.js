@@ -28,10 +28,9 @@
                 var i = 0;
                 angular.forEach(states, function (state) {
                     result[i] = {id: state.id};
-                    result[i].tasks = taskService.query(
-                            {"projectId": project.id,
-                                "swimlane": swimlaneId,
-                                "state": state.id}, fetchKanbanTask);
+                    result[i].tasks = project.resource("task", "kanban").query(
+                            {"swimlane": swimlaneId,"state": state.id},
+                            fetchKanbanTask);
                     i++;
                 });
                 return result;
@@ -40,8 +39,8 @@
                 load: function (project) {
                     var tasks = [];
                     project.$promise.then(function () {
-                        var statesResource = project.resource("states").query({"order": "position"});
-                        var swimlanesResource = project.resource("swimlanes").query({"order": "position"});
+                        var statesResource = project.resource("state").query({"order": "position"});
+                        var swimlanesResource = project.resource("swimlane").query({"order": "position"});
                         $q.all([statesResource.$promise, swimlanesResource.$promise]).then(function (data) {
                             var states = data[0];
                             var swimlanes = data[1];

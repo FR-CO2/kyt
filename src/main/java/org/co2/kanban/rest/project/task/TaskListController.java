@@ -60,7 +60,7 @@ public class TaskListController {
 
     @RequestMapping(method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public Iterable<TaskResource> list(@PathVariable("projectId") Long projectId,
-            @RequestParam("state") Long stateId,
+            @RequestParam(name="state", required = false) Long stateId,
             @RequestParam(name="swimlane", required = false) Long swimlaneId) {
         Iterable<TaskResource> tasks;
         Project project = projectRepository.findOne(projectId);

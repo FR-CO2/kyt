@@ -93,5 +93,4 @@ public class Project implements Serializable, Identifiable {
     public void setMembers(List<Member> members) {
         this.members = members;
     }
-
 }
