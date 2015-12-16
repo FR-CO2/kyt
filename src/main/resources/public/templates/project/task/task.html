@@ -12,22 +12,17 @@
             <div class="form-group col-md-3">
                 <label for="state">Etat</label>
 
-                <select ng-model="taskCtrl.task.state.id" required class="form-control" name="state" id="state" placeholder="Etat">
-                    <option ng-selected="taskCtrl.task._links.state === state._links.self" value="{{state.id}}" ng-repeat="state in taskCtrl.states">
-                        {{state.name}}
-                    </option>
+                <select ng-model="taskCtrl.task.state" required class="form-control" name="state" id="state" placeholder="Etat" ng-options="state as state.name for state in taskCtrl.states track by state.id">
                 </select>
             </div>
             <div class="form-group col-md-3">
                 <label for="swimlane">Couloir</label>
-                <select ng-model="edit.task.swimlane.id" class="form-control" id="swimlane" name="swimlane" placeholder="Etat">
-                    <option ng-selected="taskCtrl.task._links.swimlane === swimlane._links.self" value="{{swimlane.id}}" ng-repeat="swimlane in taskCtrl.swimlanes">{{swimlane.name}}</option>
+                <select ng-model="taskCtrl.task.swimlane" class="form-control" id="swimlane" name="swimlane" placeholder="Couloir" ng-options="swimlane as swimlane.name for swimlane in taskCtrl.swimlanes track by swimlane.id">
                 </select>
             </div>
             <div class="form-group col-md-3">
                 <label for="category">Catégorie</label>
-                <select ng-model="edit.task.category.id" class="form-control" id="category" name="category" placeholder="Catégorie">
-                    <option ng-selected="taskCtrl.task._links.category === category._links.self" value="{{category.id}}" ng-repeat="category in taskCtrl.categories">{{category.name}}</option>
+                <select ng-model="taskCtrl.task.category" class="form-control" id="category" name="category" placeholder="Catégorie" ng-options="category as category.name for category in taskCtrl.categories track by category.id">
                 </select>
             </div>
         </fieldset>

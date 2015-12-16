@@ -1,17 +1,19 @@
 (function () {
     define([], function () {
-        var taskController = function (project, task) {
+        var taskController = function (project, currenttask, taskAssemblerService) {
             var vm = this;
-            vm.task = task;
+            currenttask.$promise.then(function() {
+                vm.task = taskAssemblerService(currenttask);
+            });
             vm.categories = project.resource("category").query();
             vm.states = project.resource("state").query();
             vm.swimlanes = project.resource("swimlane").query();
             vm.members = project.resource("member").get();
             vm.submit = function() {
-                task.resource("self").save(vm.task);
+                vm.task.resource("self").save(vm.task);
             };
         };
-        taskController.$inject = ["project", "task"];
+        taskController.$inject = ["project", "task", "taskAssemblerService"];
         return taskController;
     });
 })();
