@@ -1,6 +1,6 @@
 (function () {
     define([], function () {
-        var kanbanController = function ($modal, project, kanbanService) {
+        var kanbanController = function ($uibModal, project, kanbanService) {
             var vm = this;
             var loadKanban = function () {
                 vm.states = project.resource("state").query({"order": "position"});
@@ -8,7 +8,7 @@
             };
             project.$promise.then(loadKanban);
             vm.addTask = function () {
-                var modalInstance = $modal.open({
+                var modalInstance = $uibModal.open({
                     animation: true,
                     templateUrl: "templates/project/task/add.html",
                     controller: "addTaskController",
@@ -39,7 +39,7 @@
                 }
             };
         };
-        kanbanController.$inject = ["$modal", "project", "kanbanService"];
+        kanbanController.$inject = ["$uibModal", "project", "kanbanService"];
         return kanbanController;
     });
 })();

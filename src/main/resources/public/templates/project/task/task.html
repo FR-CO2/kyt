@@ -67,17 +67,17 @@
     </form>
     <div class="panel">
         <div class="panel-body">
-            <tabset>
-                <tab heading="Commentaires" ng-controller="commentController as commentCtrl">
-                    <div ng-include="'templates/project/task/comment/list.html'"></div>
-                </tab> 
-                <tab heading="Consommations" ng-controller="allocationController as allocationCtrl">
-                    <div ng-include="'templates/project/task/allocation/list.html'"></div>
-                </tab> 
-                <tab heading="Historique" ng-controller="historyController as historyCtrl">
-                    <div ng-include="'templates/project/task/history/list.html'"></div>
-                </tab> 
-            </tabset>
+            <uib-tabset>
+                <uib-tab heading="Commentaires" >
+                    <div ng-include="'templates/project/task/comment/list.html'" ng-controller="commentController as commentCtrl"></div>
+                </uib-tab> 
+                <uib-tab heading="Consommations" >
+                    <div ng-include="'templates/project/task/allocation/list.html'" ng-controller="allocationController as allocationCtrl"></div>
+                </uib-tab> 
+                <uib-tab heading="Historique">
+                    <div ng-include="'templates/project/task/history/list.html'" ng-controller="historyController as historyCtrl"></div>
+                </uib-tab> 
+            </uib-tabset>
         </div>
     </div>
 </div>
