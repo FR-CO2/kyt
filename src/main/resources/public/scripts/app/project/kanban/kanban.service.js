@@ -7,7 +7,7 @@
 (function () {
     define(["angular"], function (angular) {
 
-        var kanbanService = function ($q, taskService) {
+        var kanbanService = function ($q) {
 
             var fetchKanbanTask = function (tasks) {
                 angular.forEach(tasks, function (task) {
@@ -56,7 +56,7 @@
                 }
             };
         };
-        kanbanService.$inject = ["$q", "taskService"];
+        kanbanService.$inject = ["$q"];
         return kanbanService;
     });
 })();

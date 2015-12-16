@@ -1,8 +1,8 @@
 (function () {
-    define(['angular', "project/task/task.module", "project/kanban/kanban.service",
+    define(['angular', "project/kanban/kanban.service",
         "project/kanban/kanban.controller"],
-            function (angular, taskModule, kanbanService, kanbanController) {
-                return angular.module('kanban.project.kanban', [taskModule.name])
+            function (angular, kanbanService, kanbanController) {
+                return angular.module('kanban.project.kanban', [])
                         .controller("kanbanController", kanbanController)
                         .service("kanbanService", kanbanService);
             });
