@@ -4,9 +4,9 @@
             var vm = this;
             vm.task = task;
             vm.categories = project.resource("category").query();
-            vm.states = project.resource("states").query();
-            vm.swimlanes = project.resource("swimlanes").query();
-            vm.members = project.resource("members").get();
+            vm.states = project.resource("state").query();
+            vm.swimlanes = project.resource("swimlane").query();
+            vm.members = project.resource("member").get();
             vm.submit = function() {
                 task.resource("self").save(vm.task);
             };

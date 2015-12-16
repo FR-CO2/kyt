@@ -20,7 +20,7 @@
             <tr ng-repeat="swimlane in kanbanCtrl.swimlanes">
                 <td class="kanban__column kanban__column--title column">{{swimlane.name}}</td>
                 <td class="kanban__column column" ng-repeat="state in swimlane.states">
-                    <ul class="list-unstyled" as-sortable="kanbanCtrl.kanbanSortOptions" data-rowindex="{{swimlane.id}}" data-columnindex="{{state.id}}" ng-model="kanbanCtrl.updatedTask">
+                    <ul class="list-unstyled" as-sortable="kanbanCtrl.kanbanSortOptions" data-rowindex="{{swimlane.id}}" data-columnindex="{{state.id}}" ng-model="state.tasks">
                         <li ng-repeat="task in state.tasks" as-sortable-item>
                             <div ng-include="'/templates/project/kanban/kanban-card.html'" as-sortable-item-handle></div>
                         </li>

@@ -22,6 +22,16 @@
                 });
                 modalInstance.result.then(loadKanban);
             };
+            vm.kanbanSortOptions = {
+                itemMoved: function (event) {
+                    var task = event.source.itemScope.modelValue;
+                    task.swimlaneId = event.dest.sortableScope.element.attr("data-rowindex");
+                    task.stateId = event.dest.sortableScope.element.attr("data-columnindex");
+                    task.resource("self").save(null, task, function() {
+                        vm.states = project.resource("state").query({"order": "position"});
+                    });
+                }
+            };
         };
         kanbanController.$inject = ["$modal", "project", "kanbanService"];
         return kanbanController;

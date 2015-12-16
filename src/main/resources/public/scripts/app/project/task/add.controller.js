@@ -1,16 +1,16 @@
 (function () {
     define([], function () {
-        var addController = function ($modalInstance, project, taskService) {
+        var addController = function ($modalInstance, project) {
             var vm = this;
             vm.categories = project.resource("category").query();
-            vm.members = project.resource("members").get();
+            vm.members = project.resource("member").get();
             vm.submit = function () {
-                taskService.save({"projectId": project.id}, vm.task, function () {
+                project.resource("task","create").save(null, vm.task, function () {
                     $modalInstance.close();
                 });
             };
         };
-        addController.$inject = ["$modalInstance", "project", "taskService"];
+        addController.$inject = ["$modalInstance", "project"];
         return addController;
     });
 })();

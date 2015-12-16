@@ -33,6 +33,9 @@ require.config({
         "jquery": { 
             "exports": "$" 
         },
+        ngSortable: {
+            deps: ["angular"]
+        },
         ngStorage: {
             deps: ["angular"]
         },
