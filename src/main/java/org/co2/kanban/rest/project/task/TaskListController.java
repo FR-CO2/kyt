@@ -62,22 +62,22 @@ public class TaskListController {
         return pagedAssembler.toResource(repository.findByProject(project, pageable), assembler);
     }
 
-    @RequestMapping(method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(params = {"state", "swimlane"}, method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public Iterable<TaskResource> list(@PathVariable("projectId") Long projectId,
-            @RequestParam(name="state", required = false) Long stateId,
-            @RequestParam(name="swimlane", required = false) Long swimlaneId) {
+            @RequestParam(name="state") Long stateId,
+            @RequestParam(name="swimlane") Long swimlaneId) {
         Iterable<TaskResource> tasks;
         Project project = projectRepository.findOne(projectId);
         State state = stateRepository.findOne(stateId);
-        if (swimlaneId == null) {
-            tasks = assembler.toResources(repository.findByProjectAndState(project, state));
+        if (swimlaneId == -1) {
+            tasks = assembler.toResources(repository.findByProjectAndStateAndSwimlaneIsNull(project, state));
         } else {
             Swimlane swimlane = swimlaneRepository.findOne(swimlaneId);
             tasks = assembler.toResources(repository.findByProjectAndStateAndSwimlane(project, state, swimlane));
         }
         return tasks;
     }
-
+    
     @RequestMapping(method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("@projectAccessExpression.hasContributorAccess(#projectId, principal.username)")
     public TaskResource create(@PathVariable("projectId") Long projectId, @RequestBody Task task) {

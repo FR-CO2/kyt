@@ -50,7 +50,7 @@
                                 tasks.push(swimlane);
                                 swimlane.states = retrieveTaskBySwimlane(project, states, swimlane.id);
                             });
-                            var noswimlane = {states: states = retrieveTaskBySwimlane(project, states, null)};
+                            var noswimlane = {states: states = retrieveTaskBySwimlane(project, states, -1)};
                             tasks.push(noswimlane);
                         });
                     });

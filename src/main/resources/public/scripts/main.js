@@ -8,7 +8,7 @@
 require.config({
     paths: {
         angular: '../../webjars/angularjs/1.4.8/angular',
-        bootstrap: '../../webjars/bootstrap/3.1.1/js/bootstrap',
+        bootstrap: '../../webjars/bootstrap/3.3.6/js/bootstrap',
         jquery: '../../webjars/jquery/2.1.4/jquery',
         ngSortable: '../../webjars/ng-sortable/1.1.9/ng-sortable',
         ngStorage: '../../webjars/ngStorage/0.3.0/ngStorage',
