@@ -14,7 +14,9 @@ import org.springframework.data.repository.PagingAndSortingRepository;
  *
  * @author ben
  */
-public interface ProjectRepository extends PagingAndSortingRepository<Project, Long>{
-    
+public interface ProjectRepository extends PagingAndSortingRepository<Project, Long> {
+
     Page<Project> findByMembersUser(ApplicationUser user, Pageable p);
+
+    Iterable<Project> findByMembersUser(ApplicationUser user);
 }

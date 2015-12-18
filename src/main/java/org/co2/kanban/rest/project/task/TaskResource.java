@@ -5,7 +5,6 @@
  */
 package org.co2.kanban.rest.project.task;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import java.sql.Timestamp;
 import org.co2.kanban.repository.task.Task;
 import org.co2.kanban.rest.IdentifiableResourceSupport;

@@ -5,7 +5,7 @@
             vm.categories = project.resource("category").query();
             vm.members = project.resource("member").get();
             vm.submit = function () {
-                project.resource("task","create").save(null, vm.task, function () {
+                project.resource("task").save(null, vm.task, function () {
                     $modalInstance.close();
                 });
             };

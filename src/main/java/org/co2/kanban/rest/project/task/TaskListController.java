@@ -14,6 +14,7 @@ import org.co2.kanban.repository.state.StateRepository;
 import org.co2.kanban.repository.swimlane.Swimlane;
 import org.co2.kanban.repository.swimlane.SwimlaneRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedResources;
@@ -52,10 +53,13 @@ public class TaskListController {
     @Autowired
     private TaskAssembler assembler;
 
-    @RequestMapping(value = "/paged", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public PagedResources<TaskResource> page(@PathVariable("projectId") Long projectId, Pageable page) {
+    @RequestMapping(params = {"page", "size"}, method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    public PagedResources<TaskResource> page(@PathVariable("projectId") Long projectId,
+            @RequestParam(name="page") Integer page,
+            @RequestParam(name="size", required = false) Integer size) {
         Project project = projectRepository.findOne(projectId);
-        return pagedAssembler.toResource(repository.findByProject(project, page), assembler);
+        Pageable pageable = new PageRequest(page, size);
+        return pagedAssembler.toResource(repository.findByProject(project, pageable), assembler);
     }
 
     @RequestMapping(method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)

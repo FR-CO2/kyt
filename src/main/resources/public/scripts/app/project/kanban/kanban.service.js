@@ -30,7 +30,7 @@
                 var i = 0;
                 angular.forEach(states, function (state) {
                     result[i] = {id: state.id};
-                    result[i].tasks = project.resource("task", "kanban").query(
+                    result[i].tasks = project.resource("task").query(
                             {"swimlane": swimlaneId, "state": state.id},
                     fetchKanbanTask);
                     i++;
