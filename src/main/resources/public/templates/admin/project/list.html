@@ -4,7 +4,7 @@
             <div class="panel-heading">
                     <h2 class="panel-heading-title">Liste des projets</h2>
                     <div class="panel-heading-action">
-                        <button class="btn btn-info" ng-click="projectCtrl.add()"><span class="glyphicon glyphicon-plus-sign"></span>Ajouter</button>
+                        <button class="btn btn-info" ng-click="projectListAdminCtrl.add()"><span class="glyphicon glyphicon-plus-sign"></span>Ajouter</button>
                     </div>
             </div>
             <div class="panel-body">
@@ -17,11 +17,11 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="project in projectCtrl.projects.projects" >
-                            <td ui-sref="app.project.kanban({id: project.id })">
+                        <tr ng-repeat="project in projectListAdminCtrl.projects._embedded.projectResourceList" >
+                            <td>
                                 {{project.name}}
                             </td>
-                            <td class="text-justify" ui-sref="app.project.kanban({id: project.id })">
+                            <td class="text-justify">
                                 <ul class="list-inline">
                                     <li ng-repeat="state in project.states" ng-if="!state.kanbanHide">
                                         {{state.name}} <span class="badge alert-info">{{state.taskCount}}</span>
@@ -29,10 +29,10 @@
                                 </ul>
                             </td>
                             <td>
-                                <a ng-click="projectCtrl.edit(project.id)">
+                                <a ng-click="projectListAdminCtrl.edit(project.id)">
                                     <span class="glyphicon glyphicon-edit"></span>
                                 </a>
-                                <a ng-click="projectCtrl.delete(project.id)">
+                                <a ng-click="projectListAdminCtrl.delete(project.id)">
                                     <span class="glyphicon glyphicon-trash"></span>
                                 </a>
                             </td>
@@ -43,7 +43,7 @@
                             <td colspan="3">
                                 <div class="col-md-6 col-md-offset-3" >
                                     <div class="center-block text-center">
-                                        <pagination total-items="projectCtrl.projects.page.nbElt" ng-model="projectCtrl.projects.page.number" items-per-page="projectCtrl.projects.page.size" max-size="5" class="pagination-sm" boundary-links="true" rotate="false" num-pages="projectCtrl.projects.page.totalPages" ng-change="projectCtrl.pageChanged()"></pagination>
+                                        <uib-pagination total-items="projectCtrl.projects.page.nbElt" ng-model="projectCtrl.projects.page.number" items-per-page="projectCtrl.projects.page.size" max-size="5" class="pagination-sm" boundary-links="true" rotate="false" num-pages="projectCtrl.projects.page.totalPages" ng-change="projectCtrl.pageChanged()"></uib-pagination>
                                     </div>
                                 </div>
                                 <div class="col-md-3 form-inline">
