@@ -2,16 +2,13 @@
     <h2 class="heading__title pull-left">Projet : {{projectCtrl.project.name}}</h2>
     <div class="heading__action pull-right">
         <button class="btn btn-info btn-sm" ui-sref="app.project.kanban({projectId: projectCtrl.project.id })"><span class="glyphicon glyphicon-equalizer"></span> Kanban</button>
-        <button class="btn btn-info btn-sm" ng-click="taskCtrl.addTask()"><span class="glyphicon glyphicon-plus-sign"></span> Nouvelle tâche</button>
+        <button class="btn btn-info btn-sm" ng-click="tasksCtrl.addTask()"><span class="glyphicon glyphicon-plus-sign"></span> Nouvelle tâche</button>
     </div>
 </header>
 <div class="col-md-12">
     <div class="panel">
         <div class="panel-heading">
             <h2 class="panel-heading-title">Liste des tâches</h2>
-            <div class="panel-heading-action">
-                <button ng-if="projectCtrl.hasEditRights" class="btn btn-info btn-sm" ng-click="taskCtrl.add()"><span class="glyphicon glyphicon-plus-sign"></span>Nouvelle tâche</button>
-            </div>
         </div>
         <div class="panel-body">
             <table class="table table-hover">
@@ -75,7 +72,7 @@
                             <a ui-sref="app.project.task({id: projectCtrl.project.id, taskId: task.id })" title="edit">
                                 <span class="glyphicon glyphicon-edit"></span>
                             </a>
-                            <a ng-click="taskCtrl.delete(task.id)" title="delete">
+                            <a ng-click="tasksCtrl.delete(task)" title="delete">
                                 <span class="glyphicon glyphicon-trash"></span>
                             </a>
                         </td>
