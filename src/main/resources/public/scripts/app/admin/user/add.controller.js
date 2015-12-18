@@ -1,9 +1,15 @@
 (function () {
     define([], function () {
-        var addController = function () {
+        var addController = function ($uibModalInstance, userRoleService, userService) {
             var vm = this;
+            vm.roles = userRoleService.query();
+            vm.submit = function () {
+                userService.save(vm.user, function () {
+                    $uibModalInstance.close();
+                });
+            };
         };
-        addController.$inject = [];
+        addController.$inject = ["$uibModalInstance", "userRoleService", "userService"];
         return addController;
     });
 })();

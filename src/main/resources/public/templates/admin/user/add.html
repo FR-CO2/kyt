@@ -3,20 +3,20 @@
         <span class="glyphicon glyphicon-plus-sign"></span> Nouveau utilisateur
     </div>
     <div class="panel-body">
-        <alert type="danger" ng-if="add.form.error">{{add.form.error}}</alert>
-        <form id="login" role="form" ng-submit="add.submit()">
+        <alert type="danger" ng-if="addUserAdminCtrl.form.error">{{addUserAdminCtrl.form.error}}</alert>
+        <form id="login" role="form" ng-submit="addUserAdminCtrl.submit()">
             <div class="form-group">
-                <input type="text" required ng-model="add.user.username" class="form-control" name="Nom" placeholder="Nom"/>
+                <input type="text" required ng-model="addUserAdminCtrl.user.username" class="form-control" name="Nom" placeholder="Nom"/>
             </div>
             <div class="form-group">
-                <input type="text" required ng-model="add.user.password" class="form-control" name="Password" placeholder="Password"/>
+                <input type="text" required ng-model="addUserAdminCtrl.user.password" class="form-control" name="Password" placeholder="Password"/>
             </div>
             <div class="form-group">
-                <input type="email" ng-model="add.user.email" class="form-control" name="Email" placeholder="Email"/>
+                <input type="email" ng-model="addUserAdminCtrl.user.email" class="form-control" name="Email" placeholder="Email"/>
             </div>
             <div class="form-group">
-                <select ng-model="add.user.applicationRole" required class="form-control" name="role" placeholder="Role">
-                    <option value="{{role}}" ng-repeat="role in add.roles">{{role}}</option>
+                <select ng-model="addUserAdminCtrl.user.applicationRole" required class="form-control" name="role" placeholder="Role">
+                    <option value="{{role}}" ng-repeat="role in addUserAdminCtrl.roles">{{role}}</option>
                 </select>
             </div>
             <div>
