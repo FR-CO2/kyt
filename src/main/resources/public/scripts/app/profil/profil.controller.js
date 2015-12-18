@@ -1,7 +1,13 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-
+(function () {
+    define([], function () {
+        var profilController = function (currentuser) {
+            var vm = this;
+            vm.profil = currentuser;
+            if (currentuser._links.member) {
+                vm.profil.members = currentuser.resource("member").query();
+            }
+        };
+        profilController.$inject = ["currentuser"];
+        return profilController;
+    });
+})();
