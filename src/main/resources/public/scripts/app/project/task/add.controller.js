@@ -1,16 +1,16 @@
 (function () {
     define([], function () {
-        var addController = function ($uibModalInstance, project) {
+        var addController = function ($modalInstance, project) {
             var vm = this;
             vm.categories = project.resource("category").query();
             vm.members = project.resource("member").get();
             vm.submit = function () {
                 project.resource("task","create").save(null, vm.task, function () {
-                    $uibModalInstance.close();
+                    $modalInstance.close();
                 });
             };
         };
-        addController.$inject = ["$uibModalInstance", "project"];
+        addController.$inject = ["$modalInstance", "project"];
         return addController;
     });
 })();
