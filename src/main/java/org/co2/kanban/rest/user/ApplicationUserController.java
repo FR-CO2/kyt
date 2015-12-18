@@ -113,20 +113,8 @@ public class ApplicationUserController {
     @RequestMapping(value = "/{id}/task", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public PagedResources<TaskResource> listTask(@PathVariable("id") Long userId, Pageable page) {
         ApplicationUser appUser = repository.findOne(userId);
-        Page<Task> tasks = taskRepositoy.findByStateCloseStateFalseAndAssigneeUserOrBackupUser(appUser, appUser, page);
+        Page<Task> tasks = taskRepositoy.findByAssigneeUser(appUser, page);
         return pagedTaskAssembler.toResource(tasks, taskAssembler);
-    }
-
-    @RequestMapping(value = "/{id}/project", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public PagedResources<ProjectResource> listProject(@PathVariable("id") Long userId, Pageable page) {
-        ApplicationUser appUser = repository.findOne(userId);
-        Page<Project> projects;
-        if (appUser.getApplicationRole().equals(ApplicationUserRole.ADMIN)) {
-            projects = projectRepositoy.findAll(page);
-        } else {
-            projects = projectRepositoy.findByMembersUser(appUser, page);
-        }
-        return pagedProjectAssembler.toResource(projects, projectAssembler);
     }
 
 }

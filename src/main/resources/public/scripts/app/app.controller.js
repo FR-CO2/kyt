@@ -4,10 +4,7 @@
             var vm = this;
             vm.currentuser = currentuser;
             currentuser.$promise.then(function () {
-                currentuser.resource("project").get(
-                        function (data) {
-                            vm.currentuser.projects = data._embedded.projectResourceList;
-                        });
+                currentuser.projects = currentuser.resource("project").query();
             });
             vm.logout = function () {
                 delete $sessionStorage.oauth;

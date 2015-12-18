@@ -1,10 +1,10 @@
 (function () {
     define(["angular", "app.config", "login/login.module", "app.controller",
-        "dashboard/dashboard.module", "project/project.module",
+        "dashboard/dashboard.module", "project/project.module", "admin/admin.module",
         "uiRouter", "ngStorage", "ngAuth", "xeditable", "ngResource", "ngSortable",
         "hateoas", "uiBootstrap", "uiBootstrapTpl", "ngSanitize", "bootstrap"],
             function (angular, appConfig, loginModule, appController,
-                    dashboardModule, projectModule) {
+                    dashboardModule, projectModule, adminModule) {
                 function runApp($state) {
                     $state.go("login");
                 }
@@ -13,7 +13,8 @@
                         ["ui.router", "ngStorage", "ngSanitize", "ui.sortable",
                             "http-auth-interceptor", "xeditable", "ngResource",
                             "hateoas", "ui.bootstrap", "ui.bootstrap.tpls",
-                            loginModule.name, dashboardModule.name, projectModule.name])
+                            loginModule.name, dashboardModule.name,
+                            projectModule.name, adminModule.name])
                         .config(appConfig)
                         .run(runApp)
                         .controller("appController", appController);

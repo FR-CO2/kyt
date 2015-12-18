@@ -9,6 +9,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 import org.co2.kanban.repository.user.ApplicationUser;
+import org.co2.kanban.rest.project.ProjectController;
 import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
 import org.springframework.stereotype.Component;
 
@@ -27,7 +28,7 @@ public class UserAssembler extends ResourceAssemblerSupport<ApplicationUser, Use
     public UserResource toResource(ApplicationUser user) {
         UserResource resource = new UserResource(user);
         resource.add(linkTo(methodOn(ApplicationUserController.class).memberOf(user.getId())).withRel("members"));
-        resource.add(linkTo(methodOn(ApplicationUserController.class).listProject(user.getId(), null)).withRel("project"));
+        resource.add(linkTo(ProjectController.class).withRel("project"));
         resource.add(linkTo(methodOn(ApplicationUserController.class).listTask(user.getId(), null)).withRel("task"));
         return resource;
     }

@@ -36,7 +36,7 @@ public class TimesheetController {
     public Iterable<Task> taskList(@AuthenticationPrincipal Principal user, @PathVariable("day") Long day) {
         ApplicationUser appUser = getCurrentUser(user);
         Date taskAvailableDate = new Date(day);
-        return taskRepository.findByAssigneeUserAndPlannedEndingAfterAndPlannedStartBefore(appUser, taskAvailableDate, taskAvailableDate);
+        return taskRepository.findByAssigneeUser(appUser,null);
     }
 
     private ApplicationUser getCurrentUser(Principal user) {

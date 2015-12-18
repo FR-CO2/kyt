@@ -8,12 +8,10 @@ package org.co2.kanban.repository.task;
 import org.co2.kanban.repository.project.Project;
 import org.co2.kanban.repository.user.ApplicationUser;
 import java.util.Date;
-import org.co2.kanban.repository.category.Category;
 import org.co2.kanban.repository.state.State;
 import org.co2.kanban.repository.swimlane.Swimlane;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 /**
@@ -34,9 +32,6 @@ public interface TaskRepository extends PagingAndSortingRepository<Task, Long> {
 
     Page<Task> findByProject(Project project, Pageable p);
 
-    Page<Task> findByStateCloseStateFalseAndAssigneeUserOrBackupUser(ApplicationUser user, ApplicationUser backup, Pageable p);
+    Page<Task> findByAssigneeUser(ApplicationUser user, Pageable p);
 
-    Iterable<Task> findByAssigneeUserAndStateCloseStateFalseAndPlannedEndingBetweenOrPlannedStartBetween(ApplicationUser user, Date endAfter, Date endBefore, Date startAfter, Date startBefore);
-    
-    Iterable<Task> findByAssigneeUserAndPlannedEndingAfterAndPlannedStartBefore(ApplicationUser user, Date endAfter, Date startBefore);
 }
