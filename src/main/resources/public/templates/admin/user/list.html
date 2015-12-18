@@ -4,14 +4,7 @@
             <div class="panel-heading">
                 <h2 class="panel-heading-title">Liste des utilisateurs</h2>
                 <div class="panel-heading-action">
-                    <button class="btn btn-info btn-sm"  ng-click="userCtrl.add()"><span class="glyphicon glyphicon-plus-sign"></span>Ajouter</button>
-                    <button class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                        Import/Export <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu pull-right">
-                        <li><a ng-click="userCtrl.import()"><span class="glyphicon glyphicon-import"></span>Import</a></li>
-                        <li><a ng-click="userCtrl.export()" ><span class="glyphicon glyphicon-export"></span>Export</a></li>
-                    </ul>
+                    <button class="btn btn-info btn-sm"  ng-click="usersCtrl.add()"><span class="glyphicon glyphicon-plus-sign"></span>Ajouter</button>
                 </div>
             </div>
             <div class="panel-body">
@@ -25,7 +18,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="user in userCtrl.users.users">
+                        <tr ng-repeat="user in usersCtrl.users._embedded.userResourceList">
                             <td>
                                 {{user.username}}
                             </td>
@@ -34,7 +27,7 @@
                             </td>
                             <td>{{user.applicationRole}}</td>
                             <td>
-                                <a ng-click="userCtrl.delete(user.id)" ng-if="user.id !== $session.user.id">
+                                <a ng-click="usersCtrl.delete(user)" ng-if="user.id !== appCtrl.currentuser.id">
                                     <span class="glyphicon glyphicon-trash"></span>
                                 </a>
                             </td>
@@ -46,7 +39,7 @@
                                 <div class="row">
                                     <div class="col-md-6 col-md-offset-3" >
                                         <div class="center-block text-center">
-                                            <pagination total-items="userCtrl.users.page.totalElements" ng-model="userCtrl.users.page.numPage" items-per-page="userCtrl.users.page.size" max-size="5" class="pagination-sm" boundary-links="true" rotate="false" num-pages="userCtrl.users.page.totalPages" ng-click="userCtrl.pageChanged()"></pagination>
+                                            <uib-pagination total-items="userCtrl.users.page.totalElements" ng-model="userCtrl.users.page.numPage" items-per-page="userCtrl.users.page.size" max-size="5" class="pagination-sm" boundary-links="true" rotate="false" num-pages="userCtrl.users.page.totalPages" ng-click="userCtrl.pageChanged()"></uib-pagination>
                                         </div>
                                     </div>
                                     <div class="col-md-3 form-inline"> 
