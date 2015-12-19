@@ -3,11 +3,11 @@
         <div class="panel-heading">
             <h2 class="panel-heading-title">Liste des états</h2>
             <div class="panel-heading-action">
-                <button class="btn btn-info btn-sm" ng-click="configStateCtrl.add()"><span class="glyphicon glyphicon-plus-sign"></span>Nouvel état</button>
+                <button class="btn btn-info btn-sm" ng-click="listStateAdminController.add()"><span class="glyphicon glyphicon-plus-sign"></span>Nouvel état</button>
             </div>
         </div>
         <div class="panel-body">
-            <div class="col-md-12" as-sortable="configStateCtrl.stateListSortOptions" ng-model="configStateCtrl.states">
+            <div class="col-md-12" as-sortable="configStateCtrl.stateListSortOptions" ng-model="projectEditCtrl.project.states">
                 <div class="row">
                     <div class="col-md-10">
                         <div class="row">
@@ -17,7 +17,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row" ng-repeat="state in configStateCtrl.states" as-sortable-item>
+                <div class="row" ng-repeat="state in projectEditCtrl.project.states" as-sortable-item>
                     <div class="col-md-10">
                         <div class="" as-sortable-item-handle>
                             <div class="row">
@@ -38,7 +38,7 @@
                         </div>
                     </div>
                     <div class="col-md-2">
-                        <a ng-click="configStateCtrl.delete(state.id)">
+                        <a ng-click="listStateAdminController.delete(state)">
                             <span class="glyphicon glyphicon-trash"></span>
                         </a>
                     </div>
