@@ -29,10 +29,10 @@
                                 </ul>
                             </td>
                             <td>
-                                <a ng-click="projectListAdminCtrl.edit(project.id)">
+                                <a ui-sref="app.project.edit({projectId: project.id})">
                                     <span class="glyphicon glyphicon-edit"></span>
                                 </a>
-                                <a ng-click="projectListAdminCtrl.delete(project.id)">
+                                <a ng-click="projectListAdminCtrl.delete(project)">
                                     <span class="glyphicon glyphicon-trash"></span>
                                 </a>
                             </td>

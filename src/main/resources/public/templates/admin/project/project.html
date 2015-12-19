@@ -1,0 +1,34 @@
+<div class="row" id="task">
+    <alert type="danger" ng-if="projectEditCtrl.form.error">{{projectEditCtrl.form.error}}</alert>
+    <h2>
+        Projet {{projectEditCtrl.project.name}}
+    </h2>
+    <form id="editproject" role="form" ng-submit="projectEditCtrl.submit()">
+        <div class="form-group col-md-3">
+            <label for="estimatedLoad">Nom projet</label>
+            <input type="text" id="estimatedLoad" class="form-control" ng-model="projectEditCtrl.project.name"/>
+        </div>
+        <div class="col-md-offset-9 col-md-3 inline">
+            <button type="button" onClick="history.back()" class="btn btn-info">Annuler</button>
+            <button type="submit" class="btn btn-info">Enregistrer</button>
+        </div>
+    </form>
+    <div class="panel">
+        <div class="panel-body">
+            <uib-tabset>
+                <uib-tab heading="Catégorie" >
+                    <div ng-include="'templates/admin/project/category/list.html'" ng-controller="listCategoryAdminController as categoryListCtrl"></div>
+                </uib-tab> 
+                <uib-tab heading="Etat" >
+                    <div ng-include="'templates/admin/project/state/list.html'" ng-controller="listStateAdminController as stateListCtrl"></div>
+                </uib-tab> 
+                <uib-tab heading="Couloir">
+                    <div ng-include="'templates/admin/project/swimlane/list.html'" ng-controller="listSwimlaneAdminController as swimlaneListCtrl"></div>
+                </uib-tab> 
+                <uib-tab heading="Membre">
+                    <div ng-include="'templates/admin/project/member/list.html'" ng-controller="listMemberAdminController as memberListCtrl"></div>
+                </uib-tab> 
+            </uib-tabset>
+        </div>
+    </div>
+</div>
