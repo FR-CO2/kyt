@@ -3,10 +3,10 @@
         <span class="glyphicon glyphicon-plus-sign"></span> Nouveau projet
     </div>
     <div class="panel-body">
-        <alert type="danger" ng-if="add.form.error">{{add.form.error}}</alert>
-        <form id="login" role="form" ng-submit="add.submit()">
+        <alert type="danger" ng-if="addProjectCtrl.form.error">{{addProjectCtrl.form.error}}</alert>
+        <form id="login" role="form" ng-submit="addProjectCtrl.submit()">
             <div class="form-group">
-                <input type="text" required ng-model="add.project.name" class="form-control" name="projectName" placeholder="Nom du projet"/>
+                <input type="text" required ng-model="addProjectCtrl.project.name" class="form-control" name="projectName" placeholder="Nom du projet"/>
             </div>
             <div>
                 <button type="submit"  class="btn btn-info center-block">valider</button>
