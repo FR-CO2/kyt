@@ -22,7 +22,6 @@ import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedResources;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -86,12 +85,12 @@ public class ProjectController {
         return new ResponseEntity<>(assembler.toResource(result), HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "{projectId}", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{projectId}", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ProjectResource> get(@PathVariable("projectId") Long projectId) {
         return new ResponseEntity<>(assembler.toResource(repository.findOne(projectId)), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "{projectId}", method = RequestMethod.DELETE, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{projectId}", method = RequestMethod.DELETE, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity delete(@PathVariable("projectId") Long projectId) {
         repository.delete(projectId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

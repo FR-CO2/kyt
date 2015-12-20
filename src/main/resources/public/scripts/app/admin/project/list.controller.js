@@ -34,6 +34,11 @@
                     vm.projects = loadPage();
                 });
             };
+            vm.delete = function(project) {
+                new HateoasInterface(project).resource("self").delete(function() {
+                    vm.projects = loadPage();
+                });
+            };
         };
         listController.$inject = ["$uibModal", "projectService", "HateoasInterface"];
         return listController;

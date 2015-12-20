@@ -35,6 +35,7 @@ public class ProjectAssembler extends ResourceAssemblerSupport<Project, ProjectR
         resource.add(linkTo(methodOn(SwimlaneController.class).projectList(project.getId())).withRel("swimlane"));
         resource.add(linkTo(methodOn(CategoryController.class).list(project.getId())).withRel("category"));
         resource.add(linkTo(TaskListController.class, project.getId()).withRel("task"));
+        resource.add(linkTo(methodOn(ProjectController.class).get(project.getId())).withSelfRel());
         return resource;
     }
 
