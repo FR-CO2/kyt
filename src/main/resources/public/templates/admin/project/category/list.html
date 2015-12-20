@@ -3,7 +3,7 @@
         <div class="panel-heading">
             <h2 class="panel-heading-title">Liste des catégories</h2>
             <div class="panel-heading-action">
-                <button class="btn btn-info btn-sm" ng-click="listCategoryAdminController.add()"><span class="glyphicon glyphicon-plus-sign"></span>Nouvelle catégorie</button>
+                <button class="btn btn-info btn-sm" ng-click="categoryListCtrl.add()"><span class="glyphicon glyphicon-plus-sign"></span>Nouvelle catégorie</button>
             </div>
         </div>
         <div class="panel-body">
@@ -21,11 +21,9 @@
                             {{category.name}}
                         </td>
                         <td>
-                            <a href="#" editable-color="category.bgcolor">
-                                <span style="background-color: {{category.bgcolor}}; border: 1px solid; padding-top:4px; padding-left:15px">&nbsp;</span>
-                            </a>
+                            <span style="background-color: {{category.bgcolor}}; border: 1px solid; padding-top:4px; padding-left:15px">&nbsp;</span>
                         <td>
-                            <a ng-click="configCategoryCtrl.delete(category)">
+                            <a ng-click="categoryListCtrl.delete(category)">
                                 <span class="glyphicon glyphicon-trash"></span>
                             </a>
                         </td>
