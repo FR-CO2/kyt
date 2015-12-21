@@ -5,7 +5,6 @@
  */
 package org.co2.kanban.rest.user.memberof;
 
-import static com.sun.javafx.scene.CameraHelper.project;
 import org.co2.kanban.repository.member.Member;
 import org.co2.kanban.rest.project.ProjectController;
 import org.co2.kanban.rest.project.member.MemberController;
