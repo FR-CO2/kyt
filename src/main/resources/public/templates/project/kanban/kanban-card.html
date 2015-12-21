@@ -8,12 +8,12 @@
         </header>
         <div class="kanban-card__action">
             <span ng-if="projectCtrl.rights.hasEditRights" >
-                <a href="#" editable-select="task.assignee" onshow="kanbanCtrl.loadMember()" onaftersave="kanbanCtrl.saveTask(task)" e-ng-options="member as member.user.username for member in kanbanCtrl.members" title="Assigné à">
+                <a href="#" editable-select="task.assignee" onshow="kanbanCtrl.loadMember()" onaftersave="kanbanCtrl.saveTask(task)" e-ng-options="member.username for member in kanbanCtrl.members" title="Assigné à">
                     <span class="glyphicon glyphicon-user"></span>
                     <span ng-if="!task.assignee">
                         -
                     </span>
-                    {{task.assignee.user.username}}
+                    {{task.assignee.username}}
                 </a>
             </span>
             <span ng-if="!projectCtrl.rights.hasEditRights" >
@@ -21,7 +21,7 @@
                 <span ng-if="!task.assignee">
                     -
                 </span>
-                {{task.assignee.user.username}}
+                {{task.assignee.username}}
             </span>
             <span class="badge pull-right" ng-if="projectCtrl.rights.hasEditRights">
                 <a href="#" editable-select="task.category" onshow="kanbanCtrl.loadCategory()" onaftersave="kanbanCtrl.saveTask(task)" e-ng-options="category as category.name for category in kanbanCtrl.categories">

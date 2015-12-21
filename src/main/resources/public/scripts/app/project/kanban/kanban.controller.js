@@ -38,6 +38,12 @@
                     });
                 }
             };
+            vm.loadMember = function(){
+                vm.members = project.resource("member").query();
+            };
+            vm.saveTask = function(task){
+                task.resource("self").save(null, task, null);
+            };
         };
         kanbanController.$inject = ["$uibModal", "project", "kanbanService"];
         return kanbanController;
