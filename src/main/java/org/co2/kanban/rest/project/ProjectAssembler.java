@@ -5,6 +5,7 @@
  */
 package org.co2.kanban.rest.project;
 
+import org.co2.kanban.repository.member.ProjectRole;
 import org.co2.kanban.repository.project.Project;
 import org.co2.kanban.rest.project.category.CategoryController;
 import org.co2.kanban.rest.project.state.StateController;
@@ -36,6 +37,7 @@ public class ProjectAssembler extends ResourceAssemblerSupport<Project, ProjectR
         resource.add(linkTo(methodOn(CategoryController.class).list(project.getId())).withRel("category"));
         resource.add(linkTo(TaskListController.class, project.getId()).withRel("task"));
         resource.add(linkTo(methodOn(ProjectController.class).get(project.getId())).withSelfRel());
+        resource.add(linkTo(methodOn(ProjectController.class).roles(project.getId())).withRel("roles"));
         return resource;
     }
 

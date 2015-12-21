@@ -8,6 +8,7 @@ package org.co2.kanban.rest.project;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import org.co2.kanban.repository.member.ProjectRole;
 import org.co2.kanban.repository.project.Project;
 import org.co2.kanban.repository.project.ProjectRepository;
 import org.co2.kanban.repository.state.State;
@@ -96,6 +97,11 @@ public class ProjectController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @RequestMapping(value = "/{projectId}/roles", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ProjectRole[]> roles(@PathVariable("projectId") Long projectId) {
+        return new ResponseEntity<>(ProjectRole.values(), HttpStatus.OK);
+    }
+    
     private List<State> getDefaults(Project project) {
         State backlog = new State();
         backlog.setName("Backlog");

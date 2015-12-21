@@ -3,7 +3,7 @@
         <div class="panel-heading">
             <h2 class="panel-heading-title">Liste des membres</h2>
             <div class="panel-heading-action">
-                <button class="btn btn-info btn-sm" ng-click="configMemberCtrl.add()"><span class="glyphicon glyphicon-plus-sign"></span>Nouveau membre</button>
+                <button class="btn btn-info btn-sm" ng-click="memberListCtrl.add()"><span class="glyphicon glyphicon-plus-sign"></span>Nouveau membre</button>
             </div>
         </div>
         <div class="panel-body">
@@ -24,7 +24,7 @@
                             {{member.projectRole}}
                         </td>
                         <td>
-                            <a ng-click="configMemberCtrl.delete(member)">
+                            <a ng-click="memberListCtrl.delete(member)">
                                 <span class="glyphicon glyphicon-trash"></span>
                             </a>
                         </td>

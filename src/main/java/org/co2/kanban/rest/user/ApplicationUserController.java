@@ -21,6 +21,7 @@ import org.co2.kanban.rest.project.task.TaskAssembler;
 import org.co2.kanban.rest.project.task.TaskResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedResources;
@@ -35,6 +36,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -55,29 +57,28 @@ public class ApplicationUserController {
     private TaskRepository taskRepositoy;
 
     @Autowired
-    private ProjectRepository projectRepositoy;
-
-    @Autowired
     private UserAssembler userAssembler;
 
     @Autowired
     private PagedResourcesAssembler<ApplicationUser> pagedAssembler;
 
     @Autowired
-    private ProjectAssembler projectAssembler;
-
-    @Autowired
     private TaskAssembler taskAssembler;
-
-    @Autowired
-    private PagedResourcesAssembler<Project> pagedProjectAssembler;
 
     @Autowired
     private PagedResourcesAssembler<Task> pagedTaskAssembler;
 
+    @RequestMapping(params = {"page", "size"}, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public PagedResources<UserResource> page(
+            @RequestParam(name = "page") Integer page,
+            @RequestParam(name = "size", required = false) Integer size) {
+        Pageable pageable = new PageRequest(page, size);
+        return pagedAssembler.toResource(repository.findAll(pageable), userAssembler);
+    }
+
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public PagedResources<UserResource> page(Pageable p) {
-        return pagedAssembler.toResource(repository.findAll(p), userAssembler);
+    public Iterable<UserResource> list() {
+        return userAssembler.toResources(repository.findAll());
     }
 
     @RequestMapping(value = "/find/{username}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
