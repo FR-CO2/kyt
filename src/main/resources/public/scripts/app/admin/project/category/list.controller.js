@@ -8,6 +8,9 @@
                     templateUrl: "templates/admin/project/category/add.html",
                     controller: "addCategoryAdminController",
                     controllerAs: "addCategoryCtrl",
+                    resolve: {
+                        project : scope.projectEditCtrl.project
+                    },
                     size: "md"
                 });
                 modalInstance.result.then(function () {

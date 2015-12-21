@@ -54,8 +54,8 @@ public class CategoryController {
     public ResponseEntity<Category> create(@PathVariable("projectId") Long projectId, @RequestBody Category category) {
         Project project = projectRepository.findOne(projectId);
         category.setProject(project);
-        Category result = repository.save(category);
-        return new ResponseEntity<>(result, HttpStatus.CREATED);
+        repository.save(category);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "{categoryId}", method = RequestMethod.DELETE, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
@@ -69,6 +69,6 @@ public class CategoryController {
         Project project = projectRepository.findOne(projectId);
         category.setProject(project);
         Category result = repository.save(category);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>(assembler.toResource(result), HttpStatus.OK);
     }
 }

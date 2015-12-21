@@ -53,12 +53,7 @@
             <groupId>org.springframework.security.oauth</groupId>
             <artifactId>spring-security-oauth2</artifactId>
         </dependency>
-          
-        <dependency>
-            <groupId>com.fasterxml.jackson.dataformat</groupId>
-            <artifactId>jackson-dataformat-csv</artifactId>
-        </dependency>
-                                  
+                  
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
