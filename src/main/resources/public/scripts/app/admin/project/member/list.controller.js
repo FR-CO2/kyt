@@ -1,6 +1,6 @@
 (function () {
     define([], function () {
-        var listController = function ($uibModal, scope) {
+        var listController = function ($uibModal, scope, HateoasInterface) {
             var vm = this;
             vm.add = function () {
                 var modalInstance = $uibModal.open({
@@ -21,7 +21,7 @@
                 });
             };
             vm.delete = function (member) {
-                member.resource("self").delete(null, function () {
+                new HateoasInterface(member).resource("self").delete(null, function () {
                     var project = scope.projectEditCtrl.project;
                     project.members = project.resource("member").get(
                         {page : project.members.page.number,
@@ -29,7 +29,7 @@
                 });
             };
         };
-        listController.$inject = ["$uibModal", "$scope"];
+        listController.$inject = ["$uibModal", "$scope", "HateoasInterface"];
         return listController;
     });
 })();
