@@ -19,8 +19,7 @@
                 scope.$watch(getOptions, initAutocompleteWidget, true);
             }
         };
-    }
-    ;
+    };
 
 
 
