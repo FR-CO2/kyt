@@ -8,7 +8,7 @@
             vm.categories = project.resource("category").query();
             vm.states = project.resource("state").query();
             vm.swimlanes = project.resource("swimlane").query();
-            vm.members = project.resource("member").get();
+            vm.members = project.resource("member").query();
             vm.submit = function() {
                 vm.task.resource("self").save(vm.task);
             };
