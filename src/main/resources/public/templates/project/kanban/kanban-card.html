@@ -13,7 +13,7 @@
                     <span ng-if="!task.assignee">
                         -
                     </span>
-                    {{task.assignee.user.username}}
+                    {{task.assignee.username}}
                 </a>
             </span>
             <span ng-if="!projectCtrl.rights.hasEditRights" >
@@ -21,7 +21,7 @@
                 <span ng-if="!task.assignee">
                     -
                 </span>
-                {{task.assignee.user.username}}
+                {{task.assignee.username}}
             </span>
             <span class="badge pull-right" ng-if="projectCtrl.rights.hasEditRights">
                 <a href="#" editable-select="task.category" onshow="kanbanCtrl.loadCategory()" onaftersave="kanbanCtrl.saveTask(task)" e-ng-options="category as category.name for category in kanbanCtrl.categories">
