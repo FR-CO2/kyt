@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.co2.kanban.rest.project.member;
+package org.co2.kanban.rest.user.memberof;
 
 import org.co2.kanban.repository.member.Member;
 import org.co2.kanban.repository.member.ProjectRole;
@@ -13,20 +13,19 @@ import org.springframework.hateoas.ResourceSupport;
  *
  * @author ben
  */
-public class MemberResource extends ResourceSupport{
+public class MemberOfResource extends ResourceSupport {
 
-    private final Member member; 
-    
-    public MemberResource(Member member) {
+    private final Member member;
+
+    public MemberOfResource(Member member) {
         this.member = member;
     }
-    
-    public String getUsername() {
-        return this.member.getUser().getUsername();
+
+    public String getProjectName() {
+        return this.member.getProject().getName();
     }
-    
+
     public ProjectRole getProjectRole() {
         return this.member.getProjectRole();
     }
-        
 }

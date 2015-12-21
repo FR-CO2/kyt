@@ -30,7 +30,7 @@ public class ProjectAssembler extends ResourceAssemblerSupport<Project, ProjectR
     @Override
     public ProjectResource toResource(Project project) {
         ProjectResource resource = new ProjectResource(project);
-        resource.add(linkTo(methodOn(MemberController.class).list(project.getId(), null)).withRel("member"));
+        resource.add(linkTo(methodOn(MemberController.class).list(project.getId())).withRel("member"));
         resource.add(linkTo(methodOn(StateController.class).projectList(project.getId())).withRel("state"));
         resource.add(linkTo(methodOn(SwimlaneController.class).projectList(project.getId())).withRel("swimlane"));
         resource.add(linkTo(methodOn(CategoryController.class).list(project.getId())).withRel("category"));

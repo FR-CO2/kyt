@@ -10,9 +10,9 @@ import org.co2.kanban.repository.member.MemberRepository;
 import org.co2.kanban.repository.member.Member;
 import org.co2.kanban.repository.project.Project;
 import org.co2.kanban.repository.project.ProjectRepository;
-import org.co2.kanban.repository.user.ApplicationUser;
 import org.co2.kanban.repository.user.ApplicationUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedResources;
@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -41,18 +42,24 @@ public class MemberController {
     private ProjectRepository projectRepository;
 
     @Autowired
-    private ApplicationUserRepository userRepository;
-
-    @Autowired
     private MemberAssembler assembler;
 
     @Autowired
     private PagedResourcesAssembler<Member> pagedAssembler;
 
-    @RequestMapping(method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public PagedResources<MemberResource> list(@PathVariable("projectId") Long projectId, Pageable page) {
+    @RequestMapping(params = {"page", "size"}, method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    public PagedResources<MemberResource> page(@PathVariable("projectId") Long projectId,
+            @RequestParam(name = "page") Integer page,
+            @RequestParam(name = "size", required = false) Integer size) {
         Project project = projectRepository.findOne(projectId);
-        return pagedAssembler.toResource(repository.findByProject(project, page), assembler);
+        Pageable pageable = new PageRequest(page, size);
+        return pagedAssembler.toResource(repository.findByProject(project, pageable), assembler);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    public Iterable<MemberResource> list(@PathVariable("projectId") Long projectId) {
+        Project project = projectRepository.findOne(projectId);
+        return assembler.toResources(repository.findByProject(project));
     }
 
     @RequestMapping(value = "/find/{username}", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
@@ -62,17 +69,9 @@ public class MemberController {
     }
 
     @RequestMapping(method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<MemberResource> create(@PathVariable("projectId") Long projectId, @RequestBody MemberForm memberForm) {
+    public ResponseEntity<MemberResource> create(@PathVariable("projectId") Long projectId, @RequestBody Member member) {
         Project project = projectRepository.findOne(projectId);
-        ApplicationUser user = userRepository.findOne(memberForm.getApplicationUserId());
-        Member member = repository.findByProjectAndUser(project, user);
-        if (member != null) {
-            return new ResponseEntity<>(assembler.toResource(member), HttpStatus.CONFLICT);
-        }
-        member = new Member();
-        member.setProjectRole(memberForm.getProjectRole());
         member.setProject(project);
-        member.setUser(user);
         Member result = repository.save(member);
         return new ResponseEntity<>(assembler.toResource(result), HttpStatus.CREATED);
     }
