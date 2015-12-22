@@ -63,6 +63,9 @@ public class SwimlaneController {
         Project project = projectRepository.findOne(projectId);
         swimlane.setProject(project);
         Long maxPosition = repository.getProjectMaxPosition(projectId);
+        if (maxPosition == null) {
+            maxPosition = 0L;
+        }
         swimlane.setPosition(maxPosition);
         repository.save(swimlane);
         return new ResponseEntity(HttpStatus.CREATED);
