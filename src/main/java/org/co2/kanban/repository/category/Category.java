@@ -36,10 +36,10 @@ public class Category implements Serializable, Identifiable {
     
     private String color;
     
-    @ManyToOne(cascade = CascadeType.DETACH)
+    @ManyToOne
     private Project project;
 
-    @OneToMany(cascade = CascadeType.DETACH)
+    @OneToMany(mappedBy = "category")
     private List<Task> tasks;
 
     public Long getId() {

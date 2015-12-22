@@ -10,6 +10,7 @@ import org.co2.kanban.repository.category.CategoryRepository;
 import java.util.List;
 import org.co2.kanban.repository.project.Project;
 import org.co2.kanban.repository.project.ProjectRepository;
+import org.co2.kanban.repository.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -60,7 +61,11 @@ public class CategoryController {
 
     @RequestMapping(value = "{categoryId}", method = RequestMethod.DELETE, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity delete(@PathVariable("categoryId") Long categoryId) {
-        repository.delete(categoryId);
+        Category category = repository.findOne(categoryId);
+        for (Task task : category.getTasks()) {
+            task.setCategory(null);
+        }
+        repository.delete(category);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

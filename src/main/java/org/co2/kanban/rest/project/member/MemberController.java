@@ -10,7 +10,7 @@ import org.co2.kanban.repository.member.MemberRepository;
 import org.co2.kanban.repository.member.Member;
 import org.co2.kanban.repository.project.Project;
 import org.co2.kanban.repository.project.ProjectRepository;
-import org.co2.kanban.repository.user.ApplicationUserRepository;
+import org.co2.kanban.repository.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -84,7 +84,14 @@ public class MemberController {
 
     @RequestMapping(value = "{memberId}", method = RequestMethod.DELETE, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity delete(@PathVariable("memberId") Long memberId) {
-        repository.delete(memberId);
+        Member member = repository.findOne(memberId);
+        for (Task task : member.getTasksAssignee()) {
+                task.setAssignee(null);
+        }
+        for (Task task : member.getTasksBackup()) {
+                task.setBackup(null);
+        }
+        repository.delete(member);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

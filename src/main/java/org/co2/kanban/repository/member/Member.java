@@ -42,11 +42,14 @@ public class Member implements Serializable, Identifiable {
     @OneToMany
     private List<Allocation> allocations;
 
-    @OneToMany(mappedBy = "responsable", cascade = CascadeType.DETACH)
+    @OneToMany(mappedBy = "responsable")
     private List<Swimlane> swimlanes;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<Task> tasks;
+    @OneToMany(mappedBy = "assignee")
+    private List<Task> tasksAssignee;
+
+    @OneToMany(mappedBy = "backup")
+    private List<Task> tasksBackup;
 
     private ProjectRole projectRole;
 
@@ -90,12 +93,20 @@ public class Member implements Serializable, Identifiable {
         this.swimlanes = swimlanes;
     }
 
-    public List<Task> getTasks() {
-        return tasks;
+    public List<Task> getTasksAssignee() {
+        return tasksAssignee;
     }
 
-    public void setTasks(List<Task> tasks) {
-        this.tasks = tasks;
+    public void setTasksAssignee(List<Task> tasksAssignee) {
+        this.tasksAssignee = tasksAssignee;
+    }
+
+    public List<Task> getTasksBackup() {
+        return tasksBackup;
+    }
+
+    public void setTasksBackup(List<Task> tasksBackup) {
+        this.tasksBackup = tasksBackup;
     }
 
     public List<Allocation> getAllocations() {
@@ -109,4 +120,15 @@ public class Member implements Serializable, Identifiable {
     public boolean hasRole(ProjectRole role) {
         return this.getProjectRole().equals(role);
     }
+
+    @Override
+    public int hashCode() {
+        return this.getId().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj.getClass().isAssignableFrom(Member.class) && this.hashCode() == obj.hashCode();
+    }
+
 }
