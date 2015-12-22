@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -34,7 +35,7 @@ public class StateController {
 
     @Autowired
     private ProjectRepository projectRepository;
-    
+
     @Autowired
     private StateAssembler assembler;
 
@@ -44,8 +45,8 @@ public class StateController {
         return assembler.toResources(repository.findByProjectOrderByPositionAsc(project));
     }
 
-    @RequestMapping(value = "/kanban", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public List<StateResource> kanbanList(@PathVariable("projectId") Long projectId) {
+    @RequestMapping(params = {"kanban"}, method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    public List<StateResource> kanbanList(@PathVariable("projectId") Long projectId, @RequestParam(name = "kanban") Boolean kanban) {
         Project project = projectRepository.findOne(projectId);
         return assembler.toResources(repository.findByProjectAndKanbanHideFalseOrderByPositionAsc(project));
     }
@@ -74,7 +75,7 @@ public class StateController {
         }
         state.setPosition(maxPosition);
         repository.save(state);
-        return new ResponseEntity(state, HttpStatus.CREATED);
+        return new ResponseEntity(HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/{stateId}/position/{newPosition}", method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
@@ -101,5 +102,5 @@ public class StateController {
             }
         }
         return new ResponseEntity(HttpStatus.NO_CONTENT);
-    }  
+    }
 }

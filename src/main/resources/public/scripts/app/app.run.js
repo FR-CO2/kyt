@@ -9,6 +9,7 @@
             $rootScope.loginOngoing = false;
             $rootScope.$on("event:auth-forbidden", function () {
                 var parentState = $state.get("^");
+                console.log(parentState);
                 if (parentState.abstract) {
                     $state.go("app.dashboard");
                 } else {
