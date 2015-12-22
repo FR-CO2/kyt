@@ -35,7 +35,7 @@
         <fieldset>
             <div class="form-group col-md-3">
                 <label for="assignee">Assigné à </label>
-                <input class="form-control" ng-model="taskCtrl.task.assignee" uib-typeahead="member as member.username for member in taskCtrl.members | filter:$viewValue | limitTo:8" />
+                <input class="form-control" ng-model="taskCtrl.task.assignee.username" typeahead-editable="false" typeahead-on-select="taskCtrl.selectAssignee($item, $model, $label)" uib-typeahead="member as member.username for member in taskCtrl.members | filter:$viewValue | limitTo:8" />
             </div>
         </fieldset>
         <fieldset>
