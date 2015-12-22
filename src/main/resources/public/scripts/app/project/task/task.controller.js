@@ -13,7 +13,9 @@
                 vm.task.assignee = $model;
             };
             vm.submit = function() {
-                vm.task.resource("self").save(vm.task);
+                vm.task.resource("self").save(vm.task, function(){
+                    history.back();
+                });
             };
         };
         taskController.$inject = ["$scope", "project", "task", "taskAssemblerService"];

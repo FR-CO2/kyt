@@ -46,6 +46,9 @@
             vm.saveTask = function(task){
                 task.resource("self").save(null, task, null);
             };
+            vm.loadCategory = function () {
+                vm.categories = project.resource("category").query();
+            };
         };
         kanbanController.$inject = ["$uibModal", "project", "kanbanService"];
         return kanbanController;
