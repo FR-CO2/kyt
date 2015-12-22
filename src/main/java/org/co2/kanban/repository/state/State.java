@@ -8,7 +8,6 @@ package org.co2.kanban.repository.state;
 import org.co2.kanban.repository.project.Project;
 import org.co2.kanban.repository.task.Task;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
