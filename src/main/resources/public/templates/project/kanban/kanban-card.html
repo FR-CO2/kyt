@@ -8,7 +8,7 @@
         </header>
         <div class="kanban-card__action">
             <span ng-if="projectCtrl.rights.hasEditRights" >
-                <a href="#" editable-select="task.assignee" onshow="kanbanCtrl.loadMember()" onaftersave="kanbanCtrl.saveTask(task)" e-ng-options="member as member.user.username for member in kanbanCtrl.members" title="Assigné à">
+                <a href="#" editable-select="task.assignee" onshow="kanbanCtrl.loadMember()" onaftersave="kanbanCtrl.saveTask(task)" e-ng-options="member.username for member in kanbanCtrl.members" title="Assigné à">
                     <span class="glyphicon glyphicon-user"></span>
                     <span ng-if="!task.assignee">
                         -
