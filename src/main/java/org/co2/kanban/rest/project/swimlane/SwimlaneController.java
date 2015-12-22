@@ -9,8 +9,7 @@ import org.co2.kanban.repository.swimlane.Swimlane;
 import org.co2.kanban.repository.swimlane.SwimlaneRepository;
 import org.co2.kanban.repository.project.Project;
 import org.co2.kanban.repository.project.ProjectRepository;
-import org.co2.kanban.repository.member.Member;
-import org.co2.kanban.repository.member.MemberRepository;
+import org.co2.kanban.repository.state.State;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -69,4 +68,34 @@ public class SwimlaneController {
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
+    @RequestMapping(value = "/{id}", method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("@projectAccessExpression.hasManagerAccess(#projectId, principal.username)")
+    public ResponseEntity update(@PathVariable("projectId") Long projectId, @RequestBody Swimlane swimlane) {
+        Swimlane oldSwimlane = repository.findOne(swimlane.getId());
+        if (!oldSwimlane.getPosition().equals(swimlane.getPosition())) {
+            updatePosition(swimlane.getPosition(), oldSwimlane);
+        }
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
+    private void updatePosition(Long newPosition, Swimlane swimlane) {
+        Long positionRef = newPosition;
+        Long oldPosition = swimlane.getPosition();
+        if (oldPosition < newPosition) {
+            positionRef = oldPosition;
+        }
+        swimlane.setPosition(newPosition);
+        repository.save(swimlane);
+        Iterable<Swimlane> swimlanesToUpdate = repository.findByProjectAndPositionGreaterThanOrderByPositionAsc(swimlane.getProject(), positionRef - 1);
+        for (Swimlane swimlaneToUpdate : swimlanesToUpdate) {
+            if (positionRef.equals(newPosition)) {
+                positionRef++;
+            }
+            if (!swimlane.getId().equals(swimlaneToUpdate.getId())) {
+                swimlaneToUpdate.setPosition(positionRef);
+                repository.save(swimlaneToUpdate);
+                positionRef++;
+            }
+        }
+    }
 }

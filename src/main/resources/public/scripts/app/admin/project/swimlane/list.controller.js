@@ -6,6 +6,7 @@
                 orderChanged: function (event) {
                     var swimlaneUpdated = event.source.itemScope.modelValue;
                     var newPosition = event.dest.index;
+                    console.log("moved");
                     swimlaneUpdated.position = newPosition;
                     swimlaneUpdated.resource("self").save(null, swimlaneUpdated);
                 }
