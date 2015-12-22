@@ -32,6 +32,8 @@
                             task.swimlane = {};
                         }
                         task.swimlane.id = event.dest.sortableScope.element.attr("data-rowindex");
+                    } else {
+                        task.swimlane = null;
                     }
                     task.resource("self").save(null, task, function () {
                         vm.states = project.resource("state").query({"order": "position"});
