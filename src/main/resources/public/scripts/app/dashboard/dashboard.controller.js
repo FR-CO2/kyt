@@ -3,9 +3,7 @@
         var dashboardController = function (currentuser) {
             var vm = this;
             currentuser.$promise.then(function(){
-                currentuser.resource("task").get(null, function(data) {
-                          vm.tasks = data._embedded;
-                });
+                vm.tasks = currentuser.resource("task").get();
             });
         };
         dashboardController.$inject = ["currentuser"];

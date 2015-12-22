@@ -26,9 +26,7 @@ public class SwimlaneAssembler extends ResourceAssemblerSupport<Swimlane, Swimla
     
         @Override
     public SwimlaneResource toResource(Swimlane swimlane) {
-        SwimlaneResource resource = createResourceWithId(swimlane.getId(), swimlane);
-        resource.setName(swimlane.getName());
-        resource.setPosition(swimlane.getPosition());
+        SwimlaneResource resource = new SwimlaneResource(swimlane);
         resource.setTaskCount(swimlane.getTasks().size());
         resource.add(linkTo(methodOn(SwimlaneController.class, swimlane.getProject().getId()).get(swimlane.getId())).withSelfRel());
         resource.add(linkTo(methodOn(ProjectController.class).get(swimlane.getProject().getId())).withRel("project"));

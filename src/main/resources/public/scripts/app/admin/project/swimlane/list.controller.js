@@ -16,6 +16,9 @@
                     templateUrl: "templates/admin/project/swimlane/add.html",
                     controller: "addSwimlaneAdminController",
                     controllerAs: "addSwimlaneCtrl",
+                    resolve: {
+                        project : scope.projectEditCtrl.project
+                    },
                     size: "md"
                 });
                 modalInstance.result.then(function () {

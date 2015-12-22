@@ -16,6 +16,9 @@
                     templateUrl: "templates/admin/project/state/add.html",
                     controller: "addStateAdminController",
                     controllerAs: "addStateCtrl",
+                    resolve: {
+                        project : scope.projectEditCtrl.project
+                    },
                     size: "md"
                 });
                 modalInstance.result.then(function () {

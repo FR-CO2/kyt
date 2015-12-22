@@ -22,7 +22,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="task in homeCtrl.tasks.content" ui-sref="app.project.task.general({id: task.project.id, taskId: task.id })">
+                        <tr ng-repeat="task in dashboardCtrl.tasks._embedded.taskResourceList" ui-sref="app.project.task.general({id: task.project.id, taskId: task.id })">
                             <td>
                                 {{task.project.name}}
                             </td>
@@ -52,7 +52,7 @@
                     <tfoot>
                     <td colspan="8">
                         <div class="center-block text-center">
-                            <uib-pagination total-items="homeCtrl.tasks.nbElt" ng-model="homeCtrl.tasks.number" items-per-page="homeCtrl.tasks.size" max-size="5" class="pagination-sm" boundary-links="true" rotate="false" num-pages="homeCtrl.tasks.totalPages" ng-change="homeCtrl.pageTasksChanged()"></uib-pagination>
+                            <uib-pagination total-items="homeCtrl.tasks.nbElt" ng-model="dashboardCtrl.tasks.number" items-per-page="homeCtrl.tasks.size" max-size="5" class="pagination-sm" boundary-links="true" rotate="false" num-pages="homeCtrl.tasks.totalPages" ng-change="homeCtrl.pageTasksChanged()"></uib-pagination>
                         </div>
                     </td>
                     </tfoot>
