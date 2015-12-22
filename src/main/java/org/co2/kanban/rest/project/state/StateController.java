@@ -10,6 +10,7 @@ import org.co2.kanban.repository.state.State;
 import org.co2.kanban.repository.state.StateRepository;
 import org.co2.kanban.repository.project.Project;
 import org.co2.kanban.repository.project.ProjectRepository;
+import org.co2.kanban.repository.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -60,6 +61,11 @@ public class StateController {
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("@projectAccessExpression.hasManagerAccess(#projectId, principal.username)")
     public ResponseEntity delete(@PathVariable("id") Long id) {
+        State state = repository.findOne(id);
+        //Precondition : no task exist with state 
+        if (!state.getTasks().isEmpty()) {
+            return new ResponseEntity(HttpStatus.PRECONDITION_FAILED);
+        }
         repository.delete(id);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
@@ -87,7 +93,7 @@ public class StateController {
         }
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
-    
+
     private void updatePosition(Long newPosition, State state) {
         Long positionRef = newPosition;
         Long oldPosition = state.getPosition();
