@@ -78,29 +78,36 @@ public class StateController {
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/{stateId}/position/{newPosition}", method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{stateId}", method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("@projectAccessExpression.hasManagerAccess(#projectId, principal.username)")
-    public ResponseEntity updatePosition(@PathVariable("projectId") Long projectId, @PathVariable("stateId") Long stateId, @PathVariable("newPosition") Long newPosition) {
-        Long position = newPosition;
+    public ResponseEntity update(@PathVariable("projectId") Long projectId, @RequestBody State state) {
+
         Project project = projectRepository.findOne(projectId);
-        State state = repository.findOne(stateId);
+        State oldState = repository.findOne(state.getId());
+        if (!oldState.getPosition().equals(state.getPosition())) {
+            updatePosition(state.getPosition(), oldState);
+        }
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+    
+    private void updatePosition(Long newPosition, State state) {
+        Long positionRef = newPosition;
         Long oldPosition = state.getPosition();
         if (oldPosition < newPosition) {
-            position = oldPosition;
+            positionRef = oldPosition;
         }
         state.setPosition(newPosition);
         repository.save(state);
-        Iterable<State> statesToUpdate = repository.findByProjectAndPositionGreaterThanOrderByPositionAsc(project, position - 1);
+        Iterable<State> statesToUpdate = repository.findByProjectAndPositionGreaterThanOrderByPositionAsc(state.getProject(), positionRef - 1);
         for (State stateToUpdate : statesToUpdate) {
-            if (position.equals(newPosition)) {
-                position++;
+            if (positionRef.equals(newPosition)) {
+                positionRef++;
             }
             if (!state.getId().equals(stateToUpdate.getId())) {
-                stateToUpdate.setPosition(position);
+                stateToUpdate.setPosition(positionRef);
                 repository.save(stateToUpdate);
-                position++;
+                positionRef++;
             }
         }
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 }
