@@ -1,10 +1,10 @@
 (function () {
     define(['angular', "login/auth.service", "login/currentuser.service",
         "login/login.controller"],
-            function (angular, authService, currentUserService, loginController) {
+            function (angular, appAuthService, currentUserService, loginController) {
                 return angular.module('kanban.login', [])
                         .controller("loginController", loginController)
-                        .service("authService", authService)
+                        .service("appAuthService", appAuthService)
                         .service("currentUserService", currentUserService);
                 ;
             });

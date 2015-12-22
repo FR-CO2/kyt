@@ -7,11 +7,14 @@
 (function () {
     define([], function () {
 
-        var loginController = function ($state, $sessionStorage, authService) {
+        var loginController = function (scope, $state, $sessionStorage, appAuthService) {
             var vm = this;
             vm.authenticate = function () {
-                authService.login(vm.loginForm).success(function (result) {
+                appAuthService.login(vm.loginForm).success(function (result) {
                     $sessionStorage.oauth = result;
+                    if (scope.modalInstance) {
+                        scope.modalInstance.close();
+                    }
                     $state.transitionTo("app.dashboard");
                 }).error(function () {
                     vm.loginForm = {};
@@ -19,7 +22,7 @@
                 });
             };
         };
-        loginController.$inject = ["$state", "$sessionStorage", "authService"];
+        loginController.$inject = ["$scope", "$state", "$sessionStorage", "appAuthService"];
         return loginController;
     });
 })();
