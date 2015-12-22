@@ -10,6 +10,7 @@ import org.co2.kanban.repository.member.Member;
 import org.co2.kanban.repository.task.Task;
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -34,13 +35,13 @@ public class Swimlane implements Serializable, Identifiable {
 
     private Long position;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.DETACH)
     private Member responsable;
 
     @OneToMany(mappedBy = "swimlane")
     private List<Task> tasks;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.DETACH)
     private Project project;
 
     public Long getId() {

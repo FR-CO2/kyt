@@ -10,6 +10,7 @@ import org.co2.kanban.repository.swimlane.SwimlaneRepository;
 import org.co2.kanban.repository.project.Project;
 import org.co2.kanban.repository.project.ProjectRepository;
 import org.co2.kanban.repository.state.State;
+import org.co2.kanban.repository.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,7 +48,11 @@ public class SwimlaneController {
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("@projectAccessExpression.hasManagerAccess(#projectId, principal.username)")
     public ResponseEntity delete(@PathVariable("id") Long id) {
-        repository.delete(id);
+        Swimlane swimlane = repository.findOne(id);
+        for (Task task : swimlane.getTasks()) {
+            task.setSwimlane(null);
+        }
+        repository.delete(swimlane);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 

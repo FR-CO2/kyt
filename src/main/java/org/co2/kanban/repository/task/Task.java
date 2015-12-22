@@ -45,13 +45,13 @@ public class Task implements Serializable, Identifiable {
     @ManyToOne(cascade = CascadeType.DETACH)
     private Category category;
 
-    @ManyToOne(cascade = CascadeType.DETACH)
+    @ManyToOne
     private State state;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.DETACH)
     private Swimlane swimlane;
 
-    @ManyToOne(cascade = CascadeType.DETACH)
+    @ManyToOne
     private Project project;
 
     @ManyToOne(cascade = CascadeType.DETACH)
