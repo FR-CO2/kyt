@@ -11,7 +11,7 @@
                 <div class="panel panel-default"> 
                     <div class=" panel-heading">
                         <div class="col-md-7">
-                            Commentaire #{{comment.id}}
+                            Commentaire  de {{comment.writer}} le {{comment.writingDate| date:'dd-MM-yyyy'}} - <span class="badge">{{comment.nbReply}} réponses</span>
                         </div>
                         <div class="pull-right">
                             <a ng-click="commentListCtrl.delete(comment)" title="delete">
@@ -21,18 +21,18 @@
                     </div>
                     <div class="panel-body">
                         {{comment.comment}}
-                        
+
                     </div>
                     <div class="panel-footer">
-                        <div class="col-md-7">
-                            <span> De {{comment.writer}}</span>
-                            <span> le {{comment.writingDate| date:'dd-MM-yyyy'}}</span>
-                        </div>
                         <div class="pull-right">
-                            <span class="badge">{{comment.nbReply}} réponses</span>
-                            <a ng-click="commentListCtrl.reply(comment)" title="reply">
-                                Répondre <span class="glyphicon glyphicon-comment"></span>
-                            </a>
+                            <span class="badge">
+                                <span class="glyphicon glyphicon-eye-open"></span> voir les réponses
+                            </span>
+                            <span class="badge">
+                                <a ng-click="commentListCtrl.reply(comment)" title="reply">
+                                    <span class="glyphicon glyphicon-comment"></span> Répondre
+                                </a>
+                            </span>
                         </div>
                     </div>
                 </div>
