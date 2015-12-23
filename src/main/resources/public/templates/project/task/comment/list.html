@@ -3,51 +3,25 @@
         <div class="panel-heading">
             <h3 class="panel-heading-title">Commentaires </h3>
             <div class="panel-heading-action">
-                <button class="btn btn-info btn-sm" ng-click="commentCtrl.add()"><span class="glyphicon glyphicon-plus-sign"></span>Nouveau commentaire</button>
+                <button class="btn btn-info btn-sm" ng-click="commentListCtrl.add()"><span class="glyphicon glyphicon-plus-sign"></span>Nouveau commentaire</button>
             </div>
         </div>
         <div class="panel-body">
-            <div ng-repeat="comment in commentCtrl.comments">
+            <div ng-repeat="comment in taskCtrl.comments">
                 <div class="panel panel-default"> 
                     <div class=" panel-heading">
                         <div class="col-md-7">
                             Commentaire #{{comment.id}}
                         </div>
                         <div class="pull-right">
-                            <a ng-click="commentCtrl.delete(comment.id)" title="delete">
+                            <a ng-click="commentListCtrl.delete(comment)" title="delete">
                                 <span class="glyphicon glyphicon-trash"></span>
                             </a>
                         </div>
                     </div>
                     <div class="panel-body">
-                        <a href="#" editable-textarea="comment.comment" e-row="5" e-cols="60" onaftersave="commentCtrl.update(comment)" >
-                            {{comment.comment}}
-                            <span ng-if="!comment.comment">
-                                -
-                            </span>
-                        </a>
-                        <div ng-repeat="comment in comment.reply">
-                            <div class="panel panel-default"> 
-                                <div class=" panel-heading">
-                                    <div class="col-md-7">
-                                        Commentaire #{{comment.id}}
-                                    </div>
-                                    <div class="pull-right">
-                                        <a ng-click="commentCtrl.delete(comment.id)" title="delete">
-                                            <span class="glyphicon glyphicon-trash"></span>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="panel-body">
-                                    <a href="#" editable-textarea="comment.comment" e-row="5" e-cols="60" onaftersave="commentCtrl.update(comment)" >
-                                        {{comment.comment}}
-                                        <span ng-if="!comment.comment">
-                                            -
-                                        </span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
+                        {{comment.comment}}
+                        
                     </div>
                     <div class="panel-footer">
                         <div class="col-md-7">
@@ -55,7 +29,8 @@
                             <span> le {{comment.writingDate| date:'dd-MM-yyyy'}}</span>
                         </div>
                         <div class="pull-right">
-                            <a ng-click="commentCtrl.reply(comment.id)" title="reply">
+                            <span class="badge">{{comment.nbReply}} réponses</span>
+                            <a ng-click="commentListCtrl.reply(comment)" title="reply">
                                 Répondre <span class="glyphicon glyphicon-comment"></span>
                             </a>
                         </div>

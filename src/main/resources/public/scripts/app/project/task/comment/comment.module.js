@@ -4,6 +4,6 @@
             function (angular, listController, addController) {
                 return angular.module('kanban.project.task.comment', [])
                         .controller("commentListController", listController)
-                        .service("commentAddController", addController);
+                        .controller("commentAddController", addController);
             });
 })();
