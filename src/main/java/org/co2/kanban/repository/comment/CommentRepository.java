@@ -5,6 +5,7 @@
  */
 package org.co2.kanban.repository.comment;
 
+import org.co2.kanban.repository.task.Task;
 import org.springframework.data.repository.CrudRepository;
 
 /**
@@ -13,4 +14,5 @@ import org.springframework.data.repository.CrudRepository;
  */
 public interface CommentRepository extends CrudRepository<Comment, Long> {
     
+    Iterable<Comment> findByTaskAndParentIsNull(Task task);
 }

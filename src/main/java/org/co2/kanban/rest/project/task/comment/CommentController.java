@@ -14,6 +14,7 @@ import org.co2.kanban.repository.comment.CommentRepository;
 import org.co2.kanban.repository.task.Task;
 import org.co2.kanban.repository.task.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -45,7 +46,8 @@ public class CommentController {
     @RequestMapping(method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public Iterable<CommentResource> comments(@PathVariable("taskId") Long taskId) {
         Task task = taskRepository.findOne(taskId);
-        return assembler.toResources(task.getComments());
+        Iterable<Comment> comments = repository.findByTaskAndParentIsNull(task);
+        return assembler.toResources(comments);
     }
 
     @RequestMapping(value="/{commentId}", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
@@ -53,7 +55,13 @@ public class CommentController {
         Comment comment = repository.findOne(commentId);
         return assembler.toResource(comment);
     }
-
+    
+    @RequestMapping(value="/{commentId}", method = RequestMethod.DELETE, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity delete(@PathVariable("commentId") Long commentId) {
+        repository.delete(commentId);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+    
     @RequestMapping(method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity create(@AuthenticationPrincipal Principal user, @PathVariable("taskId") Long taskId, @RequestBody Comment comment) {
         Task task = taskRepository.findOne(taskId);
@@ -70,6 +78,7 @@ public class CommentController {
         comment.setWriter(user.getName());
         comment.setWritingDate(new Timestamp(new Date().getTime()));
         comment.setParent(parent);
+        comment.setTask(parent.getTask());
         repository.save(comment);
         return new ResponseEntity(HttpStatus.CREATED);
     }

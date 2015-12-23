@@ -2,7 +2,7 @@
     define([], function () {
         var addController = function ($uibModalInstance, task, comment) {
             var vm = this;
-            if (comment) {
+            if (comment.id) {
                 vm.parentComment = comment;
             }
             vm.submit = function () {
