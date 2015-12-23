@@ -35,13 +35,6 @@ public class TaskController {
     
     @Autowired
     private ProjectRepository projectRepository;
-    
-    @Autowired
-    private StateRepository taskStateRepository;
-
-    @Autowired
-    private SwimlaneRepository swimlaneRepository;
-
 
     @Autowired
     private TaskAssembler assembler;

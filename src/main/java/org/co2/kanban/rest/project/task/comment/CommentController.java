@@ -48,7 +48,7 @@ public class CommentController {
         return assembler.toResources(task.getComments());
     }
 
-    @RequestMapping(method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value="/{commentId}", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public CommentResource get(@PathVariable("commentId") Long commentId) {
         Comment comment = repository.findOne(commentId);
         return assembler.toResource(comment);
@@ -64,7 +64,7 @@ public class CommentController {
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "{commentId}/reply", method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{commentId}/reply", method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity reply(@AuthenticationPrincipal Principal user, @PathVariable("taskId") Long taskId, @PathVariable("commentId") Long parentCommentId, @RequestBody Comment comment) {
         Comment parent = repository.findOne(parentCommentId);
         comment.setWriter(user.getName());

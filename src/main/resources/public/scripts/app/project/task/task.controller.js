@@ -1,9 +1,10 @@
 (function () {
     define([], function () {
-        var taskController = function (scope, project, currenttask, taskAssemblerService) {
+        var taskController = function (project, currenttask, taskAssemblerService) {
             var vm = this;
             currenttask.$promise.then(function() {
                 vm.task = taskAssemblerService(currenttask);
+                vm.task.comments = currenttask.resource("comment").query();
             });
             vm.categories = project.resource("category").query();
             vm.states = project.resource("state").query();
@@ -18,7 +19,7 @@
                 });
             };
         };
-        taskController.$inject = ["$scope", "project", "task", "taskAssemblerService"];
+        taskController.$inject = ["project", "task", "taskAssemblerService"];
         return taskController;
     });
 })();

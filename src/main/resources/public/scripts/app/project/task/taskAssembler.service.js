@@ -10,7 +10,7 @@
             return function (task) {
                 var taskresource = task;
                 if (!task.resource) {
-                 taskresource = new HateoasInterface(task);
+                    taskresource = new HateoasInterface(task);
                 }
                 task.state = taskresource.resource("state").get();
                 if (task._links.category) {
@@ -21,10 +21,10 @@
                 }
                 if (task._links.assignee) {
                     task.assignee = taskresource.resource("assignee").get();
-                } 
+                }
                 if (task._links.backup) {
                     task.backup = taskresource.resource("backup").get();
-                } 
+                }
                 return task;
             };
         };
