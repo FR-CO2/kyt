@@ -39,11 +39,10 @@ public class Comment implements Serializable, Identifiable{
     
     private String comment;
 
-    @ManyToOne
-    @JsonIgnore
+    @ManyToOne 
     private Comment parent;
     
-    @OneToMany
+    @OneToMany(mappedBy = "parent")
     private List<Comment> reply = new ArrayList<>();
     
     public Long getId() {

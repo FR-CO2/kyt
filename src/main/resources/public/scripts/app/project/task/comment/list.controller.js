@@ -12,6 +12,27 @@
                     resolve: {
                         task: function () {
                             return currenttask;
+                        },
+                        comment: null
+                    },
+                    size: "md"
+                });
+                modalInstance.result.then(function() {
+                    currenttask.comments = currenttask.resource("comment").query();
+                });
+            };
+            vm.reply = function (comment) {
+                var modalInstance = $uibModal.open({
+                    animation: true,
+                    templateUrl: "templates/project/task/comment/add.html",
+                    controller: "commentAddController",
+                    controllerAs: "addCommentCtrl",
+                    resolve: {
+                        comment : function () {
+                            return comment;
+                        },
+                        task: function () {
+                            return currenttask;
                         }
                     },
                     size: "md"

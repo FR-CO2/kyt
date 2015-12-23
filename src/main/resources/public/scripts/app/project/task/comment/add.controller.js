@@ -1,14 +1,23 @@
 (function () {
     define([], function () {
-        var addController = function ($uibModalInstance, task) {
+        var addController = function ($uibModalInstance, task, comment) {
             var vm = this;
-            vm.submit = function() {
-                task.resource("comment").save(vm.comment, function() {
-                    $uibModalInstance.close();
-                });
+            if (comment) {
+                vm.parentComment = comment;
+            }
+            vm.submit = function () {
+                if (vm.parentComment) {
+                    vm.parentComment.resource("reply").save(vm.comment, function () {
+                        $uibModalInstance.close();
+                    });
+                } else {
+                    task.resource("comment").save(vm.comment, function () {
+                        $uibModalInstance.close();
+                    });
+                }
             };
         };
-        addController.$inject = ["$uibModalInstance", "task"];
+        addController.$inject = ["$uibModalInstance", "task", "comment"];
         return addController;
     });
 })();
