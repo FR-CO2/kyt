@@ -5,19 +5,13 @@
  */
 package org.co2.kanban.rest.project.task;
 
-import org.co2.kanban.repository.category.CategoryRepository;
-import org.co2.kanban.repository.member.MemberRepository;
-import org.co2.kanban.repository.project.Project;
-import org.co2.kanban.repository.project.ProjectRepository;
-import org.co2.kanban.repository.state.StateRepository;
-import org.co2.kanban.repository.swimlane.SwimlaneRepository;
 import org.co2.kanban.rest.project.ProjectController;
 import org.co2.kanban.rest.project.category.CategoryController;
 import org.co2.kanban.rest.project.member.MemberController;
 import org.co2.kanban.rest.project.state.StateController;
 import org.co2.kanban.rest.project.swimlane.SwimlaneController;
 import org.co2.kanban.repository.task.Task;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.co2.kanban.rest.project.task.comment.CommentController;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
@@ -29,21 +23,6 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class TaskAssembler extends ResourceAssemblerSupport<Task, TaskResource> {
-
-    @Autowired
-    private StateRepository taskStateRepository;
-
-    @Autowired
-    private ProjectRepository projectRepository;
-
-    @Autowired
-    private SwimlaneRepository swimlaneRepository;
-
-    @Autowired
-    private MemberRepository memberRepository;
-
-    @Autowired
-    private CategoryRepository categoryRepository;
 
     public TaskAssembler() {
         super(TaskController.class, TaskResource.class);
@@ -70,6 +49,8 @@ public class TaskAssembler extends ResourceAssemblerSupport<Task, TaskResource> 
         if (task.getCategory() != null) {
             resource.add(linkTo(methodOn(CategoryController.class, task.getProject().getId()).get(task.getCategory().getId())).withRel("category"));
         }
+        resource.add(linkTo(methodOn(CommentController.class, task.getProject().getId(), task.getId()).comments(task.getId())).withRel("comment"));
+        
         return resource;
     }
 }

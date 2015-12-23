@@ -15,6 +15,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import org.co2.kanban.repository.Identifiable;
 import org.co2.kanban.repository.task.Task;
 
 /**
@@ -22,7 +23,7 @@ import org.co2.kanban.repository.task.Task;
  * @author ben
  */
 @Entity
-public class Comment implements Serializable{
+public class Comment implements Serializable, Identifiable{
     private static final long serialVersionUID = 351144123076183094L;
     
     @Id
