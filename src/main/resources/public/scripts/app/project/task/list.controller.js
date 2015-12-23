@@ -10,6 +10,7 @@
                         }, function () {
                     if (vm.tasks._embedded) {
                         angular.forEach(vm.tasks._embedded.taskResourceList, taskAssemblerService);
+                        
                     }
                 });
             };
@@ -37,6 +38,22 @@
                     size: "md"
                 });
                 modalInstance.result.then(loadPage);
+            };
+            vm.pageChanged = function(){
+                vm.tasks.page.size = vm.nbElt;
+                vm.tasks = project.resource("task").get(
+                    {
+                        page: vm.tasks.page.number,
+                        size: vm.tasks.page.size
+                    }, function () {
+                    if (vm.tasks._embedded) {
+                        angular.forEach(vm.tasks._embedded.taskResourceList, taskAssemblerService);
+                    }
+                });
+            };
+            vm.tableFilter = function(predicate) {
+                vm.reverse = (vm.predicate === predicate) ? !vm.reverse : false;
+                vm.predicate = predicate;
             };
         };
         taskController.$inject = ["$uibModal", "project", "taskAssemblerService", "HateoasInterface"];

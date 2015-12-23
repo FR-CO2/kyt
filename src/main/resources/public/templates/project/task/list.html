@@ -14,21 +14,21 @@
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th>Nom</th>
-                        <th>Etat</th>
-                        <th>Couloir</th>
-                        <th>Categorie</th>
-                        <th>assignee</th>
-                        <th>Date début</th>
-                        <th>Date fin</th>
-                        <th>Consommée</th>
-                        <th>Charge estimée</th>
-                        <th>Charge réevaluée</th>
+                        <th ng-click="tasksCtrl.tableFilter('name')">Nom</th>
+                        <th ng-click="tasksCtrl.tableFilter('state.name')">Etat</th>
+                        <th ng-click="tasksCtrl.tableFilter('swimlane.name')">Couloir</th>
+                        <th ng-click="tasksCtrl.tableFilter('category.name')">Categorie</th>
+                        <th ng-click="tasksCtrl.tableFilter('assignee.name')">Assignee</th>
+                        <th ng-click="tasksCtrl.tableFilter('plannedStart')">Date début</th>
+                        <th ng-click="tasksCtrl.tableFilter('plannedEnding')">Date fin</th>
+                        <th ng-click="tasksCtrl.tableFilter('timeSpent')">Consommée</th>
+                        <th ng-click="tasksCtrl.tableFilter('estimatedLoad')">Charge estimée</th>
+                        <th ng-click="tasksCtrl.tableFilter('timeRemains')">Charge réevaluée</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="task in tasksCtrl.tasks._embedded.taskResourceList">
+                    <tr ng-repeat="task in tasksCtrl.tasks._embedded.taskResourceList | orderBy:tasksCtrl.predicate:tasksCtrl.reverse">
                         <td>
                             {{task.name}}
                         </td>
@@ -51,7 +51,7 @@
                             <span ng-if="!task.assignee">
                                 -
                             </span>
-                            {{task.assignee.user.username}}
+                            {{task.assignee.username}}
                         </td>
                         <td>
                             {{task.plannedStart| date:'dd/MM/yyyy'}}
@@ -84,13 +84,13 @@
                             <div class="row">
                                 <div class="col-md-6 col-md-offset-3" >
                                     <div class="center-block text-center">
-                                        <uib-pagination total-items="taskCtrl.tasks.page.totalElements" ng-model="taskCtrl.tasks.page.numPage" items-per-page="taskCtrl.tasks.page.size" max-size="5" class="pagination-sm" boundary-links="true" rotate="false" num-pages="taskCtrl.tasks.page.totalPages"></uib-pagination>
+                                        <uib-pagination total-items="tasksCtrl.tasks.page.totalElements" ng-model="tasksCtrl.tasks.page.numPage" items-per-page="tasksCtrl.tasks.page.size" max-size="5" class="pagination-sm" boundary-links="true" rotate="false" num-pages="tasksCtrl.tasks.page.totalPages"></uib-pagination>
                                     </div>
                                 </div>
                                 <div class="col-md-3 form-inline"> 
                                     <div class="form-group pull-right">
                                         <label for="nbEltUser">Nb élements :</label>
-                                        <select id="nbEltUser" ng-model="taskCtrl.nbElt" class="form-control input-sm" style="margin: 20px;" ng-change="taskCtrl.pageChanged()">
+                                        <select id="nbEltUser" ng-model="tasksCtrl.nbElt" class="form-control input-sm" style="margin: 20px;" ng-change="tasksCtrl.pageChanged()">
                                             <option value="10">10</option>
                                             <option value="20">20</option>
                                             <option value="50">50</option>
