@@ -1,0 +1,25 @@
+<div ng-repeat="comment in commentReplyCtrl.replies">
+    <div class="panel panel-default"> 
+        <div class=" panel-heading">
+            <div class="col-md-7">
+                Réponse de {{comment.writer}} le {{comment.writingDate| date:'dd-MM-yyyy'}}
+            </div>
+            <div class="pull-right">
+                <a ng-click="commentListCtrl.delete(comment)" title="delete">
+                    <span class="glyphicon glyphicon-trash"></span>
+                </a>
+            </div>
+        </div>
+        <div class="panel-body">
+            {{comment.comment}}
+        </div>
+        <div class="panel-footer">
+            <div class="pull-right">
+                <span class="badge">{{comment.nbReply}} réponses</span>
+                <a ng-click="commentListCtrl.reply(comment)" title="reply">
+                    Répondre <span class="glyphicon glyphicon-comment"></span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
