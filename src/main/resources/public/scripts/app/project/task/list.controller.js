@@ -2,25 +2,26 @@
     define(["angular"], function (angular) {
         var taskController = function ($uibModal, project, taskAssemblerService, HateoasInterface) {
             var vm = this;
-            var loadPage = function () {
-                vm.tasks = project.resource("task").get(
+            vm.loadPage = function () {
+                project.resource("task").get(
                         {
-                            page: vm.tasks.page.number,
+                            page: vm.tasks.page.number - 1,
                             size: vm.tasks.page.size
-                        }, function () {
-                    if (vm.tasks._embedded) {
-                        angular.forEach(vm.tasks._embedded.taskResourceList, taskAssemblerService);
-                        
+                        }, function (data) {
+                    if (data._embedded) {
+                        angular.forEach(data._embedded.taskResourceList, taskAssemblerService);
                     }
+                    data.page.number++;
+                    vm.tasks = data;
                 });
             };
             vm.tasks = {
                 page: {
-                    size: 15,
-                    number: 0
+                    size: 10,
+                    number: 1
                 }
             };
-            loadPage();
+            vm.loadPage();
             vm.delete = function (task) {
                 new HateoasInterface(task).resource("self").delete(loadPage);
             };
@@ -39,35 +40,7 @@
                 });
                 modalInstance.result.then(loadPage);
             };
-            vm.pageChanged = function(){
-                vm.tasks.page.size = vm.nbElt;
-                vm.tasks = project.resource("task").get(
-                    {
-                        page: vm.tasks.page.number,
-                        size: vm.tasks.page.size
-                    }, function () {
-                    if (vm.tasks._embedded) {
-                        angular.forEach(vm.tasks._embedded.taskResourceList, taskAssemblerService);
-                    }
-                });
-            };
-            vm.setPage = function(pageNo){
-                vm.tasks.page.number = pageNo;
-            };
-            vm.selectPage = function(){
-                vm.tasks = project.resource("task").get(
-                    {
-                        page: vm.tasks.page.number,
-                        size: vm.tasks.page.size
-                    }, function () {
-                    if (vm.tasks._embedded) {
-                        angular.forEach(vm.tasks._embedded.taskResourceList, taskAssemblerService);
-                        // we add 1 to the var, because in database, the number stars to 0 and numeration starts to 1
-                        vm.tasks.page.number ++;
-                    }
-                });
-            };
-            vm.tableFilter = function(predicate) {
+            vm.tableFilter = function (predicate) {
                 vm.reverse = (vm.predicate === predicate) ? !vm.reverse : false;
                 vm.predicate = predicate;
             };
