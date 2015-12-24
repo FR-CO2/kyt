@@ -42,13 +42,13 @@
                 });
             };
             vm.showReply = function (comment) {
-                vm.selectedComment = comment;
+                vm.selectedComment =comment.resource("reply").query();
             };
             vm.delete = function (comment) {
                 comment.resource("self").delete(null, function () {
                     currenttask.comments = currenttask.resource("comment").query();
                 });
-            }
+            };
         };
         listController.$inject = ["$uibModal", "$scope"];
         return listController;
