@@ -7,17 +7,11 @@ package org.co2.kanban.rest.project.task.allocation;
 
 import org.co2.kanban.repository.allocation.AllocationRepository;
 import org.co2.kanban.repository.allocation.Allocation;
-import java.security.Principal;
-import org.co2.kanban.repository.member.MemberRepository;
-import org.co2.kanban.repository.member.Member;
 import org.co2.kanban.repository.task.Task;
 import org.co2.kanban.repository.task.TaskRepository;
-import org.co2.kanban.repository.user.ApplicationUser;
-import org.co2.kanban.repository.user.ApplicationUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.web.bind.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,36 +33,34 @@ public class AllocationController {
     private AllocationRepository allocationRepository;
 
     @Autowired
-    private ApplicationUserRepository userRepository;
-    
-    @Autowired
-    private MemberRepository memberRepository;
+    private AllocationAssembler assembler;
 
     @RequestMapping(method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Allocation> create(@AuthenticationPrincipal Principal user,
-            @PathVariable("projectId") Long projectId, @PathVariable("taskId") Long taskId, @RequestBody AllocationForm allocationForm) {
-        ApplicationUser currentUser = userRepository.findByUsername(user.getName());
+    public ResponseEntity create(@PathVariable("taskId") Long taskId, @RequestBody Allocation allocation) {
         Task task = repository.findOne(taskId);
-        Member currentMember = memberRepository.findByProjectAndUser(task.getProject(), currentUser);
-        Allocation newAllocation = allocationRepository.findByTaskAndAllocationDateAndMember(task, allocationForm.getAllocationDate(), currentMember);
-        if (newAllocation == null) {
-            newAllocation = new Allocation();
-        }
-        newAllocation.setMember(currentMember);
-        newAllocation.setAllocationDate(allocationForm.getAllocationDate());
-        newAllocation.setTimeRemains(allocationForm.getTimeRemains());
-        newAllocation.setTimeSpent(allocationForm.getTimeSpent());
-        newAllocation.setTask(task);
-        if (newAllocation.getTimeRemains() != null || newAllocation.getTimeSpent() != null) {
-            allocationRepository.save(newAllocation);
+        allocation.setTask(task);
+        if (allocation.getTimeSpent() != null) {
+            allocationRepository.save(allocation);
             return new ResponseEntity(HttpStatus.CREATED);
         }
         return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
     }
 
     @RequestMapping(method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public Iterable<Allocation> list(@PathVariable("projectId") Long projectId, @PathVariable("taskId") Long taskId) {
+    public Iterable<AllocationResource> list(@PathVariable("taskId") Long taskId) {
         Task task = repository.findOne(taskId);
-        return allocationRepository.findByTask(task);
+        return assembler.toResources(allocationRepository.findByTask(task));
     }
+
+    @RequestMapping(value="/{allocationId}", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    public AllocationResource get(@PathVariable("allocationId") Long allocationId) {
+        return assembler.toResource(allocationRepository.findOne(allocationId));
+    }
+
+    @RequestMapping(value="/{allocationId}", method = RequestMethod.DELETE, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity delete(@PathVariable("allocationId") Long allocationId) {
+        allocationRepository.findOne(allocationId);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
 }

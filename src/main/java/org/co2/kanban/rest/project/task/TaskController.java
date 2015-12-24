@@ -9,8 +9,6 @@ import org.co2.kanban.repository.project.Project;
 import org.co2.kanban.repository.project.ProjectRepository;
 import org.co2.kanban.repository.task.Task;
 import org.co2.kanban.repository.task.TaskRepository;
-import org.co2.kanban.repository.state.StateRepository;
-import org.co2.kanban.repository.swimlane.SwimlaneRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
