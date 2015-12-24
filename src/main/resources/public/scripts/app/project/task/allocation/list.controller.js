@@ -3,6 +3,7 @@
         var listController = function ($uibModal, scope) {
             var vm = this;
             var currenttask = scope.taskCtrl.task;
+            var currentproject = scope.taskCtrl.project;
             vm.add = function () {
                 var modalInstance = $uibModal.open({
                     animation: true,
@@ -12,6 +13,9 @@
                     resolve: {
                         task: function () {
                             return currenttask;
+                        }, 
+                        project : function() {
+                            return currentproject;
                         }
                     },
                     size: "md"

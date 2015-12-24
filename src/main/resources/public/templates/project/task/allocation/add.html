@@ -3,10 +3,24 @@
         <span class="glyphicon glyphicon-plus-sign"></span> Nouveau commentaire
     </div>
     <div class="panel-body">
-        <alert type="danger" ng-if="addCommentCtrl.form.error">{{addCommentCtrl.form.error}}</alert>
-        <form id="task" role="form" ng-submit="addCommentCtrl.submit()">
-            <div class="form-group">
-                <textarea required ng-model="addCommentCtrl.comment.comment" class="form-control" name="comment" placeholder="Commentaire"/>
+        <alert type="danger" ng-if="addAllocationCtrl.form.error">{{addAllocationCtrl.form.error}}</alert>
+        <form id="task" role="form" ng-submit="addAllocationCtrl.submit()">
+            <div class="form-group col-md-3">
+                <label for="assignee">Utilisateur</label>
+                <input class="form-control" ng-model="addAllocationCtrl.allocation.member.username" typeahead-editable="false"
+                       typeahead-on-select="addAllocationCtrl.selectMember($item, $model, $label)" uib-typeahead="member as member.username for member in addAllocationCtrl.members | filter:$viewValue | limitTo:8" />
+            </div>
+            <div class="form-group col-md-3">
+                <label for="plannedEnding">Date imputation </label>
+                <input type="date" id="plannedEnding" class="form-control" ng-model="addAllocationCtrl.allocation.allocationDate"/>
+            </div>
+            <div class="form-group col-md-3">
+                <label for="estimatedLoad">Charge consommée</label>
+                <input type="number" id="estimatedLoad" class="form-control" ng-model="addAllocationCtrl.allocation.timeSpent" min="0" step="1"/>
+            </div>
+            <div class="form-group col-md-3">
+                <label for="estimatedLoad">Charge restante</label>
+                <input type="number" id="estimatedLoad" class="form-control" ng-model="addAllocationCtrl.allocation.timeRemains" min="0" step="1"/>
             </div>
             <div>
                 <button type="submit"  class="btn btn-info center-block">valider</button>

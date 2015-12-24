@@ -8,6 +8,7 @@
                 vm.task.allocations = currenttask.resource("allocation").query();
             });
             project.$promise.then(function () {
+                vm.project = project;
                 vm.categories = project.resource("category").query();
                 vm.states = project.resource("state").query();
                 vm.swimlanes = project.resource("swimlane").query();
