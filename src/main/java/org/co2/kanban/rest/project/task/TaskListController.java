@@ -57,6 +57,10 @@ public class TaskListController {
     public PagedResources<TaskResource> page(@PathVariable("projectId") Long projectId,
             @RequestParam(name="page") Integer page,
             @RequestParam(name="size", required = false) Integer size) {
+        // On décrémente le nombre de la page de 1 car la numérotation commence à 1 tandis que le tableau à 0.
+        if(page > 0){
+            page --;
+        }
         Project project = projectRepository.findOne(projectId);
         Pageable pageable = new PageRequest(page, size);
         return pagedAssembler.toResource(repository.findByProject(project, pageable), assembler);

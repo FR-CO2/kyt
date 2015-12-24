@@ -51,6 +51,22 @@
                     }
                 });
             };
+            vm.setPage = function(pageNo){
+                vm.tasks.page.number = pageNo;
+            };
+            vm.selectPage = function(){
+                vm.tasks = project.resource("task").get(
+                    {
+                        page: vm.tasks.page.number,
+                        size: vm.tasks.page.size
+                    }, function () {
+                    if (vm.tasks._embedded) {
+                        angular.forEach(vm.tasks._embedded.taskResourceList, taskAssemblerService);
+                        // we add 1 to the var, because in database, the number stars to 0 and numeration starts to 1
+                        vm.tasks.page.number ++;
+                    }
+                });
+            };
             vm.tableFilter = function(predicate) {
                 vm.reverse = (vm.predicate === predicate) ? !vm.reverse : false;
                 vm.predicate = predicate;
