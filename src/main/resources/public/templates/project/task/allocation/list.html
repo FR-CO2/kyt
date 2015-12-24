@@ -1,36 +1,39 @@
- <div class="col-md-12">
-        <div class="panel">
-            <div class="panel-heading">
-                <h2 class="panel-heading-title">Imputations</h2>
-            </div>
-            <div class="panel-body">
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>Utilisateur</th>
-                            <th>Date</th>
-                            <th>Consommé</th>
-                            <th>Reste à faire</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="allocation in allocation.allocations">
-                            <td>
-                                {{allocation.member.user.username}}
-                            </td>
-                            <td>
-                                {{allocation.allocationDate | date:'dd-MM-yyyy'}}
-                            </td>
-                            <td>
-                                {{allocation.timeSpent}}
-                            </td>
-                            <td>
-                                {{allocation.timeRemains}}
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+<div class="col-md-12">
+    <div class="panel">
+        <div class="panel-heading">
+            <h3 class="panel-heading-title">Imputations</h3>
+            <div class="panel-heading-action">
+                <button class="btn btn-info btn-sm" ng-click="allocationListCtrl.add()"><span class="glyphicon glyphicon-plus-sign"></span>Nouvelle imputation</button>
             </div>
         </div>
- </div>
+        <div class="panel-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Utilisateur</th>
+                        <th>Date</th>
+                        <th>Consommé</th>
+                        <th>Reste à faire</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="allocation in taskCtrl.task.allocations">
+                        <td>
+                            {{allocation.username}}
+                        </td>
+                        <td>
+                            {{allocation.allocationDate| date:'dd-MM-yyyy'}}
+                        </td>
+                        <td>
+                            {{allocation.timeSpent}}
+                        </td>
+                        <td>
+                            {{allocation.timeRemains}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
