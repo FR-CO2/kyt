@@ -1,0 +1,25 @@
+<table class="table table-hover" ng-repeat="couloir in vm.couloirs">
+    <thead>
+         <tr>
+            <th>nom couloir</th>
+        <tr>
+        <tr>
+            <th></th>
+            <th ng-repeat="day in consommationCtrl.days">{{day}}</th>
+        <tr>
+    </thead>
+    <tbody ng-repeat="entry in consommationCtrl.entries">
+        <tr>
+            <th>
+                {{entry.name}} 
+                <span ng-if="!entry.showDetails" class="glyphicon glyphicon-chevron-down" ng-click="consommationCtrl.showDetail(entry)"></span>
+                <span ng-if="entry.showDetails" class="glyphicon glyphicon-chevron-up" ng-click="consommationCtrl.hideDetail(entry)"></span>
+            </th>
+            <th ng-repeat="consommation in entry.consommations"> {{consommation.value}}  </th>
+        </tr>
+        <tr uib-collapse="!entry.showDetails" ng-repeat="detail in entry.details">
+            <td>{{detail.name}} </td>
+            <td ng-repeat="consommation in detail.consommations"> {{consommation.value}}  </td>
+        </tr>
+    </tbody>
+</table>
