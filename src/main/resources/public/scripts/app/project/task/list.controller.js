@@ -4,10 +4,10 @@
             var vm = this;
             vm.loadPage = function () {
                 project.resource("task").get(
-                        {
-                            page: vm.tasks.page.number - 1,
-                            size: vm.tasks.page.size
-                        }, function (data) {
+                    {
+                        page: vm.tasks.page.number - 1,
+                        size: vm.tasks.page.size
+                    }, function (data) {
                     if (data._embedded) {
                         angular.forEach(data._embedded.taskResourceList, taskAssemblerService);
                     }
