@@ -3,7 +3,9 @@
         var listController = function (scope) {
             var vm = this;
             var currentcomment = scope.commentListCtrl.selectedComment;
-            vm.replies = currentcomment.resource("reply").query();
+            currentcomment.$promise.then(function(data){
+                vm.replies = data;
+            });
         };
         listController.$inject = ["$scope"];
         return listController;

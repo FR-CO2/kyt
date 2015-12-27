@@ -86,6 +86,11 @@ public class CommentController {
     @RequestMapping(value = "/{commentId}/reply", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public Iterable<CommentResource> listReplies(@PathVariable("commentId") Long commentId) {
         Comment parent = repository.findOne(commentId);
+        // TODO : voir avec benjamin s'il n'y a pas un moyen plus propre de faire ça.
+        int length = parent.getReply().size();
+        for(int i = 0; i < length; i++){
+            parent.getReply().get(i).setTask(parent.getTask());
+        }
         return assembler.toResources(parent.getReply());
     }
 }

@@ -21,7 +21,7 @@
                     </div>
                     <div class="panel-body">
                         {{comment.comment}}
-                        <div ng-if="comment === commentListCtrl.selectedComment">
+                        <div ng-if="commentListCtrl.selectedComment !== undefined">
                             <div ng-include="'templates/project/task/comment/reply.html'" ng-controller="commentReplyController as commentReplyCtrl"></div>
                         </div>
                     </div>
@@ -29,7 +29,11 @@
                         <div class="pull-right">
                             <span class="badge">
                                 <a ng-click="commentListCtrl.showReply(comment)" title="reply">
-                                    <span class="glyphicon glyphicon-eye-open"></span> voir les réponses
+                                    <span class="glyphicon glyphicon-eye-open"></span>
+                                    <span ng-switch="comment.nbReply"> voir 
+                                        <span ng-switch-when="1">la réponse</span>
+                                        <span ng-switch-default>les réponses</span>
+                                    </span>
                                 </a>
                             </span>
                             <span class="badge">
