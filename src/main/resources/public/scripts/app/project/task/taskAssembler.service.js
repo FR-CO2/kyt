@@ -13,6 +13,9 @@
                     taskresource = new HateoasInterface(task);
                 }
                 task.state = taskresource.resource("state").get();
+                if (task._links.project){
+                    task.project = taskresource.resource("project").get();
+                }
                 if (task._links.category) {
                     task.category = taskresource.resource("category").get();
                 }
