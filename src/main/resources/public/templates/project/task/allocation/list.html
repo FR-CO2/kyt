@@ -31,6 +31,11 @@
                         <td>
                             {{allocation.timeRemains}}
                         </td>
+                        <td>
+                        <a ng-click="allocationListCtrl.delete(allocation)" title="delete">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </a>
+                        </td>
                     </tr>
                 </tbody>
             </table>

@@ -24,6 +24,11 @@
                     currenttask.allocations = currenttask.resource("allocation").query();
                 });
             };
+            vm.delete = function(allocation){
+                allocation.resource("self").delete(null, function () {
+                    currenttask.allocations = currenttask.resource("allocation").query();
+                });
+            };
         };
         listController.$inject = ["$uibModal", "$scope"];
         return listController;

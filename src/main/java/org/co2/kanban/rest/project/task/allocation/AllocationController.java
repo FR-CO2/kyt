@@ -59,7 +59,7 @@ public class AllocationController {
 
     @RequestMapping(value="/{allocationId}", method = RequestMethod.DELETE, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity delete(@PathVariable("allocationId") Long allocationId) {
-        allocationRepository.findOne(allocationId);
+        allocationRepository.delete(allocationId);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
