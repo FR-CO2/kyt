@@ -40,11 +40,11 @@
         <fieldset>
             <div class="form-group  col-md-3">
                 <label for="plannedStart">Date de début prévue </label>
-                <input type="date" id="plannedStart" class="form-control" ng-model="taskCtrl.task.plannedStart"/>
+                <input type="date" id="plannedStart" class="form-control" ng-model="taskCtrl.task.plannedStart" value="{{taskCtrl.task.plannedStartValue}}"/>
             </div>
             <div class="form-group col-md-3">
                 <label for="plannedEnding">Date de fin prévue </label>
-                <input type="date" id="plannedEnding" class="form-control" ng-model="taskCtrl.task.plannedEnding"/>
+                <input type="date" id="plannedEnding" class="form-control" ng-model="taskCtrl.task.plannedEnding" value="{{taskCtrl.task.plannedEndingValue}}"/>
             </div>
             <div class="form-group col-md-3">
                 <label for="estimatedLoad">Charge totale prévue</label>
