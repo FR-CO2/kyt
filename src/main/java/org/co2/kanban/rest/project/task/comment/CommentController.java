@@ -14,7 +14,6 @@ import org.co2.kanban.repository.comment.CommentRepository;
 import org.co2.kanban.repository.task.Task;
 import org.co2.kanban.repository.task.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -87,10 +86,7 @@ public class CommentController {
     public Iterable<CommentResource> listReplies(@PathVariable("commentId") Long commentId) {
         Comment parent = repository.findOne(commentId);
         // TODO : voir avec benjamin s'il n'y a pas un moyen plus propre de faire ça.
-        int length = parent.getReply().size();
-        for(int i = 0; i < length; i++){
-            parent.getReply().get(i).setTask(parent.getTask());
-        }
+        // Reponse : recrée ta base de données => il y avait un pb avant, on enregistrait pas la task sur les réponses ... c'est corrigé mais tu dois avoir des réponses sans task dans ta base
         return assembler.toResources(parent.getReply());
     }
 }
