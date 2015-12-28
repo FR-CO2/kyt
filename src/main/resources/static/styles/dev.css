@@ -6,3 +6,13 @@
 .kanban-card .badge{
     color : #000;
 }
+
+.datecell {
+/*    -webkit-transform:rotate(70deg);
+    -moz-transform:rotate(70deg);
+    -o-transform: rotate(70deg);
+    -ms-transform:rotate(70deg);
+    transform: rotate(70deg);*/
+    border: none !important;
+    font-size: 10px!important;
+}

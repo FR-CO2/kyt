@@ -43,10 +43,10 @@ public class TaskListController {
 
     @Autowired
     private StateRepository stateRepository;
-    
+
     @Autowired
     private SwimlaneRepository swimlaneRepository;
-    
+
     @Autowired
     private PagedResourcesAssembler<Task> pagedAssembler;
 
@@ -55,33 +55,57 @@ public class TaskListController {
 
     @RequestMapping(params = {"page", "size"}, method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public PagedResources<TaskResource> page(@PathVariable("projectId") Long projectId,
-            @RequestParam(name="page") Integer page,
-            @RequestParam(name="size", required = false) Integer size) {
+            @RequestParam(name = "page") Integer page,
+            @RequestParam(name = "size", required = false) Integer size) {
         // On décrémente le nombre de la page de 1 car la numérotation commence à 1 tandis que le tableau à 0.
-        if(page > 0){
-            page --;
+        if (page > 0) {
+            page--;
         }
         Project project = projectRepository.findOne(projectId);
         Pageable pageable = new PageRequest(page, size);
         return pagedAssembler.toResource(repository.findByProject(project, pageable), assembler);
     }
 
-    @RequestMapping(params = {"state", "swimlane"}, method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public Iterable<TaskResource> list(@PathVariable("projectId") Long projectId,
-            @RequestParam(name="state") Long stateId,
-            @RequestParam(name="swimlane") Long swimlaneId) {
+    @RequestMapping(params = {"noswimlane"}, method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    public Iterable<TaskResource> listNoSwimlane(@PathVariable("projectId") Long projectId) {
+        Iterable<TaskResource> tasks;
+        Project project = projectRepository.findOne(projectId);
+        tasks = assembler.toResources(repository.findByProjectAndSwimlaneIsNull(project));
+        return tasks;
+    }
+
+    @RequestMapping(params = {"state", "noswimlane"}, method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    public Iterable<TaskResource> listByStateAndNoSwimlane(@PathVariable("projectId") Long projectId,
+            @RequestParam(name = "state") Long stateId) {
         Iterable<TaskResource> tasks;
         Project project = projectRepository.findOne(projectId);
         State state = stateRepository.findOne(stateId);
-        if (swimlaneId == -1) {
-            tasks = assembler.toResources(repository.findByProjectAndStateAndSwimlaneIsNull(project, state));
-        } else {
-            Swimlane swimlane = swimlaneRepository.findOne(swimlaneId);
-            tasks = assembler.toResources(repository.findByProjectAndStateAndSwimlane(project, state, swimlane));
-        }
+        tasks = assembler.toResources(repository.findByProjectAndStateAndSwimlaneIsNull(project, state));
         return tasks;
     }
-    
+
+    @RequestMapping(params = {"swimlane"}, method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    public Iterable<TaskResource> listBySwimlane(@PathVariable("projectId") Long projectId,
+            @RequestParam(name = "swimlane") Long swimlaneId) {
+        Iterable<TaskResource> tasks;
+        Project project = projectRepository.findOne(projectId);
+        Swimlane swimlane = swimlaneRepository.findOne(swimlaneId);
+        tasks = assembler.toResources(repository.findByProjectAndSwimlane(project, swimlane));
+        return tasks;
+    }
+
+    @RequestMapping(params = {"state", "swimlane"}, method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    public Iterable<TaskResource> listByStateAndSwimlane(@PathVariable("projectId") Long projectId,
+            @RequestParam(name = "state") Long stateId,
+            @RequestParam(name = "swimlane") Long swimlaneId) {
+        Iterable<TaskResource> tasks;
+        Project project = projectRepository.findOne(projectId);
+        State state = stateRepository.findOne(stateId);
+        Swimlane swimlane = swimlaneRepository.findOne(swimlaneId);
+        tasks = assembler.toResources(repository.findByProjectAndStateAndSwimlane(project, state, swimlane));
+        return tasks;
+    }
+
     @RequestMapping(method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("@projectAccessExpression.hasContributorAccess(#projectId, principal.username)")
     public TaskResource create(@PathVariable("projectId") Long projectId, @RequestBody Task task) {

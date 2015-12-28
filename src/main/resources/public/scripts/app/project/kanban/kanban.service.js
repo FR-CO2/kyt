@@ -37,6 +37,19 @@
                 });
                 return result;
             };
+            var retrieveTaskNoSwimlane = function (project, states) {
+                var result = [];
+                var i = 0;
+                angular.forEach(states, function (state) {
+                    result[i] = {id: state.id};
+                    result[i].tasks = project.resource("task").query(
+                            {"noswimlane": true, "state": state.id},
+                    fetchKanbanTask);
+                    i++;
+                });
+                return result;
+            };
+
             return {
                 load: function (project) {
                     var tasks = [];
@@ -50,7 +63,7 @@
                                 tasks.push(swimlane);
                                 swimlane.states = retrieveTaskBySwimlane(project, states, swimlane.id);
                             });
-                            var noswimlane = {states: states = retrieveTaskBySwimlane(project, states, -1)};
+                            var noswimlane = {states: states = retrieveTaskNoSwimlane(project, states)};
                             tasks.push(noswimlane);
                         });
                     });

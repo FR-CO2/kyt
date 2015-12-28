@@ -2,13 +2,15 @@
     define(['angular', "project/consommation/consommation.config",
         "project/consommation/consommation.controller",
         "project/consommation/member.controller",
-        "project/consommation/task.controller"],
+        "project/consommation/task.controller",
+        "project/consommation/task.service"],
             function (angular, config, consommationController, memberController,
-                    taskContoller) {
+                    taskContoller, taskService) {
                 return angular.module('kanban.project.consommation', [])
                         .config(config)
                         .controller("consommationController", consommationController)
                         .controller("memberConsommationController", memberController)
-                        .controller("taskConsommationController", taskContoller);
+                        .controller("taskConsommationController", taskContoller)
+                        .service("consomationTaskService", taskService);
             });
 })();

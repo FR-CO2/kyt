@@ -10,13 +10,13 @@
             });
             $stateProvider.state("app.project.consommation.member", {
                 controller: "memberConsommationController",
-                controllerAs: "consommationCtrl",
+                controllerAs: "consommationMemberCtrl",
                 templateUrl: "templates/project/consommation/member.html",
                 url: "/member"
             });
             $stateProvider.state("app.project.consommation.task", {
                 controller: "taskConsommationController",
-                controllerAs: "consommationCtrl",
+                controllerAs: "consommationTaskCtrl",
                 templateUrl: "templates/project/consommation/task.html",
                 url: "/task"
             });

@@ -2,13 +2,6 @@
     define([], function () {
         var consomationController = function (project) {
             var vm = this;
-            vm.showDetail = function(entry) {
-                entry.showDetails = true;
-            };
-            vm.hideDetail = function(entry) {
-                entry.showDetails = false;
-            };
-            vm.days = ["20/12", "21/12", "22/12", "23/12", "24/12"];
             vm.entries = [
                 {
                     name: "admin",
