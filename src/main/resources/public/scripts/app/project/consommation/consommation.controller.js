@@ -1,26 +1,16 @@
 (function () {
     define([], function () {
-        var consomationController = function (project, $state, consommationFilterFactory) {
+        var consomationController = function (project, consomationService) {
             var vm = this;
+            vm.precision = "week";
+            vm.start = new Date();
+            var end = new Date(vm.start.getTime());
+            end.setDate(end.getDate() + 7);
             vm.showDetail = function (entry) {
                 entry.showDetails = true;
             };
             vm.hideDetail = function (entry) {
                 entry.showDetails = false;
-            };
-            if ($state.current.name !== "app.project.consommation.task") {
-                vm.viewKind = "member";
-                $state.transitionTo("app.project.consommation.member", {projectId: project.id});
-            } else {
-                vm.viewKind = "task";
-            }
-            vm.precision = "week";
-            vm.viewKindChange = function () {
-                if (vm.viewKind === "member") {
-                    $state.transitionTo("app.project.consommation.member", {projectId: project.id});
-                } else {
-                    $state.transitionTo("app.project.consommation.task", {projectId: project.id});
-                }
             };
             var loadWeekDays = function (start) {
                 var day = new Date(start.getTime());
@@ -44,26 +34,28 @@
                     day.setDate(dayNumber + 1);
                 }
             };
+
             vm.precisionChange = function () {
                 vm.days = [];
-                var start = consommationFilterFactory.filter.start;
                 if (vm.precision === "week") {
-                    start.setDate(start.getDate() - start.getDay() + 1);
-                    consommationFilterFactory.filter.end = new Date(start.getTime());
-                    loadWeekDays(consommationFilterFactory.filter.start);
-                    consommationFilterFactory.filter.end.setDate(start.getDate() + 7);
+                    vm.start.setDate(vm.start.getDate() - vm.start.getDay() + 1);
+                    loadWeekDays(vm.start);
+                    end = new Date(vm.start.getTime());
+                    end.setDate(vm.start.getDate() + 7);
+                    vm.entries = consomationService(project, vm.start, end);
                 } else {
-                    start.setDate(1);
-                    var month = start.getMonth();
-                    loadMonthDays(consommationFilterFactory.filter.start, month);
-                    consommationFilterFactory.filter.end = new Date(start.getTime());
-                    consommationFilterFactory.filter.end.setMonth(start.getMonth() + 1);
-                    consommationFilterFactory.filter.end.setDate(-1);
+                    vm.start.setDate(1);
+                    loadMonthDays(vm.start, vm.start.getMonth());
+                    end = new Date(vm.start.getTime());
+                    end.setMonth(vm.start.getMonth() + 1);
+                    end.setDate(-1);
+                    vm.entries = consomationService(project, vm.start, end);
                 }
             };
             vm.precisionChange();
+            vm.entries = consomationService(project, vm.start, end);
         };
-        consomationController.$inject = ["project", "$state", "consommationFilterFactory"];
+        consomationController.$inject = ["project", "consomationService"];
         return consomationController;
     });
 })();
