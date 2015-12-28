@@ -40,13 +40,13 @@
                             <span ng-if="!entry.showDetails && entry.imputations.details.length" class="glyphicon glyphicon-chevron-down" ng-click="consommationCtrl.showDetail(entry)"></span>
                             <span ng-if="entry.showDetails && entry.imputations.details.length" class="glyphicon glyphicon-chevron-up" ng-click="consommationCtrl.hideDetail(entry)"></span>
                         </th>
-                        <th ng-repeat="day in consommationCtrl.days"> {{entry.imputations.imputations[day]}}</th>
+                        <th ng-repeat="day in consommationCtrl.days"> {{entry.imputations.imputations[day.getTime()]}}</th>
                         <th>&nbsp;</th>
                     </tr>
                     <tr uib-collapse="!entry.showDetails" ng-repeat="detail in entry.imputations.details">
                         <td>{{detail.taskName}} </td>
                         <td>&nbsp;</td>
-                        <td ng-repeat="timespent in detail.imputations"> {{timespent}}  </td>
+                        <td ng-repeat="day in consommationCtrl.days"> {{detail.imputions[day.getTime()]}}  </td>
                         <td>&nbsp;</td>
                     </tr>
                 </tbody>

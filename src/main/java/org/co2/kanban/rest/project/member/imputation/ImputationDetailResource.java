@@ -21,13 +21,13 @@ public class ImputationDetailResource extends ResourceSupport {
     
     private final Long taskId;
     
-    private final Map<Timestamp, Float> imputations = new HashMap<>();
+    private final Map<Long, Float> imputations = new HashMap<>();
 
     public ImputationDetailResource(List<Timestamp> times, String taskName, Long taskId) {
         this.taskName = taskName;
         this.taskId = taskId;
         for (Timestamp time : times) {
-            imputations.put(time, 0F);
+            imputations.put(time.getTime(), 0F);
         }
     }
 
@@ -39,7 +39,7 @@ public class ImputationDetailResource extends ResourceSupport {
         return taskId;
     }
     
-    public Map<Timestamp, Float> getImputations() {
+    public Map<Long, Float> getImputations() {
         return this.imputations;
     }
 

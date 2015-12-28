@@ -19,13 +19,13 @@ public class ImputationResource {
 
     private Iterable<ImputationDetailResource> details = new ArrayList<>();
 
-    private Map<Timestamp, Float> imputations = new HashMap<>();
+    private Map<Long, Float> imputations = new HashMap<>();
     
     public Iterable<ImputationDetailResource> getDetails() {
         return details;
     }    
     
-    public Map<Timestamp, Float> getImputations() {
+    public Map<Long, Float> getImputations() {
         return imputations;
     }
 
@@ -33,7 +33,7 @@ public class ImputationResource {
         this.details = details;
     }
 
-    public void setImputations(Map<Timestamp, Float> imputations) {
+    public void setImputations(Map<Long, Float> imputations) {
         this.imputations = imputations;
     }
     

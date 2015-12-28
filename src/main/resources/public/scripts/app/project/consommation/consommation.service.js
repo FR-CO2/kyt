@@ -11,8 +11,8 @@
                 return project.resource("member").query(function (data) {
                     angular.forEach(data, function (member) {
                         member.imputations = member.resource("imputation")
-                                                    .get({start:start.toLocaleDateString(),
-                                                          end : end.toLocaleDateString()});
+                                .get({start: start.toLocaleDateString(),
+                                    end: end.toLocaleDateString()});
                     });
                 });
             };

@@ -7,7 +7,6 @@ package org.co2.kanban.rest.project.member.imputation;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
@@ -25,7 +24,7 @@ public class ImputationAssembler {
     public ImputationResource toResources(Timestamp start, Timestamp end, Iterable<Allocation> allocations) {
         ImputationResource imputations = new ImputationResource();
 
-        Map<Timestamp, Float> allocationDates = new HashMap<>();
+        Map<Long, Float> allocationDates = new HashMap<>();
         Map<Long, ImputationDetailResource> imputationDetails = new HashMap<>();
         List<Timestamp> times = new ArrayList<>();
         GregorianCalendar cal = new GregorianCalendar();
@@ -33,19 +32,19 @@ public class ImputationAssembler {
         while (cal.getTime().before(end)) {
             Timestamp time = new Timestamp(cal.getTimeInMillis());
             times.add(time);
-            allocationDates.put(time, 0F);
+            allocationDates.put(time.getTime(), 0F);
             cal.add(GregorianCalendar.DAY_OF_MONTH, 1);
         }
         for (Allocation allocation : allocations) {
-            Float timeSpent = allocationDates.get(allocation.getAllocationDate());
-            allocationDates.put(allocation.getAllocationDate(), timeSpent + allocation.getTimeSpent());
+            Float timeSpent = allocationDates.get(allocation.getAllocationDate().getTime());
+            allocationDates.put(allocation.getAllocationDate().getTime(), timeSpent + allocation.getTimeSpent());
 
             if (!imputationDetails.containsKey(allocation.getTask().getId())) {
                 ImputationDetailResource detail = new ImputationDetailResource(times, allocation.getTask().getName(),
                         allocation.getTask().getId());
                 imputationDetails.put(allocation.getTask().getId(), detail);
             }
-            imputationDetails.get(allocation.getTask().getId()).getImputations().put(allocation.getAllocationDate(), allocation.getTimeSpent());
+            imputationDetails.get(allocation.getTask().getId()).getImputations().put(allocation.getAllocationDate().getTime(), allocation.getTimeSpent());
         }
 
         imputations.setImputations(allocationDates);
