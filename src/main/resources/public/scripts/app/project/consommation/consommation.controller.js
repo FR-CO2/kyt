@@ -28,7 +28,7 @@
                 //On n'affiche que les jours ouverts
                 for (var i = 1; i < 6; i++) {
                     var dayNumber = day.getDate();
-                    vm.days.push(day.toLocaleDateString());
+                    vm.days.push(day);
                     day = new Date();
                     day.setDate(dayNumber + 1);
                 }
@@ -39,7 +39,7 @@
                     var dayNumber = day.getDate();
                     //On n'affiche que les jours ouverts
                     if (day.getDay() > 0 && day.getDay() < 6) {
-                        vm.days.push(day.toLocaleDateString());
+                        vm.days.push(day);
                     }
                     day = new Date();
                     day.setDate(dayNumber + 1);

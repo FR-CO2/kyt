@@ -3,7 +3,7 @@
         <tr>
             <th></th>
             <th><span class="glyphicon glyphicon-arrow-left"></span></th>
-            <th ng-repeat="day in consommationCtrl.days">{{day}}</th>
+            <th ng-repeat="day in consommationCtrl.days">{{day | date:'dd/MM'}}</th>
             <th><span class="glyphicon glyphicon-arrow-right"></span></th>
         <tr>
     </thead>

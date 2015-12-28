@@ -5,7 +5,7 @@
         </tr>
         <tr>
             <th>&nbsp;</th>
-            <th ng-repeat="day in consommationCtrl.days" class="datecell">{{day}}</th>
+            <th ng-repeat="day in consommationCtrl.days" class="datecell">{{day | date:'dd/MM'}}</th>
         </tr>
     </thead>
     <tbody ng-repeat="task in swimlane.tasks">
