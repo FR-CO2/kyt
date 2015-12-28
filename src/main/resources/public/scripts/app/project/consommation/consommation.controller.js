@@ -47,7 +47,6 @@
                     loadMonthDays(vm.start, vm.start.getMonth());
                     end = new Date(vm.start.getTime());
                     end.setMonth(vm.start.getMonth() + 1);
-                    end.setDate(-1);
                 }
                 vm.entries = consomationService(project, vm.start, end);
             };
