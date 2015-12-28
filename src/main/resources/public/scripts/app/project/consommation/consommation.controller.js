@@ -34,7 +34,6 @@
                     day.setDate(dayNumber + 1);
                 }
             };
-
             vm.precisionChange = function () {
                 vm.days = [];
                 if (vm.precision === "week") {
@@ -52,8 +51,23 @@
                     vm.entries = consomationService(project, vm.start, end);
                 }
             };
+            vm.previous = function () {
+                if (vm.precision === "week") {
+                    vm.start.setDate(vm.start.getDate() - 7);
+                } else {
+                    vm.start.setMonth(vm.start.getMonth() - 1);
+                }
+                vm.precisionChange();
+            };
+            vm.next = function () {
+                if (vm.precision === "week") {
+                    vm.start.setDate(vm.start.getDate() + 7);
+                } else {
+                    vm.start.setMonth(vm.start.getMonth() + 1);
+                }
+                vm.precisionChange();
+            };
             vm.precisionChange();
-            vm.entries = consomationService(project, vm.start, end);
         };
         consomationController.$inject = ["project", "consomationService"];
         return consomationController;
