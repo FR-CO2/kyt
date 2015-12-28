@@ -37,16 +37,16 @@
                             {{entry.username}} 
                         </th>
                         <th>
-                            <span ng-if="!entry.showDetails" class="glyphicon glyphicon-chevron-down" ng-click="consommationCtrl.showDetail(entry)"></span>
-                            <span ng-if="entry.showDetails" class="glyphicon glyphicon-chevron-up" ng-click="consommationCtrl.hideDetail(entry)"></span>
+                            <span ng-if="!entry.showDetails && entry.imputations.details.length" class="glyphicon glyphicon-chevron-down" ng-click="consommationCtrl.showDetail(entry)"></span>
+                            <span ng-if="entry.showDetails && entry.imputations.details.length" class="glyphicon glyphicon-chevron-up" ng-click="consommationCtrl.hideDetail(entry)"></span>
                         </th>
-                        <th ng-repeat="consommation in entry.imputations"> {{consommation.timeSpent}}  </th>
+                        <th ng-repeat="day in consommationCtrl.days"> {{entry.imputations.imputations[day]}}</th>
                         <th>&nbsp;</th>
                     </tr>
-                    <tr uib-collapse="!entry.showDetails" ng-repeat="detail in entry.details">
-                        <td>{{detail.name}} </td>
+                    <tr uib-collapse="!entry.showDetails" ng-repeat="detail in entry.imputations.details">
+                        <td>{{detail.taskName}} </td>
                         <td>&nbsp;</td>
-                        <td ng-repeat="consommation in detail.consommations"> {{consommation.value}}  </td>
+                        <td ng-repeat="timespent in detail.imputations"> {{timespent}}  </td>
                         <td>&nbsp;</td>
                     </tr>
                 </tbody>

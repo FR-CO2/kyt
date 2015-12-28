@@ -7,35 +7,35 @@ package org.co2.kanban.rest.project.member.imputation;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
  * @author ben
  */
 public class ImputationResource {
+
+
+    private Iterable<ImputationDetailResource> details = new ArrayList<>();
+
+    private Map<Timestamp, Float> imputations = new HashMap<>();
     
-    private final Timestamp date;
-    
-    private final Float timeSpent;
-
-    private final List<ImputationDetailResource> details = new ArrayList<>();
-    
-    public ImputationResource(Timestamp date, Float timeSpent) {
-        this.date = date;
-        this.timeSpent = timeSpent;
-    }
-
-    public Timestamp getDate() {
-        return date;
-    }
-
-    public Float getTimeSpent() {
-        return timeSpent;
-    }
-
-    public List<ImputationDetailResource> getDetails() {
+    public Iterable<ImputationDetailResource> getDetails() {
         return details;
     }    
+    
+    public Map<Timestamp, Float> getImputations() {
+        return imputations;
+    }
+
+    public void setDetails(Iterable<ImputationDetailResource> details) {
+        this.details = details;
+    }
+
+    public void setImputations(Map<Timestamp, Float> imputations) {
+        this.imputations = imputations;
+    }
+    
     
 }

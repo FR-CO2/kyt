@@ -7,6 +7,8 @@ package org.co2.kanban.rest.project.member.imputation;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,34 +21,37 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class ImputationAssembler {
-    
-    public ImputationResource toResource(Timestamp date, Iterable<Allocation> allocations) {
-        Float timeSpent = 0F;
-        List<ImputationDetailResource> details = new ArrayList<>();
-        for (Allocation allocation : allocations) {
-            ImputationDetailResource detail = new ImputationDetailResource(allocation.getTask().getName(),allocation.getTask().getId(), allocation.getTimeSpent());
-            timeSpent += detail.getTimeSpent();
-            details.add(detail);
+
+    public ImputationResource toResources(Timestamp start, Timestamp end, Iterable<Allocation> allocations) {
+        ImputationResource imputations = new ImputationResource();
+
+        Map<Timestamp, Float> allocationDates = new HashMap<>();
+        Map<Long, ImputationDetailResource> imputationDetails = new HashMap<>();
+        List<Timestamp> times = new ArrayList<>();
+        GregorianCalendar cal = new GregorianCalendar();
+        cal.setTimeInMillis(start.getTime());
+        while (cal.getTime().before(end)) {
+            Timestamp time = new Timestamp(cal.getTimeInMillis());
+            times.add(time);
+            allocationDates.put(time, 0F);
+            cal.add(GregorianCalendar.DAY_OF_MONTH, 1);
         }
-        ImputationResource resource = new ImputationResource(date, timeSpent);
-        resource.getDetails().addAll(details);
-        return resource;
-        
-    }
-    
-    public Iterable<ImputationResource> toResources(Iterable<Allocation> allocations) {
-        List<ImputationResource> imputations = new ArrayList<>();
-        Map<Timestamp, List<Allocation>> allocationsGrouped = new HashMap<>();
         for (Allocation allocation : allocations) {
-            if (!allocationsGrouped.containsKey(allocation.getAllocationDate())) {
-               allocationsGrouped.put(allocation.getAllocationDate(), new ArrayList<Allocation>());
+            Float timeSpent = allocationDates.get(allocation.getAllocationDate());
+            allocationDates.put(allocation.getAllocationDate(), timeSpent + allocation.getTimeSpent());
+
+            if (!imputationDetails.containsKey(allocation.getTask().getId())) {
+                ImputationDetailResource detail = new ImputationDetailResource(times, allocation.getTask().getName(),
+                        allocation.getTask().getId());
+                imputationDetails.put(allocation.getTask().getId(), detail);
             }
-            allocationsGrouped.get(allocation.getAllocationDate()).add(allocation);
+            imputationDetails.get(allocation.getTask().getId()).getImputations().put(allocation.getAllocationDate(), allocation.getTimeSpent());
         }
-        for(Map.Entry<Timestamp, List<Allocation>> entry : allocationsGrouped.entrySet()) {
-            imputations.add(toResource(entry.getKey(), entry.getValue()));
-        }
+
+        imputations.setImputations(allocationDates);
+        imputations.setDetails(imputationDetails.values());
+
         return imputations;
     }
-    
+
 }

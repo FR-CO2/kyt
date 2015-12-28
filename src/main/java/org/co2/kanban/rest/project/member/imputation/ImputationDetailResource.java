@@ -6,6 +6,9 @@
 package org.co2.kanban.rest.project.member.imputation;
 
 import java.sql.Timestamp;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.springframework.hateoas.ResourceSupport;
 
 /**
@@ -18,12 +21,14 @@ public class ImputationDetailResource extends ResourceSupport {
     
     private final Long taskId;
     
-    private final Float timeSpent;
+    private final Map<Timestamp, Float> imputations = new HashMap<>();
 
-    public ImputationDetailResource(String taskName, Long taskId, Float timeSpent) {
+    public ImputationDetailResource(List<Timestamp> times, String taskName, Long taskId) {
         this.taskName = taskName;
         this.taskId = taskId;
-        this.timeSpent = timeSpent;
+        for (Timestamp time : times) {
+            imputations.put(time, 0F);
+        }
     }
 
     public String getTaskName() {
@@ -33,9 +38,9 @@ public class ImputationDetailResource extends ResourceSupport {
     public Long getTaskId() {
         return taskId;
     }
-
-    public Float getTimeSpent() {
-        return timeSpent;
+    
+    public Map<Timestamp, Float> getImputations() {
+        return this.imputations;
     }
 
 }
