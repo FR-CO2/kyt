@@ -2,8 +2,9 @@
     define(["angular", "app.config", "app.run", "login/login.module", "app.controller",
         "dashboard/dashboard.module", "project/project.module",
         "admin/admin.module", "profil/profil.controller",
-        "uiRouter", "ngStorage", "ngAuth", "xeditable", "ngResource", "ngSortable",
-        "hateoas", "uiBootstrap", "uiBootstrapTpl", "ngSanitize", "bootstrap"],
+        "uiRouter", "ngStorage", "ngAuth", "xeditable", "ngResource", 
+        "ngSortable", "hateoas", "uiBootstrap", "uiBootstrapTpl", 
+        "ngSanitize"],
             function (angular, appConfig, appRun, loginModule, appController,
                     dashboardModule, projectModule, adminModule, profilController) {
                 var app = angular.module("kanban",

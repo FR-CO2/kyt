@@ -111,11 +111,21 @@ public class ApplicationUserController {
         return new ResponseEntity<>(memberAssembler.toResources(repository.findOne(userId).getMembers()), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/{id}/task", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public PagedResources<TaskResource> listTask(@PathVariable("id") Long userId, Pageable page) {
+    @RequestMapping(value = "/{id}/task", params={"page", "size"}, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public PagedResources<TaskResource> pageTask(@PathVariable("id") Long userId,
+                                                @RequestParam("page") Integer page,
+                                                @RequestParam("size") Integer size) {
         ApplicationUser appUser = repository.findOne(userId);
-        Page<Task> tasks = taskRepositoy.findByAssigneeUser(appUser, page);
+        Pageable pageable = new PageRequest(page, size);
+        Page<Task> tasks = taskRepositoy.findByAssigneeUser(appUser, pageable);
         return pagedTaskAssembler.toResource(tasks, taskAssembler);
+    }
+    
+    @RequestMapping(value = "/{id}/task", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Iterable<TaskResource> tasks(@PathVariable("id") Long userId) {
+        ApplicationUser appUser = repository.findOne(userId);
+        Iterable<Task> tasks = taskRepositoy.findByAssigneeUser(appUser);
+        return taskAssembler.toResources(tasks);
     }
 
 }

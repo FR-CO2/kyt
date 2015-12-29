@@ -30,7 +30,7 @@ public class UserAssembler extends ResourceAssemblerSupport<ApplicationUser, Use
         resource.add(linkTo(methodOn(ApplicationUserController.class).get(user.getId())).withSelfRel());
         resource.add(linkTo(methodOn(ApplicationUserController.class).memberOf(user.getId())).withRel("members"));
         resource.add(linkTo(ProjectController.class).withRel("project"));
-        resource.add(linkTo(methodOn(ApplicationUserController.class).listTask(user.getId(), null)).withRel("task"));
+        resource.add(linkTo(methodOn(ApplicationUserController.class).tasks(user.getId())).withRel("task"));
         return resource;
     }
 

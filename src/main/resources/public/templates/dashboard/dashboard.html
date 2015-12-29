@@ -22,7 +22,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="task in dashboardCtrl.tasks._embedded.taskResourceList" ui-sref="app.project.task.general({id: task.project.id, taskId: task.id })">
+                        <tr ng-repeat="task in dashboardCtrl.tasks._embedded.taskResourceList" ui-sref="app.project.task({projectId: task.project.id, taskId: task.id })">
                             <td>
                                 {{task.project.name}}
                             </td>
@@ -69,7 +69,7 @@
                 </h2>
             </div>
             <div class="panel-body">
-                
+                <div ui-calendar="dashboardCtrl.calendarOptions.calendar" class="span8 calendar" ng-model="dashboardCtrl.eventsSource" calendar="userCalendar"></div> 
             </div>
         </div>
     </div>
