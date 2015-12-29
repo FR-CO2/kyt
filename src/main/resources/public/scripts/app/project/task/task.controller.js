@@ -1,16 +1,14 @@
 (function () {
     define([], function () {
-        var taskController = function (project, currenttask, taskAssemblerService, dateFilter) {
+        var taskController = function ($state, project, currenttask, taskAssemblerService, dateFilter) {
             var vm = this;
             currenttask.$promise.then(function () {
                 vm.task = taskAssemblerService(currenttask);
                 vm.task.plannedEndingValue = setTimeToValue(currenttask.plannedEnding);
                 vm.task.plannedStartValue = setTimeToValue(currenttask.plannedStart);
-                vm.task.comments = currenttask.resource("comment").query();
-                vm.task.allocations = currenttask.resource("allocation").query();
+                $state.transitionTo("app.project.task.comment", {projectId: project.id, taskId: vm.task.id});
             });
             project.$promise.then(function () {
-                vm.project = project;
                 vm.categories = project.resource("category").query();
                 vm.states = project.resource("state").query();
                 vm.swimlanes = project.resource("swimlane").query();
@@ -26,23 +24,23 @@
                     history.back();
                 });
             };
-            
-            var setTimeToValue = function(timeAngular){
+
+            var setTimeToValue = function (timeAngular) {
                 var timeToReturn = null;
-                if(timeAngular !== null){
+                if (timeAngular !== null) {
                     timeToReturn = (dateFilter(new Date(timeAngular), 'yyyy-MM-dd'));
                 }
                 return timeToReturn;
             };
-            
-            var setTimeIfTimeNoChange = function(timeValue, timeAngular){
-                if(timeAngular === null){
-                   timeAngular = timeValue;
+
+            var setTimeIfTimeNoChange = function (timeValue, timeAngular) {
+                if (timeAngular === null) {
+                    timeAngular = timeValue;
                 }
                 return timeAngular;
             };
         };
-        taskController.$inject = ["project", "task", "taskAssemblerService", "dateFilter"];
+        taskController.$inject = ["$state", "project", "task", "taskAssemblerService", "dateFilter"];
         return taskController;
     });
 })();

@@ -68,7 +68,6 @@
                             });
                         });
                     });
-                    console.log(grouped);
                     return grouped;
                 }
             };
