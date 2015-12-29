@@ -11,7 +11,7 @@ require.config({
         jqueryui: '../../webjars/jquery-ui/1.11.4/jquery-ui.min',
         bootstrap: '../../webjars/bootstrap/3.3.6/js/bootstrap',
         moment: '../../webjars/momentjs/2.5.0/moment',
-        fullcalendar: '../../webjars/fullcalendar/2.4.0/fullcalendar.min',
+        fullcalendar: '../../webjars/fullcalendar/2.4.0/fullcalendar',
         fullcalendarfr: '../../webjars/fullcalendar/2.4.0/lang/fr',
         angular: '../../webjars/angularjs/1.4.8/angular',
         ngSortable: '../../webjars/ng-sortable/1.1.9/ng-sortable',
