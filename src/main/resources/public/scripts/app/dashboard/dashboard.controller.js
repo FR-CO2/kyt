@@ -39,7 +39,6 @@
                     });
                 });
             };
-
             vm.calendarOptions = {
                 height: 450,
                 editable: true,
