@@ -22,7 +22,8 @@
                 });
             });
             vm.loadCalendarEvent = function (start, end) {
-                currentuser.resource("task").query(function (data) {
+                currentuser.resource("task").query({start: start, end: end}, 
+                function (data) {
                     angular.forEach(data, function (task) {
                         task = taskAssemblerService(task);
                         task.title = task.name;

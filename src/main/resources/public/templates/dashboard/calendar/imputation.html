@@ -4,11 +4,10 @@
     </div>
     <div class="panel-body">
         <alert type="danger" ng-if="addImputationCtrl.form.error">{{addImputationCtrl.form.error}}</alert>
-        <form id="task" role="form" ng-submit="addImputationCtrl.submit()">
+        <form id="imputation" role="form" ng-submit="addImputationCtrl.submit()">
             <fieldset>
-                <div class="form-group col-md-5">
-                    <label for="addedtask">Ajouter une tâche</label>
-                    <input class="form-control" id="addedtask" ng-model="addImputationCtrl.addedTask" typeahead-editable="false"
+                <div class="form-group col-md-offset-7">
+                    <input class="form-control" id="addedtask" ng-model="addImputationCtrl.addedTask" typeahead-editable="false" placeholder="Ajouter une tâche"
                            typeahead-on-select="addImputationCtrl.addTask($item, $model, $label)" uib-typeahead="task as task.name for task in addImputationCtrl.userTasks | filter:$viewValue | limitTo:8" />
                 </div>
             </fieldset>
