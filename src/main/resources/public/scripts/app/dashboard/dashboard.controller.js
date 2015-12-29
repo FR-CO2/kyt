@@ -1,6 +1,6 @@
 (function () {
     define(["angular"], function (angular) {
-        var dashboardController = function (currentuser, taskAssemblerService, uiCalendarConfig, moment) {
+        var dashboardController = function ($uibModal, currentuser, taskAssemblerService, uiCalendarConfig, moment) {
             var vm = this;
             vm.tasks = {
                 page: {
@@ -26,8 +26,9 @@
                     angular.forEach(data, function (task) {
                         task = taskAssemblerService(task);
                         task.title = task.name;
-                        task.start = task._start = moment(task.plannedStart);
-                        task.end = task._end = moment(task.plannedEnding);
+                        task.start = moment(task.plannedStart);
+                        task.end = moment(task.plannedEnding);
+                        task.allDay = true;
                         if (task._links.category) {
                             task.category.$promise.then(function () {
                                 task.backgroundColor = task.category.bgcolor;
@@ -39,9 +40,26 @@
                     });
                 });
             };
+            dayOnClick = function (day) {
+                $uibModal.open({
+                    animation: true,
+                    templateUrl: "templates/dashboard/calendar/imputation.html",
+                    controller: "addImputationController",
+                    controllerAs: "addImputationCtrl",
+                    resolve: {
+                        day: function () {
+                            return day;
+                        },
+                        currentuser : function() {
+                            return currentuser;
+                        }
+                    },
+                    size: "md"
+                });
+            }
             vm.calendarOptions = {
                 height: 450,
-                editable: true,
+                editable: false,
                 lang: "fr",
                 header: {
                     left: 'title',
@@ -50,11 +68,12 @@
                 },
                 viewRender: function (view, element) {
                     vm.loadCalendarEvent(view.start, view.end);
-                }
+                },
+                dayClick: dayOnClick
             };
             vm.eventsSource = [];
         };
-        dashboardController.$inject = ["currentuser", "taskAssemblerService", "uiCalendarConfig", "moment"];
+        dashboardController.$inject = ["$uibModal", "currentuser", "taskAssemblerService", "uiCalendarConfig", "moment"];
         return dashboardController;
     });
 })();
