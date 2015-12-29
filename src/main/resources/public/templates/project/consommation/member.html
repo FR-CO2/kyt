@@ -46,7 +46,7 @@
                     <tr uib-collapse="!entry.showDetails" ng-repeat="detail in entry.imputations.details">
                         <td>{{detail.taskName}} </td>
                         <td>&nbsp;</td>
-                        <td ng-repeat="day in consommationCtrl.days"> {{detail.imputions[day.getTime()]}}  </td>
+                        <td ng-repeat="day in consommationCtrl.days"> {{detail.imputations[day.getTime()]}}</td>
                         <td>&nbsp;</td>
                     </tr>
                 </tbody>
