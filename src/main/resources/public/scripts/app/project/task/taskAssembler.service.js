@@ -29,6 +29,8 @@
                     task.backup = taskresource.resource("backup").get();
                 }
                 
+                task.exceededLoad = (task.timeRemains + task.timeSpent > task.estimatedLoad);
+                
                 var today = new Date();
                 today.setHours(0,0,0,0);
                 var dateEnd = new Date(task.plannedEnding);

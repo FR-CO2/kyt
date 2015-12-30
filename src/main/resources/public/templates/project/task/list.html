@@ -66,7 +66,7 @@
                         <td>
                             {{task.estimatedLoad}}
                         </td>
-                        <td>
+                        <td ng-class="{'exceeded-load' : task.exceededLoad}">
                             {{task.timeRemains}}
                         </td>
                         <td >
