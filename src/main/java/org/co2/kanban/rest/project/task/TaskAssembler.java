@@ -34,7 +34,7 @@ public class TaskAssembler extends ResourceAssemblerSupport<Task, TaskResource> 
         TaskResource resource = new TaskResource(task);
         //TODO report calcul time remains & time spent
         resource.setTimeRemains(0F);
-        resource.setTimeSpent(0F);
+        resource.setTimeSpent(methodOn(AllocationController.class, task.getProject().getId(), task.getId()).sum(task.getId()));
         resource.add(linkTo(methodOn(ProjectController.class).get(task.getProject().getId())).withRel("project"));
         resource.add(linkTo(methodOn(StateController.class, task.getProject().getId()).get(task.getState().getId())).withRel("state"));
         resource.add(linkTo(methodOn(TaskController.class, task.getProject().getId(), task.getId()).get(task.getId())).withSelfRel());
@@ -51,7 +51,7 @@ public class TaskAssembler extends ResourceAssemblerSupport<Task, TaskResource> 
             resource.add(linkTo(methodOn(CategoryController.class, task.getProject().getId()).get(task.getCategory().getId())).withRel("category"));
         }
         resource.add(linkTo(methodOn(CommentController.class, task.getProject().getId(), task.getId()).comments(task.getId())).withRel("comment"));
-        resource.add(linkTo(methodOn(AllocationController.class, task.getProject().getId(), task.getId()).list(task.getId())).withRel("allocation"));
+        resource.add(linkTo(methodOn(AllocationController.class, task.getProject().getId(), task.getId()).sum(task.getId())).withRel("allocation"));
         
         return resource;
     }

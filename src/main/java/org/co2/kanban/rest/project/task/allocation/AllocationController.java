@@ -63,4 +63,9 @@ public class AllocationController {
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
+    @RequestMapping(method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    public Float sum(@PathVariable("taskId") Long taskId){
+        Task task = repository.findOne(taskId);
+        return allocationRepository.sumByTask(task.getId());
+    }
 }

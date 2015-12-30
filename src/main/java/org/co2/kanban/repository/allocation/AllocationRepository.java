@@ -8,6 +8,7 @@ package org.co2.kanban.repository.allocation;
 import java.sql.Timestamp;
 import org.co2.kanban.repository.member.Member;
 import org.co2.kanban.repository.task.Task;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 /**
@@ -19,4 +20,7 @@ public interface AllocationRepository extends PagingAndSortingRepository<Allocat
     Iterable<Allocation> findByMemberAndAllocationDateBetween(Member member, Timestamp start, Timestamp end);
 
     Iterable<Allocation> findByTask(Task task);
+    
+    @Query(value = "SELECT SUM(a.timeSpent) FROM allocation a where a.task_id = ?1", nativeQuery = true)
+    Float sumByTask(Long taskId);
 }
