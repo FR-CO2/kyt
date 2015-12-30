@@ -59,7 +59,7 @@ public class UserConsommationController {
         List<UserTaskImputationResource> results = new ArrayList<>();
         Iterable<Allocation> allocations = allocationRepository.findByMemberUserAndAllocationDate(appUser, time);
         Iterator<Allocation> allocationsIterator = allocations.iterator();
-        Iterable<Task> tasks = taskRepositoy.findByAssigneeUserAndPlannedStartBeforeAndPlannedEndingAfter(appUser, time, time);
+        Iterable<Task> tasks = taskRepositoy.findByAssigneeUserAndPlannedStartBeforeAndPlannedEndingAfterAndStateCloseStateFalse(appUser, time, time);
         for (Task task : tasks) {
             UserTaskImputationResource resource = new UserTaskImputationResource(task);
             while (allocationsIterator.hasNext()) {
