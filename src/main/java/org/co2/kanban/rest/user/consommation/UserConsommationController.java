@@ -76,8 +76,7 @@ public class UserConsommationController {
             }
             results.add(resource);
         }
-        while (allocationsIterator.hasNext()) {
-            Allocation allocation = allocationsIterator.next();
+        for (Allocation allocation : allocations) {
             UserTaskImputationResource resource = new UserTaskImputationResource(allocation.getTask());
             resource.setTimeRemains(allocation.getTimeRemains());
             resource.setTimeSpent(allocation.getTimeSpent());
