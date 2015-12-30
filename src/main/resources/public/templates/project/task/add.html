@@ -20,19 +20,13 @@
             </div>
             <div class="form-group">
                 <label for="assignee">Assigné à </label>
-                <select ng-model="addTaskCtrl.task.assignee.id" id="assignee" class="form-control" name="assignee" placeholder="Assigné à">
-                    <option value="{{member.id}}" ng-repeat="member in addTaskCtrl.members">{{member.username}}</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="backup">Backup </label>
-                <select ng-model="addTaskCtrl.task.backup.id" id="backup" class="form-control" name="backup" placeholder="Backup">
-                    <option value="{{member.id}}" ng-repeat="member in addTaskCtrl.members">{{member.username}}</option>
-                </select>
+                <input class="form-control" ng-model="addTaskCtrl.task.assignee.username"
+                       typeahead-editable="false" typeahead-on-select="addTaskCtrl.selectAssignee($item, $model, $label)" 
+                       uib-typeahead="member as member.username for member in addTaskCtrl.getMembers($viewValue)" />
             </div>
             <div class="form-group">
                 <label for="plannedStart">Date de début prévue </label>
-            <input type="date" id="plannedStart" class="form-control" ng-model="addTaskCtrl.task.plannedStart" />
+                <input type="date" id="plannedStart" class="form-control" ng-model="addTaskCtrl.task.plannedStart" />
             </div>
             <div class="form-group">
                 <label for="plannedEnding">Date de fin prévue </label>

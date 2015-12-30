@@ -9,7 +9,7 @@
                 <label for="assignee">Utilisateur</label>
                 <input class="form-control" id="assignee" ng-model="addAllocationCtrl.allocation.member.username" typeahead-editable="false"
                        typeahead-on-select="addAllocationCtrl.selectMember($item, $model, $label)" 
-                       uib-typeahead="member as member.username for member in addAllocationCtrl.members | filter:$viewValue | limitTo:8" />
+                       uib-typeahead="member as member.username for member in addAllocationCtrl.getMembers($viewValue)" />
             </div>
             <div class="form-group col-md-3">
                 <label for="plannedEnding">Date imputation </label>

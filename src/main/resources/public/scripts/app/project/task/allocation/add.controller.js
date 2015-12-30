@@ -2,7 +2,9 @@
     define([], function () {
         var addController = function ($uibModalInstance, task, project) {
             var vm = this;
-            vm.members = project.resource("member").query();
+            vm.getMembers = function (term) {
+                return project.resource("member").query({search: term}).$promise;
+            };
             vm.selectMember = function ($item, $model, $label) {
                 vm.allocation.member = $model;
             };

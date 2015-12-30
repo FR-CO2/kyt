@@ -12,10 +12,12 @@
                 vm.categories = project.resource("category").query();
                 vm.states = project.resource("state").query();
                 vm.swimlanes = project.resource("swimlane").query();
-                vm.members = project.resource("member").query();
             });
             vm.selectAssignee = function ($item, $model, $label) {
                 vm.task.assignee = $model;
+            };
+            vm.getMembers = function(term) {
+                return project.resource("member").query({search: term}).$promise;
             };
             vm.submit = function () {
                 vm.task.plannedStart = setTimeIfTimeNoChange(vm.task.plannedStartValue, vm.task.plannedStart);
