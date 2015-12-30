@@ -5,6 +5,7 @@
  */
 package org.co2.kanban.rest.project.task;
 
+import java.sql.Timestamp;
 import org.co2.kanban.repository.allocation.Allocation;
 import org.co2.kanban.rest.project.ProjectController;
 import org.co2.kanban.rest.project.category.CategoryController;
@@ -30,16 +31,35 @@ public class TaskAssembler extends ResourceAssemblerSupport<Task, TaskResource> 
         super(TaskController.class, TaskResource.class);
     }
 
+    private Float calculateTimeRemains(Float currentTimeRemains, Allocation allocation) {
+        Float timeRemains = currentTimeRemains;
+        if (allocation.getTimeRemains() != null) {
+            timeRemains = allocation.getTimeRemains();
+        } else {
+            timeRemains = timeRemains - allocation.getTimeSpent();
+        }
+        return timeRemains;
+    }
+
     @Override
     public TaskResource toResource(Task task) {
         TaskResource resource = new TaskResource(task);
         //TODO report calcul time remains 
-        Float timespent = 0F;
+        Float timeSpent = 0F;
+        Float timeRemains = task.getEstimatedLoad();
+        Timestamp timeRemainsAllocationDate = null;
         for (Allocation allocation : task.getAllocations()) {
-            timespent += allocation.getTimeSpent();
+            if (timeRemainsAllocationDate == null) {
+                timeRemainsAllocationDate = allocation.getAllocationDate();
+                timeRemains = calculateTimeRemains(timeRemains, allocation);
+            }
+            if (timeRemainsAllocationDate.before(allocation.getAllocationDate())) {
+                timeRemains = calculateTimeRemains(timeRemains, allocation);
+            }
+            timeSpent += allocation.getTimeSpent();
         }
-        resource.setTimeRemains(0F);
-        resource.setTimeSpent(timespent);
+        resource.setTimeRemains(timeRemains);
+        resource.setTimeSpent(timeSpent);
         resource.add(linkTo(methodOn(ProjectController.class).get(task.getProject().getId())).withRel("project"));
         resource.add(linkTo(methodOn(StateController.class, task.getProject().getId()).get(task.getState().getId())).withRel("state"));
         resource.add(linkTo(methodOn(TaskController.class, task.getProject().getId(), task.getId()).get(task.getId())).withSelfRel());
@@ -56,7 +76,8 @@ public class TaskAssembler extends ResourceAssemblerSupport<Task, TaskResource> 
             resource.add(linkTo(methodOn(CategoryController.class, task.getProject().getId()).get(task.getCategory().getId())).withRel("category"));
         }
         resource.add(linkTo(methodOn(CommentController.class, task.getProject().getId(), task.getId()).comments(task.getId())).withRel("comment"));
-        
+        resource.add(linkTo(methodOn(AllocationController.class, task.getProject().getId(), task.getId()).list(task.getId())).withRel("allocation"));
+
         return resource;
     }
 }

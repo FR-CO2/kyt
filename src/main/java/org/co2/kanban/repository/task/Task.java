@@ -64,7 +64,7 @@ public class Task implements Serializable, Identifiable {
 
     private Timestamp plannedEnding;
 
-    private Long estimatedLoad;
+    private Float estimatedLoad;
 
     private String description;
 
@@ -128,11 +128,11 @@ public class Task implements Serializable, Identifiable {
         this.plannedEnding = plannedEnding;
     }
 
-    public Long getEstimatedLoad() {
+    public Float getEstimatedLoad() {
         return estimatedLoad;
     }
 
-    public void setEstimatedLoad(Long estimatedLoad) {
+    public void setEstimatedLoad(Float estimatedLoad) {
         this.estimatedLoad = estimatedLoad;
     }
 

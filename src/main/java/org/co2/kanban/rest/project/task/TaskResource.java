@@ -60,7 +60,7 @@ public class TaskResource extends IdentifiableResourceSupport<Task> {
         return getBean().getPlannedEnding();
     }
 
-    public Long getEstimatedLoad() {
+    public Float getEstimatedLoad() {
         return getBean().getEstimatedLoad();
     }
 
