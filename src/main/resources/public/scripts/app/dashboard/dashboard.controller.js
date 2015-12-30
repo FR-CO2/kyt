@@ -30,7 +30,9 @@
                         right: 'today prev,next'
                     },
                     viewRender: function (view, element) {
-                        vm.loadCalendarEvent(view.start, view.end);
+                        var start = moment(view.start);
+                        var end = moment(view.end);
+                        vm.loadCalendarEvent(start.format("DD/MM/YYYY"), end.format("DD/MM/YYYY"));
                     },
                     dayClick: dayOnClick
                 };

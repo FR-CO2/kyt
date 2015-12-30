@@ -8,7 +8,7 @@ package org.co2.kanban.repository.allocation;
 import java.sql.Timestamp;
 import org.co2.kanban.repository.member.Member;
 import org.co2.kanban.repository.task.Task;
-import org.springframework.data.jpa.repository.Query;
+import org.co2.kanban.repository.user.ApplicationUser;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 /**
@@ -21,4 +21,5 @@ public interface AllocationRepository extends PagingAndSortingRepository<Allocat
 
     Iterable<Allocation> findByTask(Task task);
     
+    Iterable<Allocation> findByMemberUserAndAllocationDate(ApplicationUser user, Timestamp date);
 }

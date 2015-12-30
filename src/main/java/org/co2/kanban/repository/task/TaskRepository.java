@@ -5,6 +5,7 @@
  */
 package org.co2.kanban.repository.task;
 
+import java.sql.Timestamp;
 import org.co2.kanban.repository.project.Project;
 import org.co2.kanban.repository.user.ApplicationUser;
 import org.co2.kanban.repository.state.State;
@@ -38,5 +39,7 @@ public interface TaskRepository extends PagingAndSortingRepository<Task, Long> {
     Page<Task> findByAssigneeUser(ApplicationUser user, Pageable p);
 
     Iterable<Task> findByAssigneeUser(ApplicationUser user);
+
+    Iterable<Task> findByAssigneeUserAndPlannedStartBeforeAndPlannedEndingAfter(ApplicationUser user, Timestamp startBefore, Timestamp endAfter);
 
 }

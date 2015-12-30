@@ -5,6 +5,8 @@
  */
 package org.co2.kanban.rest.user.task;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import org.co2.kanban.repository.task.Task;
 import org.co2.kanban.repository.task.TaskRepository;
 import org.co2.kanban.repository.user.ApplicationUser;
@@ -16,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.hateoas.PagedResources;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -54,10 +57,14 @@ public class UserTaskController {
         return pagedTaskAssembler.toResource(tasks, taskAssembler);
     }
 
-    @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Iterable<TaskResource> tasks(@PathVariable("userId") Long userId) {
+    @RequestMapping(params = {"start", "end"}, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Iterable<TaskResource> tasks(@PathVariable("userId") Long userId,
+            @RequestParam("start") @DateTimeFormat(pattern = "dd/MM/yyyy") Date start,
+            @RequestParam("end") @DateTimeFormat(pattern = "dd/MM/yyyy") Date end) {
         ApplicationUser appUser = repository.findOne(userId);
-        Iterable<Task> tasks = taskRepositoy.findByAssigneeUser(appUser);
+        Timestamp startTime = new Timestamp(start.getTime());
+        Timestamp endTime = new Timestamp(end.getTime());
+        Iterable<Task> tasks = taskRepositoy.findByAssigneeUserAndPlannedStartBeforeAndPlannedEndingAfter(appUser, endTime, startTime);
         return taskAssembler.toResources(tasks);
     }
 }

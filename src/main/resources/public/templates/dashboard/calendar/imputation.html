@@ -27,7 +27,7 @@
                 </thead>
                 <tr ng-repeat="task in addImputationCtrl.tasks">
                     <td class="form-group col-md-3">
-                        {{task.name}}
+                        {{task.taskName}}
                     </td>
                     <td class="form-group col-md-3">
                         <input type="number" id="estimatedLoad" class="form-control" ng-model="task.timeSpent" min="0" step="1"/>
