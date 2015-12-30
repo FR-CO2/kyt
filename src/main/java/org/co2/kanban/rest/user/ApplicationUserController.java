@@ -5,7 +5,6 @@
  */
 package org.co2.kanban.rest.user;
 
-import java.util.List;
 import org.co2.kanban.repository.user.ApplicationUser;
 import org.co2.kanban.repository.user.ApplicationUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,9 +51,9 @@ public class ApplicationUserController {
         return pagedAssembler.toResource(repository.findAll(pageable), userAssembler);
     }
 
-    @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Iterable<UserResource> list() {
-        return userAssembler.toResources(repository.findAll());
+    @RequestMapping(params = {"search"}, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Iterable<UserResource> search(@RequestParam(name = "search") String search) {
+        return userAssembler.toResources(repository.findByUsernameContains(search));
     }
 
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
