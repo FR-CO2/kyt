@@ -27,7 +27,9 @@
                 if (taskresource.plannedEnding !== null) {
                     var today = moment();
                     task.plannedEnding = moment(taskresource.plannedEnding).toDate();
-                    task.exceededDate = (today.isAfter(task.plannedEnding) && !task.state.closeState);
+                    task.state.$promise.then(function () {
+                        task.exceededDate = (today.isAfter(task.plannedEnding) && !task.state.closeState);
+                    });
                 }
                 if (taskresource.plannedStart !== null) {
                     task.plannedStart = moment(taskresource.plannedStart).toDate();
