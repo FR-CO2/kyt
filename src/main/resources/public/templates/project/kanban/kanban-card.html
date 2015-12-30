@@ -1,10 +1,17 @@
 <div class="kanban-card">
     <div class="kanban-card__task center-block" style="border-left: 0.5em solid {{task.category.bgcolor}}">
         <header class="kanban-card__heading">
-            <a ui-sref="app.project.task({projectId: projectCtrl.project.id, taskId: task.id })" title="Accéder au détail de la tâche">
-                <span>#{{task.id}}</span>
-                {{task.name}}
-            </a>
+            <span>
+                <a ui-sref="app.project.task({projectId: projectCtrl.project.id, taskId: task.id })" 
+                   ng-app=""title="Accéder au détail de la tâche">
+                    <span>#{{task.id}}</span>
+                    {{task.name}}
+                </a>
+            </span>
+            <span class="pull-right exceeded" ng-if="task.exceededLoad || task.exceededDate">
+                <span ng-class="{'glyphicon glyphicon-usd' : task.exceededLoad}"></span>
+                <span ng-class="{'glyphicon glyphicon-calendar' : task.exceededDate}"></span>
+            </span>
         </header>
         <div class="kanban-card__action">
             <span ng-if="projectCtrl.rights.hasEditRights" >

@@ -21,6 +21,12 @@
                     if (task._links.category) {
                         task.category = task.resource("category").get();
                     }
+                    task.exceededLoad = (task.timeRemains + task.timeSpent > task.estimatedLoad);
+                    
+                    var today = new Date();
+                    today.setHours(0,0,0,0);
+                    var dateEnd = new Date(task.plannedEnding);
+                    task.exceededDate = (today > dateEnd && task.plannedEnding !== null);
                 });
                 return tasks;
             };
