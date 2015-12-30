@@ -20,9 +20,23 @@
                     data.page.number++;
                     return data;
                 });
+                vm.calendarOptions = {
+                    height: 450,
+                    editable: false,
+                    lang: "fr",
+                    header: {
+                        left: 'title',
+                        center: '',
+                        right: 'today prev,next'
+                    },
+                    viewRender: function (view, element) {
+                        vm.loadCalendarEvent(view.start, view.end);
+                    },
+                    dayClick: dayOnClick
+                };
             });
             vm.loadCalendarEvent = function (start, end) {
-                currentuser.resource("task").query({start: start, end: end}, 
+                currentuser.resource("task").query({start: start, end: end},
                 function (data) {
                     angular.forEach(data, function (task) {
                         task = taskAssemblerService(task);
@@ -51,26 +65,12 @@
                         day: function () {
                             return day;
                         },
-                        currentuser : function() {
+                        currentuser: function () {
                             return currentuser;
                         }
                     },
                     size: "md"
                 });
-            }
-            vm.calendarOptions = {
-                height: 450,
-                editable: false,
-                lang: "fr",
-                header: {
-                    left: 'title',
-                    center: '',
-                    right: 'today prev,next'
-                },
-                viewRender: function (view, element) {
-                    vm.loadCalendarEvent(view.start, view.end);
-                },
-                dayClick: dayOnClick
             };
             vm.eventsSource = [];
         };

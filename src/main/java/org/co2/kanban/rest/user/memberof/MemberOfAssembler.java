@@ -12,11 +12,13 @@ import org.co2.kanban.rest.user.ApplicationUserController;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author ben
  */
+@Component
 public class MemberOfAssembler extends ResourceAssemblerSupport<Member, MemberOfResource> {
 
     public MemberOfAssembler() {

@@ -21,6 +21,4 @@ public interface AllocationRepository extends PagingAndSortingRepository<Allocat
 
     Iterable<Allocation> findByTask(Task task);
     
-    @Query(value = "SELECT SUM(a.timeSpent) FROM allocation a where a.task_id = ?1", nativeQuery = true)
-    Float sumByTask(Long taskId);
 }
