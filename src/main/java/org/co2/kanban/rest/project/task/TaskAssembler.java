@@ -48,15 +48,17 @@ public class TaskAssembler extends ResourceAssemblerSupport<Task, TaskResource> 
         Float timeSpent = 0F;
         Float timeRemains = task.getEstimatedLoad();
         Timestamp timeRemainsAllocationDate = null;
-        for (Allocation allocation : task.getAllocations()) {
-            if (timeRemainsAllocationDate == null) {
-                timeRemainsAllocationDate = allocation.getAllocationDate();
-                timeRemains = calculateTimeRemains(timeRemains, allocation);
+        if (task.getAllocations() != null) {
+            for (Allocation allocation : task.getAllocations()) {
+                if (timeRemainsAllocationDate == null) {
+                    timeRemainsAllocationDate = allocation.getAllocationDate();
+                    timeRemains = calculateTimeRemains(timeRemains, allocation);
+                }
+                if (timeRemainsAllocationDate.before(allocation.getAllocationDate())) {
+                    timeRemains = calculateTimeRemains(timeRemains, allocation);
+                }
+                timeSpent += allocation.getTimeSpent();
             }
-            if (timeRemainsAllocationDate.before(allocation.getAllocationDate())) {
-                timeRemains = calculateTimeRemains(timeRemains, allocation);
-            }
-            timeSpent += allocation.getTimeSpent();
         }
         resource.setTimeRemains(timeRemains);
         resource.setTimeSpent(timeSpent);
