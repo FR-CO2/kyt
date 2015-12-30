@@ -38,7 +38,7 @@ public interface TaskRepository extends PagingAndSortingRepository<Task, Long> {
 
     Page<Task> findByAssigneeUser(ApplicationUser user, Pageable p);
 
-    Iterable<Task> findByAssigneeUser(ApplicationUser user);
+    Iterable<Task> findByAssigneeUserAndNameContaining(ApplicationUser user, String term);
 
     Iterable<Task> findByAssigneeUserAndPlannedStartBeforeAndPlannedEndingAfter(ApplicationUser user, Timestamp startBefore, Timestamp endAfter);
 

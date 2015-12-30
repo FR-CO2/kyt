@@ -67,4 +67,13 @@ public class UserTaskController {
         Iterable<Task> tasks = taskRepositoy.findByAssigneeUserAndPlannedStartBeforeAndPlannedEndingAfter(appUser, endTime, startTime);
         return taskAssembler.toResources(tasks);
     }
+
+    @RequestMapping(params = {"search"}, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Iterable<TaskResource> search(@PathVariable("userId") Long userId,
+            @RequestParam("search") String searchTerm) {
+        ApplicationUser appUser = repository.findOne(userId);
+        Iterable<Task> tasks = taskRepositoy.findByAssigneeUserAndNameContaining(appUser, searchTerm);
+        return taskAssembler.toResources(tasks);
+    }
+
 }
