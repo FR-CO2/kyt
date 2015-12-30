@@ -8,6 +8,7 @@ package org.co2.kanban.rest.project;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import org.co2.kanban.repository.category.Category;
 import org.co2.kanban.repository.member.ProjectRole;
 import org.co2.kanban.repository.project.Project;
 import org.co2.kanban.repository.project.ProjectRepository;
@@ -21,6 +22,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedResources;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -80,10 +84,13 @@ public class ProjectController {
     }
 
     @RequestMapping(method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ProjectResource> create(@RequestBody Project newProject) {
-        newProject.setStates(getDefaults(newProject));
+    public ResponseEntity create(@RequestBody Project newProject) {
+        newProject.setStates(getDefaultStates(newProject));
+        newProject.setCategories(getDefaultCategories(newProject));
         Project result = repository.save(newProject);
-        return new ResponseEntity<>(assembler.toResource(result), HttpStatus.CREATED);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(linkTo(methodOn(this.getClass()).get(result.getId())).toUri());
+        return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/{projectId}", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
@@ -101,8 +108,8 @@ public class ProjectController {
     public ResponseEntity<ProjectRole[]> roles(@PathVariable("projectId") Long projectId) {
         return new ResponseEntity<>(ProjectRole.values(), HttpStatus.OK);
     }
-    
-    private List<State> getDefaults(Project project) {
+
+    private List<State> getDefaultStates(Project project) {
         State backlog = new State();
         backlog.setName("Backlog");
         backlog.setPosition(0L);
@@ -125,6 +132,26 @@ public class ProjectController {
         defaults.add(ready);
         defaults.add(inProgress);
         defaults.add(done);
+        return defaults;
+    }
+
+    private List<Category> getDefaultCategories(Project project) {
+        Category defect = new Category();
+        defect.setName("Issue");
+        defect.setBgcolor("#FA8258");
+        defect.setProject(project);
+        Category evolution = new Category();
+        evolution.setName("Evolution");
+        evolution.setBgcolor("#81DAF5");
+        evolution.setProject(project);
+        Category assistance = new Category();
+        assistance.setName("Assistance");
+        assistance.setBgcolor("#D0A9F5");
+        assistance.setProject(project);
+        List<Category> defaults = new ArrayList<>();
+        defaults.add(defect);
+        defaults.add(evolution);
+        defaults.add(assistance);
         return defaults;
     }
 }

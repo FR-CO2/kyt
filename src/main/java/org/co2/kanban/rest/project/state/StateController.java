@@ -10,8 +10,10 @@ import org.co2.kanban.repository.state.State;
 import org.co2.kanban.repository.state.StateRepository;
 import org.co2.kanban.repository.project.Project;
 import org.co2.kanban.repository.project.ProjectRepository;
-import org.co2.kanban.repository.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -72,7 +74,7 @@ public class StateController {
 
     @RequestMapping(method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("@projectAccessExpression.hasManagerAccess(#projectId, principal.username)")
-    public ResponseEntity<State> create(@PathVariable("projectId") Long projectId, @RequestBody State state) {
+    public ResponseEntity create(@PathVariable("projectId") Long projectId, @RequestBody State state) {
         Project project = projectRepository.findOne(projectId);
         state.setProject(project);
         Long maxPosition = repository.getProjectMaxPosition(projectId);
@@ -80,8 +82,10 @@ public class StateController {
             maxPosition = 0L;
         }
         state.setPosition(maxPosition);
-        repository.save(state);
-        return new ResponseEntity(HttpStatus.CREATED);
+        State result = repository.save(state);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(linkTo(methodOn(this.getClass(), result.getProject().getId()).get(result.getId())).toUri());
+        return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/{stateId}", method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)

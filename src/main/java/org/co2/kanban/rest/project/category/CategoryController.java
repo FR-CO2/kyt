@@ -12,6 +12,9 @@ import org.co2.kanban.repository.project.Project;
 import org.co2.kanban.repository.project.ProjectRepository;
 import org.co2.kanban.repository.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -35,7 +38,7 @@ public class CategoryController {
 
     @Autowired
     private ProjectRepository projectRepository;
-    
+
     @Autowired
     private CategoryAssembler assembler;
 
@@ -45,18 +48,20 @@ public class CategoryController {
         return assembler.toResources(repository.findByProject(project));
     }
 
-     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CategoryResource> get(@PathVariable("id") Long id) {
         Category category = repository.findOne(id);
         return new ResponseEntity(assembler.toResource(category), HttpStatus.OK);
     }
-    
+
     @RequestMapping(method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Category> create(@PathVariable("projectId") Long projectId, @RequestBody Category category) {
+    public ResponseEntity create(@PathVariable("projectId") Long projectId, @RequestBody Category category) {
         Project project = projectRepository.findOne(projectId);
         category.setProject(project);
-        repository.save(category);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        Category result = repository.save(category);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(linkTo(methodOn(this.getClass(), result.getProject().getId()).get(result.getId())).toUri());
+        return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "{categoryId}", method = RequestMethod.DELETE, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
@@ -70,7 +75,7 @@ public class CategoryController {
     }
 
     @RequestMapping(value = "{categoryId}", method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity update(@PathVariable("projectId") Long projectId, @RequestBody Category category) {
+    public ResponseEntity<CategoryResource> update(@PathVariable("projectId") Long projectId, @RequestBody Category category) {
         Project project = projectRepository.findOne(projectId);
         category.setProject(project);
         Category result = repository.save(category);

@@ -57,11 +57,6 @@ public class ApplicationUserController {
         return userAssembler.toResources(repository.findAll());
     }
 
-    @RequestMapping(value = "/find/{username}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<UserResource> findByUsername(@PathVariable("username") String username) {
-        return userAssembler.toResources(repository.findByUsernameContaining(username));
-    }
-
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserResource> create(@RequestBody ApplicationUser newUser) {
         ApplicationUser user = repository.save(newUser);

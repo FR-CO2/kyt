@@ -18,6 +18,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import org.co2.kanban.repository.Identifiable;
+import org.co2.kanban.repository.category.Category;
 
 /**
  *
@@ -45,6 +46,9 @@ public class Project implements Serializable, Identifiable {
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     private List<Member> members = new ArrayList<>();
+
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+    private List<Category> categories = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -93,4 +97,13 @@ public class Project implements Serializable, Identifiable {
     public void setMembers(List<Member> members) {
         this.members = members;
     }
+
+    public List<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
+    }
+    
 }

@@ -54,8 +54,8 @@
                 load: function (project) {
                     var tasks = [];
                     project.$promise.then(function () {
-                        var statesResource = project.resource("state").query({"order": "position"});
-                        var swimlanesResource = project.resource("swimlane").query({"order": "position"});
+                        var statesResource = project.resource("state").query({"kanban": true});
+                        var swimlanesResource = project.resource("swimlane").query();
                         $q.all([statesResource.$promise, swimlanesResource.$promise]).then(function (data) {
                             var states = data[0];
                             var swimlanes = data[1];

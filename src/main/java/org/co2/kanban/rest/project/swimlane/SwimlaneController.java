@@ -11,6 +11,9 @@ import org.co2.kanban.repository.project.Project;
 import org.co2.kanban.repository.project.ProjectRepository;
 import org.co2.kanban.repository.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -63,7 +66,7 @@ public class SwimlaneController {
 
     @RequestMapping(method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("@projectAccessExpression.hasManagerAccess(#projectId, principal.username)")
-    public ResponseEntity<Swimlane> create(@PathVariable("projectId") Long projectId, @RequestBody Swimlane swimlane) {
+    public ResponseEntity create(@PathVariable("projectId") Long projectId, @RequestBody Swimlane swimlane) {
         Project project = projectRepository.findOne(projectId);
         swimlane.setProject(project);
         Long maxPosition = repository.getProjectMaxPosition(projectId);
@@ -71,8 +74,10 @@ public class SwimlaneController {
             maxPosition = 0L;
         }
         swimlane.setPosition(maxPosition);
-        repository.save(swimlane);
-        return new ResponseEntity(HttpStatus.CREATED);
+        Swimlane result = repository.save(swimlane);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(linkTo(methodOn(this.getClass(), result.getProject().getId()).get(result.getId())).toUri());
+        return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)

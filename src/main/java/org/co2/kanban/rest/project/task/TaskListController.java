@@ -18,6 +18,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedResources;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -57,10 +62,6 @@ public class TaskListController {
     public PagedResources<TaskResource> page(@PathVariable("projectId") Long projectId,
             @RequestParam(name = "page") Integer page,
             @RequestParam(name = "size", required = false) Integer size) {
-        // On décrémente le nombre de la page de 1 car la numérotation commence à 1 tandis que le tableau à 0.
-        if (page > 0) {
-            page--;
-        }
         Project project = projectRepository.findOne(projectId);
         Pageable pageable = new PageRequest(page, size);
         return pagedAssembler.toResource(repository.findByProject(project, pageable), assembler);
@@ -108,13 +109,15 @@ public class TaskListController {
 
     @RequestMapping(method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("@projectAccessExpression.hasContributorAccess(#projectId, principal.username)")
-    public TaskResource create(@PathVariable("projectId") Long projectId, @RequestBody Task task) {
+    public ResponseEntity create(@PathVariable("projectId") Long projectId, @RequestBody Task task) {
         Project project = projectRepository.findOne(projectId);
         task.setProject(project);
         State defaultState = stateRepository.findByProjectAndPosition(project, 0L);
         task.setState(defaultState);
         Task result = repository.save(task);
-        return assembler.toResource(result);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(linkTo(methodOn(TaskController.class, result.getProject().getId()).get(result.getId())).toUri());
+        return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
 }

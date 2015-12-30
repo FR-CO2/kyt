@@ -5,7 +5,6 @@
  */
 package org.co2.kanban.rest.project.member;
 
-import java.util.List;
 import org.co2.kanban.repository.member.MemberRepository;
 import org.co2.kanban.repository.member.Member;
 import org.co2.kanban.repository.project.Project;
@@ -16,6 +15,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedResources;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -56,24 +58,27 @@ public class MemberController {
         return pagedAssembler.toResource(repository.findByProject(project, pageable), assembler);
     }
 
+    @RequestMapping(params={"search"}, method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    public Iterable<MemberResource> list(@PathVariable("projectId") Long projectId,
+            @RequestParam("search") String term) {
+        Project project = projectRepository.findOne(projectId);
+        return assembler.toResources(repository.findByProjectAndUserUsernameContains(project, term));
+    }
+
     @RequestMapping(method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public Iterable<MemberResource> list(@PathVariable("projectId") Long projectId) {
         Project project = projectRepository.findOne(projectId);
         return assembler.toResources(repository.findByProject(project));
     }
 
-    @RequestMapping(value = "/find/{username}", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public List<MemberResource> findByUsername(@PathVariable("projectId") Long projectId, @PathVariable("username") String username) {
-        Project project = projectRepository.findOne(projectId);
-        return assembler.toResources(repository.findByProjectAndUserUsernameLike(project, username));
-    }
-
     @RequestMapping(method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<MemberResource> create(@PathVariable("projectId") Long projectId, @RequestBody Member member) {
+    public ResponseEntity create(@PathVariable("projectId") Long projectId, @RequestBody Member member) {
         Project project = projectRepository.findOne(projectId);
         member.setProject(project);
         Member result = repository.save(member);
-        return new ResponseEntity<>(assembler.toResource(result), HttpStatus.CREATED);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(linkTo(methodOn(this.getClass(), result.getProject().getId()).get(result.getId())).toUri());
+        return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/{memberId}", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
@@ -86,10 +91,10 @@ public class MemberController {
     public ResponseEntity delete(@PathVariable("memberId") Long memberId) {
         Member member = repository.findOne(memberId);
         for (Task task : member.getTasksAssignee()) {
-                task.setAssignee(null);
+            task.setAssignee(null);
         }
         for (Task task : member.getTasksBackup()) {
-                task.setBackup(null);
+            task.setBackup(null);
         }
         repository.delete(member);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
