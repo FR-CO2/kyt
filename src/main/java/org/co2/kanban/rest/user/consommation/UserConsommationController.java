@@ -25,6 +25,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -86,13 +87,24 @@ public class UserConsommationController {
     }
 
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity create(@PathVariable("userId") Long userId, Iterable<Allocation> allocations) {
+    public ResponseEntity create(@PathVariable("userId") Long userId,
+            @RequestParam("date") @DateTimeFormat(pattern = "dd/MM/yyyy") Date date,
+            @RequestBody UserTaskImputationResource[] imputations) {
         ApplicationUser appUser = repository.findOne(userId);
-        for (Allocation allocation : allocations) {
-            Task task = taskRepositoy.findOne(allocation.getTask().getId());
+        Timestamp time = new Timestamp(date.getTime());
+        for (UserTaskImputationResource imputation : imputations) {
+            Task task = taskRepositoy.findOne(imputation.getTaskId());
             Project project = task.getProject();
             Member member = memberRepository.findByProjectAndUser(project, appUser);
-            allocation.setMember(member);
+            Allocation allocation = allocationRepository.findByMemberUserAndAllocationDateAndTask(appUser, time, task);
+            if (allocation == null) {
+                allocation = new Allocation();
+                allocation.setTask(task);
+                allocation.setMember(member);
+                allocation.setAllocationDate(time);
+            }
+            allocation.setTimeSpent(imputation.getTimeSpent());
+            allocation.setTimeRemains(imputation.getTimeRemains());
             allocationRepository.save(allocation);
         }
         return new ResponseEntity(HttpStatus.CREATED);

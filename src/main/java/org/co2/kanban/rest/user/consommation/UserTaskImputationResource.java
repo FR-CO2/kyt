@@ -14,22 +14,36 @@ import org.springframework.hateoas.ResourceSupport;
  */
 public class UserTaskImputationResource extends ResourceSupport {
 
-    private final Task task;
+    private String taskName;
     
+    private Long taskId;
+
     private Float timeSpent = 0F;
-    
+
     private Float timeRemains = null;
 
+    public UserTaskImputationResource() {
+    }
+
     public UserTaskImputationResource(Task task) {
-        this.task = task;
+        this.taskName = task.getName();
+        this.taskId = task.getId();
     }
 
     public String getTaskName() {
-        return this.task.getName();
+        return this.taskName;
     }
 
     public Long getTaskId() {
-        return this.task.getId();
+        return this.taskId;
+    }
+
+    public void setTaskName(String taskName) {
+        this.taskName = taskName;
+    }
+
+    public void setTaskId(Long taskId) {
+        this.taskId = taskId;
     }
 
     public Float getTimeSpent() {
