@@ -40,10 +40,13 @@
                     });
                 }
             };
-            vm.loadMember = function(){
-                vm.members = project.resource("member").query();
+            vm.selectAssignee = function ($item, $model, $label, task) {
+                task.assignee = $model;
             };
-            vm.saveTask = function(task){
+            vm.getMembers = function (term) {
+                return project.resource("member").query({search: term}).$promise;
+            };
+            vm.saveTask = function (task) {
                 task.resource("self").save(null, task, null);
             };
             vm.loadCategory = function () {

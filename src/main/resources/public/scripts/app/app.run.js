@@ -5,7 +5,8 @@
  */
 (function () {
     define([], function () {
-        var appRun = function ($rootScope, $sessionStorage, $state, $uibModal, authService) {
+        var appRun = function ($rootScope, $sessionStorage, $state, $uibModal, authService, editableOptions) {
+            editableOptions.theme = 'bs3';
             $rootScope.loginOngoing = false;
             $rootScope.$on("event:auth-forbidden", function () {
                 var parentState = $state.get("^");
@@ -22,14 +23,14 @@
                 if (!$rootScope.loginOngoing) {
                     $rootScope.loginOngoing = true;
                     modalScope.modalInstance = $uibModal.open({
-                                animation: true,
-                                templateUrl: "login.html",
-                                controller: "loginController",
-                                controllerAs: "login",
-                                scope: modalScope,
-                                backdrop: "static",
-                                size: "md"
-                            });
+                        animation: true,
+                        templateUrl: "login.html",
+                        controller: "loginController",
+                        controllerAs: "login",
+                        scope: modalScope,
+                        backdrop: "static",
+                        size: "md"
+                    });
                     modalScope.modalInstance.result.then(
                             function () {
                                 authService.loginConfirmed();
@@ -40,7 +41,7 @@
             });
             $state.go("login");
         };
-        appRun.$inject = ["$rootScope", "$sessionStorage", "$state", "$uibModal", "authService"];
+        appRun.$inject = ["$rootScope", "$sessionStorage", "$state", "$uibModal", "authService", "editableOptions"];
         return appRun;
     });
 })();
