@@ -57,7 +57,7 @@
                         <td>
                             {{task.plannedStart| date:'dd/MM/yyyy'}}
                         </td>
-                        <td>
+                        <td ng-class="{'exceeded-date' : task.exceededDate}">
                             {{task.plannedEnding| date:'dd/MM/yyyy'}}
                         </td>
                         <td>

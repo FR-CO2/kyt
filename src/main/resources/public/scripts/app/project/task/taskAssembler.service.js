@@ -28,6 +28,11 @@
                 if (task._links.backup) {
                     task.backup = taskresource.resource("backup").get();
                 }
+                
+                var today = new Date();
+                today.setHours(0,0,0,0);
+                var dateEnd = new Date(task.plannedEnding);
+                task.exceededDate = (today > dateEnd);
                 return task;
             };
         };
