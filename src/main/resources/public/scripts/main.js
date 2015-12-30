@@ -7,9 +7,13 @@
 
 require.config({
     paths: {
-        angular: '../../webjars/angularjs/1.4.8/angular',
-        bootstrap: '../../webjars/bootstrap/3.3.6/js/bootstrap',
         jquery: '../../webjars/jquery/2.1.4/jquery',
+        jqueryui: '../../webjars/jquery-ui/1.11.4/jquery-ui.min',
+        bootstrap: '../../webjars/bootstrap/3.3.6/js/bootstrap',
+        moment: '../../webjars/momentjs/2.5.0/moment',
+        fullcalendar: '../../webjars/fullcalendar/2.4.0/fullcalendar',
+        fullcalendarfr: '../../webjars/fullcalendar/2.4.0/lang/fr',
+        angular: '../../webjars/angularjs/1.4.8/angular',
         ngSortable: '../../webjars/ng-sortable/1.1.9/ng-sortable',
         ngStorage: '../../webjars/ngStorage/0.3.0/ngStorage',
         ngResource: '../../webjars/angularjs/1.4.8/angular-resource',
@@ -21,17 +25,32 @@ require.config({
         ngSanitize: '../../webjars/angularjs/1.4.8/angular-sanitize',
         hateoas: '../lib/angular-hateoas/angular-hateoas',
         uiBootstrap: '../../webjars/angular-ui-bootstrap/0.14.3/ui-bootstrap',
-        uiBootstrapTpl: '../../webjars/angular-ui-bootstrap/0.14.3/ui-bootstrap-tpls'
+        uiBootstrapTpl: '../../webjars/angular-ui-bootstrap/0.14.3/ui-bootstrap-tpls',
+        uiCalendar: '../lib/angular-ui-calendar/calendar'
     },
     shim: {
+        bootstrap: {
+            deps: ["jquery"]
+        },
+        moment: {
+            exports: 'moment'
+        },
+        fullcalendarfr: {
+            deps: ['fullcalendar']
+        },
+        fullcalendar: {
+            deps: ["jquery", "jqueryui", "moment", "angular"],
+            exports: 'fullcalendar'
+        },
+        "jquery": {
+            "exports": "$"
+        },
+        "jqueryui": {
+            "deps": ["jquery"]
+        },
         angular: {
+            "deps": ["jquery", "moment"],
             exports: 'angular'
-        },
-        bootstrap : {
-            deps : [ "jquery" ] 
-        },
-        "jquery": { 
-            "exports": "$" 
         },
         ngSortable: {
             deps: ["angular"]
@@ -52,10 +71,13 @@ require.config({
             deps: ["angular"]
         },
         uiBootstrap: {
-            deps: ["angular"]
+            deps: ["angular", "bootstrap"]
         },
         uiBootstrapTpl: {
             deps: ["angular", "uiBootstrap"]
+        },
+        uiCalendar: {
+            deps: ["angular", "fullcalendar", "moment"]
         },
         ngAuth: {
             deps: ["angular"]

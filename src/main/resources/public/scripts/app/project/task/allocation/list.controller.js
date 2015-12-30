@@ -1,9 +1,7 @@
 (function () {
     define([], function () {
-        var listController = function ($uibModal, scope) {
+        var listController = function ($uibModal, currenttask, currentproject) {
             var vm = this;
-            var currenttask = scope.taskCtrl.task;
-            var currentproject = scope.taskCtrl.project;
             vm.add = function () {
                 var modalInstance = $uibModal.open({
                     animation: true,
@@ -30,7 +28,7 @@
                 });
             };
         };
-        listController.$inject = ["$uibModal", "$scope"];
+        listController.$inject = ["$uibModal", "task", "project"];
         return listController;
     });
 })();

@@ -70,7 +70,7 @@
                             {{task.timeRemains}}
                         </td>
                         <td >
-                            <a ui-sref="app.project.task({id: projectCtrl.project.id, taskId: task.id })" title="edit">
+                            <a ui-sref="app.project.task({projectId: projectCtrl.project.id, taskId: task.id })" title="edit">
                                 <span class="glyphicon glyphicon-edit"></span>
                             </a>
                             <a ng-click="tasksCtrl.delete(task)" title="delete">

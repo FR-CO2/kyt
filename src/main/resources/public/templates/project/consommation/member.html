@@ -27,7 +27,10 @@
                     <tr>
                         <th></th>
                         <th><span class="glyphicon glyphicon-arrow-left" ng-click="consommationCtrl.previous()"></span></th>
-                        <th ng-repeat="day in consommationCtrl.days">{{day| date:'dd/MM'}}</th>
+                        <th ng-repeat="day in consommationCtrl.days"> 
+                            <span ng-if="consommationCtrl.precision === 'week'">{{day| date:'dd/MM'}}</span>
+                            <span ng-if="consommationCtrl.precision === 'month'">{{day.label}}</span>
+                        </th>
                         <th><span class="glyphicon glyphicon-arrow-right" ng-click="consommationCtrl.next()"></span></th>
                     <tr>
                 </thead>
@@ -40,13 +43,19 @@
                             <span ng-if="!entry.showDetails && entry.imputations.details.length" class="glyphicon glyphicon-chevron-down" ng-click="consommationCtrl.showDetail(entry)"></span>
                             <span ng-if="entry.showDetails && entry.imputations.details.length" class="glyphicon glyphicon-chevron-up" ng-click="consommationCtrl.hideDetail(entry)"></span>
                         </th>
-                        <th ng-repeat="day in consommationCtrl.days"> {{entry.imputations.imputations[day.getTime()]}}</th>
+                        <th ng-repeat="day in consommationCtrl.days"> 
+                            <span ng-if="consommationCtrl.precision === 'week'">{{entry.imputations.imputations[day.getTime()]}}</span>
+                            <span ng-if="consommationCtrl.precision === 'month'">{{entry.imputations.imputations[day.id]}}</span>
+                        </th>
                         <th>&nbsp;</th>
                     </tr>
                     <tr uib-collapse="!entry.showDetails" ng-repeat="detail in entry.imputations.details">
                         <td>{{detail.taskName}} </td>
                         <td>&nbsp;</td>
-                        <td ng-repeat="day in consommationCtrl.days"> {{detail.imputations[day.getTime()]}}</td>
+                        <td ng-repeat="day in consommationCtrl.days">
+                            <span ng-if="consommationCtrl.precision === 'week'">{{detail.imputations[day.getTime()]}}</span>
+                            <span ng-if="consommationCtrl.precision === 'month'">{{detail.imputations[day.id]}}</span>
+                        </td>
                         <td>&nbsp;</td>
                     </tr>
                 </tbody>

@@ -1,0 +1,47 @@
+<div class="panel panel-info">
+    <div class="panel-heading">
+        <span class="glyphicon glyphicon-time"></span> Imputations du {{addImputationCtrl.day.format()}}
+    </div>
+    <div class="panel-body">
+        <alert type="danger" ng-if="addImputationCtrl.form.error">{{addImputationCtrl.form.error}}</alert>
+        <form id="imputation" role="form" ng-submit="addImputationCtrl.submit()">
+            <fieldset>
+                <div class="form-group col-md-offset-7">
+                    <input class="form-control" id="addedtask" ng-model="addImputationCtrl.addedTask" typeahead-editable="false" placeholder="Ajouter une tâche"
+                           typeahead-on-select="addImputationCtrl.addTask($item, $model, $label)" uib-typeahead="task as task.name for task in addImputationCtrl.userTasks | filter:$viewValue | limitTo:8" />
+                </div>
+            </fieldset>
+            <table>
+                <thead>
+                    <tr>
+                        <th class="form-group col-md-3">
+                            Tâche
+                        </th>
+                        <th class="form-group col-md-3">
+                            Charge consommée
+                        </th>
+                        <th class="form-group col-md-3">
+                            Charge restante
+                        </th>
+                    </tr>
+                </thead>
+                <tr ng-repeat="task in addImputationCtrl.tasks">
+                    <td class="form-group col-md-3">
+                        {{task.name}}
+                    </td>
+                    <td class="form-group col-md-3">
+                        <input type="number" id="estimatedLoad" class="form-control" ng-model="task.timeSpent" min="0" step="1"/>
+                    </td>
+                    <td class="form-group col-md-3">
+                        <input type="number" id="estimatedLoad" class="form-control" ng-model="task.timeRemains" min="0" step="1"/>
+                    </td>
+                </tr>
+            </table>
+            <fieldset>
+                <div>
+                    <button type="submit"  class="btn btn-info center-block">enregistrer</button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>

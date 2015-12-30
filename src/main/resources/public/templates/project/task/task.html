@@ -59,16 +59,14 @@
     <div class="panel">
         <div class="panel-body">
             <uib-tabset>
-                <uib-tab heading="Commentaires" >
-                    <div ng-include="'templates/project/task/comment/list.html'" ng-controller="commentListController as commentListCtrl"></div>
+                <uib-tab heading="Commentaires" ui-sref="app.project.task.comment({projectId: projectCtrl.project.id, taskId: taskCtrl.task.id })">
                 </uib-tab> 
-                <uib-tab heading="Consommations" >
-                    <div ng-include="'templates/project/task/allocation/list.html'" ng-controller="allocationListController as allocationListCtrl"></div>
+                <uib-tab heading="Consommations" ui-sref="app.project.task.allocation({projectId: projectCtrl.project.id, taskId: taskCtrl.task.id })">
                 </uib-tab> 
                 <uib-tab heading="Historique">
-                    <div ng-include="'templates/project/task/history/list.html'" ng-controller="historyController as historyCtrl"></div>
                 </uib-tab> 
             </uib-tabset>
+            <div ui-view></div>
         </div>
     </div>
 </div>
