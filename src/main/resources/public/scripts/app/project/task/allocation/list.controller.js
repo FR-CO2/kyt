@@ -19,14 +19,15 @@
                     size: "md"
                 });
                 modalInstance.result.then(function () {
-                    currenttask.allocations = currenttask.resource("allocation").query();
+                    vm.allocations = currenttask.resource("allocation").query();
                 });
             };
             vm.delete = function(allocation){
                 allocation.resource("self").delete(null, function () {
-                    currenttask.allocations = currenttask.resource("allocation").query();
+                    vm.allocations = currenttask.resource("allocation").query();
                 });
             };
+            vm.allocations = currenttask.allocations = currenttask.resource("allocation").query();
         };
         listController.$inject = ["$uibModal", "task", "project"];
         return listController;
