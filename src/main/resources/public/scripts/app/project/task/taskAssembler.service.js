@@ -6,16 +6,13 @@
 
 (function () {
     define([], function () {
-        var taskAssemblerService = function (HateoasInterface) {
+        var taskAssemblerService = function (HateoasInterface, moment) {
             return function (task) {
                 var taskresource = task;
                 if (!task.resource) {
                     taskresource = new HateoasInterface(task);
                 }
                 task.state = taskresource.resource("state").get();
-                if (task._links.project){
-                    task.project = taskresource.resource("project").get();
-                }
                 if (task._links.category) {
                     task.category = taskresource.resource("category").get();
                 }
@@ -25,20 +22,21 @@
                 if (task._links.assignee) {
                     task.assignee = taskresource.resource("assignee").get();
                 }
-                if (task._links.backup) {
-                    task.backup = taskresource.resource("backup").get();
-                }
-                
+
                 task.exceededLoad = (task.timeRemains + task.timeSpent > task.estimatedLoad);
-                
-                var today = new Date();
-                today.setHours(0,0,0,0);
-                var dateEnd = new Date(task.plannedEnding);
-                task.exceededDate = (today > dateEnd);
+                if (taskresource.plannedEnding !== null) {
+                    var today = moment();
+                    task.plannedEnding = moment(taskresource.plannedEnding).toDate();
+                    task.exceededDate = (today.isAfter(task.plannedEnding) && !task.state.closeState);
+                }
+                if (taskresource.plannedStart !== null) {
+                    task.plannedStart = moment(taskresource.plannedStart).toDate();
+                }
+
                 return task;
             };
         };
-        taskAssemblerService.$inject = ["HateoasInterface"];
+        taskAssemblerService.$inject = ["HateoasInterface", "moment"];
         return taskAssemblerService;
     });
 })();

@@ -7,26 +7,11 @@
 (function () {
     define(["angular"], function (angular) {
 
-        var kanbanService = function ($q) {
+        var kanbanService = function ($q, taskAssemblerService) {
 
             var fetchKanbanTask = function (tasks) {
                 angular.forEach(tasks, function (task) {
-                    task.state = task.resource("state").get();
-                    if (task._links.swimlane) {
-                        task.swimlane = task.resource("swimlane").get();
-                    }
-                    if (task._links.assignee) {
-                        task.assignee = task.resource("assignee").get();
-                    }
-                    if (task._links.category) {
-                        task.category = task.resource("category").get();
-                    }
-                    task.exceededLoad = (task.timeRemains + task.timeSpent > task.estimatedLoad);
-                    
-                    var today = new Date();
-                    today.setHours(0,0,0,0);
-                    var dateEnd = new Date(task.plannedEnding);
-                    task.exceededDate = (today > dateEnd && task.plannedEnding !== null);
+                    task = taskAssemblerService(task);
                 });
                 return tasks;
             };
@@ -77,7 +62,7 @@
                 }
             };
         };
-        kanbanService.$inject = ["$q"];
+        kanbanService.$inject = ["$q", "taskAssemblerService"];
         return kanbanService;
     });
 })();

@@ -1,6 +1,6 @@
 (function () {
     define(["angular"], function (angular) {
-        var dashboardController = function ($uibModal, currentuser, taskAssemblerService, uiCalendarConfig, moment) {
+        var dashboardController = function ($uibModal, HateoasInterface, currentuser, taskAssemblerService, uiCalendarConfig, moment) {
             var vm = this;
             vm.tasks = {
                 page: {
@@ -15,7 +15,10 @@
                             size: vm.tasks.page.size
                         }, function (data) {
                     if (data._embedded) {
-                        angular.forEach(data._embedded.taskResourceList, taskAssemblerService);
+                        angular.forEach(data._embedded.taskResourceList, function(task) {
+                            task = taskAssemblerService(task);  
+                            task.project = new HateoasInterface(task).resource("project").get();
+                        });
                     }
                     data.page.number++;
                     return data;
@@ -76,7 +79,7 @@
             };
             vm.eventsSource = [];
         };
-        dashboardController.$inject = ["$uibModal", "currentuser", "taskAssemblerService", "uiCalendarConfig", "moment"];
+        dashboardController.$inject = ["$uibModal", "HateoasInterface", "currentuser", "taskAssemblerService", "uiCalendarConfig", "moment"];
         return dashboardController;
     });
 })();
