@@ -87,6 +87,9 @@ public class SwimlaneController {
         if (!oldSwimlane.getPosition().equals(swimlane.getPosition())) {
             updatePosition(swimlane.getPosition(), oldSwimlane);
         }
+        if(!oldSwimlane.getName().equals(swimlane.getName())){
+            updateName(swimlane.getName(), oldSwimlane);
+        }
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
@@ -110,4 +113,9 @@ public class SwimlaneController {
             }
         }
     }
+    
+     private void updateName(String newName, Swimlane swimlane) {
+        swimlane.setName(newName);
+        repository.save(swimlane);
+     }
 }
