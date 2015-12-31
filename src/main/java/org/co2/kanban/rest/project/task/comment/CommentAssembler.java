@@ -26,12 +26,10 @@ public class CommentAssembler extends ResourceAssemblerSupport<Comment, CommentR
     public CommentResource toResource(Comment entity) {
         CommentResource resource = new CommentResource(entity);
         resource.setNbReply(entity.getReply().size());
-        resource.add(linkTo(methodOn(CommentController.class,
-                entity.getTask().getProject().getId(),
-                entity.getTask().getId()).get(entity.getId())).withSelfRel());
-        resource.add(linkTo(methodOn(CommentController.class,
-                entity.getTask().getProject().getId(), 
-                entity.getTask().getId()).listReplies(entity.getId())).withRel("reply"));
+        resource.add(linkTo(methodOn(CommentController.class, entity.getTask().getProject().getId(),
+                entity.getTask().getId()).get(entity.getTask().getProject().getId(), entity.getId())).withSelfRel());
+        resource.add(linkTo(methodOn(CommentController.class, entity.getTask().getProject().getId(),
+                entity.getTask().getId()).listReplies(entity.getTask().getProject().getId(), entity.getId())).withRel("reply"));
         return resource;
     }
     

@@ -29,10 +29,10 @@ public class SwimlaneAssembler extends ResourceAssemblerSupport<Swimlane, Swimla
     public SwimlaneResource toResource(Swimlane swimlane) {
         SwimlaneResource resource = new SwimlaneResource(swimlane);
         resource.setTaskCount(swimlane.getTasks().size());
-        resource.add(linkTo(methodOn(SwimlaneController.class, swimlane.getProject().getId()).get(swimlane.getId())).withSelfRel());
+        resource.add(linkTo(methodOn(SwimlaneController.class).get(swimlane.getProject().getId(), swimlane.getId())).withSelfRel());
         resource.add(linkTo(methodOn(ProjectController.class).get(swimlane.getProject().getId())).withRel("project"));
         if (swimlane.getResponsable() != null) {
-            resource.add(linkTo(methodOn(MemberController.class).get(swimlane.getResponsable().getId())).withRel("responsable"));
+            resource.add(linkTo(methodOn(MemberController.class).get(swimlane.getProject().getId(), swimlane.getResponsable().getId())).withRel("responsable"));
         }
         return resource;
     }

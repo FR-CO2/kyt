@@ -34,7 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping(value = "/api/project/{projectId}/member")
-@PreAuthorize("@projectAccessExpression.hasManagerAccess(#projectId, principal.username)")
+@PreAuthorize("@projectAccessExpression.hasMemberAccess(#projectId, principal.username)")
 public class MemberController {
 
     @Autowired
@@ -58,8 +58,8 @@ public class MemberController {
         return pagedAssembler.toResource(repository.findByProject(project, pageable), assembler);
     }
 
-    @RequestMapping(params={"search"}, method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public Iterable<MemberResource> list(@PathVariable("projectId") Long projectId,
+    @RequestMapping(params = {"search"}, method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    public Iterable<MemberResource> search(@PathVariable("projectId") Long projectId,
             @RequestParam("search") String term) {
         Project project = projectRepository.findOne(projectId);
         return assembler.toResources(repository.findByProjectAndUserUsernameContains(project, term));
@@ -71,24 +71,26 @@ public class MemberController {
         return assembler.toResources(repository.findByProject(project));
     }
 
+    @PreAuthorize("@projectAccessExpression.hasManagerAccess(#projectId, principal.username)")
     @RequestMapping(method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity create(@PathVariable("projectId") Long projectId, @RequestBody Member member) {
         Project project = projectRepository.findOne(projectId);
         member.setProject(project);
         Member result = repository.save(member);
         HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(linkTo(methodOn(this.getClass(), result.getProject().getId()).get(result.getId())).toUri());
+        headers.setLocation(linkTo(methodOn(this.getClass()).get(projectId, result.getId())).toUri());
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/{memberId}", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public MemberResource get(@PathVariable("memberId") Long memberId) {
+    public MemberResource get(@PathVariable("projectId") Long projectId, @PathVariable("memberId") Long memberId) {
         Member member = repository.findOne(memberId);
         return assembler.toResource(member);
     }
 
+    @PreAuthorize("@projectAccessExpression.hasManagerAccess(#projectId, principal.username)")
     @RequestMapping(value = "{memberId}", method = RequestMethod.DELETE, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity delete(@PathVariable("memberId") Long memberId) {
+    public ResponseEntity delete(@PathVariable("projectId") Long projectId, @PathVariable("memberId") Long memberId) {
         Member member = repository.findOne(memberId);
         for (Task task : member.getTasksAssignee()) {
             task.setAssignee(null);

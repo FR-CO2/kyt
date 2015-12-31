@@ -30,7 +30,7 @@ public class TaskController {
 
     @Autowired
     private TaskRepository repository;
-    
+
     @Autowired
     private ProjectRepository projectRepository;
 
@@ -38,18 +38,19 @@ public class TaskController {
     private TaskAssembler assembler;
 
     @RequestMapping(method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public TaskResource get(@PathVariable("id") Long taskId) {
+    public TaskResource get(@PathVariable("projectId") Long projectId, @PathVariable("id") Long taskId) {
         return assembler.toResource(repository.findOne(taskId));
     }
 
     @RequestMapping(method = RequestMethod.DELETE, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("@projectAccessExpression.hasContributorAccess(#projectId, principal.username)")
-    public ResponseEntity delete(@PathVariable("id") Long id) {
+    public ResponseEntity delete(@PathVariable("projectId") Long projectId, @PathVariable("id") Long id) {
         repository.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @RequestMapping(method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("@projectAccessExpression.hasContributorAccess(#projectId, principal.username)")
     public TaskResource update(@PathVariable("projectId") Long projectId, @PathVariable("id") Long taskId, @RequestBody Task task) {
         Project project = projectRepository.findOne(projectId);
         task.setProject(project);

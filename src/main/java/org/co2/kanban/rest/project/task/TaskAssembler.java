@@ -64,21 +64,21 @@ public class TaskAssembler extends ResourceAssemblerSupport<Task, TaskResource> 
         resource.setTimeSpent(timeSpent);
         resource.add(linkTo(methodOn(ProjectController.class).get(task.getProject().getId())).withRel("project"));
         resource.add(linkTo(methodOn(StateController.class).get(task.getProject().getId(), task.getState().getId())).withRel("state"));
-        resource.add(linkTo(methodOn(TaskController.class, task.getProject().getId(), task.getId()).get(task.getId())).withSelfRel());
+        resource.add(linkTo(methodOn(TaskController.class).get(task.getProject().getId(), task.getId())).withSelfRel());
         if (task.getAssignee() != null) {
-            resource.add(linkTo(methodOn(MemberController.class, task.getProject().getId()).get(task.getAssignee().getId())).withRel("assignee"));
+            resource.add(linkTo(methodOn(MemberController.class).get(task.getProject().getId(),task.getAssignee().getId())).withRel("assignee"));
         }
         if (task.getBackup() != null) {
-            resource.add(linkTo(methodOn(MemberController.class, task.getProject().getId()).get(task.getBackup().getId())).withRel("backup"));
+            resource.add(linkTo(methodOn(MemberController.class).get(task.getProject().getId(), task.getBackup().getId())).withRel("backup"));
         }
         if (task.getSwimlane() != null) {
-            resource.add(linkTo(methodOn(SwimlaneController.class, task.getProject().getId()).get(task.getSwimlane().getId())).withRel("swimlane"));
+            resource.add(linkTo(methodOn(SwimlaneController.class).get( task.getProject().getId(), task.getSwimlane().getId())).withRel("swimlane"));
         }
         if (task.getCategory() != null) {
-            resource.add(linkTo(methodOn(CategoryController.class, task.getProject().getId()).get(task.getCategory().getId())).withRel("category"));
+            resource.add(linkTo(methodOn(CategoryController.class).get( task.getProject().getId(), task.getCategory().getId())).withRel("category"));
         }
-        resource.add(linkTo(methodOn(CommentController.class, task.getProject().getId(), task.getId()).comments(task.getId())).withRel("comment"));
-        resource.add(linkTo(methodOn(AllocationController.class, task.getProject().getId(), task.getId()).list(task.getId())).withRel("allocation"));
+        resource.add(linkTo(methodOn(CommentController.class).comments(task.getProject().getId(), task.getId())).withRel("comment"));
+        resource.add(linkTo(methodOn(AllocationController.class).list(task.getProject().getId(), task.getId())).withRel("allocation"));
 
         return resource;
     }

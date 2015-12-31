@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping(value = "/api/project/{projectId}/category")
-@PreAuthorize("@projectAccessExpression.hasManagerAccess(#projectId, principal.username)")
+@PreAuthorize("@projectAccessExpression.hasMemberAccess(#projectId, principal.username)")
 public class CategoryController {
 
     @Autowired
@@ -49,23 +49,25 @@ public class CategoryController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CategoryResource> get(@PathVariable("id") Long id) {
+    public ResponseEntity<CategoryResource> get(@PathVariable("projectId") Long projectId, @PathVariable("id") Long id) {
         Category category = repository.findOne(id);
         return new ResponseEntity(assembler.toResource(category), HttpStatus.OK);
     }
 
+    @PreAuthorize("@projectAccessExpression.hasManagerAccess(#projectId, principal.username)")
     @RequestMapping(method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity create(@PathVariable("projectId") Long projectId, @RequestBody Category category) {
         Project project = projectRepository.findOne(projectId);
         category.setProject(project);
         Category result = repository.save(category);
         HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(linkTo(methodOn(this.getClass(), result.getProject().getId()).get(result.getId())).toUri());
+        headers.setLocation(linkTo(methodOn(this.getClass()).get(projectId, result.getId())).toUri());
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("@projectAccessExpression.hasManagerAccess(#projectId, principal.username)")
     @RequestMapping(value = "{categoryId}", method = RequestMethod.DELETE, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity delete(@PathVariable("categoryId") Long categoryId) {
+    public ResponseEntity delete(@PathVariable("projectId") Long projectId, @PathVariable("categoryId") Long categoryId) {
         Category category = repository.findOne(categoryId);
         for (Task task : category.getTasks()) {
             task.setCategory(null);
@@ -74,6 +76,7 @@ public class CategoryController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @PreAuthorize("@projectAccessExpression.hasManagerAccess(#projectId, principal.username)")
     @RequestMapping(value = "{categoryId}", method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CategoryResource> update(@PathVariable("projectId") Long projectId, @RequestBody Category category) {
         Project project = projectRepository.findOne(projectId);

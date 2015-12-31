@@ -12,6 +12,7 @@ import org.co2.kanban.repository.task.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping(value = "/api/project/{projectId}/task/{taskId}/allocation")
+@PreAuthorize("@projectAccessExpression.hasMemberAccess(#projectId, principal.username)")
 public class AllocationController {
 
     @Autowired
@@ -36,7 +38,8 @@ public class AllocationController {
     private AllocationAssembler assembler;
 
     @RequestMapping(method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity create(@PathVariable("taskId") Long taskId, @RequestBody Allocation allocation) {
+    @PreAuthorize("@projectAccessExpression.hasManagerAccess(#projectId, principal.username)")
+    public ResponseEntity create(@PathVariable("projectId") Long projectId, @PathVariable("taskId") Long taskId, @RequestBody Allocation allocation) {
         Task task = repository.findOne(taskId);
         allocation.setTask(task);
         if (allocation.getTimeSpent() != null) {
@@ -47,18 +50,19 @@ public class AllocationController {
     }
 
     @RequestMapping(method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public Iterable<AllocationResource> list(@PathVariable("taskId") Long taskId) {
+    public Iterable<AllocationResource> list(@PathVariable("projectId") Long projectId, @PathVariable("taskId") Long taskId) {
         Task task = repository.findOne(taskId);
         return assembler.toResources(allocationRepository.findByTask(task));
     }
 
-    @RequestMapping(value="/{allocationId}", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public AllocationResource get(@PathVariable("allocationId") Long allocationId) {
+    @RequestMapping(value = "/{allocationId}", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    public AllocationResource get(@PathVariable("projectId") Long projectId, @PathVariable("allocationId") Long allocationId) {
         return assembler.toResource(allocationRepository.findOne(allocationId));
     }
 
-    @RequestMapping(value="/{allocationId}", method = RequestMethod.DELETE, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity delete(@PathVariable("allocationId") Long allocationId) {
+    @RequestMapping(value = "/{allocationId}", method = RequestMethod.DELETE, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("@projectAccessExpression.hasManagerAccess(#projectId, principal.username)")
+    public ResponseEntity delete(@PathVariable("projectId") Long projectId, @PathVariable("allocationId") Long allocationId) {
         allocationRepository.delete(allocationId);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }

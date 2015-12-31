@@ -13,6 +13,7 @@ import org.co2.kanban.repository.member.Member;
 import org.co2.kanban.repository.member.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping(value = "/api/project/{projectId}/member/{memberId}/imputation")
+@PreAuthorize("@projectAccessExpression.hasMemberAccess(#projectId, principal.username)")
 public class ImputationController {
 
     @Autowired
@@ -37,7 +39,8 @@ public class ImputationController {
     private ImputationAssembler assembler;
 
     @RequestMapping(method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public ImputationResource list(@PathVariable("memberId") Long memberId,
+    public ImputationResource list(@PathVariable("projectId") Long projectId, 
+            @PathVariable("memberId") Long memberId,
             @RequestParam("start") @DateTimeFormat(pattern = "dd/MM/yyyy") Date start,
             @RequestParam("end") @DateTimeFormat(pattern = "dd/MM/yyyy") Date end) {
         Member member = repository.findOne(memberId);

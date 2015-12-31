@@ -116,7 +116,7 @@ public class TaskListController {
         task.setState(defaultState);
         Task result = repository.save(task);
         HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(linkTo(methodOn(TaskController.class, result.getProject().getId()).get(result.getId())).toUri());
+        headers.setLocation(linkTo(methodOn(TaskController.class).get(result.getProject().getId(), result.getId())).toUri());
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 

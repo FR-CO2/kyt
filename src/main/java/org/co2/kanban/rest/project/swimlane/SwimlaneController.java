@@ -49,7 +49,7 @@ public class SwimlaneController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("@projectAccessExpression.hasManagerAccess(#projectId, principal.username)")
-    public ResponseEntity delete(@PathVariable("id") Long id) {
+    public ResponseEntity delete(@PathVariable("projectId") Long projectId, @PathVariable("id") Long id) {
         Swimlane swimlane = repository.findOne(id);
         for (Task task : swimlane.getTasks()) {
             task.setSwimlane(null);
@@ -59,7 +59,7 @@ public class SwimlaneController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Swimlane> get(@PathVariable("id") Long id) {
+    public ResponseEntity<Swimlane> get(@PathVariable("projectId") Long projectId, @PathVariable("id") Long id) {
         Swimlane swimlane = repository.findOne(id);
         return new ResponseEntity(assembler.toResource(swimlane), HttpStatus.OK);
     }
@@ -76,7 +76,7 @@ public class SwimlaneController {
         swimlane.setPosition(maxPosition);
         Swimlane result = repository.save(swimlane);
         HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(linkTo(methodOn(this.getClass(), result.getProject().getId()).get(result.getId())).toUri());
+        headers.setLocation(linkTo(methodOn(this.getClass()).get(projectId, result.getId())).toUri());
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 

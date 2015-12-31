@@ -43,26 +43,26 @@ public class CommentController {
     private CommentAssembler assembler;
     
     @RequestMapping(method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public Iterable<CommentResource> comments(@PathVariable("taskId") Long taskId) {
+    public Iterable<CommentResource> comments(@PathVariable("projectId") Long projectId, @PathVariable("taskId") Long taskId) {
         Task task = taskRepository.findOne(taskId);
         Iterable<Comment> comments = repository.findByTaskAndParentIsNull(task);
         return assembler.toResources(comments);
     }
 
     @RequestMapping(value="/{commentId}", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public CommentResource get(@PathVariable("commentId") Long commentId) {
+    public CommentResource get(@PathVariable("projectId") Long projectId, @PathVariable("commentId") Long commentId) {
         Comment comment = repository.findOne(commentId);
         return assembler.toResource(comment);
     }
     
     @RequestMapping(value="/{commentId}", method = RequestMethod.DELETE, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity delete(@PathVariable("commentId") Long commentId) {
+    public ResponseEntity delete(@PathVariable("projectId") Long projectId, @PathVariable("commentId") Long commentId) {
         repository.delete(commentId);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
     
     @RequestMapping(method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity create(@AuthenticationPrincipal Principal user, @PathVariable("taskId") Long taskId, @RequestBody Comment comment) {
+    public ResponseEntity create(@PathVariable("projectId") Long projectId, @AuthenticationPrincipal Principal user, @PathVariable("taskId") Long taskId, @RequestBody Comment comment) {
         Task task = taskRepository.findOne(taskId);
         comment.setTask(task);
         comment.setWriter(user.getName());
@@ -72,7 +72,7 @@ public class CommentController {
     }
 
     @RequestMapping(value = "/{commentId}/reply", method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity reply(@AuthenticationPrincipal Principal user, @PathVariable("taskId") Long taskId, @PathVariable("commentId") Long parentCommentId, @RequestBody Comment comment) {
+    public ResponseEntity reply(@PathVariable("projectId") Long projectId, @AuthenticationPrincipal Principal user, @PathVariable("taskId") Long taskId, @PathVariable("commentId") Long parentCommentId, @RequestBody Comment comment) {
         Comment parent = repository.findOne(parentCommentId);
         comment.setWriter(user.getName());
         comment.setWritingDate(new Timestamp(new Date().getTime()));
@@ -83,10 +83,8 @@ public class CommentController {
     }
 
     @RequestMapping(value = "/{commentId}/reply", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public Iterable<CommentResource> listReplies(@PathVariable("commentId") Long commentId) {
+    public Iterable<CommentResource> listReplies(@PathVariable("projectId") Long projectId, @PathVariable("commentId") Long commentId) {
         Comment parent = repository.findOne(commentId);
-        // TODO : voir avec benjamin s'il n'y a pas un moyen plus propre de faire ça.
-        // Reponse : recrée ta base de données => il y avait un pb avant, on enregistrait pas la task sur les réponses ... c'est corrigé mais tu dois avoir des réponses sans task dans ta base
         return assembler.toResources(parent.getReply());
     }
 }

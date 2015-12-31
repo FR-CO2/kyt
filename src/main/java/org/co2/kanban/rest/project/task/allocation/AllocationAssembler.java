@@ -25,7 +25,7 @@ public class AllocationAssembler extends ResourceAssemblerSupport<Allocation, Al
     @Override
     public AllocationResource toResource(Allocation entity) {
         AllocationResource resource = new AllocationResource(entity);
-        resource.add(linkTo(methodOn(AllocationController.class, entity.getTask().getProject().getId(), entity.getTask().getId()).get(entity.getId())).withSelfRel());
+        resource.add(linkTo(methodOn(AllocationController.class, entity.getTask().getProject().getId(), entity.getTask().getId()).get(entity.getTask().getProject().getId(), entity.getId())).withSelfRel());
         return resource;
     }
 
