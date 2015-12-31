@@ -18,7 +18,11 @@
                 <tbody>
                     <tr ng-repeat="category in projectEditCtrl.project.categories">
                         <td>
-                            {{category.name}}
+                            <a href="#" editable-text="category.name" onaftersave="categoryListCtrl.saveCategory(category)"
+                            e-typeahead-editable="true" 
+                            title="Modifier la catégorie">
+                                {{category.name}}
+                            </a>
                         </td>
                         <td>
                             <span style="background-color: {{category.bgcolor}}; border: 1px solid; padding-top:4px; padding-left:15px">&nbsp;</span>

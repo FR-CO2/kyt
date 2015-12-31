@@ -24,6 +24,9 @@
                     project.categories = project.resource("category").query();
                 });
             };
+            vm.saveCategory = function(category){
+                category.resource("self").save(null, category, null);
+            };
         };
         listController.$inject = ["$uibModal", "$scope"];
         return listController;
