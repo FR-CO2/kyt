@@ -27,6 +27,9 @@ public class MemberOfAssembler extends ResourceAssemblerSupport<Member, MemberOf
 
     @Override
     public MemberOfResource toResource(Member entity) {
+        if (entity == null) {
+            return null;
+        }
         MemberOfResource resource = new MemberOfResource(entity);
         resource.add(linkTo(methodOn(ProjectController.class).get(entity.getProject().getId())).withRel("project"));
         resource.add(linkTo(methodOn(ApplicationUserController.class).get(entity.getUser().getId())).withRel("user"));

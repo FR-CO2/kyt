@@ -56,6 +56,7 @@ public class CommentController {
     }
     
     @RequestMapping(value="/{commentId}", method = RequestMethod.DELETE, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("@projectAccessExpression.hasManagerAccess(#projectId, principal.username)")
     public ResponseEntity delete(@PathVariable("projectId") Long projectId, @PathVariable("commentId") Long commentId) {
         repository.delete(commentId);
         return new ResponseEntity(HttpStatus.NO_CONTENT);

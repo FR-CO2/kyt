@@ -6,25 +6,23 @@
         };
         resolveProject.$inject = ["$stateParams", "projectService"];
 
-        var resolveUserRights = function ($stateParams, currentuser) {
-            var rights = {
-                hasAdminRights: false,
-                hasEditRights: false,
-                hasReadRights: false
-            };
+        var resolveUserRights = function ($q, $stateParams, currentuser) {
+            var defer = $q.defer();
             currentuser.$promise.then(function () {
                 var isAdmin = (currentuser.applicationRole === "ADMIN");
                 currentuser.resource("member").get({"projectId": $stateParams.projectId}, function (data) {
-                    rights = {
-                        hasAdminRights: (isAdmin || data.projectRole === "MANAGER"),
-                        hasEditRights: (isAdmin || data.projectRole === "MANAGER" || data.projectRole === "CONTRIBUTOR"),
-                        hasReadRights: (isAdmin || data)
+                    var projectRole = data.projectRole;
+                    var rights = {
+                        hasAdminRights: (isAdmin || projectRole === "MANAGER"),
+                        hasEditRights: (isAdmin || projectRole === "MANAGER" || projectRole === "CONTRIBUTOR"),
+                        hasReadRights: (isAdmin || projectRole)
                     };
+                    defer.resolve(rights);
                 });
             });
-            return rights;
+            return defer.promise;
         };
-        resolveUserRights.$inject = ["$stateParams", "currentuser"];
+        resolveUserRights.$inject = ["$q", "$stateParams", "currentuser"];
 
         var config = function ($stateProvider) {
             $stateProvider.state("app.project", {
