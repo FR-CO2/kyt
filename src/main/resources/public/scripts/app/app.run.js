@@ -9,12 +9,7 @@
             editableOptions.theme = 'bs3';
             $rootScope.loginOngoing = false;
             $rootScope.$on("event:auth-forbidden", function () {
-                var parentState = $state.get("^");
-                if (parentState.abstract) {
-                    $state.go("app.dashboard");
-                } else {
-                    $state.go(parentState);
-                }
+                $state.go("app.dashboard");
             });
             $rootScope.$on("event:auth-loginRequired", function () {
                 delete $sessionStorage.oauth;
