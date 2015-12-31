@@ -16,6 +16,7 @@ import org.co2.kanban.repository.swimlane.SwimlaneRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedResources;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
@@ -61,9 +62,19 @@ public class TaskListController {
     @RequestMapping(params = {"page", "size"}, method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public PagedResources<TaskResource> page(@PathVariable("projectId") Long projectId,
             @RequestParam(name = "page") Integer page,
-            @RequestParam(name = "size", required = false) Integer size) {
+            @RequestParam(name = "size") Integer size,
+            @RequestParam(name = "sort", required = false) String sort,
+            @RequestParam(name = "sortDirection", required = false) String sortDirection) {
         Project project = projectRepository.findOne(projectId);
-        Pageable pageable = new PageRequest(page, size);
+        Sort sorting = null;
+        if (sort != null) {
+            Sort.Direction dir = Sort.DEFAULT_DIRECTION;
+            if (sortDirection != null) {
+                dir = Sort.Direction.fromString(sortDirection);
+            }
+            sorting = new Sort(dir, sort);
+        }
+        PageRequest pageable = new PageRequest(page, size, sorting);
         return pagedAssembler.toResource(repository.findByProject(project, pageable), assembler);
     }
 

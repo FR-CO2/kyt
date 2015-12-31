@@ -15,21 +15,49 @@
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th ng-click="tasksCtrl.tableFilter('name')">Nom</th>
-                        <th ng-click="tasksCtrl.tableFilter('state.name')">Etat</th>
-                        <th ng-click="tasksCtrl.tableFilter('swimlane.name')">Couloir</th>
-                        <th ng-click="tasksCtrl.tableFilter('category.name')">Categorie</th>
-                        <th ng-click="tasksCtrl.tableFilter('assignee.name')">Assignee</th>
-                        <th ng-click="tasksCtrl.tableFilter('plannedStart')">Date début</th>
-                        <th ng-click="tasksCtrl.tableFilter('plannedEnding')">Date fin</th>
-                        <th ng-click="tasksCtrl.tableFilter('timeSpent')">Consommée</th>
-                        <th ng-click="tasksCtrl.tableFilter('estimatedLoad')">Charge estimée</th>
-                        <th ng-click="tasksCtrl.tableFilter('timeRemains')">Charge réevaluée</th>
+                        <th ng-click="tasksCtrl.tableFilter('name')">
+                            Nom
+                            <span ng-class="{'glyphicon-sort-by-alphabet': tasksCtrl.sort.sortDirection === 'asc', 'glyphicon-sort-by-alphabet-alt': tasksCtrl.sort.sortDirection === 'desc'}" 
+                                  class="glyphicon" ng-if="tasksCtrl.sort.field === 'name'"></span>
+                        </th>
+                        <th ng-click="tasksCtrl.tableFilter('state.position')">
+                            Etat
+                            <span class="glyphicon" ng-if="tasksCtrl.sort.field === 'state.position'"
+                                  ng-class="{'glyphicon-sort-by-attributes': tasksCtrl.sort.sortDirection === 'asc', 'glyphicon-sort-by-attributes-alt': tasksCtrl.sort.sortDirection === 'desc'}"></span>
+                        </th>
+                        <th ng-click="tasksCtrl.tableFilter('swimlane.position')">
+                            Couloir
+                            <span class="glyphicon" ng-if="tasksCtrl.sort.field === 'swimlane.position'"
+                                  ng-class="{'glyphicon-sort-by-attributes': tasksCtrl.sort.sortDirection === 'asc', 'glyphicon-sort-by-attributes-alt': tasksCtrl.sort.sortDirection === 'desc'}"></span>
+                        </th>
+                        <th ng-click="tasksCtrl.tableFilter('category')">
+                            Categorie
+                            <span class="glyphicon" ng-if="tasksCtrl.sort.field === 'category'"
+                                  ng-class="{'glyphicon-sort-by-alphabet': tasksCtrl.sort.sortDirection === 'asc', 'glyphicon-sort-by-alphabet-alt': tasksCtrl.sort.sortDirection === 'desc'}" ></span>
+                        </th>
+                        <th ng-click="tasksCtrl.tableFilter('assignee.user.username')">
+                            Assigné à
+                            <span class="glyphicon" ng-if="tasksCtrl.sort.field === 'assignee.user.username'"
+                                  ng-class="{'glyphicon-sort-by-alphabet': tasksCtrl.sort.sortDirection === 'asc', 'glyphicon-sort-by-alphabet-alt': tasksCtrl.sort.sortDirection === 'desc'}" ></span>
+                        </th>
+                        <th ng-click="tasksCtrl.tableFilter('plannedStart')">
+                            Date début
+                            <span class="glyphicon" ng-if="tasksCtrl.sort.field === 'plannedStart'"
+                                  ng-class="{'glyphicon-sort-by-order': tasksCtrl.sort.sortDirection === 'asc', 'glyphicon-sort-by-order-alt': tasksCtrl.sort.sortDirection === 'desc'}" ></span>
+                        </th>
+                        <th ng-click="tasksCtrl.tableFilter('plannedEnding')">
+                            Date fin
+                            <span class="glyphicon" ng-if="tasksCtrl.sort.field === 'plannedEnding'"
+                                  ng-class="{'glyphicon-sort-by-order': tasksCtrl.sort.sortDirection === 'asc', 'glyphicon-sort-by-order-alt': tasksCtrl.sort.sortDirection === 'desc'}" ></span>
+                        </th>
+                        <th>Charge estimée</th>
+                        <th>Consommée</th>
+                        <th>Charge réevaluée</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="task in tasksCtrl.tasks._embedded.taskResourceList | orderBy:tasksCtrl.predicate:tasksCtrl.reverse">
+                    <tr ng-repeat="task in tasksCtrl.tasks._embedded.taskResourceList">
                         <td>
                             {{task.name}}
                         </td>
@@ -61,10 +89,10 @@
                             {{task.plannedEnding| date:'dd/MM/yyyy'}}
                         </td>
                         <td>
-                            {{task.timeSpent}}
+                            {{task.estimatedLoad}}
                         </td>
                         <td>
-                            {{task.estimatedLoad}}
+                            {{task.timeSpent}}
                         </td>
                         <td ng-class="{'exceeded-load' : task.exceededLoad}">
                             {{task.timeRemains}}
@@ -73,7 +101,7 @@
                             <a ui-sref="app.project.task({projectId: projectCtrl.project.id, taskId: task.id })" title="edit">
                                 <span class="glyphicon glyphicon-edit"></span>
                             </a>
-                            <a ng-click="tasksCtrl.delete(task)" title="delete">
+                            <a ng-click="tasksCtrl.delete(task)" title="delete" ng-if="projectCtrl.rights.hasAdminRights">
                                 <span class="glyphicon glyphicon-trash"></span>
                             </a>
                         </td>
