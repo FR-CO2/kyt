@@ -22,13 +22,17 @@
                         <div class="" as-sortable-item-handle>
                             <div class="row">
                                 <div class="col-md-3">
-                                    {{state.name}} 
+                                    <a href="#" editable-text="state.name" onaftersave="stateListCtrl.saveState(state)"
+                                        e-typeahead-editable="true" 
+                                        title="Modifier l'état">
+                                        {{state.name}} 
+                                    </a>
                                 </div>
                                 <div class="col-md-3 text-center">
-                                    <input class="form-control" type="checkbox" ng-model="state.closeState"/>
+                                    <input class="form-control" type="checkbox" ng-model="state.closeState" ng-change='stateListCtrl.saveState(state)'/>
                                 </div>
                                 <div class="col-md-3 text-center">
-                                    <input class="form-control" type="checkbox" ng-model="state.kanbanHide"/>
+                                    <input class="form-control" type="checkbox" ng-model="state.kanbanHide" ng-change='stateListCtrl.saveState(state)'/>
                                 </div>
                                 <div class="col-md-3">
                                     <span class="badge  pull-right">

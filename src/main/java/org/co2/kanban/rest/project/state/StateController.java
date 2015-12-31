@@ -95,6 +95,12 @@ public class StateController {
         if (!oldState.getPosition().equals(state.getPosition())) {
             updatePosition(state.getPosition(), oldState);
         }
+        if(state.getCloseState() != oldState.getCloseState() || state.getKanbanHide() != oldState.getKanbanHide()){
+            updateClosedState(state.getCloseState(), state.getKanbanHide(), oldState);
+        }
+        if(!state.getName().equals(oldState.getName())){
+            updateNameState(state.getName(), oldState);
+        }
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
@@ -117,5 +123,16 @@ public class StateController {
                 positionRef++;
             }
         }
+    }
+    
+    private void updateClosedState(boolean closeState, boolean kanbanHide, State state) {
+        state.setCloseState(closeState);
+        state.setKanbanHide(kanbanHide);
+        repository.save(state);
+    }
+    
+    private void updateNameState(String name,State state) {
+        state.setName(name);
+        repository.save(state);
     }
 }
