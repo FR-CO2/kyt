@@ -63,7 +63,7 @@ public class TaskAssembler extends ResourceAssemblerSupport<Task, TaskResource> 
         resource.setTimeRemains(timeRemains);
         resource.setTimeSpent(timeSpent);
         resource.add(linkTo(methodOn(ProjectController.class).get(task.getProject().getId())).withRel("project"));
-        resource.add(linkTo(methodOn(StateController.class, task.getProject().getId()).get(task.getState().getId())).withRel("state"));
+        resource.add(linkTo(methodOn(StateController.class).get(task.getProject().getId(), task.getState().getId())).withRel("state"));
         resource.add(linkTo(methodOn(TaskController.class, task.getProject().getId(), task.getId()).get(task.getId())).withSelfRel());
         if (task.getAssignee() != null) {
             resource.add(linkTo(methodOn(MemberController.class, task.getProject().getId()).get(task.getAssignee().getId())).withRel("assignee"));

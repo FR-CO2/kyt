@@ -27,7 +27,7 @@ public class StateAssembler extends ResourceAssemblerSupport<State, StateResourc
     public StateResource toResource(State state) {
         StateResource resource = new StateResource(state);
         resource.setTaskCount(state.getTasks().size());
-        resource.add(linkTo(methodOn(StateController.class, state.getProject().getId()).get(state.getId())).withSelfRel());
+        resource.add(linkTo(methodOn(StateController.class).get(state.getProject().getId(), state.getId())).withSelfRel());
         resource.add(linkTo(methodOn(ProjectController.class).get(state.getProject().getId())).withRel("project"));
         return resource;
     }

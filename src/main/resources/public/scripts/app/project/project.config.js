@@ -5,16 +5,27 @@
             return projectService.get({"projectId": $stateParams.projectId});
         };
         resolveProject.$inject = ["$stateParams", "projectService"];
-        
-        var resolveUserRights = function($stateParams, currentuser) {
-            return {
-                hasAdminRights : true,
-                hasEditRights : true,
-                hasReadRights : true
+
+        var resolveUserRights = function ($stateParams, currentuser) {
+            var rights = {
+                hasAdminRights: false,
+                hasEditRights: false,
+                hasReadRights: false
             };
+            currentuser.$promise.then(function () {
+                var isAdmin = (currentuser.applicationRole === "ADMIN");
+                currentuser.resource("member").get({"projectId": $stateParams.projectId}, function (data) {
+                    rights = {
+                        hasAdminRights: (isAdmin || data.projectRole === "MANAGER"),
+                        hasEditRights: (isAdmin || data.projectRole === "MANAGER" || data.projectRole === "CONTRIBUTOR"),
+                        hasReadRights: (isAdmin || data)
+                    };
+                });
+            });
+            return rights;
         };
         resolveUserRights.$inject = ["$stateParams", "currentuser"];
-        
+
         var config = function ($stateProvider) {
             $stateProvider.state("app.project", {
                 abstract: true,
@@ -24,7 +35,7 @@
                 url: "project/:projectId/",
                 resolve: {
                     project: resolveProject,
-                    userRights : resolveUserRights
+                    userRights: resolveUserRights
                 }
             });
             $stateProvider.state("app.project.kanban", {

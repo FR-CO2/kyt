@@ -55,14 +55,14 @@ public class StateController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<StateResource> get(@PathVariable("id") Long id) {
+    public ResponseEntity<StateResource> get(@PathVariable("projectId") Long projectId, @PathVariable("id") Long id) {
         State state = repository.findOne(id);
         return new ResponseEntity(assembler.toResource(state), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("@projectAccessExpression.hasManagerAccess(#projectId, principal.username)")
-    public ResponseEntity delete(@PathVariable("id") Long id) {
+    public ResponseEntity delete(@PathVariable("projectId") Long projectId, @PathVariable("id") Long id) {
         State state = repository.findOne(id);
         //Precondition : no task exist with state 
         if (!state.getTasks().isEmpty()) {
@@ -84,7 +84,7 @@ public class StateController {
         state.setPosition(maxPosition);
         State result = repository.save(state);
         HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(linkTo(methodOn(this.getClass(), result.getProject().getId()).get(result.getId())).toUri());
+        headers.setLocation(linkTo(methodOn(this.getClass(), projectId).get(projectId, result.getId())).toUri());
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
