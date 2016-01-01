@@ -19,13 +19,15 @@
                     <tr ng-repeat="category in projectEditCtrl.project.categories">
                         <td>
                             <a href="#" editable-text="category.name" onaftersave="categoryListCtrl.saveCategory(category)"
-                            e-typeahead-editable="true" 
-                            title="Modifier la catégorie">
+                               e-typeahead-editable="true" 
+                               title="Modifier la catégorie">
                                 {{category.name}}
                             </a>
                         </td>
                         <td>
-                            <span style="background-color: {{category.bgcolor}}; border: 1px solid; padding-top:4px; padding-left:15px">&nbsp;</span>
+                            <a  editable-color="category.bgcolor" onaftersave="categoryListCtrl.saveCategory(category)" title="Modifier la catégorie">
+                                <span style="background-color: {{category.bgcolor}}; border: 1px solid; padding-top:4px; padding-left:15px">&nbsp;</span>
+                            </a>
                         <td>
                             <a ng-click="categoryListCtrl.delete(category)">
                                 <span class="glyphicon glyphicon-trash"></span>
