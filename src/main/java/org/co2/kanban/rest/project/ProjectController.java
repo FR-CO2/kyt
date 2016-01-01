@@ -85,6 +85,9 @@ public class ProjectController {
 
     @RequestMapping(method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity create(@RequestBody Project newProject) {
+        if (repository.checkExistProject(newProject.getName())) {
+            return new ResponseEntity(HttpStatus.CONFLICT);
+        }
         newProject.setStates(getDefaultStates(newProject));
         newProject.setCategories(getDefaultCategories(newProject));
         Project result = repository.save(newProject);

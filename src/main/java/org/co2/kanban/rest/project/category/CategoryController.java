@@ -58,6 +58,9 @@ public class CategoryController {
     @RequestMapping(method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity create(@PathVariable("projectId") Long projectId, @RequestBody Category category) {
         Project project = projectRepository.findOne(projectId);
+        if (repository.checkExistProjectAndName(project, category.getName())) {
+            return new ResponseEntity(HttpStatus.CONFLICT);
+        }
         category.setProject(project);
         Category result = repository.save(category);
         HttpHeaders headers = new HttpHeaders();

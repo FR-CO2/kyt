@@ -8,6 +8,7 @@ package org.co2.kanban.repository.project;
 import org.co2.kanban.repository.user.ApplicationUser;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 /**
@@ -19,4 +20,7 @@ public interface ProjectRepository extends PagingAndSortingRepository<Project, L
     Page<Project> findByMembersUser(ApplicationUser user, Pageable p);
 
     Iterable<Project> findByMembersUser(ApplicationUser user);
+    
+    @Query("select count(e)>0 from Project e where UPPER(e.name)= UPPER(?1)")
+    Boolean checkExistProject(String name);
 }

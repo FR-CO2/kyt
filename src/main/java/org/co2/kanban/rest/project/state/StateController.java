@@ -76,6 +76,9 @@ public class StateController {
     @PreAuthorize("@projectAccessExpression.hasManagerAccess(#projectId, principal.username)")
     public ResponseEntity create(@PathVariable("projectId") Long projectId, @RequestBody State state) {
         Project project = projectRepository.findOne(projectId);
+        if (repository.checkExistProjectAndName(project, state.getName())) {
+            return new ResponseEntity(HttpStatus.CONFLICT);
+        }
         state.setProject(project);
         Long maxPosition = repository.getProjectMaxPosition(projectId);
         if (maxPosition == null) {

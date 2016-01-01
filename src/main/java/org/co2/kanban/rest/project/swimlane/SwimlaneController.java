@@ -68,6 +68,9 @@ public class SwimlaneController {
     @PreAuthorize("@projectAccessExpression.hasManagerAccess(#projectId, principal.username)")
     public ResponseEntity create(@PathVariable("projectId") Long projectId, @RequestBody Swimlane swimlane) {
         Project project = projectRepository.findOne(projectId);
+        if (repository.checkExistProjectAndName(project, swimlane.getName())) {
+            return new ResponseEntity(HttpStatus.CONFLICT);
+        }
         swimlane.setProject(project);
         Long maxPosition = repository.getProjectMaxPosition(projectId);
         if (maxPosition == null) {
