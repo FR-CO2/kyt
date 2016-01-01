@@ -37,7 +37,9 @@
                     size: "md"
                 });
                 modalInstance.result.then(function () {
-                    vm.comments  = currenttask.resource("comment").query();
+                    vm.comments = currenttask.resource("comment").query();
+                    comment.showComment = !comment.showComment;
+                    vm.showHideReply(comment);
                 });
             };
             vm.showHideReply = function (comment) {
@@ -48,12 +50,17 @@
                     comment.showComment = true;
                 }
             };
-            vm.delete = function (comment) {
+            vm.delete = function (parentComment, comment) {
+                vm.selectedComment = undefined;
                 comment.resource("self").delete(null, function () {
                     vm.comments = currenttask.resource("comment").query();
+                    if(parentComment !== null){
+                        parentComment.showComment = !parentComment.showComment;
+                        vm.showHideReply(parentComment);
+                    }
                 });
             };
-            vm.comments  = currenttask.resource("comment").query();
+            vm.comments = currenttask.resource("comment").query();
         };
         listController.$inject = ["$uibModal", "task"];
         return listController;
