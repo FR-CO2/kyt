@@ -18,6 +18,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -43,6 +44,8 @@ public class ApplicationUserController {
     @Autowired
     private PagedResourcesAssembler<ApplicationUser> pagedAssembler;
 
+    private final BCryptPasswordEncoder bcryptEncoder = new BCryptPasswordEncoder();
+    
     @RequestMapping(params = {"page", "size"}, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public PagedResources<UserResource> page(
             @RequestParam(name = "page") Integer page,
@@ -58,6 +61,8 @@ public class ApplicationUserController {
 
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserResource> create(@RequestBody ApplicationUser newUser) {
+        String passwordDigest = bcryptEncoder.encode(newUser.getPassword());
+        newUser.setPassword(passwordDigest);
         ApplicationUser user = repository.save(newUser);
         MultiValueMap<String, String> headers = new HttpHeaders();
         headers.add(HttpHeaders.LOCATION, linkTo(methodOn(ApplicationUserController.class).get(user.getId())).toString());
