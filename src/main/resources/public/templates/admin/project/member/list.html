@@ -21,7 +21,11 @@
                             {{member.username}}
                         </td>
                         <td>
-                            {{member.projectRole}}
+                            <a href="#" editable-select="member.projectRole" 
+                               onaftersave="memberListCtrl.saveMember(member)"
+                               e-ng-options="projectRole for projectRole in memberListCtrl.projectRoles">
+                                {{member.projectRole}}
+                            </a>
                         </td>
                         <td>
                             <a ng-click="memberListCtrl.delete(member)">

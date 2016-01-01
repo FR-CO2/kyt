@@ -102,4 +102,12 @@ public class MemberController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @RequestMapping(value = "/{memberId}", method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity update(@PathVariable("projectId") Long projectId, @PathVariable("memberId") Long memberId, @RequestBody Member member) {
+        Member current = repository.findOne(memberId);
+        current.setProjectRole(member.getProjectRole());
+        repository.save(current);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
 }
