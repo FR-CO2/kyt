@@ -24,11 +24,15 @@
                                 <div class="col-md-3">
                                     {{state.name}} 
                                 </div>
-                                <div class="col-md-3 text-center">
-                                    <input class="form-control" type="checkbox" ng-model="state.closeState"/>
+                                <div class="col-md-3 text-center form-group">
+                                    <a href="#" editable-checkbox="state.closeState" e-title="Etat de fermeture ?" onaftersave="stateListCtrl.saveState(state)">
+                                        <span class="glyphicon" ng-class="{'glyphicon-check' : state.closeState, 'glyphicon-unchecked' : !state.closeState}"></span>
+                                    </a>
                                 </div>
-                                <div class="col-md-3 text-center">
-                                    <input class="form-control" type="checkbox" ng-model="state.kanbanHide"/>
+                                <div class="col-md-3 text-center form-group">
+                                    <a href="#" editable-checkbox="state.kanbanHide" e-title="Masqué dans Kanban ?" onaftersave="stateListCtrl.saveState(state)">
+                                        <span class="glyphicon" ng-class="{'glyphicon-check' : state.kanbanHide, 'glyphicon-unchecked' : !state.kanbanHide}"></span>
+                                    </a>
                                 </div>
                                 <div class="col-md-3">
                                     <span class="badge  pull-right">
