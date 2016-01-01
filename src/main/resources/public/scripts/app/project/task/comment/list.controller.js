@@ -2,7 +2,6 @@
     define([], function () {
         var listController = function ($uibModal, currenttask) {
             var vm = this;
-            vm.showComment = false;
             vm.add = function () {
                 var modalInstance = $uibModal.open({
                     animation: true,
@@ -42,11 +41,11 @@
                 });
             };
             vm.showHideReply = function (comment) {
-                if(vm.showComment){
-                    vm.showComment = false;
+                if(comment.showComment){
+                    comment.showComment = false;
                 } else{
                     vm.selectedComment =comment.resource("reply").query();
-                    vm.showComment = true;
+                    comment.showComment = true;
                 }
             };
             vm.delete = function (comment) {

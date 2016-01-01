@@ -22,13 +22,13 @@
                     <div class="panel-body">
                         {{comment.comment}}
                         <div ng-if="commentListCtrl.selectedComment !== undefined">
-                            <div ng-include="'templates/project/task/comment/reply.html'" ng-controller="commentReplyController as commentReplyCtrl" ng-if="commentListCtrl.showComment"></div>
+                            <div ng-include="'templates/project/task/comment/reply.html'" ng-controller="commentReplyController as commentReplyCtrl" ng-if="comment.showComment"></div>
                         </div>
                     </div>
                     <div class="panel-footer">
                         <div class="pull-right">
                             <span class="badge">
-                                <a ng-click="commentListCtrl.showHideReply(comment)" title="reply" ng-switch on="commentListCtrl.showComment">
+                                <a ng-click="commentListCtrl.showHideReply(comment)" title="reply" ng-switch on="comment.showComment">
                                     <span class="animate-switch" ng-switch-when="true">
                                         <span class="glyphicon glyphicon-eye-close"></span>
                                         <span ng-switch="comment.nbReply"> cacher 
