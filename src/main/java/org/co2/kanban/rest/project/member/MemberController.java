@@ -75,6 +75,9 @@ public class MemberController {
     @RequestMapping(method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity create(@PathVariable("projectId") Long projectId, @RequestBody Member member) {
         Project project = projectRepository.findOne(projectId);
+        if (repository.checkExistProjectAndUser(project, member.getUser())) {
+            return new ResponseEntity(HttpStatus.CONFLICT);
+        }
         member.setProject(project);
         Member result = repository.save(member);
         HttpHeaders headers = new HttpHeaders();
