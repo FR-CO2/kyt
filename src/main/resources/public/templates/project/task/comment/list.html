@@ -22,17 +22,26 @@
                     <div class="panel-body">
                         {{comment.comment}}
                         <div ng-if="commentListCtrl.selectedComment !== undefined">
-                            <div ng-include="'templates/project/task/comment/reply.html'" ng-controller="commentReplyController as commentReplyCtrl"></div>
+                            <div ng-include="'templates/project/task/comment/reply.html'" ng-controller="commentReplyController as commentReplyCtrl" ng-if="commentListCtrl.hideComment"></div>
                         </div>
                     </div>
                     <div class="panel-footer">
                         <div class="pull-right">
                             <span class="badge">
-                                <a ng-click="commentListCtrl.showReply(comment)" title="reply">
-                                    <span class="glyphicon glyphicon-eye-open"></span>
-                                    <span ng-switch="comment.nbReply"> voir 
-                                        <span ng-switch-when="1">la réponse</span>
-                                        <span ng-switch-default>les réponses</span>
+                                <a ng-click="commentListCtrl.showHideReply(comment)" title="reply" ng-switch on="commentListCtrl.hideComment">
+                                    <span class="animate-switch" ng-switch-when="true">
+                                        <span class="glyphicon glyphicon-eye-close"></span>
+                                        <span ng-switch="comment.nbReply"> cacher 
+                                            <span ng-switch-when="1">la réponse</span>
+                                            <span ng-switch-default>les réponses</span>
+                                        </span>
+                                    </span>
+                                    <span class="animate-switch" ng-switch-default>
+                                        <span class="glyphicon glyphicon-eye-open"></span>
+                                        <span ng-switch="comment.nbReply"> voir 
+                                            <span ng-switch-when="1">la réponse</span>
+                                            <span ng-switch-default>les réponses</span>
+                                        </span>
                                     </span>
                                 </a>
                             </span>
