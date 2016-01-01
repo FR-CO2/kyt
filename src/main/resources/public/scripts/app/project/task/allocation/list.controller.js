@@ -16,7 +16,7 @@
                             return currentproject;
                         }
                     },
-                    size: "md"
+                    size: "xd"
                 });
                 modalInstance.result.then(function () {
                     vm.allocations = currenttask.resource("allocation").query();
