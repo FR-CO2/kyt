@@ -61,6 +61,9 @@ public class ApplicationUserController {
 
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserResource> create(@RequestBody ApplicationUser newUser) {
+        if (repository.checkExistUsername(newUser.getUsername())) {
+            return new ResponseEntity(HttpStatus.CONFLICT);
+        }
         String passwordDigest = bcryptEncoder.encode(newUser.getPassword());
         newUser.setPassword(passwordDigest);
         ApplicationUser user = repository.save(newUser);

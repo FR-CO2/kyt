@@ -5,6 +5,7 @@
  */
 package org.co2.kanban.repository.user;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 /**
@@ -16,4 +17,7 @@ public interface ApplicationUserRepository extends PagingAndSortingRepository<Ap
     ApplicationUser findByUsername(String username);
 
     Iterable<ApplicationUser> findByUsernameContains(String search);
+
+    @Query("select count(e)>0 from ApplicationUser e where UPPER(e.username)= UPPER(?1)")
+    Boolean checkExistUsername(String username);
 }
