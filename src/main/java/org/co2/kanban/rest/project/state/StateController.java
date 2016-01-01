@@ -95,12 +95,9 @@ public class StateController {
         if (!oldState.getPosition().equals(state.getPosition())) {
             updatePosition(state.getPosition(), oldState);
         }
-        if(state.getCloseState() != oldState.getCloseState() || state.getKanbanHide() != oldState.getKanbanHide()){
-            updateClosedState(state.getCloseState(), state.getKanbanHide(), oldState);
-        }
-        if(!state.getName().equals(oldState.getName())){
-            updateNameState(state.getName(), oldState);
-        }
+        Project project = projectRepository.findOne(projectId);
+        state.setProject(project);
+        repository.save(state);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
@@ -112,7 +109,7 @@ public class StateController {
         }
         state.setPosition(newPosition);
         repository.save(state);
-        Iterable<State> statesToUpdate = repository.findByProjectAndPositionGreaterThanOrderByPositionAsc(state.getProject(), positionRef - 1);
+        Iterable<State> statesToUpdate = repository.findByProjectAndPositionGreaterThanEqualOrderByPositionAsc(state.getProject(), positionRef);
         for (State stateToUpdate : statesToUpdate) {
             if (positionRef.equals(newPosition)) {
                 positionRef++;
@@ -124,15 +121,5 @@ public class StateController {
             }
         }
     }
-    
-    private void updateClosedState(boolean closeState, boolean kanbanHide, State state) {
-        state.setCloseState(closeState);
-        state.setKanbanHide(kanbanHide);
-        repository.save(state);
-    }
-    
-    private void updateNameState(String name,State state) {
-        state.setName(name);
-        repository.save(state);
-    }
+
 }

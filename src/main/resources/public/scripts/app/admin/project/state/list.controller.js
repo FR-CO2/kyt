@@ -33,7 +33,7 @@
                 });
             };
             vm.saveState = function(state){
-                state.resource("self").save(null, state, null);
+                state.resource("self").save(state);
             };
         };
         listController.$inject = ["$uibModal", "$scope"];

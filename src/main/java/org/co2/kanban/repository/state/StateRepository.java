@@ -17,7 +17,7 @@ public interface StateRepository extends PagingAndSortingRepository<State, Long>
 
     State findByProjectAndPosition(Project project, Long position);
 
-    Iterable<State> findByProjectAndPositionGreaterThanOrderByPositionAsc(Project project, Long position);
+    Iterable<State> findByProjectAndPositionGreaterThanEqualOrderByPositionAsc(Project project, Long position);
 
     Iterable<State> findByProjectOrderByPositionAsc(Project project);
 
