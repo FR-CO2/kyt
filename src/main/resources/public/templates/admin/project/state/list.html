@@ -22,7 +22,11 @@
                         <div class="" as-sortable-item-handle>
                             <div class="row">
                                 <div class="col-md-3">
-                                    {{state.name}} 
+                                    <a href="#" editable-text="state.name" onaftersave="stateListCtrl.saveState(state)"
+                                        e-typeahead-editable="true" 
+                                        title="Modifier l'état">
+                                        {{state.name}} 
+                                    </a>
                                 </div>
                                 <div class="col-md-3 text-center form-group">
                                     <a href="#" editable-checkbox="state.closeState" e-title="Etat de fermeture ?" onaftersave="stateListCtrl.saveState(state)">

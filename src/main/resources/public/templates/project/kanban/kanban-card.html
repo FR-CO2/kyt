@@ -8,9 +8,8 @@
                     {{task.name}}
                 </a>
             </span>
-            <span class="pull-right exceeded" ng-if="task.exceededLoad || task.exceededDate">
+            <span class="pull-right exceeded" ng-if="task.exceededLoad">
                 <span ng-class="{'glyphicon glyphicon-usd' : task.exceededLoad}"></span>
-                <span ng-class="{'glyphicon glyphicon-calendar' : task.exceededDate}"></span>
             </span>
         </header>
         <div class="kanban-card__action">
@@ -49,7 +48,7 @@
         </div>
     </div>
 
-    <div class="kanban-card__date text-right" ng-if="task.plannedEnding">
+    <div class="kanban-card__date text-right" ng-if="task.plannedEnding" ng-class="{'exceeded' : task.exceededDate}">
         <span class="glyphicon glyphicon-calendar"></span> {{task.plannedEnding| date:'dd/MM/yyyy'}}
     </div>
 </div>

@@ -32,6 +32,9 @@
                     project.states = project.resource("state").query();
                 });
             };
+            vm.saveState = function(state){
+                state.resource("self").save(null, state, null);
+            };
         };
         listController.$inject = ["$uibModal", "$scope"];
         return listController;

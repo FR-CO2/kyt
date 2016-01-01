@@ -13,7 +13,11 @@
                         <div class="panel panel-default" as-sortable-item-handle>
                             <div class="row">
                                 <div class="col-md-4">
-                                    {{swimlane.name}} 
+                                    <a href="#" editable-text="swimlane.name" onaftersave="swimlaneListCtrl.saveSwimlane(swimlane)"
+                                        e-typeahead-editable="true" 
+                                        title="Modifier la catégorie">
+                                        {{swimlane.name}} 
+                                    </a>
                                 </div>
                                 <div class="col-md-4">
                                         {{swimlane.responsable.user.username}} 

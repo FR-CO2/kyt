@@ -33,6 +33,9 @@
                     project.swimlanes = project.resource("swimlane").query();
                 });
             };
+            vm.saveSwimlane = function(swimlane){
+                swimlane.resource("self").save(null, swimlane, null);
+            };
         };
         listController.$inject = ["$uibModal", "$scope"];
         return listController;
