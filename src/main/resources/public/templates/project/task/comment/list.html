@@ -27,7 +27,7 @@
                     </div>
                     <div class="panel-footer">
                         <div class="pull-right">
-                            <span class="badge">
+                            <span class="badge" ng-if="comment.nbReply > 0">
                                 <a ng-click="commentListCtrl.showHideReply(comment)" ng-switch on="comment.showComment">
                                     <span class="animate-switch" ng-switch-when="true">
                                         <span class="glyphicon glyphicon-eye-close"></span>
