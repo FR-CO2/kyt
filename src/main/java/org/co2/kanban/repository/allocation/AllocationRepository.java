@@ -19,7 +19,7 @@ public interface AllocationRepository extends PagingAndSortingRepository<Allocat
 
     Iterable<Allocation> findByMemberAndAllocationDateBetween(Member member, Timestamp start, Timestamp end);
 
-    Iterable<Allocation> findByTask(Task task);
+    Iterable<Allocation> findByTaskOrderByAllocationDateAscMemberUserUsernameAsc(Task task);
     
     Iterable<Allocation> findByMemberUserAndAllocationDate(ApplicationUser user, Timestamp date);
     

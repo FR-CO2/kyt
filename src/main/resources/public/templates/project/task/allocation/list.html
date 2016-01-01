@@ -2,7 +2,7 @@
     <div class="panel">
         <div class="panel-heading">
             <h3 class="panel-heading-title">Imputations</h3>
-            <div class="panel-heading-action">
+            <div class="panel-heading-action" ng-if="projectCtrl.rights.hasAdminRights">
                 <button class="btn btn-info btn-sm" ng-click="allocationListCtrl.add()"><span class="glyphicon glyphicon-plus-sign"></span>Nouvelle imputation</button>
             </div>
         </div>
@@ -14,7 +14,7 @@
                         <th>Date</th>
                         <th>Consommé</th>
                         <th>Reste à faire</th>
-                        <th></th>
+                        <th ng-if="projectCtrl.rights.hasAdminRights"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -23,7 +23,7 @@
                             {{allocation.username}}
                         </td>
                         <td>
-                            {{allocation.date}}
+                            {{allocation.date | date:'dd/MM/yyyy'}}
                         </td>
                         <td>
                             {{allocation.timeSpent}}
@@ -31,10 +31,10 @@
                         <td>
                             {{allocation.timeRemains}}
                         </td>
-                        <td>
-                        <a ng-click="allocationListCtrl.delete(allocation)" title="delete">
-                            <span class="glyphicon glyphicon-trash"></span>
-                        </a>
+                        <td ng-if="projectCtrl.rights.hasAdminRights">
+                            <a ng-click="allocationListCtrl.delete(allocation)" title="delete">
+                                <span class="glyphicon glyphicon-trash"></span>
+                            </a>
                         </td>
                     </tr>
                 </tbody>

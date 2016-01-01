@@ -7,6 +7,7 @@ package org.co2.kanban.rest.project.task.allocation;
 
 import org.co2.kanban.repository.allocation.AllocationRepository;
 import org.co2.kanban.repository.allocation.Allocation;
+import org.co2.kanban.repository.member.Member;
 import org.co2.kanban.repository.task.Task;
 import org.co2.kanban.repository.task.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +53,7 @@ public class AllocationController {
     @RequestMapping(method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public Iterable<AllocationResource> list(@PathVariable("projectId") Long projectId, @PathVariable("taskId") Long taskId) {
         Task task = repository.findOne(taskId);
-        return assembler.toResources(allocationRepository.findByTask(task));
+        return assembler.toResources(allocationRepository.findByTaskOrderByAllocationDateAscMemberUserUsernameAsc(task));
     }
 
     @RequestMapping(value = "/{allocationId}", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)

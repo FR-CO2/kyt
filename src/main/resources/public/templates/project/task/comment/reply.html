@@ -4,7 +4,7 @@
             <div class="col-md-7">
                 Réponse de {{comment.writer}} le {{comment.writingDate| date:'dd-MM-yyyy'}}
             </div>
-            <div class="pull-right">
+            <div class="pull-right" ng-if="projectCtrl.rights.hasAdminRights">
                 <a ng-click="commentListCtrl.delete(comment)" title="delete">
                     <span class="glyphicon glyphicon-trash"></span>
                 </a>
