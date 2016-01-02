@@ -34,7 +34,7 @@
                 });
             };
             vm.saveSwimlane = function(swimlane){
-                swimlane.resource("self").save(swimlane);
+                return swimlane.resource("self").save(swimlane).$promise;
             };
         };
         listController.$inject = ["$uibModal", "$scope"];

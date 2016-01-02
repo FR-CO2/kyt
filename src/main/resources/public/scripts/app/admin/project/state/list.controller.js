@@ -1,6 +1,6 @@
 (function () {
     define([], function () {
-        var listController = function ($uibModal, scope) {
+        var listController = function ($uibModal, scope, $q) {
             var vm = this;
             vm.stateListSortOptions = {
                 orderChanged: function (event) {
@@ -33,10 +33,10 @@
                 });
             };
             vm.saveState = function(state){
-                state.resource("self").save(state);
+                return state.resource("self").save(state).$promise;
             };
         };
-        listController.$inject = ["$uibModal", "$scope"];
+        listController.$inject = ["$uibModal", "$scope", "$q"];
         return listController;
     });
 })();

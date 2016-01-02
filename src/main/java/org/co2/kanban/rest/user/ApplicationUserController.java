@@ -8,6 +8,7 @@ package org.co2.kanban.rest.user;
 import java.security.Principal;
 import org.co2.kanban.repository.user.ApplicationUser;
 import org.co2.kanban.repository.user.ApplicationUserRepository;
+import org.co2.kanban.rest.error.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -64,7 +65,7 @@ public class ApplicationUserController {
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserResource> create(@RequestBody ApplicationUser newUser) {
         if (repository.checkExistUsername(newUser.getUsername())) {
-            return new ResponseEntity(HttpStatus.CONFLICT);
+            throw new BusinessException(HttpStatus.CONFLICT, "Un utilisateur avec le même nom existe déjà");
         }
         String passwordDigest = bcryptEncoder.encode(newUser.getPassword());
         newUser.setPassword(passwordDigest);

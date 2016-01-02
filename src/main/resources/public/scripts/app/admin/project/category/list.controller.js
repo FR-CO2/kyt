@@ -25,7 +25,7 @@
                 });
             };
             vm.saveCategory = function(category){
-                category.resource("self").save(null, category, null);
+                return category.resource("self").save(category).$promise;
             };
         };
         listController.$inject = ["$uibModal", "$scope"];

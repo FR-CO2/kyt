@@ -31,7 +31,7 @@
                 });
             };
             vm.saveUser = function(user){
-                new HateoasInterface(user).resource("self").save(user);
+                return new HateoasInterface(user).resource("self").save(user).$promise;
             };
         };
         listController.$inject = ["$uibModal", "HateoasInterface", "userService", "userRoleService"];
