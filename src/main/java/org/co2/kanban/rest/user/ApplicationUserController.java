@@ -5,6 +5,7 @@
  */
 package org.co2.kanban.rest.user;
 
+import java.security.Principal;
 import org.co2.kanban.repository.user.ApplicationUser;
 import org.co2.kanban.repository.user.ApplicationUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -45,7 +47,7 @@ public class ApplicationUserController {
     private PagedResourcesAssembler<ApplicationUser> pagedAssembler;
 
     private final BCryptPasswordEncoder bcryptEncoder = new BCryptPasswordEncoder();
-    
+
     @RequestMapping(params = {"page", "size"}, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public PagedResources<UserResource> page(
             @RequestParam(name = "page") Integer page,
@@ -79,9 +81,21 @@ public class ApplicationUserController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity delete(@PathVariable("id") Long userId) {
+    public ResponseEntity delete(@AuthenticationPrincipal Principal user, @PathVariable("id") Long userId) {
+        ApplicationUser currentUser = repository.findByUsername(user.getName());
+        if (currentUser.getId().equals(userId)) {
+            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+        }
         repository.delete(userId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @RequestMapping(value = "/{id}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity update(@PathVariable("id") Long userId, @RequestBody ApplicationUser user) {
+        ApplicationUser updatedUser = repository.findOne(userId);
+        updatedUser.setApplicationRole(user.getApplicationRole());
+        updatedUser.setEmail(user.getEmail());
+        repository.save(updatedUser);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }
