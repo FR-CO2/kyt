@@ -86,13 +86,16 @@ public class SwimlaneController {
     @RequestMapping(value = "/{id}", method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("@projectAccessExpression.hasManagerAccess(#projectId, principal.username)")
     public ResponseEntity update(@PathVariable("projectId") Long projectId, @RequestBody Swimlane swimlane) {
+        Project project = projectRepository.findOne(projectId);
         Swimlane oldSwimlane = repository.findOne(swimlane.getId());
+        if (!oldSwimlane.getName().equals(swimlane.getName()) && repository.checkExistProjectAndName(project, swimlane.getName())) {
+            return new ResponseEntity(HttpStatus.CONFLICT);
+        }
+        swimlane.setProject(project);
         if (!oldSwimlane.getPosition().equals(swimlane.getPosition())) {
             updatePosition(swimlane.getPosition(), oldSwimlane);
         }
-        if(!oldSwimlane.getName().equals(swimlane.getName())){
-            updateName(swimlane.getName(), oldSwimlane);
-        }
+        repository.save(swimlane);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
@@ -116,9 +119,5 @@ public class SwimlaneController {
             }
         }
     }
-    
-     private void updateName(String newName, Swimlane swimlane) {
-        swimlane.setName(newName);
-        repository.save(swimlane);
-     }
+
 }

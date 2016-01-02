@@ -83,6 +83,10 @@ public class CategoryController {
     @RequestMapping(value = "{categoryId}", method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CategoryResource> update(@PathVariable("projectId") Long projectId, @RequestBody Category category) {
         Project project = projectRepository.findOne(projectId);
+        Category oldCategory = repository.findOne(category.getId());
+        if (!oldCategory.getName().equals(category.getName()) && repository.checkExistProjectAndName(project, category.getName())) {
+            return new ResponseEntity(HttpStatus.CONFLICT);
+        }
         category.setProject(project);
         Category result = repository.save(category);
         return new ResponseEntity<>(assembler.toResource(result), HttpStatus.OK);

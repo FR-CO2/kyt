@@ -94,11 +94,15 @@ public class StateController {
     @RequestMapping(value = "/{stateId}", method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("@projectAccessExpression.hasManagerAccess(#projectId, principal.username)")
     public ResponseEntity update(@PathVariable("projectId") Long projectId, @RequestBody State state) {
+        Project project = projectRepository.findOne(projectId);
         State oldState = repository.findOne(state.getId());
+        if (!oldState.getName().equals(state.getName()) && repository.checkExistProjectAndName(project, state.getName())) {
+            return new ResponseEntity(HttpStatus.CONFLICT);
+        }
         if (!oldState.getPosition().equals(state.getPosition())) {
             updatePosition(state.getPosition(), oldState);
         }
-        Project project = projectRepository.findOne(projectId);
+
         state.setProject(project);
         repository.save(state);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
