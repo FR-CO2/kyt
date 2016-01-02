@@ -65,7 +65,7 @@ public class ApplicationUserController {
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserResource> create(@RequestBody ApplicationUser newUser) {
         if (repository.checkExistUsername(newUser.getUsername())) {
-            throw new BusinessException(HttpStatus.CONFLICT, "Un utilisateur avec le même nom existe déjà");
+            throw new BusinessException(HttpStatus.CONFLICT, "user.error.conflict.username");
         }
         String passwordDigest = bcryptEncoder.encode(newUser.getPassword());
         newUser.setPassword(passwordDigest);

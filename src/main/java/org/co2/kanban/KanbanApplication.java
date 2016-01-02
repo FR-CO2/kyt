@@ -5,14 +5,18 @@
  */
 package org.co2.kanban;
 
+import java.util.Locale;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.hateoas.config.EnableHypermediaSupport;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.i18n.FixedLocaleResolver;
 
 /**
  *
@@ -29,5 +33,11 @@ public class KanbanApplication {
     public static void main(String[] args) throws Exception {
         ConfigurableApplicationContext context = SpringApplication.run(KanbanApplication.class, args);
     }
-    
+
+    @Bean
+    public LocaleResolver localeResolver() {
+        FixedLocaleResolver slr = new FixedLocaleResolver();
+        slr.setDefaultLocale(Locale.FRENCH);
+        return slr;
+    }
 }

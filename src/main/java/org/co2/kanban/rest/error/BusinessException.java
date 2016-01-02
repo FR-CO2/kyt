@@ -16,13 +16,19 @@ public class BusinessException extends RuntimeException {
 
     private final HttpStatus status;
     
-    public BusinessException(HttpStatus status, String message) {
-        super(message);
+    private final String messageKey;
+    
+    public BusinessException(HttpStatus status, String messageKey) {
+        this.messageKey = messageKey;
         this.status = status;
     }
 
     public HttpStatus getStatus() {
         return status;
+    }
+
+    public String getMessageKey() {
+        return messageKey;
     }
     
 }
