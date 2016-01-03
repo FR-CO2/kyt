@@ -10,6 +10,7 @@ import org.co2.kanban.repository.state.State;
 import org.co2.kanban.repository.state.StateRepository;
 import org.co2.kanban.repository.project.Project;
 import org.co2.kanban.repository.project.ProjectRepository;
+import org.co2.kanban.rest.error.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
@@ -33,6 +34,8 @@ import org.springframework.web.bind.annotation.RestController;
 @PreAuthorize("@projectAccessExpression.hasMemberAccess(#projectId, principal.username)")
 public class StateController {
 
+    private static final String MESSAGE_KEY_CONFLICT_NAME = "project.state.error.conflict.name";
+    
     @Autowired
     private StateRepository repository;
 
@@ -77,7 +80,7 @@ public class StateController {
     public ResponseEntity create(@PathVariable("projectId") Long projectId, @RequestBody State state) {
         Project project = projectRepository.findOne(projectId);
         if (repository.checkExistProjectAndName(project, state.getName())) {
-            return new ResponseEntity(HttpStatus.CONFLICT);
+            throw new BusinessException(HttpStatus.CONFLICT, MESSAGE_KEY_CONFLICT_NAME);
         }
         state.setProject(project);
         Long maxPosition = repository.getProjectMaxPosition(projectId);
@@ -97,12 +100,11 @@ public class StateController {
         Project project = projectRepository.findOne(projectId);
         State oldState = repository.findOne(state.getId());
         if (!oldState.getName().equals(state.getName()) && repository.checkExistProjectAndName(project, state.getName())) {
-            return new ResponseEntity(HttpStatus.CONFLICT);
+            throw new BusinessException(HttpStatus.CONFLICT, MESSAGE_KEY_CONFLICT_NAME);
         }
         if (!oldState.getPosition().equals(state.getPosition())) {
             updatePosition(state.getPosition(), oldState);
         }
-
         state.setProject(project);
         repository.save(state);
         return new ResponseEntity(HttpStatus.NO_CONTENT);

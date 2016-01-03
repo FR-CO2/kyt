@@ -10,6 +10,7 @@ import org.co2.kanban.repository.member.Member;
 import org.co2.kanban.repository.project.Project;
 import org.co2.kanban.repository.project.ProjectRepository;
 import org.co2.kanban.repository.task.Task;
+import org.co2.kanban.rest.error.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -37,6 +38,8 @@ import org.springframework.web.bind.annotation.RestController;
 @PreAuthorize("@projectAccessExpression.hasMemberAccess(#projectId, principal.username)")
 public class MemberController {
 
+    private static final String MESSAGE_KEY_CONFLICT_NAME = "project.member.error.conflict.user";
+    
     @Autowired
     private MemberRepository repository;
 
@@ -76,7 +79,7 @@ public class MemberController {
     public ResponseEntity create(@PathVariable("projectId") Long projectId, @RequestBody Member member) {
         Project project = projectRepository.findOne(projectId);
         if (repository.checkExistProjectAndUser(project, member.getUser())) {
-            return new ResponseEntity(HttpStatus.CONFLICT);
+            throw new BusinessException(HttpStatus.CONFLICT, MESSAGE_KEY_CONFLICT_NAME);
         }
         member.setProject(project);
         Member result = repository.save(member);

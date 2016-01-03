@@ -3,7 +3,7 @@
         <span class="glyphicon glyphicon-plus-sign"></span> Nouvelle catégorie
     </div>
     <div class="panel-body">
-        <alert type="danger" ng-if="addCategoryCtrl.form.error">{{addCategoryCtrl.form.error}}</alert>
+        <alert type="danger" ng-if="addCategoryCtrl.error">{{addCategoryCtrl.error.message}}</alert>
         <form id="login" role="form" ng-submit="addCategoryCtrl.submit()">
             <div class="form-group">
                 <input type="text" required ng-model="addCategoryCtrl.category.name" class="form-control" name="taskName" placeholder="Nom de la catégorie"/>

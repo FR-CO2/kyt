@@ -3,7 +3,7 @@
         <span class="glyphicon glyphicon-plus-sign"></span> Nouveau membre
     </div>
     <div class="panel-body">
-        <alert type="danger" ng-if="addMemberCtrl.form.error">{{addMemberCtrl.form.error}}</alert>
+        <alert type="danger" ng-if="addMemberCtrl.error">{{addMemberCtrl.error.message}}</alert>
         <form id="login" role="form" ng-submit="addMemberCtrl.submit()">
             <div class="form-group">
                 <input class="form-control" ng-model="addMemberCtrl.member.user" 

@@ -11,6 +11,7 @@ import java.util.List;
 import org.co2.kanban.repository.project.Project;
 import org.co2.kanban.repository.project.ProjectRepository;
 import org.co2.kanban.repository.task.Task;
+import org.co2.kanban.rest.error.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
@@ -33,6 +34,9 @@ import org.springframework.web.bind.annotation.RestController;
 @PreAuthorize("@projectAccessExpression.hasMemberAccess(#projectId, principal.username)")
 public class CategoryController {
 
+    
+    private static final String MESSAGE_KEY_CONFLICT_NAME = "project.category.error.conflict.name";
+    
     @Autowired
     private CategoryRepository repository;
 
@@ -59,7 +63,7 @@ public class CategoryController {
     public ResponseEntity create(@PathVariable("projectId") Long projectId, @RequestBody Category category) {
         Project project = projectRepository.findOne(projectId);
         if (repository.checkExistProjectAndName(project, category.getName())) {
-            return new ResponseEntity(HttpStatus.CONFLICT);
+            throw new BusinessException(HttpStatus.CONFLICT, MESSAGE_KEY_CONFLICT_NAME);
         }
         category.setProject(project);
         Category result = repository.save(category);
@@ -85,7 +89,7 @@ public class CategoryController {
         Project project = projectRepository.findOne(projectId);
         Category oldCategory = repository.findOne(category.getId());
         if (!oldCategory.getName().equals(category.getName()) && repository.checkExistProjectAndName(project, category.getName())) {
-            return new ResponseEntity(HttpStatus.CONFLICT);
+            throw new BusinessException(HttpStatus.CONFLICT, MESSAGE_KEY_CONFLICT_NAME);
         }
         category.setProject(project);
         Category result = repository.save(category);

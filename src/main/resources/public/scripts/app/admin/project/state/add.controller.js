@@ -6,15 +6,7 @@
                 project.resource("state").save(vm.state, function () {
                     $uibModalInstance.close();
                 }, function (error) {
-                    if (error.status === 409) {
-                        vm.form = {
-                            error : "Un état avec le même nom existe déjà pour ce projet"
-                        };
-                    } else {
-                        vm.form = {
-                            error : "Une erreur inattendue s'est produite!"
-                        }
-                    }
+                    vm.error = error.data;
                 });
             };
         };

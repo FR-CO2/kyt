@@ -18,7 +18,7 @@
                     controller: "addSwimlaneAdminController",
                     controllerAs: "addSwimlaneCtrl",
                     resolve: {
-                        project : scope.projectEditCtrl.project
+                        project: scope.projectEditCtrl.project
                     },
                     size: "md"
                 });
@@ -33,8 +33,12 @@
                     project.swimlanes = project.resource("swimlane").query();
                 });
             };
-            vm.saveSwimlane = function(swimlane){
-                return swimlane.resource("self").save(swimlane).$promise;
+            vm.saveSwimlane = function (swimlane) {
+                var result = swimlane.resource("self").save(swimlane).$promise;
+                result.catch(function (error) {
+                    error.data = error.data.message;
+                });
+                return result;
             };
         };
         listController.$inject = ["$uibModal", "$scope"];

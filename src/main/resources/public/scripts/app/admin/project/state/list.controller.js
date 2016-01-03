@@ -17,7 +17,7 @@
                     controller: "addStateAdminController",
                     controllerAs: "addStateCtrl",
                     resolve: {
-                        project : scope.projectEditCtrl.project
+                        project: scope.projectEditCtrl.project
                     },
                     size: "md"
                 });
@@ -32,8 +32,12 @@
                     project.states = project.resource("state").query();
                 });
             };
-            vm.saveState = function(state){
-                return state.resource("self").save(state).$promise;
+            vm.saveState = function (state) {
+                var result = state.resource("self").save(state).$promise;
+                result.catch(function (error) {
+                    error.data = error.data.message;
+                });
+                return result;
             };
         };
         listController.$inject = ["$uibModal", "$scope", "$q"];

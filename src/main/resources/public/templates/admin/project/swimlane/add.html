@@ -3,7 +3,7 @@
         <span class="glyphicon glyphicon-plus-sign"></span> Nouveau couloir
     </div>
     <div class="panel-body">
-        <alert type="danger" ng-if="addSwimlaneCtrl.form.error">{{addSwimlaneCtrl.form.error}}</alert>
+        <alert type="danger" ng-if="addSwimlaneCtrl.error">{{addSwimlaneCtrl.error.message}}</alert>
         <form id="login" role="form" ng-submit="addSwimlaneCtrl.submit()">
             <div class="form-group">
                 <input type="text" required ng-model="addSwimlaneCtrl.swimlane.name" class="form-control" name="taskName" placeholder="Nom du couloir"/>

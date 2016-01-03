@@ -3,7 +3,7 @@
         <span class="glyphicon glyphicon-plus-sign"></span> Nouveau état
     </div>
     <div class="panel-body">
-        <alert type="danger" ng-if="addStateCtrl.form.error">{{addStateCtrl.form.error}}</alert>
+        <alert type="danger" ng-if="addStateCtrl.error">{{addStateCtrl.error.message}}</alert>
         <form id="login" role="form" ng-submit="addStateCtrl.submit()">
             <div class="form-group">
                 <label for="stateName">Nom</label>

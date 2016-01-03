@@ -30,7 +30,11 @@
                 });
             };
             vm.saveMember = function (member) {
-                return new HateoasInterface(member).resource("self").save(member).$promise;
+                var result = new HateoasInterface(member).resource("self").save(member).$promise;
+                result.catch(function(error){
+                   error.data = error.data.message; 
+                });
+                return result;
             };
         };
         listController.$inject = ["$uibModal", "$scope", "HateoasInterface"];

@@ -16,6 +16,7 @@ import org.co2.kanban.repository.state.State;
 import org.co2.kanban.repository.user.ApplicationUser;
 import org.co2.kanban.repository.user.ApplicationUserRepository;
 import org.co2.kanban.repository.user.ApplicationUserRole;
+import org.co2.kanban.rest.error.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -43,6 +44,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/api/project")
 public class ProjectController {
 
+    private static final String MESSAGE_KEY_CONFLICT_NAME = "project.error.conflict.name";
+    
     @Autowired
     private ProjectRepository repository;
 
@@ -86,7 +89,7 @@ public class ProjectController {
     @RequestMapping(method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity create(@RequestBody Project newProject) {
         if (repository.checkExistProject(newProject.getName())) {
-            return new ResponseEntity(HttpStatus.CONFLICT);
+            throw new BusinessException(HttpStatus.CONFLICT, MESSAGE_KEY_CONFLICT_NAME);
         }
         newProject.setStates(getDefaultStates(newProject));
         newProject.setCategories(getDefaultCategories(newProject));

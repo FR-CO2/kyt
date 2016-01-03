@@ -10,6 +10,7 @@ import org.co2.kanban.repository.swimlane.SwimlaneRepository;
 import org.co2.kanban.repository.project.Project;
 import org.co2.kanban.repository.project.ProjectRepository;
 import org.co2.kanban.repository.task.Task;
+import org.co2.kanban.rest.error.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
@@ -32,6 +33,8 @@ import org.springframework.web.bind.annotation.RestController;
 @PreAuthorize("@projectAccessExpression.hasMemberAccess(#projectId, principal.username)")
 public class SwimlaneController {
 
+    private static final String MESSAGE_KEY_CONFLICT_NAME = "project.swimlane.error.conflict.name";
+    
     @Autowired
     private SwimlaneRepository repository;
 
@@ -69,7 +72,7 @@ public class SwimlaneController {
     public ResponseEntity create(@PathVariable("projectId") Long projectId, @RequestBody Swimlane swimlane) {
         Project project = projectRepository.findOne(projectId);
         if (repository.checkExistProjectAndName(project, swimlane.getName())) {
-            return new ResponseEntity(HttpStatus.CONFLICT);
+            throw new BusinessException(HttpStatus.CONFLICT, MESSAGE_KEY_CONFLICT_NAME);
         }
         swimlane.setProject(project);
         Long maxPosition = repository.getProjectMaxPosition(projectId);
@@ -89,7 +92,7 @@ public class SwimlaneController {
         Project project = projectRepository.findOne(projectId);
         Swimlane oldSwimlane = repository.findOne(swimlane.getId());
         if (!oldSwimlane.getName().equals(swimlane.getName()) && repository.checkExistProjectAndName(project, swimlane.getName())) {
-            return new ResponseEntity(HttpStatus.CONFLICT);
+            throw new BusinessException(HttpStatus.CONFLICT, MESSAGE_KEY_CONFLICT_NAME);
         }
         swimlane.setProject(project);
         if (!oldSwimlane.getPosition().equals(swimlane.getPosition())) {
