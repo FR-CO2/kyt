@@ -23,7 +23,7 @@
                             <div class="row">
                                 <div class="col-md-3">
                                     <a href="#" editable-text="state.name" onaftersave="stateListCtrl.saveState(state)"
-                                        e-typeahead-editable="true" 
+                                        e-required onhide="stateListCtrl.reload()" 
                                         title="Modifier l'état">
                                         {{state.name}} 
                                     </a>

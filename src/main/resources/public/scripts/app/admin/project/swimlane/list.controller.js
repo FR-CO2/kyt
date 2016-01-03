@@ -6,7 +6,6 @@
                 orderChanged: function (event) {
                     var swimlaneUpdated = event.source.itemScope.modelValue;
                     var newPosition = event.dest.index;
-                    console.log("moved");
                     swimlaneUpdated.position = newPosition;
                     swimlaneUpdated.resource("self").save(null, swimlaneUpdated);
                 }
@@ -23,14 +22,12 @@
                     size: "md"
                 });
                 modalInstance.result.then(function () {
-                    var project = scope.projectEditCtrl.project;
-                    project.swimlanes = project.resource("swimlane").query();
+                    vm.reload();
                 });
             };
             vm.delete = function (swimlane) {
                 swimlane.resource("self").delete(null, function () {
-                    var project = scope.projectEditCtrl.project;
-                    project.swimlanes = project.resource("swimlane").query();
+                    vm.reload();
                 });
             };
             vm.saveSwimlane = function (swimlane) {
@@ -39,6 +36,10 @@
                     error.data = error.data.message;
                 });
                 return result;
+            };
+            vm.reload = function () {
+                var project = scope.projectEditCtrl.project;
+                project.swimlanes = project.resource("swimlane").query();
             };
         };
         listController.$inject = ["$uibModal", "$scope"];

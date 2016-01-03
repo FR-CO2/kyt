@@ -2,6 +2,7 @@
     define([], function () {
         var listController = function ($uibModal, scope, growl) {
             var vm = this;
+            var project = scope.projectEditCtrl.project;
             vm.stateListSortOptions = {
                 orderChanged: function (event) {
                     var stateUpdated = event.source.itemScope.modelValue;
@@ -22,15 +23,13 @@
                     size: "md"
                 });
                 modalInstance.result.then(function () {
-                    var project = scope.projectEditCtrl.project;
-                    project.states = project.resource("state").query();
+                    vm.reload();
                 });
             };
             vm.delete = function (state) {
                 state.resource("self").delete(null, function () {
-                    var project = scope.projectEditCtrl.project;
-                    project.states = project.resource("state").query();
-                }, function(error) {
+                    vm.reload();
+                }, function (error) {
                     growl.error(error.data.message);
                 });
             };
@@ -40,6 +39,9 @@
                     error.data = error.data.message;
                 });
                 return result;
+            };
+            vm.reload = function () {
+                project.states = project.resource("state").query();
             };
         };
         listController.$inject = ["$uibModal", "$scope", "growl"];

@@ -19,7 +19,7 @@
                     <tr ng-repeat="category in projectEditCtrl.project.categories">
                         <td>
                             <a href="#" editable-text="category.name" onaftersave="categoryListCtrl.saveCategory(category)"
-                               e-typeahead-editable="true" 
+                               e-required onhide="categoryListCtrl.reload()" 
                                title="Modifier la catégorie">
                                 {{category.name}}
                             </a>
