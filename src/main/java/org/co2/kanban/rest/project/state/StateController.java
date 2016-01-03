@@ -36,6 +36,8 @@ public class StateController {
 
     private static final String MESSAGE_KEY_CONFLICT_NAME = "project.state.error.conflict.name";
     
+    private static final String MESSAGE_KEY_PRECONDITION_DELETE = "project.state.error.precondition.delete";
+    
     @Autowired
     private StateRepository repository;
 
@@ -69,7 +71,7 @@ public class StateController {
         State state = repository.findOne(id);
         //Precondition : no task exist with state 
         if (!state.getTasks().isEmpty()) {
-            return new ResponseEntity(HttpStatus.PRECONDITION_FAILED);
+            throw new BusinessException(HttpStatus.PRECONDITION_FAILED, MESSAGE_KEY_PRECONDITION_DELETE);
         }
         repository.delete(id);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
