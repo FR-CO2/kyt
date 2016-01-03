@@ -94,6 +94,10 @@ public class ApplicationUserController {
     @RequestMapping(value = "/{id}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity update(@PathVariable("id") Long userId, @RequestBody ApplicationUser user) {
         ApplicationUser updatedUser = repository.findOne(userId);
+        if (user.getPassword() !=null) {
+            String passwordDigest = bcryptEncoder.encode(user.getPassword());
+            updatedUser.setPassword(passwordDigest);
+        }
         updatedUser.setApplicationRole(user.getApplicationRole());
         updatedUser.setEmail(user.getEmail());
         repository.save(updatedUser);
