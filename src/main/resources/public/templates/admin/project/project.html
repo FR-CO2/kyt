@@ -1,18 +1,14 @@
 <div class="row" id="task">
-    <alert type="danger" ng-if="projectEditCtrl.form.error">{{projectEditCtrl.form.error}}</alert>
+    <div growl></div>
     <h2>
         Projet {{projectEditCtrl.project.name}}
     </h2>
-    <form id="editproject" role="form" ng-submit="projectEditCtrl.submit()">
+    <div class="row">
         <div class="form-group col-md-3">
-            <label for="estimatedLoad">Nom projet</label>
-            <input type="text" id="estimatedLoad" class="form-control" ng-model="projectEditCtrl.project.name"/>
+            <label for="projectName">Nom projet</label>
+            <input type="text" id="projectName" class="form-control" disabled="disabled" ng-model="projectEditCtrl.project.name"/>
         </div>
-        <div class="col-md-offset-9 col-md-3 inline">
-            <button type="button" onClick="history.back()" class="btn btn-info">Annuler</button>
-            <button type="submit" class="btn btn-info">Enregistrer</button>
-        </div>
-    </form>
+    </div>
     <div class="panel">
         <div class="panel-body">
             <uib-tabset>

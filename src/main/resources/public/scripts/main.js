@@ -26,7 +26,8 @@ require.config({
         hateoas: '../lib/angular-hateoas/angular-hateoas',
         uiBootstrap: '../../webjars/angular-ui-bootstrap/0.14.3/ui-bootstrap',
         uiBootstrapTpl: '../../webjars/angular-ui-bootstrap/0.14.3/ui-bootstrap-tpls',
-        uiCalendar: '../lib/angular-ui-calendar/calendar'
+        uiCalendar: '../lib/angular-ui-calendar/calendar',
+        growl: '../../webjars/angular-growl-2/0.7.3/angular-growl'
     },
     shim: {
         bootstrap: {
@@ -89,6 +90,9 @@ require.config({
             deps: ["angular"]
         },
         hateoas: {
+            deps: ["angular"]
+        },
+        growl: {
             deps: ["angular"]
         }
     },

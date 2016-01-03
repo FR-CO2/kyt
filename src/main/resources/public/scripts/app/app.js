@@ -4,7 +4,7 @@
         "admin/admin.module", "profil/profil.controller", "moment",
         "uiRouter", "ngStorage", "ngAuth", "xeditable", "ngResource", 
         "ngSortable", "hateoas", "uiBootstrap", "uiBootstrapTpl", 
-        "ngSanitize"],
+        "ngSanitize", "growl"],
             function (angular, appConfig, appRun, loginModule, appController,
                     dashboardModule, projectModule, adminModule,
                     profilController, moment) {
