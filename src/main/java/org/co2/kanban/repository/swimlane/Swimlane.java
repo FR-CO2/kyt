@@ -10,18 +10,20 @@ import org.co2.kanban.repository.member.Member;
 import org.co2.kanban.repository.task.Task;
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import org.co2.kanban.repository.Identifiable;
 
 /**
  *
  * @author ben
  */
 @Entity
-public class Swimlane implements Serializable {
+public class Swimlane implements Serializable, Identifiable {
 
     private static final long serialVersionUID = -7399300524553719167L;
 
@@ -33,13 +35,13 @@ public class Swimlane implements Serializable {
 
     private Long position;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.DETACH)
     private Member responsable;
 
     @OneToMany(mappedBy = "swimlane")
     private List<Task> tasks;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.DETACH)
     private Project project;
 
     public Long getId() {

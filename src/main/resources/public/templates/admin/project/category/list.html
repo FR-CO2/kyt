@@ -1,0 +1,41 @@
+<div class="col-md-12">
+    <div class="panel">
+        <div class="panel-heading">
+            <h2 class="panel-heading-title">Liste des catégories</h2>
+            <div class="panel-heading-action">
+                <button class="btn btn-info btn-sm" ng-click="categoryListCtrl.add()"><span class="glyphicon glyphicon-plus-sign"></span>Nouvelle catégorie</button>
+            </div>
+        </div>
+        <div class="panel-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Couleur</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="category in projectEditCtrl.project.categories">
+                        <td>
+                            <a href="#" editable-text="category.name" onaftersave="categoryListCtrl.saveCategory(category)"
+                               e-required onhide="categoryListCtrl.reload()" 
+                               title="Modifier la catégorie">
+                                {{category.name}}
+                            </a>
+                        </td>
+                        <td>
+                            <a  editable-color="category.bgcolor" onaftersave="categoryListCtrl.saveCategory(category)" title="Modifier la catégorie">
+                                <span style="background-color: {{category.bgcolor}}; border: 1px solid; padding-top:4px; padding-left:15px">&nbsp;</span>
+                            </a>
+                        <td>
+                            <a ng-click="categoryListCtrl.delete(category)">
+                                <span class="glyphicon glyphicon-trash"></span>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

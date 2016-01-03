@@ -8,51 +8,22 @@ package org.co2.kanban.repository.state;
 import org.co2.kanban.repository.project.Project;
 import org.co2.kanban.repository.task.Task;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.PostLoad;
-import javax.persistence.Transient;
+import org.co2.kanban.repository.Identifiable;
 
 /**
  *
  * @author ben
  */
 @Entity
-public class State implements Serializable {
+public class State implements Serializable, Identifiable {
 
     private static final long serialVersionUID = -1395350709593408519L;
-
-    public static List<State> getDefaults(Project project) {
-        State backlog = new State();
-        backlog.setName("Backlog");
-        backlog.setPosition(0L);
-        backlog.setProject(project);
-        State ready = new State();
-        ready.setName("Prêt");
-        ready.setPosition(1L);
-        ready.setProject(project);
-        State inProgress = new State();
-        inProgress.setName("En cours");
-        inProgress.setPosition(2L);
-        inProgress.setProject(project);
-        State done = new State();
-        done.setName("Terminé");
-        done.setPosition(3L);
-        done.setProject(project);
-        done.setCloseState(Boolean.TRUE);
-        List<State> defaults = new ArrayList<>();
-        defaults.add(backlog);
-        defaults.add(ready);
-        defaults.add(inProgress);
-        defaults.add(done);
-        return defaults;
-    }
 
     @Id
     @GeneratedValue

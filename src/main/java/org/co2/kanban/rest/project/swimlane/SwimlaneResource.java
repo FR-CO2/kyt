@@ -5,34 +5,28 @@
  */
 package org.co2.kanban.rest.project.swimlane;
 
-import org.springframework.hateoas.ResourceSupport;
+import org.co2.kanban.repository.swimlane.Swimlane;
+import org.co2.kanban.rest.IdentifiableResourceSupport;
 
 /**
  *
  * @author ben
  */
-public class SwimlaneResource extends ResourceSupport {
+public class SwimlaneResource extends IdentifiableResourceSupport<Swimlane> {
 
-    private String name;
-
-    private Long position;
 
     private int taskCount = 0;
 
-    public String getName() {
-        return name;
+    public SwimlaneResource(Swimlane swimlane) {
+        super(swimlane);
     }
-
-    public void setName(String name) {
-        this.name = name;
+    
+    public String getName() {
+        return this.getBean().getName();
     }
 
     public Long getPosition() {
-        return position;
-    }
-
-    public void setPosition(Long position) {
-        this.position = position;
+        return this.getBean().getPosition();
     }
 
     public int getTaskCount() {

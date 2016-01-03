@@ -21,4 +21,7 @@ public interface SwimlaneRepository extends PagingAndSortingRepository<Swimlane,
 
     @Query(value = "SELECT MAX(s.position) + 1 FROM swimlane s where s.project_id = ?1", nativeQuery = true)
     Long getProjectMaxPosition(Long projectId);
+    
+    @Query("select count(e)>0 from Swimlane e where e.project= ?1 and UPPER(e.name)= UPPER(?2)")
+    Boolean checkExistProjectAndName(Project project, String name);
 }

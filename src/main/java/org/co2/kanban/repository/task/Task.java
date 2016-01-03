@@ -20,6 +20,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import org.co2.kanban.repository.Identifiable;
 import org.co2.kanban.repository.comment.Comment;
 
 /**
@@ -27,7 +28,7 @@ import org.co2.kanban.repository.comment.Comment;
  * @author ben
  */
 @Entity
-public class Task implements Serializable {
+public class Task implements Serializable, Identifiable {
 
     private static final long serialVersionUID = -7133694782401886935L;
 
@@ -44,13 +45,13 @@ public class Task implements Serializable {
     @ManyToOne(cascade = CascadeType.DETACH)
     private Category category;
 
-    @ManyToOne(cascade = CascadeType.DETACH)
+    @ManyToOne
     private State state;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.DETACH)
     private Swimlane swimlane;
 
-    @ManyToOne(cascade = CascadeType.DETACH)
+    @ManyToOne
     private Project project;
 
     @ManyToOne(cascade = CascadeType.DETACH)
@@ -63,7 +64,7 @@ public class Task implements Serializable {
 
     private Timestamp plannedEnding;
 
-    private Long estimatedLoad;
+    private Float estimatedLoad;
 
     private String description;
 
@@ -127,11 +128,11 @@ public class Task implements Serializable {
         this.plannedEnding = plannedEnding;
     }
 
-    public Long getEstimatedLoad() {
+    public Float getEstimatedLoad() {
         return estimatedLoad;
     }
 
-    public void setEstimatedLoad(Long estimatedLoad) {
+    public void setEstimatedLoad(Float estimatedLoad) {
         this.estimatedLoad = estimatedLoad;
     }
 

@@ -5,12 +5,10 @@
  */
 package org.co2.kanban.rest.project.task;
 
+import org.co2.kanban.repository.project.Project;
+import org.co2.kanban.repository.project.ProjectRepository;
 import org.co2.kanban.repository.task.Task;
 import org.co2.kanban.repository.task.TaskRepository;
-import org.co2.kanban.repository.state.State;
-import org.co2.kanban.repository.state.StateRepository;
-import org.co2.kanban.repository.swimlane.Swimlane;
-import org.co2.kanban.repository.swimlane.SwimlaneRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,65 +32,29 @@ public class TaskController {
     private TaskRepository repository;
 
     @Autowired
-    private StateRepository taskStateRepository;
-
-    @Autowired
-    private SwimlaneRepository swimlaneRepository;
-
+    private ProjectRepository projectRepository;
 
     @Autowired
     private TaskAssembler assembler;
 
     @RequestMapping(method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public TaskResource get(@PathVariable("id") Long taskId) {
+    public TaskResource get(@PathVariable("projectId") Long projectId, @PathVariable("id") Long taskId) {
         return assembler.toResource(repository.findOne(taskId));
     }
 
     @RequestMapping(method = RequestMethod.DELETE, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("@projectAccessExpression.hasContributorAccess(#projectId, principal.username)")
-    public ResponseEntity delete(@PathVariable("id") Long id) {
+    public ResponseEntity delete(@PathVariable("projectId") Long projectId, @PathVariable("id") Long id) {
         repository.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @RequestMapping(value = "/state/{stateId}", method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity updateState(@PathVariable("id") Long id, @PathVariable("stateId") Long stateId) {
-        State state = taskStateRepository.findOne(stateId);
-        Task task = repository.findOne(id);
-        if (state == null || task == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        task.setState(state);
-        repository.save(task);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
-    @RequestMapping(value = "/swimlane/{swimlaneId}", method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity updateSwimlane(@PathVariable("id") Long id, @PathVariable("swimlaneId") Long swimlaneId) {
-        Swimlane swimlane = swimlaneRepository.findOne(swimlaneId);
-        Task task = repository.findOne(id);
-        if (swimlane == null || task == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        task.setSwimlane(swimlane);
-        repository.save(task);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
-    @RequestMapping(value = "/swimlane", method = RequestMethod.DELETE, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity removeSwimlane(@PathVariable("id") Long id) {
-        Task task = repository.findOne(id);
-        if (task == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        task.setSwimlane(null);
-        repository.save(task);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
     @RequestMapping(method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public TaskResource update(@PathVariable("projectId") Long projectId, @PathVariable("id") Long taskId, @RequestBody Task editTask) {
-        Task result = repository.save(editTask);
+    @PreAuthorize("@projectAccessExpression.hasContributorAccess(#projectId, principal.username)")
+    public TaskResource update(@PathVariable("projectId") Long projectId, @PathVariable("id") Long taskId, @RequestBody Task task) {
+        Project project = projectRepository.findOne(projectId);
+        task.setProject(project);
+        Task result = repository.save(task);
         return assembler.toResource(result);
     }
 

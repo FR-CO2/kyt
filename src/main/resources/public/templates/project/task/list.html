@@ -1,0 +1,136 @@
+<header class="heading">
+    <h2 class="heading__title pull-left">Projet : {{projectCtrl.project.name}}</h2>
+    <div class="heading__action pull-right">
+        <button class="btn btn-info btn-sm" ui-sref="app.project.kanban({projectId: projectCtrl.project.id })"><span class="glyphicon glyphicon-equalizer"></span> Kanban</button>
+        <button ng-if="projectCtrl.rights.hasEditRights" class="btn btn-info btn-sm" ui-sref="app.project.consommation({projectId: projectCtrl.project.id })"><span class="glyphicon glyphicon-time"></span> Consommations</button>
+        <button ng-if="projectCtrl.rights.hasEditRights" class="btn btn-info btn-sm" ng-click="tasksCtrl.addTask()"><span class="glyphicon glyphicon-plus-sign"></span> Nouvelle tâche</button>
+    </div>
+</header>
+<div class="col-md-12">
+    <div class="panel">
+        <div class="panel-heading">
+            <h2 class="panel-heading-title">Liste des tâches</h2>
+        </div>
+        <div class="panel-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th ng-click="tasksCtrl.tableFilter('name')">
+                            Nom
+                            <span ng-class="{'glyphicon-sort-by-alphabet': tasksCtrl.sort.sortDirection === 'asc', 'glyphicon-sort-by-alphabet-alt': tasksCtrl.sort.sortDirection === 'desc'}" 
+                                  class="glyphicon" ng-if="tasksCtrl.sort.field === 'name'"></span>
+                        </th>
+                        <th ng-click="tasksCtrl.tableFilter('state.position')">
+                            Etat
+                            <span class="glyphicon" ng-if="tasksCtrl.sort.field === 'state.position'"
+                                  ng-class="{'glyphicon-sort-by-attributes': tasksCtrl.sort.sortDirection === 'asc', 'glyphicon-sort-by-attributes-alt': tasksCtrl.sort.sortDirection === 'desc'}"></span>
+                        </th>
+                        <th ng-click="tasksCtrl.tableFilter('swimlane.position')">
+                            Couloir
+                            <span class="glyphicon" ng-if="tasksCtrl.sort.field === 'swimlane.position'"
+                                  ng-class="{'glyphicon-sort-by-attributes': tasksCtrl.sort.sortDirection === 'asc', 'glyphicon-sort-by-attributes-alt': tasksCtrl.sort.sortDirection === 'desc'}"></span>
+                        </th>
+                        <th ng-click="tasksCtrl.tableFilter('category')">
+                            Categorie
+                            <span class="glyphicon" ng-if="tasksCtrl.sort.field === 'category'"
+                                  ng-class="{'glyphicon-sort-by-alphabet': tasksCtrl.sort.sortDirection === 'asc', 'glyphicon-sort-by-alphabet-alt': tasksCtrl.sort.sortDirection === 'desc'}" ></span>
+                        </th>
+                        <th ng-click="tasksCtrl.tableFilter('assignee.user.username')">
+                            Assigné à
+                            <span class="glyphicon" ng-if="tasksCtrl.sort.field === 'assignee.user.username'"
+                                  ng-class="{'glyphicon-sort-by-alphabet': tasksCtrl.sort.sortDirection === 'asc', 'glyphicon-sort-by-alphabet-alt': tasksCtrl.sort.sortDirection === 'desc'}" ></span>
+                        </th>
+                        <th ng-click="tasksCtrl.tableFilter('plannedStart')">
+                            Date début
+                            <span class="glyphicon" ng-if="tasksCtrl.sort.field === 'plannedStart'"
+                                  ng-class="{'glyphicon-sort-by-order': tasksCtrl.sort.sortDirection === 'asc', 'glyphicon-sort-by-order-alt': tasksCtrl.sort.sortDirection === 'desc'}" ></span>
+                        </th>
+                        <th ng-click="tasksCtrl.tableFilter('plannedEnding')">
+                            Date fin
+                            <span class="glyphicon" ng-if="tasksCtrl.sort.field === 'plannedEnding'"
+                                  ng-class="{'glyphicon-sort-by-order': tasksCtrl.sort.sortDirection === 'asc', 'glyphicon-sort-by-order-alt': tasksCtrl.sort.sortDirection === 'desc'}" ></span>
+                        </th>
+                        <th>Charge estimée</th>
+                        <th>Consommée</th>
+                        <th>Charge réevaluée</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="task in tasksCtrl.tasks._embedded.taskResourceList">
+                        <td>
+                            {{task.name}}
+                        </td>
+                        <td>
+                            {{task.state.name}}
+                        </td>
+                        <td>
+                            <span ng-if="!task.swimlane">
+                                -
+                            </span>
+                            {{task.swimlane.name}}
+                        </td>
+                        <td>
+                            <span ng-if="!task.category">
+                                -
+                            </span>
+                            {{task.category.name}}
+                        </td>
+                        <td>
+                            <span ng-if="!task.assignee">
+                                -
+                            </span>
+                            {{task.assignee.username}}
+                        </td>
+                        <td>
+                            {{task.plannedStart| date:'dd/MM/yyyy'}}
+                        </td>
+                        <td ng-class="{'exceeded-date' : task.exceededDate}">
+                            {{task.plannedEnding| date:'dd/MM/yyyy'}}
+                        </td>
+                        <td>
+                            {{task.estimatedLoad}}
+                        </td>
+                        <td>
+                            {{task.timeSpent}}
+                        </td>
+                        <td ng-class="{'exceeded-load' : task.exceededLoad}">
+                            {{task.timeRemains}}
+                        </td>
+                        <td >
+                            <a ui-sref="app.project.task({projectId: projectCtrl.project.id, taskId: task.id })" title="edit">
+                                <span class="glyphicon glyphicon-edit"></span>
+                            </a>
+                            <a ng-click="tasksCtrl.delete(task)" title="delete" ng-if="projectCtrl.rights.hasAdminRights">
+                                <span class="glyphicon glyphicon-trash"></span>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="11">
+                            <div class="row">
+                                <div class="col-md-6 col-md-offset-3" >
+                                    <div class="center-block text-center">
+                                        <uib-pagination total-items="tasksCtrl.tasks.page.totalElements" ng-change="tasksCtrl.loadPage()" ng-model="tasksCtrl.tasks.page.number" items-per-page="tasksCtrl.tasks.page.size" max-size="5" class="pagination-sm" boundary-links="true" rotate="false" num-pages="tasksCtrl.tasks.page.totalPages"></uib-pagination>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 form-inline"> 
+                                    <div class="form-group pull-right">
+                                        <label for="nbEltUser">Nb élements :</label>
+                                        <select id="nbEltUser" ng-model="tasksCtrl.tasks.page.size" class="form-control input-sm" style="margin: 20px;" ng-change="tasksCtrl.loadPage()">
+                                            <option value="10" ng-selected="tasksCtrl.tasks.page.size === 10">10</option>
+                                            <option value="20" ng-selected="tasksCtrl.tasks.page.size === 20">20</option>
+                                            <option value="50" ng-selected="tasksCtrl.tasks.page.size === 50">50</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>

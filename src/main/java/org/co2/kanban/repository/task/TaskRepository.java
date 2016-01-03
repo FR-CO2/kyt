@@ -5,15 +5,13 @@
  */
 package org.co2.kanban.repository.task;
 
+import java.sql.Timestamp;
 import org.co2.kanban.repository.project.Project;
 import org.co2.kanban.repository.user.ApplicationUser;
-import java.util.Date;
-import org.co2.kanban.repository.category.Category;
 import org.co2.kanban.repository.state.State;
 import org.co2.kanban.repository.swimlane.Swimlane;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 /**
@@ -26,22 +24,22 @@ public interface TaskRepository extends PagingAndSortingRepository<Task, Long> {
 
     Iterable<Task> findByProject(Project project);
 
-    Iterable<Task> findByProjectAndSwimlane(Project project, Swimlane swimlane);
-    
+    Iterable<Task> findByProjectAndSwimlaneIsNull(Project project);
+
+    Iterable<Task> findByProjectAndStateAndSwimlane(Project project, State state, Swimlane swimlane);
+
     Iterable<Task> findByProjectAndState(Project project, State state);
-    
-    Iterable<Task> findByProjectAndCategory(Project project, Category category);
-    
-    
-    @Query("select t from Task t where UPPER(t.name) like %?1% and "
-            + "assignee.user = ?3 and (t.plannedStart > ?2 or t.plannedEnding < ?2)")
-    Iterable<Task> searchByName(String name,Date dateTask, ApplicationUser appUser);
+
+    Iterable<Task> findByProjectAndSwimlane(Project project, Swimlane swimlane);
+
+    Iterable<Task> findByProjectAndStateAndSwimlaneIsNull(Project project, State state);
 
     Page<Task> findByProject(Project project, Pageable p);
 
-    Page<Task> findByStateCloseStateFalseAndAssigneeUserOrBackupUser(ApplicationUser user, ApplicationUser backup, Pageable p);
+    Page<Task> findByAssigneeUserAndStateCloseStateFalse(ApplicationUser user, Pageable p);
 
-    Iterable<Task> findByAssigneeUserAndStateCloseStateFalseAndPlannedEndingBetweenOrPlannedStartBetween(ApplicationUser user, Date endAfter, Date endBefore, Date startAfter, Date startBefore);
-    
-    Iterable<Task> findByAssigneeUserAndPlannedEndingAfterAndPlannedStartBefore(ApplicationUser user, Date endAfter, Date startBefore);
+    Iterable<Task> findByAssigneeUserAndNameContainingAndStateCloseStateFalse(ApplicationUser user, String term);
+
+    Iterable<Task> findByAssigneeUserAndPlannedStartBeforeAndPlannedEndingAfterAndStateCloseStateFalse(ApplicationUser user, Timestamp startBefore, Timestamp endAfter);
+
 }

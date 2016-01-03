@@ -5,33 +5,26 @@
  */
 package org.co2.kanban.rest.project.member;
 
+import org.co2.kanban.repository.member.Member;
 import org.co2.kanban.repository.member.ProjectRole;
-import org.springframework.hateoas.ResourceSupport;
+import org.co2.kanban.rest.IdentifiableResourceSupport;
 
 /**
  *
  * @author ben
  */
-public class MemberResource extends ResourceSupport{
+public class MemberResource extends IdentifiableResourceSupport<Member>{
     
-    private ProjectRole projectRole;
-
-    private String username;
-
-    public String getUsername() {
-        return username;
+    public MemberResource(Member member) {
+        super(member);
     }
-
-    public void setUsername(String username) {
-        this.username = username;
+    
+    public String getUsername() {
+        return this.getBean().getUser().getUsername();
     }
     
     public ProjectRole getProjectRole() {
-        return projectRole;
-    }
-
-    public void setProjectRole(ProjectRole role) {
-        this.projectRole = role;
+        return this.getBean().getProjectRole();
     }
         
 }
