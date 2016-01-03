@@ -37,26 +37,27 @@
                     size: "md"
                 });
                 modalInstance.result.then(function () {
-                    vm.comments = currenttask.resource("comment").query();
-                    comment.showComment = !comment.showComment;
-                    vm.showHideReply(comment);
+                    comment.showComment = true;
+                    vm.selectedComment = comment.resource("reply").query();
                 });
             };
             vm.showHideReply = function (comment) {
-                if(comment.showComment){
+                if (comment.showComment) {
                     comment.showComment = false;
-                } else{
-                    vm.selectedComment =comment.resource("reply").query();
+                } else {
+                    vm.selectedComment = comment.resource("reply").query();
                     comment.showComment = true;
                 }
             };
             vm.delete = function (parentComment, comment) {
-                vm.selectedComment = undefined;
                 comment.resource("self").delete(null, function () {
-                    vm.comments = currenttask.resource("comment").query();
-                    if(parentComment !== null){
-                        parentComment.showComment = !parentComment.showComment;
-                        vm.showHideReply(parentComment);
+                    if (parentComment !== null) {
+                        vm.selectedComment = parentComment.resource("reply").query();
+                    } else {
+                        vm.comments = currenttask.resource("comment").query();
+                        if (vm.selectedComment === comment) {
+                            vm.selectedComment = null;
+                        }
                     }
                 });
             };
