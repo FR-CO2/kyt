@@ -97,7 +97,8 @@ require.config({
         }
     },
     baseUrl: '/scripts/app',
-    deps: ['./app']
+    deps: ['./app'],
+    waitSeconds: 200
 });
 
 
