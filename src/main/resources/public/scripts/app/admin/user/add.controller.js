@@ -4,11 +4,13 @@
             var vm = this;
             vm.roles = userRoleService.query();
             vm.submit = function () {
-                userService.save(vm.user, function () {
-                    $uibModalInstance.close();
-                }, function (error) {
-                    vm.error = error.data;
-                });
+                if (!vm.error) {
+                    userService.save(vm.user, function () {
+                        $uibModalInstance.close();
+                    }, function (error) {
+                        vm.error = error.data;
+                    });
+                }
             };
         };
         addController.$inject = ["$uibModalInstance", "userRoleService", "userService"];
