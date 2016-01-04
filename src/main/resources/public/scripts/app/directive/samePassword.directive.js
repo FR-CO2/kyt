@@ -17,15 +17,22 @@
                 transclude: true,
                 scope: {
                     password: "=password",
+                    placeholder: "@placeholder",
                     error: "=error"
                 },
                 link: function (scope, elem, attrs, ctrl) {
+                    var rePasswordElm = elem.children()[0];
                     elem.add(scope.password).on('keyup', function () {
-                        scope.error = checkSamePassword(scope.password, this.children[0].value);
+                        scope.error = checkSamePassword(scope.password, rePasswordElm.value);
                         scope.$apply();
                     });
+                    scope.$watch('password', function () {
+                        if (rePasswordElm.value) {
+                            scope.error = checkSamePassword(scope.password, rePasswordElm.value);
+                        }
+                    });
                 },
-                template: '<input type="password" class="form-control" id="rePassword" placeholder="Rewrite your password"/>'
+                template: '<input type="password" class="form-control" id="rePassword" placeholder="{{placeholder}}"/>'
             };
         };
     });
