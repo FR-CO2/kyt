@@ -5,43 +5,31 @@
  */
 package org.co2.kanban.rest.user;
 
+import org.co2.kanban.repository.user.ApplicationUser;
 import org.co2.kanban.repository.user.ApplicationUserRole;
-import org.springframework.hateoas.ResourceSupport;
+import org.co2.kanban.rest.IdentifiableResourceSupport;
 
 /**
  *
  * @author ben
  */
-public class UserResource extends ResourceSupport {
+public class UserResource extends IdentifiableResourceSupport <ApplicationUser>{
     
-    private String username;
-    
-    private String email;
-    
-    private ApplicationUserRole applicationRole;
+    public UserResource(ApplicationUser user) {
+        super(user);
+    }
 
     public String getUsername() {
-        return username;
+        return this.getBean().getUsername();
     }
 
-    public void setUsername(String name) {
-        this.username = name;
-    }
 
     public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
+        return this.getBean().getEmail();
     }
 
     public ApplicationUserRole getApplicationRole() {
-        return applicationRole;
-    }
-
-    public void setApplicationRole(ApplicationUserRole applicationRole) {
-        this.applicationRole = applicationRole;
+        return this.getBean().getApplicationRole();
     }
     
 }

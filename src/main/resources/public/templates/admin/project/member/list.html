@@ -1,0 +1,64 @@
+<div class="col-md-12">
+    <div class="panel">
+        <div class="panel-heading">
+            <h2 class="panel-heading-title">Liste des membres</h2>
+            <div class="panel-heading-action">
+                <button class="btn btn-info btn-sm" ng-click="memberListCtrl.add()"><span class="glyphicon glyphicon-plus-sign"></span>Nouveau membre</button>
+            </div>
+        </div>
+        <div class="panel-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Role</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="member in projectEditCtrl.project.members._embedded.memberResourceList">
+                        <td>
+                            {{member.username}}
+                        </td>
+                        <td>
+                            <a href="#" editable-select="member.projectRole" 
+                               onaftersave="memberListCtrl.saveMember(member)"
+                               e-ng-options="projectRole for projectRole in memberListCtrl.projectRoles">
+                                {{member.projectRole}}
+                            </a>
+                        </td>
+                        <td>
+                            <a ng-click="memberListCtrl.delete(member)">
+                                <span class="glyphicon glyphicon-trash"></span>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="3">
+                            <div class="row">
+                                <div class="col-md-6 col-md-offset-3" >
+                                    <div class="center-block text-center">
+                                        <uib-pagination total-items="configMemberCtrl.members.page.totalElements" ng-model="configMemberCtrl.members.page.numPage" items-per-page="configMemberCtrl.members.page.size" max-size="5" class="pagination-sm" boundary-links="true" rotate="false" num-pages="configMemberCtrl.members.page.totalPages" ng-click="configMemberCtrl.pageChanged()"></uib-pagination>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 form-inline"> 
+                                    <div class="form-group pull-right">
+                                        <label for="nbEltUser">Nb élements :</label>
+                                        <select id="nbEltUser" ng-model="configMemberCtrl.members.page.nbElt" class="form-control input-sm" style="margin: 20px;"  ng-change="configMemberCtrl.pageChanged()">
+                                            <option value="10">10</option>
+                                            <option value="20">20</option>
+                                            <option value="50">50</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+

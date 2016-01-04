@@ -13,7 +13,6 @@ import org.co2.kanban.repository.swimlane.Swimlane;
 import org.co2.kanban.repository.allocation.Allocation;
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -21,11 +20,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.PostLoad;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
-import org.co2.kanban.rest.project.task.TaskResource;
+import org.co2.kanban.repository.Identifiable;
 import org.co2.kanban.repository.comment.Comment;
 
 /**
@@ -33,7 +28,7 @@ import org.co2.kanban.repository.comment.Comment;
  * @author ben
  */
 @Entity
-public class Task implements Serializable {
+public class Task implements Serializable, Identifiable {
 
     private static final long serialVersionUID = -7133694782401886935L;
 
@@ -43,22 +38,20 @@ public class Task implements Serializable {
     
     private String name;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date created;
+    private Timestamp created;
     
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date lastModified;
+    private Timestamp lastModified;
 
     @ManyToOne(cascade = CascadeType.DETACH)
     private Category category;
 
-    @ManyToOne(cascade = CascadeType.DETACH)
+    @ManyToOne
     private State state;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.DETACH)
     private Swimlane swimlane;
 
-    @ManyToOne(cascade = CascadeType.DETACH)
+    @ManyToOne
     private Project project;
 
     @ManyToOne(cascade = CascadeType.DETACH)
@@ -71,15 +64,9 @@ public class Task implements Serializable {
 
     private Timestamp plannedEnding;
 
-    private Long estimatedLoad;
+    private Float estimatedLoad;
 
     private String description;
-
-    @Transient
-    private Float timeSpent = 0F;
-
-    @Transient
-    private Float timeRemains = 0F;
 
     @OneToMany(mappedBy = "task")
     private List<Allocation> allocations;
@@ -92,19 +79,6 @@ public class Task implements Serializable {
 
     @OneToMany(mappedBy = "linkedTask")
     private List<Task> childrenTask;
-    
-    @PostLoad
-    public void onLoad() {
-        if (!allocations.isEmpty()) {
-            for (Allocation alloc : this.allocations) {
-                if (alloc.getTimeSpent() != null) {
-                    this.timeSpent += alloc.getTimeSpent();
-                }
-            }
-
-            this.timeRemains = allocations.get(allocations.size() - 1).getTimeRemains();
-        }
-    }
 
     public Long getId() {
         return id;
@@ -154,11 +128,11 @@ public class Task implements Serializable {
         this.plannedEnding = plannedEnding;
     }
 
-    public Long getEstimatedLoad() {
+    public Float getEstimatedLoad() {
         return estimatedLoad;
     }
 
-    public void setEstimatedLoad(Long estimatedLoad) {
+    public void setEstimatedLoad(Float estimatedLoad) {
         this.estimatedLoad = estimatedLoad;
     }
 
@@ -170,19 +144,19 @@ public class Task implements Serializable {
         this.description = description;
     }
 
-    public Date getCreated() {
+    public Timestamp getCreated() {
         return created;
     }
 
-    public void setCreated(Date created) {
+    public void setCreated(Timestamp created) {
         this.created = created;
     }
 
-    public Date getLastModified() {
+    public Timestamp getLastModified() {
         return lastModified;
     }
 
-    public void setLastModified(Date lastModified) {
+    public void setLastModified(Timestamp lastModified) {
         this.lastModified = lastModified;
     }
 
@@ -224,22 +198,6 @@ public class Task implements Serializable {
 
     public void setAllocations(List<Allocation> allocations) {
         this.allocations = allocations;
-    }
-
-    public Float getTimeSpent() {
-        return timeSpent;
-    }
-
-    public void setTimeSpent(Float timeSpent) {
-        this.timeSpent = timeSpent;
-    }
-
-    public Float getTimeRemains() {
-        return timeRemains;
-    }
-
-    public void setTimeRemains(Float timeRemains) {
-        this.timeRemains = timeRemains;
     }
 
     public List<Comment> getComments() {

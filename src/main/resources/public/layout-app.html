@@ -11,30 +11,24 @@
                 Dashboard
             </a>
         </li>
-        <li class="navbar-text dropdown"  ng-controller="homeController as homeCtrl">
-            <a class="dropdown-toggle" data-toggle="dropdown"  aria-expanded="true" id="projectsDropdown">
+        <li class="navbar-text dropdown">
+            <a class="dropdown-toggle" role="dropdown" data-toggle="dropdown"  aria-expanded="true" id="projectsDropdown">
                 Mes projets
                 <span class="caret"></span>
             </a>
             <ul class="dropdown-menu" aria-labelledby="projectsDropdown">
-                <li ng-if="$session.user.applicationRole === 'ADMIN'">
-                    <a ui-sref="app.projects">Tous les projets</a>
-                </li>
-                <li ng-if="$session.user.applicationRole !== 'ADMIN' && homeCtrl.projects.content.length === 0">
-                    <span class="no-project">Aucun projet</span>
-                </li>
-                <li ng-repeat="project in homeCtrl.projects.content">
-                    <a ng-click="homeCtrl.goProject(project.id)">
+                <li ng-repeat="project in appCtrl.currentuser.projects">
+                    <a ui-sref="app.project.kanban({projectId: project.id })">
                         {{project.name}}
                     </a>
                 </li>
             </ul>
         </li>
     </ul>
-    <div class="nav navbar-nav  navbar-right dropdown" ng-controller="headerController as header">
+    <div class="nav navbar-nav  navbar-right dropdown">
         <a class="navbar-text dropdown-toggle account" data-toggle="dropdown" id="accountDropdown" aria-expanded="true">
             <span class="glyphicon glyphicon-user"></span>
-            {{$session.user.username}}
+            {{appCtrl.currentuser.username}}
             <span class="caret"></span>
         </a>
         <ul class="dropdown-menu" aria-labelledby="accountDropdown">
@@ -44,14 +38,20 @@
                     <span>Profil</span>
                 </a>
             </li>
-            <li ng-if="$session.user.applicationRole === 'ADMIN'">
+            <li ng-if="appCtrl.currentuser.applicationRole === 'ADMIN'">
+                <a ui-sref="app.projects">
+                    <span class="glyphicon glyphicon-folder-open"></span>
+                    <span>Administrer projets</span>
+                </a>
+            </li>
+            <li ng-if="appCtrl.currentuser.applicationRole === 'ADMIN'">
                 <a ui-sref="app.users">
                     <span class="glyphicon glyphicon-user"></span>
                     <span>Administrer utilisateurs</span>
                 </a>
             </li>
             <li>
-                <a ng-click="header.logout()">
+                <a ng-click="appCtrl.logout()">
                     <span class="glyphicon glyphicon-log-out"></span>
                     <span>Logout</span>
                 </a>

@@ -6,32 +6,29 @@
 package org.co2.kanban.rest.user;
 
 import java.security.Principal;
-import java.util.List;
-import org.co2.kanban.repository.project.Project;
-import org.co2.kanban.repository.project.ProjectRepository;
-import org.co2.kanban.repository.task.Task;
-import org.co2.kanban.repository.task.TaskRepository;
 import org.co2.kanban.repository.user.ApplicationUser;
 import org.co2.kanban.repository.user.ApplicationUserRepository;
-import org.co2.kanban.repository.user.ApplicationUserRole;
-import org.co2.kanban.rest.project.ProjectAssembler;
-import org.co2.kanban.rest.project.ProjectResource;
-import org.co2.kanban.rest.project.member.MemberAssembler;
-import org.co2.kanban.rest.project.member.MemberResource;
-import org.co2.kanban.rest.project.task.TaskAssembler;
-import org.co2.kanban.rest.project.task.TaskResource;
+import org.co2.kanban.rest.error.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedResources;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.web.bind.annotation.AuthenticationPrincipal;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -46,81 +43,65 @@ public class ApplicationUserController {
     private ApplicationUserRepository repository;
 
     @Autowired
-    private MemberAssembler memberAssembler;
-    
-    @Autowired
-    private TaskRepository taskRepositoy;
-
-    @Autowired
-    private ProjectRepository projectRepositoy;
-
-
-    @Autowired
     private UserAssembler userAssembler;
 
     @Autowired
     private PagedResourcesAssembler<ApplicationUser> pagedAssembler;
 
-    @Autowired
-    private ProjectAssembler projectAssembler;
+    private final BCryptPasswordEncoder bcryptEncoder = new BCryptPasswordEncoder();
 
-    @Autowired
-    private TaskAssembler taskAssembler;
-
-    @Autowired
-    private PagedResourcesAssembler<Project> pagedProjectAssembler;
-
-    @Autowired
-    private PagedResourcesAssembler<Task> pagedTaskAssembler;
-
-    @RequestMapping(value = "page", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public PagedResources<UserResource> page(Pageable p) {
-        return pagedAssembler.toResource(repository.findAll(p), userAssembler);
+    @RequestMapping(params = {"page", "size"}, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public PagedResources<UserResource> page(
+            @RequestParam(name = "page") Integer page,
+            @RequestParam(name = "size", required = false) Integer size) {
+        Pageable pageable = new PageRequest(page, size);
+        return pagedAssembler.toResource(repository.findAll(pageable), userAssembler);
     }
 
-    @RequestMapping(value = "find/{username}", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public List<UserResource> findByUsername(@PathVariable("username") String username) {
-        return userAssembler.toResources(repository.findByUsernameContaining(username));
+    @RequestMapping(params = {"search"}, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Iterable<UserResource> search(@RequestParam(name = "search") String search) {
+        return userAssembler.toResources(repository.findByUsernameContains(search));
     }
 
-    @RequestMapping(method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserResource> create(@RequestBody ApplicationUser newUser) {
-        return new ResponseEntity<>(userAssembler.toResource(repository.save(newUser)), HttpStatus.CREATED);
+        if (repository.checkExistUsername(newUser.getUsername())) {
+            throw new BusinessException(HttpStatus.CONFLICT, "user.error.conflict.username");
+        }
+        String passwordDigest = bcryptEncoder.encode(newUser.getPassword());
+        newUser.setPassword(passwordDigest);
+        ApplicationUser user = repository.save(newUser);
+        MultiValueMap<String, String> headers = new HttpHeaders();
+        headers.add(HttpHeaders.LOCATION, linkTo(methodOn(ApplicationUserController.class).get(user.getId())).toString());
+        ResponseEntity resp = new ResponseEntity(headers, HttpStatus.CREATED);
+        return resp;
     }
 
-    @RequestMapping(value = "{id}", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserResource> get(@PathVariable("id") Long userId) {
         return new ResponseEntity<>(userAssembler.toResource(repository.findOne(userId)), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "{id}", method = RequestMethod.DELETE, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity delete(@PathVariable("id") Long userId) {
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity delete(@AuthenticationPrincipal Principal user, @PathVariable("id") Long userId) {
+        ApplicationUser currentUser = repository.findByUsername(user.getName());
+        if (currentUser.getId().equals(userId)) {
+            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+        }
         repository.delete(userId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @RequestMapping(value = "{id}/member", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<MemberResource>> memberOf(@PathVariable("id") Long userId) {
-        return new ResponseEntity<>(memberAssembler.toResources(repository.findOne(userId).getMembers()), HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "{id}/task", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public PagedResources<TaskResource> listTask(@PathVariable("id") Long userId, Pageable page) {
-        ApplicationUser appUser = repository.findOne(userId);
-        Page<Task> tasks = taskRepositoy.findByStateCloseStateFalseAndAssigneeUserOrBackupUser(appUser, appUser, page);
-        return pagedTaskAssembler.toResource(tasks, taskAssembler);
-    }
-
-    @RequestMapping(value = "{id}/project", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public PagedResources<ProjectResource> listProject(@PathVariable("id") Long userId, Pageable page) {
-        ApplicationUser appUser = repository.findOne(userId);
-        Page<Project> projects;
-        if (appUser.getApplicationRole().equals(ApplicationUserRole.ADMIN)) {
-            projects = projectRepositoy.findAll(page);
-        } else {
-            projects = projectRepositoy.findByMembersUser(appUser, page);
+    @RequestMapping(value = "/{id}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity update(@PathVariable("id") Long userId, @RequestBody ApplicationUser user) {
+        ApplicationUser updatedUser = repository.findOne(userId);
+        if (user.getPassword() !=null) {
+            String passwordDigest = bcryptEncoder.encode(user.getPassword());
+            updatedUser.setPassword(passwordDigest);
         }
-        return pagedProjectAssembler.toResource(projects, projectAssembler);
+        updatedUser.setApplicationRole(user.getApplicationRole());
+        updatedUser.setEmail(user.getEmail());
+        repository.save(updatedUser);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
 }

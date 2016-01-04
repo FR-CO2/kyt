@@ -1,0 +1,25 @@
+<div class="panel panel-info">
+    <div class="panel-heading">
+        <span class="glyphicon glyphicon-plus-sign"></span> Nouveau état
+    </div>
+    <div class="panel-body">
+        <alert type="danger" ng-if="addStateCtrl.error">{{addStateCtrl.error.message}}</alert>
+        <form id="login" role="form" ng-submit="addStateCtrl.submit()">
+            <div class="form-group">
+                <label for="stateName">Nom</label>
+                <input type="text" required ng-model="addStateCtrl.state.name" class="form-control" id="stateName" name="stateName" placeholder="Nom de l'état"/>
+            </div>
+            <div class="form-group">
+                <label for="closeState">Etat de cloture</label>
+                <input type="checkbox" ng-model="addStateCtrl.state.closeState" class="form-control" id="closeState" name="closeState"/>
+            </div>
+            <div class="form-group">
+                <label for="kanbanHide">Masquer dans le Kanban</label>
+                <input type="checkbox" ng-model="addStateCtrl.state.kanbanHide" class="form-control" id="kanbanHide" name="kanbanHide">
+            </div>
+            <div>
+                <button type="submit"  class="btn btn-info center-block">valider</button>
+            </div>
+        </form>
+    </div>
+</div>

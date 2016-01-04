@@ -5,10 +5,17 @@
  */
 package org.co2.kanban.rest.user;
 
+import java.util.ArrayList;
+import java.util.List;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 import org.co2.kanban.repository.user.ApplicationUser;
+import org.co2.kanban.rest.project.ProjectController;
+import org.co2.kanban.rest.user.consommation.UserConsommationController;
+import org.co2.kanban.rest.user.memberof.MemberOfController;
+import org.co2.kanban.rest.user.task.UserTaskController;
+import org.springframework.hateoas.Link;
 import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
 import org.springframework.stereotype.Component;
 
@@ -25,14 +32,18 @@ public class UserAssembler extends ResourceAssemblerSupport<ApplicationUser, Use
 
     @Override
     public UserResource toResource(ApplicationUser user) {
-        UserResource resource = createResourceWithId(user.getId(), user);
-        resource.setUsername(user.getUsername());
-        resource.setEmail(user.getEmail());
-        resource.setApplicationRole(user.getApplicationRole());
-        resource.add(linkTo(methodOn(ApplicationUserController.class).memberOf(user.getId())).withRel("members"));
-        resource.add(linkTo(methodOn(ApplicationUserController.class).listProject(user.getId(), null)).withRel("project"));
-        resource.add(linkTo(methodOn(ApplicationUserController.class).listTask(user.getId(), null)).withRel("task"));
+        UserResource resource = new UserResource(user);
+        resource.add(linkTo(methodOn(ApplicationUserController.class).get(user.getId())).withSelfRel());
+        resource.add(getLinks(user));
         return resource;
     }
 
+    protected Iterable<Link> getLinks(ApplicationUser user) {
+        List<Link> links = new ArrayList<>();
+        links.add(linkTo(MemberOfController.class, user.getId()).withRel("member"));
+        links.add(linkTo(ProjectController.class).withRel("project"));
+        links.add(linkTo(UserTaskController.class, user.getId()).withRel("task"));
+        links.add(linkTo(UserConsommationController.class, user.getId()).withRel("consommation"));
+        return links;
+    }
 }

@@ -192,71 +192,13 @@ input, .form-control {
   line-height: 1.2em;
 }
 
-/* line 1, ../../../../../../co2themes/sass/bootstrap/modal.sass */
+/* line 1, ../../../../../../co2themes/sass/bootstrap/_modal.sass */
 .modal {
   cursor: default;
 }
-
-/* line 2, ../../../../../../co2themes/sass/theme/_off-canvas.sass */
-.offcanvas__container {
-  min-height: 100%;
-  display: flex;
-  position: relative;
-}
-/* line 6, ../../../../../../co2themes/sass/theme/_off-canvas.sass */
-.offcanvas__menu {
-  width: 20%;
-  float: left;
-  background: #172B36;
-  flex-grow: 0;
-  transition: ease-out 1s width;
-  box-shadow: -1em 1em 1em -0.5em #000 inset;
-  overflow: hidden;
-}
-/* line 14, ../../../../../../co2themes/sass/theme/_off-canvas.sass */
-.offcanvas__content {
-  width: 80%;
-  float: left;
-  padding: 2em 1em;
-  flex-grow: 2;
-  order: 3;
-  min-height: 600px;
-}
-/* line 21, ../../../../../../co2themes/sass/theme/_off-canvas.sass */
-.offcanvas__label {
-  font-size: 2em;
-  color: #0172B4;
-  cursor: pointer;
-  font-family: oswald, Helvetica Neue, Helvetica, Arial, sans-serif;
-  text-transform: uppercase;
-}
-/* line 27, ../../../../../../co2themes/sass/theme/_off-canvas.sass */
-.offcanvas__checkbox {
-  display: none;
-}
-/* line 30, ../../../../../../co2themes/sass/theme/_off-canvas.sass */
-.offcanvas__checkbox:checked ~ .offcanvas__menu {
-  width: 0;
-  padding: 0;
-  overflow: hidden;
-}
-/* line 35, ../../../../../../co2themes/sass/theme/_off-canvas.sass */
-.offcanvas__checkbox:checked ~ .offcanvas__content {
-  width: 100%;
-}
-
-/* line 38, ../../../../../../co2themes/sass/theme/_off-canvas.sass */
-.nav--offcanvas {
-  margin: 2em 1em;
-  color: #FFF;
-}
-/* line 41, ../../../../../../co2themes/sass/theme/_off-canvas.sass */
-.nav--offcanvas > li > a {
-  color: #FFF;
-}
-/* line 43, ../../../../../../co2themes/sass/theme/_off-canvas.sass */
-.nav--offcanvas > li > a:hover, .nav--offcanvas > li > a:focus {
-  background: #000;
+/* line 3, ../../../../../../co2themes/sass/bootstrap/_modal.sass */
+.modal-xd {
+  width: 75%;
 }
 
 /* line 1, ../../../../../../co2themes/sass/theme/_layout.sass */
@@ -423,4 +365,38 @@ td.column ul {
 /* line 34, ../../../../../../co2themes/sass/app.sass */
 .ui-autocomplete {
   z-index: 1051;
+}
+
+/* line 37, ../../../../../../co2themes/sass/app.sass */
+#task {
+  background-color: #FFF;
+  padding-top: 1.2em;
+  padding-bottom: 1.2em;
+}
+
+/* line 42, ../../../../../../co2themes/sass/app.sass */
+.no-project {
+  padding-left: 10px;
+  color: #000;
+}
+
+/* line 47, ../../../../../../co2themes/sass/app.sass */
+.kanban-card .badge {
+  color: #000;
+}
+
+/* line 51, ../../../../../../co2themes/sass/app.sass */
+.datecell {
+  border: none !important;
+  font-size: 10px !important;
+  /*    -webkit-transform:rotate(70deg);
+   * -moz-transform:rotate(70deg);
+   * -o-transform: rotate(70deg);
+   * -ms-transform:rotate(70deg);
+   * transform: rotate(70deg); */
+}
+
+/* line 61, ../../../../../../co2themes/sass/app.sass */
+.exceeded-date, .exceeded-load, .exceeded {
+  color: red;
 }

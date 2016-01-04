@@ -1,0 +1,54 @@
+<div class="kanban-card">
+    <div class="kanban-card__task center-block" style="border-left: 0.5em solid {{task.category.bgcolor}}">
+        <header class="kanban-card__heading">
+            <span>
+                <a ui-sref="app.project.task({projectId: projectCtrl.project.id, taskId: task.id })" 
+                   ng-app=""title="Accéder au détail de la tâche">
+                    <span>#{{task.id}}</span>
+                    {{task.name}}
+                </a>
+            </span>
+            <span class="pull-right exceeded" ng-if="task.exceededLoad">
+                <span ng-class="{'glyphicon glyphicon-usd' : task.exceededLoad}"></span>
+            </span>
+        </header>
+        <div class="kanban-card__action">
+            <span ng-if="projectCtrl.rights.hasEditRights" >
+                <a href="#" editable-text="task.assignee.username" onaftersave="kanbanCtrl.saveTask(task)"
+                   e-typeahead-on-select="kanbanCtrl.selectAssignee($item, $model, $label, task)" e-typeahead-editable="false" 
+                   e-typeahead="member as member.username for member in kanbanCtrl.getMembers($viewValue)" title="Assigné à">
+                    <span class="glyphicon glyphicon-user"></span>
+                    <span ng-if="!task.assignee">
+                        -
+                    </span>
+                    {{task.assignee.username}}
+                </a>
+            </span>
+            <span ng-if="!projectCtrl.rights.hasEditRights" >
+                <span class="glyphicon glyphicon-user"></span>
+                <span ng-if="!task.assignee">
+                    -
+                </span>
+                {{task.assignee.username}}
+            </span>
+            <span class="badge pull-right" ng-if="projectCtrl.rights.hasEditRights">
+                <a href="#" editable-select="task.category" onshow="kanbanCtrl.loadCategory()" onaftersave="kanbanCtrl.saveTask(task)" e-ng-options="category as category.name for category in kanbanCtrl.categories">
+                    <span ng-if="!task.category">
+                        -
+                    </span>
+                    <span class="glyphicon glyphicon-tag" ng-if="task.category"></span> {{task.category.name}}
+                </a>
+            </span>
+            <span class="badge pull-right" ng-if="!projectCtrl.rights.hasEditRights" >
+                <span ng-if="!task.category">
+                    -
+                </span>
+                <span class="glyphicon glyphicon-tag" ng-if="task.category"></span> {{task.category.name}}
+            </span>
+        </div>
+    </div>
+
+    <div class="kanban-card__date text-right" ng-if="task.plannedEnding" ng-class="{'exceeded' : task.exceededDate}">
+        <span class="glyphicon glyphicon-calendar"></span> {{task.plannedEnding| date:'dd/MM/yyyy'}}
+    </div>
+</div>

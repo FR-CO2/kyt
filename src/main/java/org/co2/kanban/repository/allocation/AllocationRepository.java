@@ -8,7 +8,7 @@ package org.co2.kanban.repository.allocation;
 import java.sql.Timestamp;
 import org.co2.kanban.repository.member.Member;
 import org.co2.kanban.repository.task.Task;
-import org.springframework.data.jpa.repository.Query;
+import org.co2.kanban.repository.user.ApplicationUser;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 /**
@@ -17,11 +17,11 @@ import org.springframework.data.repository.PagingAndSortingRepository;
  */
 public interface AllocationRepository extends PagingAndSortingRepository<Allocation, Long> {
 
+    Iterable<Allocation> findByMemberAndAllocationDateBetween(Member member, Timestamp start, Timestamp end);
 
-    @Query(value = "select a from Allocation a WHERE a.member = ?1")
-    Iterable<Allocation> getListAllocationBeetweenPlannedStartAndPlannedEnding(Member member);
-
-    Allocation findByTaskAndAllocationDateAndMember(Task task, Timestamp date, Member member);
-
-    Iterable<Allocation> findByTask(Task task);
+    Iterable<Allocation> findByTaskOrderByAllocationDateAscMemberUserUsernameAsc(Task task);
+    
+    Iterable<Allocation> findByMemberUserAndAllocationDate(ApplicationUser user, Timestamp date);
+    
+    Allocation findByMemberUserAndAllocationDateAndTask(ApplicationUser user, Timestamp date, Task task);
 }

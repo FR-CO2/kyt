@@ -9,9 +9,12 @@ import org.co2.kanban.repository.swimlane.Swimlane;
 import org.co2.kanban.repository.swimlane.SwimlaneRepository;
 import org.co2.kanban.repository.project.Project;
 import org.co2.kanban.repository.project.ProjectRepository;
-import org.co2.kanban.repository.member.Member;
-import org.co2.kanban.repository.member.MemberRepository;
+import org.co2.kanban.repository.task.Task;
+import org.co2.kanban.rest.error.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -30,6 +33,8 @@ import org.springframework.web.bind.annotation.RestController;
 @PreAuthorize("@projectAccessExpression.hasMemberAccess(#projectId, principal.username)")
 public class SwimlaneController {
 
+    private static final String MESSAGE_KEY_CONFLICT_NAME = "project.swimlane.error.conflict.name";
+    
     @Autowired
     private SwimlaneRepository repository;
 
@@ -37,79 +42,85 @@ public class SwimlaneController {
     private ProjectRepository projectRepository;
 
     @Autowired
-    private MemberRepository memberRepository;
+    private SwimlaneAssembler assembler;
 
     @RequestMapping(method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public Iterable<Swimlane> projectList(@PathVariable("projectId") Long projectId) {
+    public Iterable<SwimlaneResource> projectList(@PathVariable("projectId") Long projectId) {
         Project project = projectRepository.findOne(projectId);
-        return repository.findByProjectOrderByPositionAsc(project);
+        return assembler.toResources(repository.findByProjectOrderByPositionAsc(project));
     }
 
-    @RequestMapping(value = "{id}", method = RequestMethod.DELETE, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("@projectAccessExpression.hasManagerAccess(#projectId, principal.username)")
-    public ResponseEntity delete(@PathVariable("id") Long id) {
-        repository.delete(id);
+    public ResponseEntity delete(@PathVariable("projectId") Long projectId, @PathVariable("id") Long id) {
+        Swimlane swimlane = repository.findOne(id);
+        for (Task task : swimlane.getTasks()) {
+            task.setSwimlane(null);
+        }
+        repository.delete(swimlane);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
-    @RequestMapping(value = "{id}", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Swimlane> get(@PathVariable("id") Long id) {
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Swimlane> get(@PathVariable("projectId") Long projectId, @PathVariable("id") Long id) {
         Swimlane swimlane = repository.findOne(id);
-        return new ResponseEntity(swimlane, HttpStatus.OK);
+        return new ResponseEntity(assembler.toResource(swimlane), HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("@projectAccessExpression.hasManagerAccess(#projectId, principal.username)")
-    public ResponseEntity<Swimlane> create(@PathVariable("projectId") Long projectId, @RequestBody SwimlaneForm swimlane) {
+    public ResponseEntity create(@PathVariable("projectId") Long projectId, @RequestBody Swimlane swimlane) {
         Project project = projectRepository.findOne(projectId);
-        Swimlane newLane = new Swimlane();
-        newLane.setName(swimlane.getName());
-        newLane.setProject(project);
-        Long maxPosition = repository.getProjectMaxPosition(projectId);
-        if (swimlane.getResponsableId() != null) {
-            newLane.setResponsable(memberRepository.findOne(swimlane.getResponsableId()));
+        if (repository.checkExistProjectAndName(project, swimlane.getName())) {
+            throw new BusinessException(HttpStatus.CONFLICT, MESSAGE_KEY_CONFLICT_NAME);
         }
+        swimlane.setProject(project);
+        Long maxPosition = repository.getProjectMaxPosition(projectId);
         if (maxPosition == null) {
             maxPosition = 0L;
         }
-        newLane.setPosition(maxPosition);
-        repository.save(newLane);
-        return new ResponseEntity(newLane, HttpStatus.CREATED);
+        swimlane.setPosition(maxPosition);
+        Swimlane result = repository.save(swimlane);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(linkTo(methodOn(this.getClass()).get(projectId, result.getId())).toUri());
+        return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "{swimlaneId}/position/{newPosition}", method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{id}", method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("@projectAccessExpression.hasManagerAccess(#projectId, principal.username)")
-    public ResponseEntity updatePosition(@PathVariable("projectId") Long projectId, @PathVariable("swimlaneId") Long swimlaneId, @PathVariable("newPosition") Long newPosition) {
-        Long position = newPosition;
+    public ResponseEntity update(@PathVariable("projectId") Long projectId, @RequestBody Swimlane swimlane) {
         Project project = projectRepository.findOne(projectId);
-        Swimlane swimlane = repository.findOne(swimlaneId);
+        Swimlane oldSwimlane = repository.findOne(swimlane.getId());
+        if (!oldSwimlane.getName().equals(swimlane.getName()) && repository.checkExistProjectAndName(project, swimlane.getName())) {
+            throw new BusinessException(HttpStatus.CONFLICT, MESSAGE_KEY_CONFLICT_NAME);
+        }
+        swimlane.setProject(project);
+        if (!oldSwimlane.getPosition().equals(swimlane.getPosition())) {
+            updatePosition(swimlane.getPosition(), oldSwimlane);
+        }
+        repository.save(swimlane);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
+    private void updatePosition(Long newPosition, Swimlane swimlane) {
+        Long positionRef = newPosition;
         Long oldPosition = swimlane.getPosition();
         if (oldPosition < newPosition) {
-            position = oldPosition;
+            positionRef = oldPosition;
         }
         swimlane.setPosition(newPosition);
         repository.save(swimlane);
-        Iterable<Swimlane> swimlanesToUpdate = repository.findByProjectAndPositionGreaterThanOrderByPositionAsc(project, position - 1);
+        Iterable<Swimlane> swimlanesToUpdate = repository.findByProjectAndPositionGreaterThanOrderByPositionAsc(swimlane.getProject(), positionRef - 1);
         for (Swimlane swimlaneToUpdate : swimlanesToUpdate) {
-            if (position.equals(newPosition)) {
-                position++;
+            if (positionRef.equals(newPosition)) {
+                positionRef++;
             }
             if (!swimlane.getId().equals(swimlaneToUpdate.getId())) {
-                swimlaneToUpdate.setPosition(position);
+                swimlaneToUpdate.setPosition(positionRef);
                 repository.save(swimlaneToUpdate);
-                position++;
+                positionRef++;
             }
         }
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
-    @RequestMapping(value = "{swimlaneId}/responsable/{newResponsable}", method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("@projectAccessExpression.hasManagerAccess(#projectId, principal.username)")
-    public ResponseEntity updateResponsable(@PathVariable("projectId") Long projectId, @PathVariable("swimlaneId") Long swimlaneId, @PathVariable("newResponsable") Long newResponsable) {
-        Swimlane swimlane = repository.findOne(swimlaneId);
-        Member responsable = memberRepository.findOne(newResponsable);
-        swimlane.setResponsable(responsable);
-        repository.save(swimlane);
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
-    }
 }

@@ -5,23 +5,22 @@
  */
 package org.co2.kanban.rest.project;
 
-import org.springframework.hateoas.ResourceSupport;
+import org.co2.kanban.repository.project.Project;
+import org.co2.kanban.rest.IdentifiableResourceSupport;
 
 /**
  *
  * @author ben
  */
-public class ProjectResource extends ResourceSupport {
+public class ProjectResource extends IdentifiableResourceSupport<Project> {
+
+    public ProjectResource(Project project) {
+        super(project);
+    }
     
-    private String name;
 
     public String getName() {
-        return name;
+        return this.getBean().getName();
     }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-    
     
 }

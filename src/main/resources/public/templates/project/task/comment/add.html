@@ -1,0 +1,16 @@
+<div class="panel panel-info">
+    <div class="panel-heading">
+        <span class="glyphicon glyphicon-plus-sign"></span> Nouveau commentaire
+    </div>
+    <div class="panel-body">
+        <alert type="danger" ng-if="addCommentCtrl.form.error">{{addCommentCtrl.form.error}}</alert>
+        <form id="task" role="form" ng-submit="addCommentCtrl.submit()">
+            <div class="form-group">
+                <textarea required ng-model="addCommentCtrl.comment.comment" class="form-control" name="comment" placeholder="Commentaire"/>
+            </div>
+            <div>
+                <button type="submit"  class="btn btn-info center-block">valider</button>
+            </div>
+        </form>
+    </div>
+</div>

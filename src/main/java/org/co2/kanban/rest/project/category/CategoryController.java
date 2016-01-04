@@ -10,8 +10,12 @@ import org.co2.kanban.repository.category.CategoryRepository;
 import java.util.List;
 import org.co2.kanban.repository.project.Project;
 import org.co2.kanban.repository.project.ProjectRepository;
+import org.co2.kanban.repository.task.Task;
+import org.co2.kanban.rest.error.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.Resources;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -27,15 +31,18 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping(value = "/api/project/{projectId}/category")
-@PreAuthorize("@projectAccessExpression.hasManagerAccess(#projectId, principal.username)")
+@PreAuthorize("@projectAccessExpression.hasMemberAccess(#projectId, principal.username)")
 public class CategoryController {
 
+    
+    private static final String MESSAGE_KEY_CONFLICT_NAME = "project.category.error.conflict.name";
+    
     @Autowired
     private CategoryRepository repository;
 
     @Autowired
     private ProjectRepository projectRepository;
-    
+
     @Autowired
     private CategoryAssembler assembler;
 
@@ -45,31 +52,47 @@ public class CategoryController {
         return assembler.toResources(repository.findByProject(project));
     }
 
-     @RequestMapping(value = "{id}", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CategoryResource> get(@PathVariable("id") Long id) {
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CategoryResource> get(@PathVariable("projectId") Long projectId, @PathVariable("id") Long id) {
         Category category = repository.findOne(id);
         return new ResponseEntity(assembler.toResource(category), HttpStatus.OK);
     }
-    
+
+    @PreAuthorize("@projectAccessExpression.hasManagerAccess(#projectId, principal.username)")
     @RequestMapping(method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Category> create(@PathVariable("projectId") Long projectId, @RequestBody Category category) {
+    public ResponseEntity create(@PathVariable("projectId") Long projectId, @RequestBody Category category) {
         Project project = projectRepository.findOne(projectId);
+        if (repository.checkExistProjectAndName(project, category.getName())) {
+            throw new BusinessException(HttpStatus.CONFLICT, MESSAGE_KEY_CONFLICT_NAME);
+        }
         category.setProject(project);
         Category result = repository.save(category);
-        return new ResponseEntity<>(result, HttpStatus.CREATED);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(linkTo(methodOn(this.getClass()).get(projectId, result.getId())).toUri());
+        return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("@projectAccessExpression.hasManagerAccess(#projectId, principal.username)")
     @RequestMapping(value = "{categoryId}", method = RequestMethod.DELETE, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity delete(@PathVariable("categoryId") Long categoryId) {
-        repository.delete(categoryId);
+    public ResponseEntity delete(@PathVariable("projectId") Long projectId, @PathVariable("categoryId") Long categoryId) {
+        Category category = repository.findOne(categoryId);
+        for (Task task : category.getTasks()) {
+            task.setCategory(null);
+        }
+        repository.delete(category);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @PreAuthorize("@projectAccessExpression.hasManagerAccess(#projectId, principal.username)")
     @RequestMapping(value = "{categoryId}", method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity update(@PathVariable("projectId") Long projectId, @RequestBody Category category) {
+    public ResponseEntity<CategoryResource> update(@PathVariable("projectId") Long projectId, @RequestBody Category category) {
         Project project = projectRepository.findOne(projectId);
+        Category oldCategory = repository.findOne(category.getId());
+        if (!oldCategory.getName().equals(category.getName()) && repository.checkExistProjectAndName(project, category.getName())) {
+            throw new BusinessException(HttpStatus.CONFLICT, MESSAGE_KEY_CONFLICT_NAME);
+        }
         category.setProject(project);
         Category result = repository.save(category);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>(assembler.toResource(result), HttpStatus.OK);
     }
 }

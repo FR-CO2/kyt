@@ -10,20 +10,20 @@ import org.co2.kanban.repository.member.Member;
 import org.co2.kanban.repository.task.Task;
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.PostLoad;
-import javax.persistence.Transient;
+import org.co2.kanban.repository.Identifiable;
 
 /**
  *
  * @author ben
  */
 @Entity
-public class Swimlane implements Serializable {
+public class Swimlane implements Serializable, Identifiable {
 
     private static final long serialVersionUID = -7399300524553719167L;
 
@@ -35,24 +35,14 @@ public class Swimlane implements Serializable {
 
     private Long position;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.DETACH)
     private Member responsable;
 
     @OneToMany(mappedBy = "swimlane")
     private List<Task> tasks;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.DETACH)
     private Project project;
-
-    @Transient
-    private int taskCount = 0;
-
-    @PostLoad
-    public void onLoad() {
-        if (this.tasks != null) {
-            this.taskCount = this.tasks.size();
-        }
-    }
 
     public Long getId() {
         return id;
@@ -100,14 +90,6 @@ public class Swimlane implements Serializable {
 
     public void setPosition(Long position) {
         this.position = position;
-    }
-
-    public int getTaskCount() {
-        return taskCount;
-    }
-
-    public void setTaskCount(int taskCount) {
-        this.taskCount = taskCount;
     }
 
 }
