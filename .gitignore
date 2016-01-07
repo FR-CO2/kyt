@@ -1,5 +1,3 @@
 /target/
 $.css.map
-/export-tasks.csv
-/export-projects.csv
-/export-users.csv
+/node_modules
