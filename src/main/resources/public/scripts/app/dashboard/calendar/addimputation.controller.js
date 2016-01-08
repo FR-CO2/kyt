@@ -26,7 +26,7 @@
                 return currentuser.resource("task").query({search: term}).$promise;
             };
             vm.submit = function () {
-                currentuser.resource("consommation").save({date: day.format("DD/MM/YYYY")}, vm.imputations, function () {
+                currentuser.resource("consommation").save({date: day.format("X")}, vm.imputations, function () {
                     $uibModalInstance.close();
                 });
             };

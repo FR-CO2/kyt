@@ -20,6 +20,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.util.MultiValueMap;
@@ -94,6 +95,10 @@ public class ApplicationUserController {
     @RequestMapping(value = "/{id}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity update(@PathVariable("id") Long userId, @RequestBody ApplicationUser user) {
         ApplicationUser updatedUser = repository.findOne(userId);
+        if (user.getPassword() !=null) {
+            String passwordDigest = bcryptEncoder.encode(user.getPassword());
+            updatedUser.setPassword(passwordDigest);
+        }
         updatedUser.setApplicationRole(user.getApplicationRole());
         updatedUser.setEmail(user.getEmail());
         repository.save(updatedUser);

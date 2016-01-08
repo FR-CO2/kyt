@@ -1,6 +1,6 @@
 (function () {
     define([], function () {
-        var taskController = function ($state, project, currenttask, taskAssemblerService, dateFilter) {
+        var taskController = function ($state, project, currenttask, taskAssemblerService) {
             var vm = this;
             currenttask.$promise.then(function () {
                 vm.task = taskAssemblerService(currenttask);
@@ -19,11 +19,11 @@
             };
             vm.submit = function () {
                 vm.task.resource("self").save(vm.task, function () {
-                    history.back();
+                    $state.transitionTo("app.project.kanban", {projectId: project.id });
                 });
             };
         };
-        taskController.$inject = ["$state", "project", "task", "taskAssemblerService", "dateFilter"];
+        taskController.$inject = ["$state", "project", "task", "taskAssemblerService"];
         return taskController;
     });
 })();

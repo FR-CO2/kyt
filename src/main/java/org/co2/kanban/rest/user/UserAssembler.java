@@ -5,6 +5,8 @@
  */
 package org.co2.kanban.rest.user;
 
+import java.util.ArrayList;
+import java.util.List;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
@@ -13,6 +15,7 @@ import org.co2.kanban.rest.project.ProjectController;
 import org.co2.kanban.rest.user.consommation.UserConsommationController;
 import org.co2.kanban.rest.user.memberof.MemberOfController;
 import org.co2.kanban.rest.user.task.UserTaskController;
+import org.springframework.hateoas.Link;
 import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
 import org.springframework.stereotype.Component;
 
@@ -31,11 +34,16 @@ public class UserAssembler extends ResourceAssemblerSupport<ApplicationUser, Use
     public UserResource toResource(ApplicationUser user) {
         UserResource resource = new UserResource(user);
         resource.add(linkTo(methodOn(ApplicationUserController.class).get(user.getId())).withSelfRel());
-        resource.add(linkTo(MemberOfController.class, user.getId()).withRel("member"));
-        resource.add(linkTo(ProjectController.class).withRel("project"));
-        resource.add(linkTo(UserTaskController.class, user.getId()).withRel("task"));
-        resource.add(linkTo(UserConsommationController.class, user.getId()).withRel("consommation"));
+        resource.add(getLinks(user));
         return resource;
     }
 
+    protected Iterable<Link> getLinks(ApplicationUser user) {
+        List<Link> links = new ArrayList<>();
+        links.add(linkTo(MemberOfController.class, user.getId()).withRel("member"));
+        links.add(linkTo(ProjectController.class).withRel("project"));
+        links.add(linkTo(UserTaskController.class, user.getId()).withRel("task"));
+        links.add(linkTo(UserConsommationController.class, user.getId()).withRel("consommation"));
+        return links;
+    }
 }

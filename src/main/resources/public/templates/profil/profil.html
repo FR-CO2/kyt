@@ -5,34 +5,37 @@
         </div>
     </div>
     <div class="panel-body">
-        <form>
+        <alert type="danger" ng-if="profilCtrl.error">{{profilCtrl.error.message}}</alert>
+        <form ng-submit="profilCtrl.save()">
             <div class="form-group">
                 <label for="role">Rôle</label>
                 <input ng-disabled="true" type="text" class="form-control" id="role" ng-model="profilCtrl.profil.applicationRole"/>
             </div>
             <div class="form-group">
                 <label for="password">Nouveau mot de passe</label>
-                <input type="password" class="form-control" id="password" />
+                <input type="password" class="form-control" id="password"  ng-model="profilCtrl.profil.password"/>
             </div>
             <div class="form-group">
-                <label for="confirmpassword">Confirmer nouveau mot de passe</label>
-                <input type="password" class="form-control" id="confirmpassword" />
+                <same-password password="profilCtrl.profil.password" error="profilCtrl.error" placeholder="Confirmer votre mot de passe"/>  
             </div>
             <div class="form-group">
                 <label for="email">Modifier mon adresse email</label>
                 <input type="email" class="form-control" id="email" ng-model="profilCtrl.profil.email"/>
             </div>
             <div>
-                <button type="submit"  class="btn btn-info center-block">modifier</button>
+                <button type="submit" class="btn btn-info center-block">modifier</button>
             </div>
         </form>
         <div ng-if="profilCtrl.profil.members">
             <h3>Mes projets</h3>
-            <ul>
-                <li ng-repeat="member in profilCtrl.profil.members">
-                    {{member.project.name}} : {{member.projectRole}} 
-                </li>
-            </ul>
+            <table class="table">
+                <tbody>
+                    <tr ng-repeat="member in profilCtrl.profil.members">
+                        <td>{{member.projectName}}</td>
+                        <td>{{member.projectRole}}</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 

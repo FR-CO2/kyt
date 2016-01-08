@@ -53,9 +53,9 @@ public class UserConsommationController {
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Iterable<UserTaskImputationResource> list(@PathVariable("userId") Long userId,
-            @RequestParam("date") @DateTimeFormat(pattern = "dd/MM/yyyy") Date date) {
+            @RequestParam("date") Long date) {
         ApplicationUser appUser = repository.findOne(userId);
-        Timestamp time = new Timestamp(date.getTime());
+        Timestamp time = new Timestamp(date);
         List<UserTaskImputationResource> results = new ArrayList<>();
         Iterable<Allocation> allocations = allocationRepository.findByMemberUserAndAllocationDate(appUser, time);
         Iterator<Allocation> allocationsIterator = allocations.iterator();
@@ -87,10 +87,10 @@ public class UserConsommationController {
 
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity create(@PathVariable("userId") Long userId,
-            @RequestParam("date") @DateTimeFormat(pattern = "dd/MM/yyyy") Date date,
+            @RequestParam("date") Long date,
             @RequestBody UserTaskImputationResource[] imputations) {
         ApplicationUser appUser = repository.findOne(userId);
-        Timestamp time = new Timestamp(date.getTime());
+        Timestamp time = new Timestamp(date);
         for (UserTaskImputationResource imputation : imputations) {
             Task task = taskRepositoy.findOne(imputation.getTaskId());
             Project project = task.getProject();

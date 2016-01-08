@@ -1,13 +1,13 @@
 (function () {
     define(["angular", "app.config", "app.run", "login/login.module", "app.controller",
-        "dashboard/dashboard.module", "project/project.module",
+        "dashboard/dashboard.module", "project/project.module", "directive/samePassword.directive",
         "admin/admin.module", "profil/profil.controller", "moment",
         "uiRouter", "ngStorage", "ngAuth", "xeditable", "ngResource", 
         "ngSortable", "hateoas", "uiBootstrap", "uiBootstrapTpl", 
         "ngSanitize", "growl"],
             function (angular, appConfig, appRun, loginModule, appController,
-                    dashboardModule, projectModule, adminModule,
-                    profilController, moment) {
+                    dashboardModule, projectModule, samePasswordDirective, 
+                    adminModule, profilController, moment) {
                 var app = angular.module("kanban",
                         ["ui.router", "ngStorage", "ngSanitize", "ui.sortable",
                             "http-auth-interceptor", "xeditable", "ngResource",
@@ -18,7 +18,8 @@
                         .run(appRun)
                         .controller("appController", appController)
                         .controller("profilController", profilController)
-                        .value("moment", moment);
+                        .value("moment", moment)
+                        .directive("samePassword", samePasswordDirective);
                 angular.element(document).ready(function () {
                     angular.bootstrap(document, [app.name]);
                 });

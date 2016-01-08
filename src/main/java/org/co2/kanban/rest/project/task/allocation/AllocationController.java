@@ -7,7 +7,6 @@ package org.co2.kanban.rest.project.task.allocation;
 
 import org.co2.kanban.repository.allocation.AllocationRepository;
 import org.co2.kanban.repository.allocation.Allocation;
-import org.co2.kanban.repository.member.Member;
 import org.co2.kanban.repository.task.Task;
 import org.co2.kanban.repository.task.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
