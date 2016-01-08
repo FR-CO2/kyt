@@ -35,7 +35,7 @@
                     viewRender: function (view, element) {
                         var start = moment(view.start);
                         var end = moment(view.end);
-                        vm.loadCalendarEvent(start.format("DD/MM/YYYY"), end.format("DD/MM/YYYY"));
+                        vm.loadCalendarEvent(start.format("X"), end.format("X"));
                     },
                     dayClick: dayOnClick
                 };

@@ -12,8 +12,8 @@
                     return project.resource("member").query(function (data) {
                         angular.forEach(data, function (member) {
                             member.imputations = member.resource("imputation")
-                                    .get({start: start.toLocaleDateString(),
-                                        end: end.toLocaleDateString()});
+                                    .get({start: start.format("X"),
+                                        end: end.format("X")});
                         });
                     });
                 },
@@ -25,23 +25,18 @@
                     var weeks = [];
                     var i = 0;
                     angular.forEach(days, function (day) {
-                        if (!weeks[i]) {
-                            weeks[i] = [];
+                        if (!weeks[day.weekYear()]) {
+                            weeks[day.weekYear()] = [];
                         }
-                        weeks[i].push(day);
-                        if (day.getDay() === 0 && weeks[i].length > 0) {
-                            i++;
-                        }
+                        weeks[day.weekYear()].push(day);
                     });
-                    var index = 0;
                     angular.forEach(weeks, function (week) {
                         var weekObj = {
-                            id: index,
-                            label: week[0].toLocaleDateString() + " au " + week[week.length - 1].toLocaleDateString(),
+                            id: week[0].weekYear(),
+                            label: week[0].format("DD/MM/YYYY") + " au " + week[week.length - 1].format("DD/MM/YYYY"),
                             days: week
                         };
                         grouped.weeks.push(weekObj);
-                        index++;
                     });
                     angular.forEach(entries, function (entry) {
                         entry.imputations.$promise.then(function () {
@@ -49,7 +44,7 @@
                             angular.forEach(grouped.weeks, function (week) {
                                 var timeSpent = 0;
                                 angular.forEach(week.days, function (day) {
-                                    timeSpent += entry.imputations.imputations[day.getTime()];
+                                    timeSpent += entry.imputations.imputations[day.format("X")];
                                 });
                                 groupedImputations[week.id] = timeSpent;
                             });
@@ -60,7 +55,7 @@
                                 angular.forEach(grouped.weeks, function (week) {
                                     var timeSpent = 0;
                                     angular.forEach(week.days, function (day) {
-                                        timeSpent += detail.imputations[day.getTime()];
+                                        timeSpent += detail.imputations[day.format("X")];
                                     });
                                     groupedDetailsImputation[week.id] = timeSpent;
                                 });

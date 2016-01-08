@@ -20,8 +20,16 @@
                         <goals>
                             <goal>run</goal>
                         </goals>
+                        <configuration>
+                            <addResources>true</addResources>
+                        </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-devtools</artifactId>
+                <version>1.3.1.RELEASE</version>
             </plugin>
         </plugins>
     </build>

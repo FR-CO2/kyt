@@ -1,45 +1,33 @@
 (function () {
     define([], function () {
-        function getStartDate() {
-            var start = new Date();
-            start.setHours(0);
-            start.setMinutes(0);
-            start.setMilliseconds(0);
-            start.setSeconds(0);
-            return start;
-        }
 
-        function getWeekDays(start) {
+        function getWeekDays(moment, start) {
             var days = [];
-            var day = new Date(start.getTime());
+            var day = moment(start);
             //On n'affiche que les jours ouverts
             for (var i = 0; i < 7; i++) {
-                var dayNumber = day.getDate();
                 days.push(day);
-                day = new Date(day.getTime());
-                day.setDate(dayNumber + 1);
+                day = moment(day).add(1, 'days');
             }
             return days;
         }
 
-        function getMonthDays(start, month) {
+        function getMonthDays(moment, start, month) {
             var days = [];
-            var day = new Date(start.getTime());
-            while (day.getMonth() === month) {
-                var dayNumber = day.getDate();
+            var day = moment(start);
+            while (day.month() === month) {
                 //On n'affiche que les jours ouverts
                 days.push(day);
-                day = new Date(day.getTime());
-                day.setDate(dayNumber + 1);
+                day = moment(day).add(1, 'days');
             }
             return days;
         }
 
-        var consomationController = function (project, consomationService) {
+        var consomationController = function (moment, project, consomationService) {
             var vm = this;
             vm.precision = "week";
-            vm.start = getStartDate();
-            var end = new Date(vm.start.getTime());
+            vm.start = moment().startOf('isoWeek');
+            var end = moment(vm.start);
             vm.showDetail = function (entry) {
                 entry.showDetails = true;
             };
@@ -49,16 +37,14 @@
             vm.precisionChange = function () {
                 vm.days = [];
                 if (vm.precision === "week") {
-                    vm.start.setDate(vm.start.getDate() - vm.start.getDay() + 1);
-                    vm.days = getWeekDays(vm.start);
-                    end = new Date(vm.start.getTime());
-                    end.setDate(vm.start.getDate() + 7);
+                    vm.start = vm.start.startOf('isoWeek');
+                    vm.days = getWeekDays(moment, vm.start);
+                    end = moment(vm.start).add(7, 'days');
                     vm.entries = consomationService.loadConsommations(project, vm.start, end);
                 } else {
-                    vm.start.setDate(1);
-                    vm.days = getMonthDays(vm.start, vm.start.getMonth());
-                    end = new Date(vm.start.getTime());
-                    end.setMonth(vm.start.getMonth() + 1);
+                    vm.start = vm.start.startOf('month');
+                    vm.days = getMonthDays(moment, vm.start, vm.start.month());
+                    end = moment(vm.start).add(1, 'months').subtract(1, "days");
                     vm.entries = consomationService.loadConsommations(project, vm.start, end);
                     //TODO Regroupe par semaine vm.days et vm.entries
                     vm.entries.$promise.then(function() {
@@ -70,23 +56,23 @@
             };
             vm.previous = function () {
                 if (vm.precision === "week") {
-                    vm.start.setDate(vm.start.getDate() - 7);
+                    vm.start= vm.start.subtract(7, "days");
                 } else {
-                    vm.start.setMonth(vm.start.getMonth() - 1);
+                    vm.start= vm.start.subtract(1, "months");
                 }
                 vm.precisionChange();
             };
             vm.next = function () {
                 if (vm.precision === "week") {
-                    vm.start.setDate(vm.start.getDate() + 7);
+                    vm.start= vm.start.add(7, "days");
                 } else {
-                    vm.start.setMonth(vm.start.getMonth() + 1);
+                    vm.start= vm.start.add(1, "months");
                 }
                 vm.precisionChange();
             };
             vm.precisionChange();
         };
-        consomationController.$inject = ["project", "consomationService"];
+        consomationController.$inject = ["moment", "project", "consomationService"];
         return consomationController;
     });
 })();

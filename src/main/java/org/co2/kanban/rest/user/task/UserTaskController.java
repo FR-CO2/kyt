@@ -59,11 +59,11 @@ public class UserTaskController {
 
     @RequestMapping(params = {"start", "end"}, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Iterable<TaskResource> tasks(@PathVariable("userId") Long userId,
-            @RequestParam("start") @DateTimeFormat(pattern = "dd/MM/yyyy") Date start,
-            @RequestParam("end") @DateTimeFormat(pattern = "dd/MM/yyyy") Date end) {
+            @RequestParam("start") Long start,
+            @RequestParam("end") Long end) {
         ApplicationUser appUser = repository.findOne(userId);
-        Timestamp startTime = new Timestamp(start.getTime());
-        Timestamp endTime = new Timestamp(end.getTime());
+        Timestamp startTime = new Timestamp(start);
+        Timestamp endTime = new Timestamp(end);
         Iterable<Task> tasks = taskRepositoy.findByAssigneeUserAndPlannedStartBeforeAndPlannedEndingAfterAndStateCloseStateFalse(appUser, endTime, startTime);
         return taskAssembler.toResources(tasks);
     }

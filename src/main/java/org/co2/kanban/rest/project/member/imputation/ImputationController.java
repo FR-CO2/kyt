@@ -41,11 +41,11 @@ public class ImputationController {
     @RequestMapping(method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public ImputationResource list(@PathVariable("projectId") Long projectId, 
             @PathVariable("memberId") Long memberId,
-            @RequestParam("start") @DateTimeFormat(pattern = "dd/MM/yyyy") Date start,
-            @RequestParam("end") @DateTimeFormat(pattern = "dd/MM/yyyy") Date end) {
+            @RequestParam("start") Long start,
+            @RequestParam("end") Long end) {
         Member member = repository.findOne(memberId);
-        Timestamp startTime = new Timestamp(start.getTime());
-        Timestamp endTime = new Timestamp(end.getTime());
+        Timestamp startTime = new Timestamp(start);
+        Timestamp endTime = new Timestamp(end);
         Iterable<Allocation> allocationsMember = allocationRepository.findByMemberAndAllocationDateBetween(member, startTime, endTime);
         return assembler.toResources(startTime, endTime, allocationsMember);
     }
