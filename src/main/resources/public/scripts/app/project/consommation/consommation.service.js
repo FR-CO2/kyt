@@ -11,9 +11,10 @@
                 loadConsommations: function (project, start, end) {
                     return project.resource("member").query(function (data) {
                         angular.forEach(data, function (member) {
+                            // need to multipy by 1000 for get UNIX Timestamp
                             member.imputations = member.resource("imputation")
-                                    .get({start: start.format("X"),
-                                        end: end.format("X")});
+                                    .get({start: start.format("X")*1000,
+                                        end: end.format("X")*1000});
                         });
                     });
                 },
