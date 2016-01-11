@@ -5,7 +5,6 @@
  */
 package org.co2.kanban.repository.comment;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -14,6 +13,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import org.co2.kanban.repository.Identifiable;
@@ -38,6 +38,7 @@ public class Comment implements Serializable, Identifiable{
     @ManyToOne
     private Task task;
     
+    @Lob
     private String comment;
 
     @ManyToOne 
