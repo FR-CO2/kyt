@@ -1,6 +1,6 @@
 (function () {
     define([], function () {
-        var appController = function (currentuser, $sessionStorage, $state) {
+        var appController = function (currentuser, scope, $sessionStorage, $state) {
             var vm = this;
             vm.currentuser = currentuser;
             currentuser.$promise.then(function () {
@@ -10,8 +10,11 @@
                 delete $sessionStorage.oauth;
                 $state.transitionTo("login");
             };
+            scope.$on("kanban:projects-updates", function() {
+                currentuser.projects = currentuser.resource("project").query();
+            });
         };
-        appController.$inject = ["currentuser", "$sessionStorage", "$state"];
+        appController.$inject = ["currentuser", "$scope", "$sessionStorage", "$state"];
         return appController;
     });
 })();
