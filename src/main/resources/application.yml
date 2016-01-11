@@ -10,6 +10,7 @@ spring:
             client-id: kanban
             client-secret: nosecret
     datasource:
+        platform: h2
         driverClassName: org.h2.Driver
         url: jdbc:h2:~/Sites/dev/co2/kyt
         username: sa
@@ -26,6 +27,7 @@ logging:
 spring:
     profiles: heroku
     datasource:
+        platform: postgresql
         driverClassName: org.postgresql.Driver
         url: ${JDBC_DATABASE_URL}
         username: sa
