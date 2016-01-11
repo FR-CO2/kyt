@@ -21,3 +21,17 @@ logging:
     level:
         org.springframework.security: INFO
         org.hibernate: INFO
+---
+
+spring:
+    profiles: heroku
+    datasource:
+        driverClassName: org.postgresql.Driver
+        url: ${JDBC_DATABASE_URL}
+        username: sa
+        password: sa
+        maxActive: 10
+        maxIdle: 5
+        minIdle: 2
+        initialSize: 5
+        removeAbandoned: true
