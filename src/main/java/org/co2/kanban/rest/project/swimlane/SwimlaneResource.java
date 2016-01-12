@@ -38,10 +38,6 @@ public class SwimlaneResource extends IdentifiableResourceSupport<Swimlane> {
         this.taskCount = taskCount;
     }
 
-    public String getDescription() {
-        return this.getBean().getDescription();
-    }
-    
     public Timestamp getEndPlanned() {
         return this.getBean().getEndPlanned();
     }

@@ -6,7 +6,6 @@
             project.$promise.then(function () {
                 vm.project.categories = project.resource("category").query();
                 vm.project.states = project.resource("state").query();
-                vm.project.swimlanes = project.resource("swimlane").query();
                 vm.project.members = {
                     page : {
                         number : 0,

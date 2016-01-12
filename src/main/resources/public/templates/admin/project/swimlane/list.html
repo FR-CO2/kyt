@@ -31,7 +31,9 @@
                                 </a>
                             </div>
                             <div class="col-md-3">
-                                {{swimlane.endPlanned| date:"dd/MM/yyyy"}} 
+                                <a href="#" editable-date="swimlane.endPlanned" onaftersave="swimlaneListCtrl.saveSwimlane(swimlane)" title="Modifier le couloir">
+                                    {{swimlane.endPlanned | date:"dd/MM/yyyy"}} 
+                                </a>
                             </div>
                             <div class="col-md-3">
                                 <span class="badge  pull-right">

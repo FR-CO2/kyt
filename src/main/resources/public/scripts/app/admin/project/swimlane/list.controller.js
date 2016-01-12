@@ -1,6 +1,6 @@
 (function () {
-    define([], function () {
-        var listController = function ($uibModal, scope) {
+    define(["angular"], function (angular) {
+        var listController = function ($uibModal, scope, moment) {
             var vm = this;
             vm.swimlaneListSortOptions = {
                 orderChanged: function (event) {
@@ -40,9 +40,15 @@
             vm.reload = function () {
                 var project = scope.projectEditCtrl.project;
                 project.swimlanes = project.resource("swimlane").query();
+                project.swimlanes.$promise.then(function(data) {
+                   angular.forEach(data, function (swimlane) { 
+                       swimlane.endPlanned = moment(swimlane.endPlanned).toDate();
+                   });
+                });
             };
+            vm.reload();
         };
-        listController.$inject = ["$uibModal", "$scope"];
+        listController.$inject = ["$uibModal", "$scope", "moment"];
         return listController;
     });
 })();

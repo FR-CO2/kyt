@@ -11,7 +11,6 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -37,9 +36,6 @@ public class Swimlane implements Serializable, Identifiable {
     private String name;
 
     private Long position;
-
-    @Column(length = 10000)
-    private String description;
 
     private Timestamp endPlanned;
 
@@ -87,14 +83,6 @@ public class Swimlane implements Serializable, Identifiable {
 
     public void setPosition(Long position) {
         this.position = position;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public Timestamp getEndPlanned() {
