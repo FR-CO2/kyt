@@ -33,6 +33,9 @@ endpoints :
             
 spring:
     profiles: heroku
+    jpa: 
+        hibernate:
+            ddl-auto: create-drop 
     datasource:
         platform: postgresql
         driverClassName: org.postgresql.Driver
