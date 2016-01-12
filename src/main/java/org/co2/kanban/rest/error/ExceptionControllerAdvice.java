@@ -6,6 +6,7 @@
 package org.co2.kanban.rest.error;
 
 import java.util.Locale;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -20,27 +21,36 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
  * @author ben
  */
 @ControllerAdvice
-public class BusinessExceptionAdvice extends ResponseEntityExceptionHandler {
+public class ExceptionControllerAdvice extends ResponseEntityExceptionHandler {
+
+    private static final String DEFAULT_ERROR_MESSAGE_KEY = "error.unexpected";
     
     @Autowired
     private MessageSource messageSource;
-    
-    
-    
-    @ExceptionHandler({ BusinessException.class })
+
+    @ExceptionHandler({BusinessException.class})
     protected ResponseEntity<ErrorMessage> handleBuisinessException(BusinessException e) {
         Locale locale = LocaleContextHolder.getLocale();
         String bundleMessage = messageSource.getMessage(e.getMessageKey(), null, locale);
         ErrorMessage error = new ErrorMessage(bundleMessage, e.getStatus());
         return new ResponseEntity<>(error, error.getStatus());
     }
-    
+
+    @ExceptionHandler({Exception.class})
+    protected ResponseEntity<ErrorMessage> handleException(HttpServletRequest req, Exception e) {
+        logger.error("Request: " + req.getRequestURL() + " raised " + e);
+        Locale locale = LocaleContextHolder.getLocale();
+        String bundleMessage = messageSource.getMessage(DEFAULT_ERROR_MESSAGE_KEY, null, locale);
+        ErrorMessage error = new ErrorMessage(bundleMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(error, error.getStatus());
+    }
+
     public static final class ErrorMessage {
-        
+
         private final String message;
-        
+
         private final HttpStatus status;
-        
+
         public ErrorMessage(String message, HttpStatus status) {
             this.message = message;
             this.status = status;
@@ -53,6 +63,6 @@ public class BusinessExceptionAdvice extends ResponseEntityExceptionHandler {
         public HttpStatus getStatus() {
             return status;
         }
-        
+
     }
 }
