@@ -5,6 +5,9 @@ endpoints :
         enabled : true
         
 spring:
+    mvc:
+        favicon:
+            enabled: false
     oauth2:
         client:
             client-id: kanban
@@ -24,6 +27,10 @@ logging:
         org.hibernate: INFO
 ---
 
+endpoints :
+    shutdown :
+        enabled : false
+            
 spring:
     profiles: heroku
     datasource:
