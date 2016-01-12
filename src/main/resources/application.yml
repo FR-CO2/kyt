@@ -33,7 +33,8 @@ endpoints :
             
 spring:
     profiles: heroku
-    jpa: 
+    jpa:
+        open-in-view: false
         hibernate:
             ddl-auto: create-drop
     datasource:
