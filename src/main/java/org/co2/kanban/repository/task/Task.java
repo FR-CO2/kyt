@@ -15,6 +15,7 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -36,11 +37,11 @@ public class Task implements Serializable, Identifiable {
     @Id
     @GeneratedValue
     private Long id;
-    
+
     private String name;
 
     private Timestamp created;
-    
+
     private Timestamp lastModified;
 
     @ManyToOne(cascade = CascadeType.DETACH)
@@ -64,7 +65,7 @@ public class Task implements Serializable, Identifiable {
 
     private Float estimatedLoad;
 
-    @Lob
+    @Column(columnDefinition = "LONGTEXT")
     private String description;
 
     @OneToMany(mappedBy = "task")
@@ -72,7 +73,7 @@ public class Task implements Serializable, Identifiable {
 
     @OneToMany(mappedBy = "task")
     private List<Comment> comments;
-    
+
     @ManyToOne
     private Task linkedTask;
 
@@ -88,11 +89,11 @@ public class Task implements Serializable, Identifiable {
     }
 
     public void setName(String name) {
-        this.name= name; 
+        this.name = name;
     }
 
     public String getName() {
-        return this.name; 
+        return this.name;
     }
 
     public State getState() {
@@ -214,5 +215,5 @@ public class Task implements Serializable, Identifiable {
     public void setChildrenTask(List<Task> childrenTask) {
         this.childrenTask = childrenTask;
     }
-    
+
 }

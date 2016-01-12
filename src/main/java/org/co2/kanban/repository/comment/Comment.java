@@ -10,6 +10,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -38,7 +39,7 @@ public class Comment implements Serializable, Identifiable{
     @ManyToOne
     private Task task;
     
-    @Lob
+    @Column(columnDefinition = "LONGTEXT")
     private String comment;
 
     @ManyToOne 
