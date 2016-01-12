@@ -5,6 +5,7 @@
  */
 package org.co2.kanban.rest.project.swimlane;
 
+import java.sql.Timestamp;
 import org.co2.kanban.repository.swimlane.Swimlane;
 import org.co2.kanban.rest.IdentifiableResourceSupport;
 
@@ -37,5 +38,12 @@ public class SwimlaneResource extends IdentifiableResourceSupport<Swimlane> {
         this.taskCount = taskCount;
     }
 
+    public String getDescription() {
+        return this.getBean().getDescription();
+    }
+    
+    public Timestamp getEndPlanned() {
+        return this.getBean().getEndPlanned();
+    }
     
 }

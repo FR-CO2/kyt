@@ -9,6 +9,7 @@ import org.co2.kanban.repository.project.Project;
 import org.co2.kanban.repository.member.Member;
 import org.co2.kanban.repository.task.Task;
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -35,9 +36,10 @@ public class Swimlane implements Serializable, Identifiable {
 
     private Long position;
 
-    @ManyToOne(cascade = CascadeType.DETACH)
-    private Member responsable;
-
+    private String description;
+    
+    private Timestamp endPlanned;
+    
     @OneToMany(mappedBy = "swimlane")
     private List<Task> tasks;
 
@@ -68,14 +70,6 @@ public class Swimlane implements Serializable, Identifiable {
         this.project = project;
     }
 
-    public Member getResponsable() {
-        return responsable;
-    }
-
-    public void setResponsable(Member responsable) {
-        this.responsable = responsable;
-    }
-
     public List<Task> getTasks() {
         return tasks;
     }
@@ -90,6 +84,22 @@ public class Swimlane implements Serializable, Identifiable {
 
     public void setPosition(Long position) {
         this.position = position;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Timestamp getEndPlanned() {
+        return endPlanned;
+    }
+
+    public void setEndPlanned(Timestamp endPlanned) {
+        this.endPlanned = endPlanned;
     }
 
 }

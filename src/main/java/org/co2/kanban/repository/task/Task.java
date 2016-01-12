@@ -58,9 +58,6 @@ public class Task implements Serializable, Identifiable {
     @ManyToOne(cascade = CascadeType.DETACH)
     private Member assignee;
 
-    @ManyToOne(cascade = CascadeType.DETACH)
-    private Member backup;
-
     private Timestamp plannedStart;
 
     private Timestamp plannedEnding;
@@ -104,14 +101,6 @@ public class Task implements Serializable, Identifiable {
 
     public void setState(State state) {
         this.state = state;
-    }
-
-    public Member getBackup() {
-        return backup;
-    }
-
-    public void setBackup(Member backup) {
-        this.backup = backup;
     }
 
     public Timestamp getPlannedStart() {

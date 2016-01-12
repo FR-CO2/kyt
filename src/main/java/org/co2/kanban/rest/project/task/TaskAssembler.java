@@ -68,9 +68,6 @@ public class TaskAssembler extends ResourceAssemblerSupport<Task, TaskResource> 
         if (task.getAssignee() != null) {
             resource.add(linkTo(methodOn(MemberController.class).get(task.getProject().getId(),task.getAssignee().getId())).withRel("assignee"));
         }
-        if (task.getBackup() != null) {
-            resource.add(linkTo(methodOn(MemberController.class).get(task.getProject().getId(), task.getBackup().getId())).withRel("backup"));
-        }
         if (task.getSwimlane() != null) {
             resource.add(linkTo(methodOn(SwimlaneController.class).get( task.getProject().getId(), task.getSwimlane().getId())).withRel("swimlane"));
         }
