@@ -6,7 +6,7 @@
         <alert type="danger" ng-if="addCommentCtrl.form.error">{{addCommentCtrl.form.error}}</alert>
         <form id="task" role="form" ng-submit="addCommentCtrl.submit()">
             <div class="form-group">
-                <textarea required ng-model="addCommentCtrl.comment.comment" class="form-control" name="comment" placeholder="Commentaire"/>
+                <textarea maxlength="8000" rows="12" required ng-model="addCommentCtrl.comment.comment" class="form-control" name="comment" placeholder="Commentaire"/>
             </div>
             <div>
                 <button type="submit"  class="btn btn-info center-block">valider</button>
