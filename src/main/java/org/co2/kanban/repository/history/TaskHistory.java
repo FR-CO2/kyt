@@ -10,14 +10,15 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
  *
  * @author ben
  */
 @Entity
+@Table(name = "KYT_TASK_HISTORY")
 public class TaskHistory implements Serializable{
     private static final long serialVersionUID = 4102190049318071547L;
 

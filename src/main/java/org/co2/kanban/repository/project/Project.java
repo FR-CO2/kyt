@@ -17,6 +17,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import org.co2.kanban.repository.Identifiable;
 import org.co2.kanban.repository.category.Category;
 
@@ -25,6 +26,7 @@ import org.co2.kanban.repository.category.Category;
  * @author ben
  */
 @Entity
+@Table(name = "KYT_PROJECT")
 public class Project implements Serializable, Identifiable {
 
     private static final long serialVersionUID = -5617478169888450195L;

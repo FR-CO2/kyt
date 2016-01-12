@@ -11,12 +11,13 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import org.co2.kanban.repository.Identifiable;
 
 /**
@@ -24,6 +25,7 @@ import org.co2.kanban.repository.Identifiable;
  * @author ben
  */
 @Entity
+@Table(name = "KYT_SWIMLANE")
 public class Swimlane implements Serializable, Identifiable {
 
     private static final long serialVersionUID = -7399300524553719167L;
@@ -36,7 +38,7 @@ public class Swimlane implements Serializable, Identifiable {
 
     private Long position;
 
-    @Column(columnDefinition = "LONGTEXT")
+    @Lob
     private String description;
 
     private Timestamp endPlanned;

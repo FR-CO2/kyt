@@ -14,6 +14,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import org.co2.kanban.repository.Identifiable;
 
 /**
@@ -21,6 +22,7 @@ import org.co2.kanban.repository.Identifiable;
  * @author ben
  */
 @Entity
+@Table(name = "KYT_USER")
 public class ApplicationUser implements Serializable, Identifiable {
 
     private static final long serialVersionUID = 1590255859243784563L;

@@ -19,8 +19,7 @@ spring:
         username: sa
         password: sa
     jpa: 
-        hibernate:
-            ddl-auto: update 
+        generate-ddl : true
 logging:
     level:
         org.springframework.security: INFO
@@ -34,8 +33,7 @@ endpoints :
 spring:
     profiles: heroku
     jpa: 
-        hibernate:
-            ddl-auto: create-drop 
+        generate-ddl : true
     datasource:
         platform: postgresql
         driverClassName: org.postgresql.Driver

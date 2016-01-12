@@ -15,12 +15,13 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import org.co2.kanban.repository.Identifiable;
 import org.co2.kanban.repository.comment.Comment;
 
@@ -29,6 +30,7 @@ import org.co2.kanban.repository.comment.Comment;
  * @author ben
  */
 @Entity
+@Table(name = "KYT_TASK")
 public class Task implements Serializable, Identifiable {
 
     private static final long serialVersionUID = -7133694782401886935L;
@@ -64,7 +66,7 @@ public class Task implements Serializable, Identifiable {
 
     private Float estimatedLoad;
 
-    @Column(columnDefinition = "LONGTEXT")
+    @Lob
     private String description;
 
     @OneToMany(mappedBy = "task")
