@@ -15,7 +15,6 @@ import org.co2.kanban.repository.swimlane.Swimlane;
 import org.co2.kanban.repository.swimlane.SwimlaneRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedResources;
@@ -25,6 +24,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -120,7 +120,7 @@ public class TaskListController {
 
     @RequestMapping(method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("@projectAccessExpression.hasContributorAccess(#projectId, principal.username)")
-    public ResponseEntity create(@PathVariable("projectId") Long projectId, @RequestBody Task task) {
+    public ResponseEntity create(@PathVariable("projectId") Long projectId, @Validated @RequestBody Task task) {
         Project project = projectRepository.findOne(projectId);
         task.setProject(project);
         State defaultState = stateRepository.findByProjectAndPosition(project, 0L);
