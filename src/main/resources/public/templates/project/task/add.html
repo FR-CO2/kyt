@@ -3,7 +3,9 @@
         <span class="glyphicon glyphicon-plus-sign"></span> Nouvelle tâche
     </div>
     <div class="panel-body">
-        <alert type="danger" ng-if="addTaskCtrl.form.error">{{addTaskCtrl.form.error}}</alert>
+        <alert type="danger" ng-if="addTaskCtrl.error">
+            <errors errors="addTaskCtrl.error"></errors>
+        </alert>
         <form id="task" role="form" ng-submit="addTaskCtrl.submit()">
             <div class="form-group">
                 <input type="text" required ng-model="addTaskCtrl.task.name" class="form-control" name="taskName" placeholder="Nom de la tâche"/>

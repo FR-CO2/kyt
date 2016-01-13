@@ -20,6 +20,8 @@
             vm.submit = function () {
                 vm.task.resource("self").save(vm.task, function () {
                     $state.transitionTo("app.project.kanban", {projectId: project.id });
+                }, function (error) {
+                    vm.error = error.data;
                 });
             };
         };

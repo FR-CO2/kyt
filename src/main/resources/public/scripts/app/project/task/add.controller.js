@@ -12,6 +12,8 @@
             vm.submit = function () {
                 project.resource("task").save(vm.task, function () {
                     $uibModalInstance.close();
+                }, function (error) {
+                    vm.error = error.data;
                 });
             };
         };

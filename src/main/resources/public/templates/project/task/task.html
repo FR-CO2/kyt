@@ -1,9 +1,11 @@
 <div class="row" id="task">
-    <alert type="danger" ng-if="taskCtrl.form.error">{{taskCtrl.form.error}}</alert>
     <h2>
         #{{taskCtrl.task.id}}
     </h2>
     <form id="edittask" role="form" ng-submit="taskCtrl.submit()">
+        <alert type="danger" ng-if="taskCtrl.error">
+            <errors errors="taskCtrl.error"></errors>
+        </alert>
         <fieldset>
             <div class="form-group col-md-3">
                 <label for="taskname">Nom de la tâche</label>

@@ -3,7 +3,9 @@
         <span class="glyphicon glyphicon-plus-sign"></span> Nouveau commentaire
     </div>
     <div class="panel-body">
-        <alert type="danger" ng-if="addCommentCtrl.form.error">{{addCommentCtrl.form.error}}</alert>
+        <alert type="danger" ng-if="addCommentCtrl.error">
+            <errors errors="addCommentCtrl.error"></errors>
+        </alert>
         <form id="task" role="form" ng-submit="addCommentCtrl.submit()">
             <div class="form-group">
                 <textarea maxlength="8000" rows="12" required ng-model="addCommentCtrl.comment.comment" class="form-control" name="comment" placeholder="Commentaire"/>
