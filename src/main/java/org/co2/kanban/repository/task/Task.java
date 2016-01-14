@@ -83,12 +83,6 @@ public class Task implements Serializable, Identifiable {
     @OneToMany(mappedBy = "task")
     private List<Comment> comments;
 
-    @ManyToOne
-    private Task linkedTask;
-
-    @OneToMany(mappedBy = "linkedTask")
-    private List<Task> childrenTask;
-
     public Long getId() {
         return id;
     }
@@ -207,22 +201,6 @@ public class Task implements Serializable, Identifiable {
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
-    }
-
-    public Task getLinkedTask() {
-        return linkedTask;
-    }
-
-    public void setLinkedTask(Task linkedTask) {
-        this.linkedTask = linkedTask;
-    }
-
-    public List<Task> getChildrenTask() {
-        return childrenTask;
-    }
-
-    public void setChildrenTask(List<Task> childrenTask) {
-        this.childrenTask = childrenTask;
     }
 
 }

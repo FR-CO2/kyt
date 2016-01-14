@@ -5,6 +5,8 @@
  */
 package org.co2.kanban.rest.project.task;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import org.co2.kanban.repository.task.Task;
 import org.co2.kanban.repository.task.TaskRepository;
 import org.co2.kanban.repository.project.Project;
@@ -132,6 +134,8 @@ public class TaskListController {
         task.setProject(project);
         State defaultState = stateRepository.findByProjectAndPosition(project, 0L);
         task.setState(defaultState);
+        Date now = new Date();
+        task.setCreated(new Timestamp(now.getTime()));
         Task result = repository.save(task);
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(linkTo(methodOn(TaskController.class).get(result.getProject().getId(), result.getId())).toUri());
