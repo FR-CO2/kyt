@@ -25,6 +25,24 @@ logging:
     level:
         org.springframework.security: INFO
         org.hibernate: INFO
+
+---
+
+endpoints :
+    shutdown :
+        enabled : false
+            
+spring:
+    profiles: dev-postgresql
+    jpa:
+        hibernate:
+            ddl-auto: update
+    datasource:
+        platform: postgresql
+        driverClassName: org.postgresql.Driver
+        url: jdbc:postgresql:postgres
+        username: postgres
+        password: Wxegdej5
 ---
 
 endpoints :
