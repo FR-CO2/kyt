@@ -48,7 +48,7 @@ public class ExceptionControllerAdvice extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler({DataAccessException.class, SQLException.class})
     protected ResponseEntity handleDatabaseException(Exception e, WebRequest req) {
-        logger.error("Request: " + req.getContextPath() + " raised " + e);
+        logger.error("Request: " + req.getContextPath() + " raised " + e, e);
         Error result = new Error(ErrorPhase.DATA);
         Locale locale = LocaleContextHolder.getLocale();
         String bundleMessage = messageSource.getMessage(DEFAULT_ERROR_MESSAGE_KEY, null, locale);
@@ -74,7 +74,7 @@ public class ExceptionControllerAdvice extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler({Exception.class})
     protected ResponseEntity handleUnexpectedException(Exception e, WebRequest req) {
-        logger.error("Request: " + req.getContextPath() + " raised " + e);
+        logger.error("Request: " + req.getContextPath() + " raised " + e, e);
         Error result = new Error(ErrorPhase.UNKNOW);
         Locale locale = LocaleContextHolder.getLocale();
         String bundleMessage = messageSource.getMessage(DEFAULT_ERROR_MESSAGE_KEY, null, locale);

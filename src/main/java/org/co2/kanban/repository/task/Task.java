@@ -19,6 +19,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
@@ -48,18 +49,23 @@ public class Task implements Serializable, Identifiable {
     private Timestamp lastModified;
 
     @ManyToOne(cascade = CascadeType.DETACH)
+    @JoinColumn(name = "category_id")
     private Category category;
 
     @ManyToOne
+    @JoinColumn(name = "state_id")
     private State state;
 
     @ManyToOne(cascade = CascadeType.DETACH)
+    @JoinColumn(name = "swimlane_id")
     private Swimlane swimlane;
 
     @ManyToOne
+    @JoinColumn(name = "project_id")
     private Project project;
 
     @ManyToOne(cascade = CascadeType.DETACH)
+    @JoinColumn(name = "assignee")
     private Member assignee;
 
     private Timestamp plannedStart;

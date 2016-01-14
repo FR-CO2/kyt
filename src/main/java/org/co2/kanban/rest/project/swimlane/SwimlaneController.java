@@ -5,6 +5,7 @@
  */
 package org.co2.kanban.rest.project.swimlane;
 
+import javax.transaction.Transactional;
 import org.co2.kanban.repository.swimlane.Swimlane;
 import org.co2.kanban.repository.swimlane.SwimlaneRepository;
 import org.co2.kanban.repository.project.Project;
@@ -75,7 +76,7 @@ public class SwimlaneController {
             throw new BusinessException(HttpStatus.CONFLICT, MESSAGE_KEY_CONFLICT_NAME);
         }
         swimlane.setProject(project);
-        Long maxPosition = repository.getProjectMaxPosition(projectId);
+        Long maxPosition = repository.getProjectMaxPosition(project);
         if (maxPosition == null) {
             maxPosition = 0L;
         }

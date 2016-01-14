@@ -12,8 +12,10 @@ import java.sql.Timestamp;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
@@ -41,12 +43,13 @@ public class Swimlane implements Serializable, Identifiable {
 
     private Timestamp endPlanned;
 
-    @OneToMany(mappedBy = "swimlane")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "swimlane")
     private List<Task> tasks;
 
     @ManyToOne(cascade = CascadeType.DETACH)
     private Project project;
 
+    @Override
     public Long getId() {
         return id;
     }
