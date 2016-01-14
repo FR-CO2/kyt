@@ -44,7 +44,7 @@
                             <span ng-if="entry.showDetails && entry.imputations.details.length" class="glyphicon glyphicon-chevron-up" ng-click="consommationCtrl.hideDetail(entry)"></span>
                         </th>
                         <th ng-repeat="day in consommationCtrl.days"> 
-                            <span ng-if="consommationCtrl.precision === 'week'">{{entry.imputations.imputations[day.format("X")]}}</span>
+                            <span ng-if="consommationCtrl.precision === 'week'">{{entry.imputations.imputations[day.format("DD/MM/YYYY")]}}</span>
                             <span ng-if="consommationCtrl.precision === 'month'">{{entry.imputations.imputations[day.id]}}</span>
                         </th>
                         <th>&nbsp;</th>
@@ -53,7 +53,7 @@
                         <td>{{detail.taskName}} </td>
                         <td>&nbsp;</td>
                         <td ng-repeat="day in consommationCtrl.days">
-                            <span ng-if="consommationCtrl.precision === 'week'">{{detail.imputations[day.format("X")]}}</span>
+                            <span ng-if="consommationCtrl.precision === 'week'">{{detail.imputations[day.format("DD/MM/YYYY")]}}</span>
                             <span ng-if="consommationCtrl.precision === 'month'">{{detail.imputations[day.id]}}</span>
                         </td>
                         <td>&nbsp;</td>

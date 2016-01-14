@@ -57,7 +57,7 @@
                             angular.forEach(grouped.weeks, function (week) {
                                 var timeSpent = 0;
                                 angular.forEach(week.days, function (day) {
-                                    timeSpent += entry.imputations.imputations[day.format("X")*1000];
+                                    timeSpent += entry.imputations.imputations[day.format("DD/MM/YYYY")];
                                 });
                                 groupedImputations[week.id] = timeSpent;
                             });
@@ -68,7 +68,7 @@
                                 angular.forEach(grouped.weeks, function (week) {
                                     var timeSpent = 0;
                                     angular.forEach(week.days, function (day) {
-                                        timeSpent += detail.imputations[day.format("X")*1000];
+                                        timeSpent += detail.imputations[day.format("DD/MM/YYYY")];
                                     });
                                     groupedDetailsImputation[week.id] = timeSpent;
                                 });
