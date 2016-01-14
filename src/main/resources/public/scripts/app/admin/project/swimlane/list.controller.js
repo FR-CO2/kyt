@@ -42,7 +42,9 @@
                 project.swimlanes = project.resource("swimlane").query();
                 project.swimlanes.$promise.then(function(data) {
                    angular.forEach(data, function (swimlane) { 
-                       swimlane.endPlanned = moment(swimlane.endPlanned).toDate();
+                       if (swimlane.endPlanned) {
+                            swimlane.endPlanned = moment(swimlane.endPlanned).toDate();
+                       }
                    });
                 });
             };

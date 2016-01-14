@@ -32,7 +32,12 @@
                             </div>
                             <div class="col-md-3">
                                 <a href="#" editable-date="swimlane.endPlanned" onaftersave="swimlaneListCtrl.saveSwimlane(swimlane)" title="Modifier le couloir">
-                                    {{swimlane.endPlanned | date:"dd/MM/yyyy"}} 
+                                    <span ng-if="swimlane.endPlanned">
+                                        {{swimlane.endPlanned | date:"dd/MM/yyyy"}} 
+                                    </span>
+                                    <span ng-if="!swimlane.endPlanned">
+                                       -
+                                    </span>
                                 </a>
                             </div>
                             <div class="col-md-3">
