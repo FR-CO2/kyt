@@ -16,6 +16,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import org.co2.kanban.repository.Identifiable;
 import org.co2.kanban.repository.task.Task;
@@ -30,8 +31,9 @@ public class Comment implements Serializable, Identifiable {
 
     private static final long serialVersionUID = 351144123076183094L;
 
+    @SequenceGenerator(name = "comment_generator", sequenceName = "comment_pkey_seq")
     @Id
-    @GeneratedValue
+    @GeneratedValue(generator = "comment_generator")
     private Long id;
 
     private String writer;

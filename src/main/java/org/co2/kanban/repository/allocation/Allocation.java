@@ -13,6 +13,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import org.co2.kanban.repository.Identifiable;
 
@@ -26,8 +27,9 @@ public class Allocation implements Serializable, Identifiable {
 
     private static final long serialVersionUID = -4133209060738613597L;
 
+    @SequenceGenerator(name = "allocation_generator", sequenceName = "allocation_pkey_seq")
     @Id
-    @GeneratedValue
+    @GeneratedValue(generator = "allocation_generator")
     private Long id;
 
     @ManyToOne
@@ -37,7 +39,7 @@ public class Allocation implements Serializable, Identifiable {
 
     @ManyToOne
     private Task task;
-    
+
     private Float timeSpent;
 
     private Float timeRemains;

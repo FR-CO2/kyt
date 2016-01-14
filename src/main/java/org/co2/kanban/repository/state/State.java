@@ -14,6 +14,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import org.co2.kanban.repository.Identifiable;
 
@@ -27,8 +28,9 @@ public class State implements Serializable, Identifiable {
 
     private static final long serialVersionUID = -1395350709593408519L;
 
+    @SequenceGenerator(name = "state_generator", sequenceName = "state_pkey_seq")
     @Id
-    @GeneratedValue
+    @GeneratedValue(generator = "state_generator")
     private Long id;
 
     private String name;

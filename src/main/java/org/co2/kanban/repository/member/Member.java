@@ -17,6 +17,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import org.co2.kanban.repository.Identifiable;
 
@@ -30,8 +31,9 @@ public class Member implements Serializable, Identifiable {
 
     private static final long serialVersionUID = 4462667625489059354L;
 
+    @SequenceGenerator(name = "member_generator", sequenceName = "member_pkey_seq")
     @Id
-    @GeneratedValue
+    @GeneratedValue(generator = "member_generator")
     private Long id;
 
     @ManyToOne(cascade = CascadeType.DETACH)

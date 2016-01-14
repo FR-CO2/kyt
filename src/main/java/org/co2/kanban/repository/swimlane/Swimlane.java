@@ -16,6 +16,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import org.co2.kanban.repository.Identifiable;
 
@@ -29,8 +30,9 @@ public class Swimlane implements Serializable, Identifiable {
 
     private static final long serialVersionUID = -7399300524553719167L;
 
+    @SequenceGenerator(name = "swimlane_generator", sequenceName = "swimlane_pkey_seq")
     @Id
-    @GeneratedValue
+    @GeneratedValue(generator = "swimlane_generator")
     private Long id;
 
     private String name;

@@ -17,6 +17,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import org.co2.kanban.repository.Identifiable;
 import org.co2.kanban.repository.category.Category;
@@ -31,8 +32,10 @@ public class Project implements Serializable, Identifiable {
 
     private static final long serialVersionUID = -5617478169888450195L;
 
+    
+    @SequenceGenerator(name = "project_generator", sequenceName = "project_pkey_seq")
     @Id
-    @GeneratedValue
+    @GeneratedValue(generator = "project_generator")
     private Long id;
 
     private String name;
