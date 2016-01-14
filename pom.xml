@@ -135,17 +135,39 @@
             <artifactId>momentjs</artifactId>
             <version>2.5.0</version>
         </dependency>
-        <dependency>
-            <groupId>org.eclipse.persistence</groupId>
-            <artifactId>eclipselink</artifactId>
-            <version>2.5.2</version>
-        </dependency>
+
     </dependencies>
     
     <profiles>
-        
         <profile>
             <id>debug</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <configuration>
+                                    <jvmArguments>
+                                        -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005
+                                    </jvmArguments>
+                                    <addResources>true</addResources>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>debug-pgsql</id>
             <activation>
                 <activeByDefault>false</activeByDefault>
             </activation>
