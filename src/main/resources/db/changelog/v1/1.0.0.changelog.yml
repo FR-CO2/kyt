@@ -2,7 +2,7 @@
 ---
 databaseChangeLog:
   - changeSet:
-        id: 1
+        id: schema-1.0.0
         author: courtib
         changes:
             - createTable:
@@ -34,6 +34,7 @@ databaseChangeLog:
                         type: varchar(255)
                         constraints:
                             nullable: false
+                            unique: true
             - createTable:
                 tableName: kyt_project
                 columns:
@@ -47,7 +48,8 @@ databaseChangeLog:
                         name: name
                         type: varchar(255)
                         constraints:
-                            nullable: false      
+                            nullable: false  
+                            unique: true
             - createTable:
                 tableName: kyt_state
                 columns:
@@ -271,9 +273,113 @@ databaseChangeLog:
                         name: task_id
                         type: BIGINT
                         constraints:
-                            nullable: false  
+                            nullable: false 
+            - addForeignKeyConstraint:
+                baseColumnNames: assignee
+                baseTableName: kyt_task
+                constraintName: fk_assignee_task
+                referencedColumnNames: id
+                referencedTableName: kyt_member
+            - addForeignKeyConstraint:
+                baseColumnNames: swimlane_id
+                baseTableName: kyt_task
+                constraintName: fk_swimlane_task
+                referencedColumnNames: id
+                referencedTableName: kyt_swimlane   
+            - addForeignKeyConstraint:
+                baseColumnNames: state_id
+                baseTableName: kyt_task
+                constraintName: fk_state_task
+                referencedColumnNames: id
+                referencedTableName: kyt_state                
+            - addForeignKeyConstraint:
+                baseColumnNames: category_id
+                baseTableName: kyt_task
+                constraintName: fk_category_task
+                referencedColumnNames: id
+                referencedTableName: kyt_category 
+            - addForeignKeyConstraint:
+                baseColumnNames: project_id
+                baseTableName: kyt_task
+                constraintName: fk_project_task
+                referencedColumnNames: id
+                referencedTableName: kyt_project   
+            - addForeignKeyConstraint:
+                baseColumnNames: project_id
+                baseTableName: kyt_swimlane
+                constraintName: fk_swimlane_project
+                referencedColumnNames: id
+                referencedTableName: kyt_project 
+            - addForeignKeyConstraint:
+                baseColumnNames: project_id
+                baseTableName: kyt_state
+                constraintName: fk_state_project
+                referencedColumnNames: id
+                referencedTableName: kyt_project  
+            - addForeignKeyConstraint:
+                baseColumnNames: project_id
+                baseTableName: kyt_category
+                constraintName: fk_category_project
+                referencedColumnNames: id
+                referencedTableName: kyt_project 
+            - addForeignKeyConstraint:
+                baseColumnNames: project_id
+                baseTableName: kyt_member
+                constraintName: fk_member_project
+                referencedColumnNames: id
+                referencedTableName: kyt_project    
+            - addForeignKeyConstraint:
+                baseColumnNames: user_id
+                baseTableName: kyt_member
+                constraintName: fk_member_user
+                referencedColumnNames: id
+                referencedTableName: kyt_user        
+            - addForeignKeyConstraint:
+                baseColumnNames: task_id
+                baseTableName: kyt_task_comment
+                constraintName: fk_comment_task
+                referencedColumnNames: id
+                referencedTableName: kyt_task    
+            - addForeignKeyConstraint:
+                baseColumnNames: parent_id
+                baseTableName: kyt_task_comment
+                constraintName: fk_comment_comment
+                referencedColumnNames: id
+                referencedTableName: kyt_task_comment     
+            - addForeignKeyConstraint:
+                baseColumnNames: task_id
+                baseTableName: kyt_allocation
+                constraintName: fk_allocation_task
+                referencedColumnNames: id
+                referencedTableName: kyt_task    
+            - addForeignKeyConstraint:
+                baseColumnNames: member_id
+                baseTableName: kyt_allocation
+                constraintName: fk_allocation_member
+                referencedColumnNames: id
+                referencedTableName: kyt_member  
+        rollback:
+                - dropTable:
+                    tableName: kyt_allocation
+                - dropTable:
+                    tableName: kyt_task_comment
+                - dropTable:
+                    tableName: kyt_task
+                - dropTable:
+                    tableName: kyt_member
+                - dropTable:
+                    tableName: kyt_swimlane
+                - dropTable:
+                    tableName: kyt_category
+                - dropTable:
+                    tableName: kyt_state
+                - dropTable:
+                    tableName: kyt_project
+                - dropTable:
+                    tableName: kyt_user
+                    
   - changeSet:   
-        id: 2
+        id: data-1.0.0
         author: courtib
         changes:
             insert :
@@ -294,3 +400,7 @@ databaseChangeLog:
                 - column:
                     name: email
                     value: admin@localhost.fr  
+            rollback:
+                - delete:
+                    tableName: kyt_user
+                    where: id=1
