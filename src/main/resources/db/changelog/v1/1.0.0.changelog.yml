@@ -358,6 +358,26 @@ databaseChangeLog:
                 constraintName: fk_allocation_member
                 referencedColumnNames: id
                 referencedTableName: kyt_member  
+            - createSequence:
+                sequenceName: allocation_pkey_seq
+            - createSequence:
+                sequenceName: category_pkey_seq                
+            - createSequence:
+                sequenceName: comment_pkey_seq
+            - createSequence:
+                sequenceName: member_pkey_seq
+            - createSequence:
+                sequenceName: project_pkey_seq
+                ordererd: true
+            - createSequence:
+                sequenceName: state_pkey_seq
+            - createSequence:
+                sequenceName: swimlane_pkey_seq
+            - createSequence:
+                sequenceName: task_pkey_seq
+                ordererd: true
+            - createSequence:
+                sequenceName: user_pkey_seq                
         rollback:
                 - dropTable:
                     tableName: kyt_allocation
