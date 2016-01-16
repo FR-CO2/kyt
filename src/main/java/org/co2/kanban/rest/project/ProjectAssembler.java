@@ -5,7 +5,6 @@
  */
 package org.co2.kanban.rest.project;
 
-import org.co2.kanban.repository.member.ProjectRole;
 import org.co2.kanban.repository.project.Project;
 import org.co2.kanban.rest.project.category.CategoryController;
 import org.co2.kanban.rest.project.state.StateController;

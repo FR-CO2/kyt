@@ -39,12 +39,12 @@
                 if (vm.precision === "week") {
                     vm.start = vm.start.startOf('isoWeek');
                     vm.days = getWeekDays(moment, vm.start);
-                    end = moment(vm.start).add(7, 'days');
+                    end = moment(vm.start).add(8, 'days');
                     vm.entries = consomationService.loadConsommations(project, vm.start, end);
                 } else {
                     vm.start = vm.start.startOf('month');
                     vm.days = getMonthDays(moment, vm.start, vm.start.month());
-                    end = moment(vm.start).add(1, 'months').subtract(1, "days");
+                    end = moment(vm.start).add(1, 'months');
                     vm.entries = consomationService.loadConsommations(project, vm.start, end);
                     //TODO Regroupe par semaine vm.days et vm.entries
                     vm.entries.$promise.then(function() {

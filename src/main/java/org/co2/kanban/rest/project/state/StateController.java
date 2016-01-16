@@ -85,7 +85,7 @@ public class StateController {
             throw new BusinessException(HttpStatus.CONFLICT, MESSAGE_KEY_CONFLICT_NAME);
         }
         state.setProject(project);
-        Long maxPosition = repository.getProjectMaxPosition(projectId);
+        Long maxPosition = repository.getProjectMaxPosition(project);
         if (maxPosition == null) {
             maxPosition = 0L;
         }

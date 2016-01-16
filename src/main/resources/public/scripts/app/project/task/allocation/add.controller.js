@@ -11,6 +11,8 @@
             vm.submit = function () {
                 task.resource("allocation").save(vm.allocation, function () {
                     $uibModalInstance.close();
+                }, function (error) {
+                    vm.error = error.data;
                 });
             };
         };

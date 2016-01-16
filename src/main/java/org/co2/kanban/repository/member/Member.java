@@ -6,7 +6,6 @@
 package org.co2.kanban.repository.member;
 
 import org.co2.kanban.repository.project.Project;
-import org.co2.kanban.repository.swimlane.Swimlane;
 import org.co2.kanban.repository.task.Task;
 import org.co2.kanban.repository.allocation.Allocation;
 import org.co2.kanban.repository.user.ApplicationUser;
@@ -18,6 +17,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import org.co2.kanban.repository.Identifiable;
 
 /**
@@ -25,12 +26,14 @@ import org.co2.kanban.repository.Identifiable;
  * @author ben
  */
 @Entity
+@Table(name = "KYT_MEMBER")
 public class Member implements Serializable, Identifiable {
 
     private static final long serialVersionUID = 4462667625489059354L;
 
+    @SequenceGenerator(name = "member_generator", sequenceName = "member_pkey_seq")
     @Id
-    @GeneratedValue
+    @GeneratedValue(generator = "member_generator")
     private Long id;
 
     @ManyToOne(cascade = CascadeType.DETACH)
@@ -42,14 +45,8 @@ public class Member implements Serializable, Identifiable {
     @OneToMany
     private List<Allocation> allocations;
 
-    @OneToMany(mappedBy = "responsable")
-    private List<Swimlane> swimlanes;
-
     @OneToMany(mappedBy = "assignee")
     private List<Task> tasksAssignee;
-
-    @OneToMany(mappedBy = "backup")
-    private List<Task> tasksBackup;
 
     private ProjectRole projectRole;
 
@@ -85,28 +82,12 @@ public class Member implements Serializable, Identifiable {
         this.projectRole = projectRole;
     }
 
-    public List<Swimlane> getSwimlanes() {
-        return swimlanes;
-    }
-
-    public void setSwimlanes(List<Swimlane> swimlanes) {
-        this.swimlanes = swimlanes;
-    }
-
     public List<Task> getTasksAssignee() {
         return tasksAssignee;
     }
 
     public void setTasksAssignee(List<Task> tasksAssignee) {
         this.tasksAssignee = tasksAssignee;
-    }
-
-    public List<Task> getTasksBackup() {
-        return tasksBackup;
-    }
-
-    public void setTasksBackup(List<Task> tasksBackup) {
-        this.tasksBackup = tasksBackup;
     }
 
     public List<Allocation> getAllocations() {

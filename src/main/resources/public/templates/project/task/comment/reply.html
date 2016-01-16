@@ -2,7 +2,7 @@
     <div class="panel panel-default"> 
         <div class=" panel-heading">
             <div class="col-md-7">
-                Réponse de {{replyComment.writer}} le {{replyComment.writingDate| date:'dd-MM-yyyy'}}
+                Réponse de {{replyComment.writer}} le {{replyComment.writingDate | date:'dd-MM-yyyy'}}
             </div>
             <div class="pull-right" ng-if="projectCtrl.rights.hasAdminRights">
                 <a ng-click="commentListCtrl.delete(comment, replyComment)" title="delete">

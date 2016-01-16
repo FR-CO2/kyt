@@ -29,7 +29,7 @@
             };
             vm.loadPage();
             vm.delete = function (task) {
-                new HateoasInterface(task).resource("self").delete(loadPage);
+                new HateoasInterface(task).resource("self").delete(vm.loadPage);
             };
             vm.addTask = function () {
                 var modalInstance = $uibModal.open({

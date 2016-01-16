@@ -3,7 +3,8 @@
         var addController = function ($uibModalInstance, day, currentuser) {
             var vm = this;
             vm.day = day;
-            vm.imputations = currentuser.resource("consommation").query({date: day.format("DD/MM/YYYY")});
+            // need to multipy by 1000 for get UNIX Timestamp
+            vm.imputations = currentuser.resource("consommation").query({date: day.format("X")*1000});
             vm.addTask = function ($item, $model, $label) {
                 var newImputation = {
                     taskName: $model.name,
@@ -26,7 +27,8 @@
                 return currentuser.resource("task").query({search: term}).$promise;
             };
             vm.submit = function () {
-                currentuser.resource("consommation").save({date: day.format("X")}, vm.imputations, function () {
+                // need to multipy by 1000 for get UNIX Timestamp
+                currentuser.resource("consommation").save({date: day.format("X")*1000}, vm.imputations, function () {
                     $uibModalInstance.close();
                 });
             };

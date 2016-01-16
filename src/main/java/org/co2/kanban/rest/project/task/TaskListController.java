@@ -5,6 +5,8 @@
  */
 package org.co2.kanban.rest.project.task;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import org.co2.kanban.repository.task.Task;
 import org.co2.kanban.repository.task.TaskRepository;
 import org.co2.kanban.repository.project.Project;
@@ -15,7 +17,6 @@ import org.co2.kanban.repository.swimlane.Swimlane;
 import org.co2.kanban.repository.swimlane.SwimlaneRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedResources;
@@ -25,6 +26,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -58,6 +62,11 @@ public class TaskListController {
 
     @Autowired
     private TaskAssembler assembler;
+
+    @InitBinder
+    protected void initBinder(WebDataBinder binder) {
+        binder.setValidator(new TaskValidator());
+    }
 
     @RequestMapping(params = {"page", "size"}, method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public PagedResources<TaskResource> page(@PathVariable("projectId") Long projectId,
@@ -120,11 +129,13 @@ public class TaskListController {
 
     @RequestMapping(method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("@projectAccessExpression.hasContributorAccess(#projectId, principal.username)")
-    public ResponseEntity create(@PathVariable("projectId") Long projectId, @RequestBody Task task) {
+    public ResponseEntity create(@PathVariable("projectId") Long projectId, @Validated @RequestBody Task task) {
         Project project = projectRepository.findOne(projectId);
         task.setProject(project);
         State defaultState = stateRepository.findByProjectAndPosition(project, 0L);
         task.setState(defaultState);
+        Date now = new Date();
+        task.setCreated(new Timestamp(now.getTime()));
         Task result = repository.save(task);
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(linkTo(methodOn(TaskController.class).get(result.getProject().getId(), result.getId())).toUri());

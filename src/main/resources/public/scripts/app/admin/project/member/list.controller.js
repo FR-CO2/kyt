@@ -1,8 +1,17 @@
 (function () {
     define([], function () {
-        var listController = function ($uibModal, scope, HateoasInterface) {
+        var listController = function ($uibModal, project, HateoasInterface) {
             var vm = this;
-            vm.projectRoles = scope.projectEditCtrl.project.resource("roles").query();
+            vm.projectRoles = project.resource("roles").query();
+            vm.members = {
+                page : {
+                    number : 0,
+                    size : 15
+                }
+            };
+            vm.members = project.resource("member").get(
+                            {page: vm.members.page.number,
+                                size: vm.members.page.size});
             vm.add = function () {
                 var modalInstance = $uibModal.open({
                     animation: true,
@@ -10,23 +19,21 @@
                     controller: "addMemberAdminController",
                     controllerAs: "addMemberCtrl",
                     resolve: {
-                        project: scope.projectEditCtrl.project
+                        project: project
                     },
                     size: "md"
                 });
                 modalInstance.result.then(function () {
-                    var project = scope.projectEditCtrl.project;
-                    project.members = project.resource("member").get(
-                            {page: project.members.page.number,
-                                size: project.members.page.size});
+                    vm.members = project.resource("member").get(
+                            {page: vm.members.page.number,
+                                size: vm.members.page.size});
                 });
             };
             vm.delete = function (member) {
                 new HateoasInterface(member).resource("self").delete(null, function () {
-                    var project = scope.projectEditCtrl.project;
-                    project.members = project.resource("member").get(
-                            {page: project.members.page.number,
-                                size: project.members.page.size});
+                    vm.members = project.resource("member").get(
+                            {page: vm.members.page.number,
+                                size: vm.members.page.size});
                 });
             };
             vm.saveMember = function (member) {
@@ -37,7 +44,7 @@
                 return result;
             };
         };
-        listController.$inject = ["$uibModal", "$scope", "HateoasInterface"];
+        listController.$inject = ["$uibModal", "project", "HateoasInterface"];
         return listController;
     });
 })();

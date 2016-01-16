@@ -1,8 +1,7 @@
 (function () {
     define([], function () {
-        var listController = function ($uibModal, scope, growl) {
+        var listController = function ($uibModal, project, growl) {
             var vm = this;
-            var project = scope.projectEditCtrl.project;
             vm.stateListSortOptions = {
                 orderChanged: function (event) {
                     var stateUpdated = event.source.itemScope.modelValue;
@@ -18,7 +17,7 @@
                     controller: "addStateAdminController",
                     controllerAs: "addStateCtrl",
                     resolve: {
-                        project: scope.projectEditCtrl.project
+                        project: project
                     },
                     size: "md"
                 });
@@ -41,10 +40,11 @@
                 return result;
             };
             vm.reload = function () {
-                project.states = project.resource("state").query();
+                vm.states = project.resource("state").query();
             };
+            vm.reload();
         };
-        listController.$inject = ["$uibModal", "$scope", "growl"];
+        listController.$inject = ["$uibModal", "project", "growl"];
         return listController;
     });
 })();

@@ -7,26 +7,43 @@
             </div>
         </div>
         <div class="panel-body">
-            <div class="col-md-12" as-sortable="swimlaneListCtrl.swimlaneListSortOptions" ng-model="projectEditCtrl.project.swimlanes">
-                <div class="row" ng-repeat="swimlane in projectEditCtrl.project.swimlanes" as-sortable-item>
-                    <div class="col-md-8">
-                        <div class="panel panel-default" as-sortable-item-handle>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-8">
                             <div class="row">
-                                <div class="col-md-4">
-                                    <a href="#" editable-text="swimlane.name" onaftersave="swimlaneListCtrl.saveSwimlane(swimlane)"
-                                        e-required onhide="swimlaneListCtrl.reload()" 
-                                        title="Modifier le couloir">
-                                        {{swimlane.name}} 
-                                    </a>
-                                </div>
-                                <div class="col-md-4">
-                                        {{swimlane.responsable.user.username}} 
-                                </div>
-                                <div class="col-md-4">
-                                    <span class="badge  pull-right">
-                                        {{swimlane.taskCount}}
+                                <div class="col-md-5">Nom</div>
+                                <div class="col-md-3">Date de fin prévue</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12" as-sortable="swimlaneListCtrl.swimlaneListSortOptions" ng-model="swimlaneListCtrl.swimlanes">
+                <div class="row" ng-repeat="swimlane in swimlaneListCtrl.swimlanes" as-sortable-item>
+                    <div class="col-md-8" as-sortable-item-handle>
+                        <div class="row">
+                            <div class="col-md-5">
+                                <a href="#" editable-text="swimlane.name" onaftersave="swimlaneListCtrl.saveSwimlane(swimlane)"
+                                   e-required onhide="swimlaneListCtrl.reload()" 
+                                   title="Modifier le couloir">
+                                    {{swimlane.name}} 
+                                </a>
+                            </div>
+                            <div class="col-md-3">
+                                <a href="#" editable-date="swimlane.endPlanned" onaftersave="swimlaneListCtrl.saveSwimlane(swimlane)" title="Modifier le couloir">
+                                    <span ng-if="swimlane.endPlanned">
+                                        {{swimlane.endPlanned | date:"dd/MM/yyyy"}} 
                                     </span>
-                                </div>
+                                    <span ng-if="!swimlane.endPlanned">
+                                       -
+                                    </span>
+                                </a>
+                            </div>
+                            <div class="col-md-3">
+                                <span class="badge  pull-right">
+                                    {{swimlane.taskCount}}
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -39,4 +56,5 @@
             </div>
         </div>
     </div>
+</div>
 </div>

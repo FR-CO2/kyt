@@ -6,16 +6,19 @@
 package org.co2.kanban.repository.swimlane;
 
 import org.co2.kanban.repository.project.Project;
-import org.co2.kanban.repository.member.Member;
 import org.co2.kanban.repository.task.Task;
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import org.co2.kanban.repository.Identifiable;
 
 /**
@@ -23,27 +26,29 @@ import org.co2.kanban.repository.Identifiable;
  * @author ben
  */
 @Entity
+@Table(name = "KYT_SWIMLANE")
 public class Swimlane implements Serializable, Identifiable {
 
     private static final long serialVersionUID = -7399300524553719167L;
 
+    @SequenceGenerator(name = "swimlane_generator", sequenceName = "swimlane_pkey_seq")
     @Id
-    @GeneratedValue
+    @GeneratedValue(generator = "swimlane_generator")
     private Long id;
 
     private String name;
 
     private Long position;
 
-    @ManyToOne(cascade = CascadeType.DETACH)
-    private Member responsable;
+    private Timestamp endPlanned;
 
-    @OneToMany(mappedBy = "swimlane")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "swimlane")
     private List<Task> tasks;
 
     @ManyToOne(cascade = CascadeType.DETACH)
     private Project project;
 
+    @Override
     public Long getId() {
         return id;
     }
@@ -68,14 +73,6 @@ public class Swimlane implements Serializable, Identifiable {
         this.project = project;
     }
 
-    public Member getResponsable() {
-        return responsable;
-    }
-
-    public void setResponsable(Member responsable) {
-        this.responsable = responsable;
-    }
-
     public List<Task> getTasks() {
         return tasks;
     }
@@ -90,6 +87,14 @@ public class Swimlane implements Serializable, Identifiable {
 
     public void setPosition(Long position) {
         this.position = position;
+    }
+
+    public Timestamp getEndPlanned() {
+        return endPlanned;
+    }
+
+    public void setEndPlanned(Timestamp endPlanned) {
+        this.endPlanned = endPlanned;
     }
 
 }

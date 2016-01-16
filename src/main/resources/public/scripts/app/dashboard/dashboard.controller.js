@@ -35,7 +35,8 @@
                     viewRender: function (view, element) {
                         var start = moment(view.start);
                         var end = moment(view.end);
-                        vm.loadCalendarEvent(start.format("X"), end.format("X"));
+                        // need to multipy by 1000 for get UNIX Timestamp
+                        vm.loadCalendarEvent(start.format("X")*1000, end.format("X")*1000);
                     },
                     dayClick: dayOnClick
                 };
@@ -46,8 +47,8 @@
                     angular.forEach(data, function (task) {
                         task = taskAssemblerService(task);
                         task.title = task.name;
-                        task.start = moment(task.plannedStart);
-                        task.end = moment(task.plannedEnding);
+                        task.start = moment(task.plannedStart).toDate();
+                        task.end = moment(task.plannedEnding).toDate();
                         task.allDay = true;
                         if (task._links.category) {
                             task.category.$promise.then(function () {

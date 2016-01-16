@@ -9,12 +9,13 @@ import org.co2.kanban.repository.project.Project;
 import org.co2.kanban.repository.task.Task;
 import java.io.Serializable;
 import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import org.co2.kanban.repository.Identifiable;
 
 /**
@@ -22,12 +23,15 @@ import org.co2.kanban.repository.Identifiable;
  * @author ben
  */
 @Entity
+@Table(name = "KYT_CATEGORY")
 public class Category implements Serializable, Identifiable {
 
     private static final long serialVersionUID = 8473515701046153275L;
 
+    
+    @SequenceGenerator(name = "category_generator", sequenceName = "category_pkey_seq")
     @Id
-    @GeneratedValue
+    @GeneratedValue(generator = "category_generator")
     private Long id;
 
     private String name;

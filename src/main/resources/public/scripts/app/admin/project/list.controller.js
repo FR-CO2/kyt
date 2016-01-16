@@ -1,6 +1,6 @@
 (function () {
     define(["angular"], function (angular) {
-        var listController = function ($uibModal, projectService, HateoasInterface) {
+        var listController = function ($uibModal, scope, projectService, HateoasInterface) {
             var vm = this;
             function loadPage() {
                 return projectService.get({page: vm.projects.page.number, size: vm.projects.page.size}, function () {
@@ -31,16 +31,18 @@
                     size: "md"
                 });
                 modalInstance.result.then(function () {
+                    scope.$emit("kanban:projects-updates");
                     vm.projects = loadPage();
                 });
             };
             vm.delete = function(project) {
                 new HateoasInterface(project).resource("self").delete(function() {
+                    scope.$emit("kanban:projects-updates");
                     vm.projects = loadPage();
                 });
             };
         };
-        listController.$inject = ["$uibModal", "projectService", "HateoasInterface"];
+        listController.$inject = ["$uibModal", "$scope", "projectService", "HateoasInterface"];
         return listController;
     });
 })();

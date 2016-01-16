@@ -101,9 +101,6 @@ public class MemberController {
         for (Task task : member.getTasksAssignee()) {
             task.setAssignee(null);
         }
-        for (Task task : member.getTasksBackup()) {
-            task.setBackup(null);
-        }
         repository.delete(member);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

@@ -1,6 +1,6 @@
 (function () {
     define([], function () {
-        var listController = function ($uibModal, scope) {
+        var listController = function ($uibModal, project) {
             var vm = this;
             vm.add = function () {
                 var modalInstance = $uibModal.open({
@@ -9,7 +9,7 @@
                     controller: "addCategoryAdminController",
                     controllerAs: "addCategoryCtrl",
                     resolve: {
-                        project: scope.projectEditCtrl.project
+                        project: project
                     },
                     size: "md"
                 });
@@ -30,11 +30,11 @@
                 return result;
             };
             vm.reload = function () {
-                var project = scope.projectEditCtrl.project;
-                project.categories = project.resource("category").query();
+                vm.categories = project.resource("category").query();
             };
+            vm.reload();
         };
-        listController.$inject = ["$uibModal", "$scope"];
+        listController.$inject = ["$uibModal", "project"];
         return listController;
     });
 })();

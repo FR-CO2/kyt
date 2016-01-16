@@ -11,7 +11,7 @@
                 <div class="panel panel-default"> 
                     <div class=" panel-heading">
                         <div class="col-md-7">
-                            Commentaire  de {{comment.writer}} le {{comment.writingDate}} - <span class="badge">{{comment.nbReply}} réponse<span ng-show="comment.nbReply > 1">s</span></span>
+                            Commentaire  de {{comment.writer}} le {{comment.writingDate | date:'dd-MM-yyyy'}} - <span class="badge">{{comment.nbReply}} réponse<span ng-show="comment.nbReply > 1">s</span></span>
                         </div>
                         <div class="pull-right" ng-if="projectCtrl.rights.hasAdminRights">
                             <a ng-click="commentListCtrl.delete(null, comment)" title="delete">
@@ -26,31 +26,25 @@
                         </div>
                     </div>
                     <div class="panel-footer">
-                        <div class="pull-right">
-                            <span class="badge" ng-if="comment.nbReply > 0">
-                                <a ng-click="commentListCtrl.showHideReply(comment)" ng-switch on="comment.showComment">
-                                    <span class="animate-switch" ng-switch-when="true">
-                                        <span class="glyphicon glyphicon-eye-close"></span>
-                                        <span ng-switch="comment.nbReply" title="Cacher"> cacher 
-                                            <span ng-switch-when="1">la réponse</span>
-                                            <span ng-switch-default>les réponses</span>
-                                        </span>
-                                    </span>
-                                    <span class="animate-switch" ng-switch-default>
-                                        <span class="glyphicon glyphicon-eye-open"></span>
-                                        <span ng-switch="comment.nbReply" title="Afficher"> voir 
-                                            <span ng-switch-when="1">la réponse</span>
-                                            <span ng-switch-default>les réponses</span>
-                                        </span>
-                                    </span>
-                                </a>
+                        <a class="btn btn-info btn-spaceLeft pull-right" ng-click="commentListCtrl.reply(comment)" title="reply">
+                            <span class="glyphicon glyphicon-comment"></span> Répondre
+                        </a>
+                        <a class="btn btn-info pull-right" ng-if="comment.nbReply > 0" ng-click="commentListCtrl.showHideReply(comment)" ng-switch on="comment.showComment">
+                            <span class="animate-switch" ng-switch-when="true">
+                                <span class="glyphicon glyphicon-eye-close"></span>
+                                <span ng-switch="comment.nbReply" title="Cacher"> cacher 
+                                    <span ng-switch-when="1">la réponse</span>
+                                    <span ng-switch-default>les réponses</span>
+                                </span>
                             </span>
-                            <span class="badge">
-                                <a ng-click="commentListCtrl.reply(comment)" title="reply">
-                                    <span class="glyphicon glyphicon-comment"></span> Répondre
-                                </a>
+                            <span class="animate-switch" ng-switch-default>
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span ng-switch="comment.nbReply" title="Afficher"> voir 
+                                    <span ng-switch-when="1">la réponse</span>
+                                    <span ng-switch-default>les réponses</span>
+                                </span>
                             </span>
-                        </div>
+                        </a>
                     </div>
                 </div>
             </div>

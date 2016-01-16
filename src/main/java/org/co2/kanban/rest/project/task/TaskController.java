@@ -13,6 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,6 +40,11 @@ public class TaskController {
     @Autowired
     private TaskAssembler assembler;
 
+    @InitBinder
+    protected void initBinder(WebDataBinder binder) {
+        binder.setValidator(new TaskValidator());
+    }
+
     @RequestMapping(method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public TaskResource get(@PathVariable("projectId") Long projectId, @PathVariable("id") Long taskId) {
         return assembler.toResource(repository.findOne(taskId));
@@ -51,7 +59,7 @@ public class TaskController {
 
     @RequestMapping(method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("@projectAccessExpression.hasContributorAccess(#projectId, principal.username)")
-    public TaskResource update(@PathVariable("projectId") Long projectId, @PathVariable("id") Long taskId, @RequestBody Task task) {
+    public TaskResource update(@PathVariable("projectId") Long projectId, @PathVariable("id") Long taskId, @Validated @RequestBody Task task) {
         Project project = projectRepository.findOne(projectId);
         task.setProject(project);
         Task result = repository.save(task);

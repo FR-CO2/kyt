@@ -1,9 +1,11 @@
 <div class="row" id="task">
-    <alert type="danger" ng-if="taskCtrl.form.error">{{taskCtrl.form.error}}</alert>
     <h2>
         #{{taskCtrl.task.id}}
     </h2>
     <form id="edittask" role="form" ng-submit="taskCtrl.submit()">
+        <alert type="danger" ng-if="taskCtrl.error">
+            <errors errors="taskCtrl.error"></errors>
+        </alert>
         <fieldset>
             <div class="form-group col-md-3">
                 <label for="taskname">Nom de la tâche</label>
@@ -28,7 +30,7 @@
         <fieldset>
             <div class="form-group col-md-12">
                 <label for="description">Description</label>
-                <textarea rows="10" class="col-md-12" ng-model="taskCtrl.task.description" class="form-control" id="description" name="description" placeholder="Description"/>
+                <textarea rows="12" maxlength="8000" class="col-md-12" ng-model="taskCtrl.task.description" class="form-control" id="description"  name="description" placeholder="Description"/>
             </div>
         </fieldset>
         <fieldset>

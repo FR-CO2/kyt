@@ -3,15 +3,16 @@
         <span class="glyphicon glyphicon-plus-sign"></span> Nouveau couloir
     </div>
     <div class="panel-body">
-        <alert type="danger" ng-if="addSwimlaneCtrl.error">{{addSwimlaneCtrl.error.message}}</alert>
+        <alert type="danger" ng-if="addSwimlaneCtrl.error">
+            <errors errors="addSwimlaneCtrl.error"></errors>
+        </alert>
         <form id="login" role="form" ng-submit="addSwimlaneCtrl.submit()">
             <div class="form-group">
                 <input type="text" required ng-model="addSwimlaneCtrl.swimlane.name" class="form-control" name="taskName" placeholder="Nom du couloir"/>
             </div>
             <div class="form-group">
-                <select ng-model="addSwimlaneCtrl.swimlane.responsableId" class="form-control" name="responsable" placeholder="Responsable">
-                    <option value="{{member.id}}" ng-repeat="member in add.members">{{member.user.username}}</option>
-                </select>
+                <label for="plannedEnding">Date de fin prévue </label>
+                <input type="date" id="plannedEnding" class="form-control" ng-model="addSwimlaneCtrl.swimlane.endPlanned" />
             </div>
             <div>
                 <button type="submit"  class="btn btn-info center-block">valider</button>

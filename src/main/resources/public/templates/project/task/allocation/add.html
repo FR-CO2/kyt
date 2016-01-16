@@ -3,7 +3,9 @@
         <span class="glyphicon glyphicon-plus-sign"></span> Nouvelle imputation
     </div>
     <div class="panel-body">
-        <alert type="danger" ng-if="addAllocationCtrl.form.error">{{addAllocationCtrl.form.error}}</alert>
+        <alert type="danger" ng-if="addAllocationCtrl.error">
+            <errors errors="addAllocationCtrl.error"></errors>
+        </alert>
         <form id="task" role="form" ng-submit="addAllocationCtrl.submit()">
             <div class="form-group col-md-3">
                 <label for="assignee">Utilisateur</label>

@@ -15,11 +15,15 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import org.co2.kanban.repository.Identifiable;
 import org.co2.kanban.repository.comment.Comment;
 
@@ -28,37 +32,41 @@ import org.co2.kanban.repository.comment.Comment;
  * @author ben
  */
 @Entity
+@Table(name = "KYT_TASK")
 public class Task implements Serializable, Identifiable {
 
     private static final long serialVersionUID = -7133694782401886935L;
 
+    @SequenceGenerator(name = "task_generator", sequenceName = "task_pkey_seq")
     @Id
-    @GeneratedValue
+    @GeneratedValue(generator = "task_generator")
     private Long id;
-    
+
     private String name;
 
     private Timestamp created;
-    
+
     private Timestamp lastModified;
 
     @ManyToOne(cascade = CascadeType.DETACH)
+    @JoinColumn(name = "category_id")
     private Category category;
 
     @ManyToOne
+    @JoinColumn(name = "state_id")
     private State state;
 
     @ManyToOne(cascade = CascadeType.DETACH)
+    @JoinColumn(name = "swimlane_id")
     private Swimlane swimlane;
 
     @ManyToOne
+    @JoinColumn(name = "project_id")
     private Project project;
 
     @ManyToOne(cascade = CascadeType.DETACH)
+    @JoinColumn(name = "assignee")
     private Member assignee;
-
-    @ManyToOne(cascade = CascadeType.DETACH)
-    private Member backup;
 
     private Timestamp plannedStart;
 
@@ -66,6 +74,7 @@ public class Task implements Serializable, Identifiable {
 
     private Float estimatedLoad;
 
+    @Column(length = 10000)
     private String description;
 
     @OneToMany(mappedBy = "task")
@@ -73,12 +82,6 @@ public class Task implements Serializable, Identifiable {
 
     @OneToMany(mappedBy = "task")
     private List<Comment> comments;
-    
-    @ManyToOne
-    private Task linkedTask;
-
-    @OneToMany(mappedBy = "linkedTask")
-    private List<Task> childrenTask;
 
     public Long getId() {
         return id;
@@ -89,11 +92,11 @@ public class Task implements Serializable, Identifiable {
     }
 
     public void setName(String name) {
-        this.name= name; 
+        this.name = name;
     }
 
     public String getName() {
-        return this.name; 
+        return this.name;
     }
 
     public State getState() {
@@ -102,14 +105,6 @@ public class Task implements Serializable, Identifiable {
 
     public void setState(State state) {
         this.state = state;
-    }
-
-    public Member getBackup() {
-        return backup;
-    }
-
-    public void setBackup(Member backup) {
-        this.backup = backup;
     }
 
     public Timestamp getPlannedStart() {
@@ -208,20 +203,4 @@ public class Task implements Serializable, Identifiable {
         this.comments = comments;
     }
 
-    public Task getLinkedTask() {
-        return linkedTask;
-    }
-
-    public void setLinkedTask(Task linkedTask) {
-        this.linkedTask = linkedTask;
-    }
-
-    public List<Task> getChildrenTask() {
-        return childrenTask;
-    }
-
-    public void setChildrenTask(List<Task> childrenTask) {
-        this.childrenTask = childrenTask;
-    }
-    
 }

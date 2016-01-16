@@ -18,11 +18,12 @@
                     $rootScope.loginOngoing = true;
                     modalScope.modalInstance = $uibModal.open({
                         animation: true,
+                        backdrop: "static",
                         templateUrl: "login.html",
                         controller: "loginController",
                         controllerAs: "login",
                         scope: modalScope,
-                        backdrop: "static",
+                        keyboard: false,
                         size: "md"
                     });
                     modalScope.modalInstance.result.then(
