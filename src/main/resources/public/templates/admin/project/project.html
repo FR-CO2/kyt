@@ -3,28 +3,19 @@
     <h2>
         Projet {{projectEditCtrl.project.name}}
     </h2>
-    <div class="row">
-        <div class="form-group col-md-3">
-            <label for="projectName">Nom projet</label>
-            <input type="text" id="projectName" class="form-control" disabled="disabled" ng-model="projectEditCtrl.project.name"/>
-        </div>
-    </div>
     <div class="panel">
         <div class="panel-body">
             <uib-tabset>
-                <uib-tab heading="Catégorie" >
-                    <div ng-include="'templates/admin/project/category/list.html'" ng-controller="listCategoryAdminController as categoryListCtrl"></div>
+                <uib-tab heading="Catégorie" ui-sref="app.project.edit.category({projectId: projectEditCtrl.project.id})" >
                 </uib-tab> 
-                <uib-tab heading="Etat" >
-                    <div ng-include="'templates/admin/project/state/list.html'" ng-controller="listStateAdminController as stateListCtrl"></div>
+                <uib-tab heading="Etat" ui-sref="app.project.edit.state({projectId: projectEditCtrl.project.id})">
                 </uib-tab> 
-                <uib-tab heading="Couloir">
-                    <div ng-include="'templates/admin/project/swimlane/list.html'" ng-controller="listSwimlaneAdminController as swimlaneListCtrl"></div>
+                <uib-tab heading="Couloir" ui-sref="app.project.edit.swimlane({projectId: projectEditCtrl.project.id})">
                 </uib-tab> 
-                <uib-tab heading="Membre">
-                    <div ng-include="'templates/admin/project/member/list.html'" ng-controller="listMemberAdminController as memberListCtrl"></div>
+                <uib-tab heading="Membre" ui-sref="app.project.edit.member({projectId: projectEditCtrl.project.id})">
                 </uib-tab> 
             </uib-tabset>
+            <div ui-view></div>
         </div>
     </div>
 </div>

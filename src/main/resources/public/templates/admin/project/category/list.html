@@ -16,7 +16,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="category in projectEditCtrl.project.categories">
+                    <tr ng-repeat="category in categoryListCtrl.categories">
                         <td>
                             <a href="#" editable-text="category.name" onaftersave="categoryListCtrl.saveCategory(category)"
                                e-required onhide="categoryListCtrl.reload()" 

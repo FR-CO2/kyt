@@ -1,6 +1,6 @@
 (function () {
     define(["angular"], function (angular) {
-        var listController = function ($uibModal, scope, moment) {
+        var listController = function ($uibModal, project, moment) {
             var vm = this;
             vm.swimlaneListSortOptions = {
                 orderChanged: function (event) {
@@ -17,7 +17,7 @@
                     controller: "addSwimlaneAdminController",
                     controllerAs: "addSwimlaneCtrl",
                     resolve: {
-                        project: scope.projectEditCtrl.project
+                        project: project
                     },
                     size: "md"
                 });
@@ -38,9 +38,8 @@
                 return result;
             };
             vm.reload = function () {
-                var project = scope.projectEditCtrl.project;
-                project.swimlanes = project.resource("swimlane").query();
-                project.swimlanes.$promise.then(function(data) {
+                vm.swimlanes = project.resource("swimlane").query();
+                vm.swimlanes.$promise.then(function(data) {
                    angular.forEach(data, function (swimlane) { 
                        if (swimlane.endPlanned) {
                             swimlane.endPlanned = moment(swimlane.endPlanned).toDate();
@@ -50,7 +49,7 @@
             };
             vm.reload();
         };
-        listController.$inject = ["$uibModal", "$scope", "moment"];
+        listController.$inject = ["$uibModal", "project", "moment"];
         return listController;
     });
 })();
