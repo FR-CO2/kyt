@@ -151,7 +151,7 @@ input, .form-control {
 /* line 20, ../../../../../../co2themes/sass/bootstrap/_navbar.sass */
 .navbar-default {
   padding: 1em;
-  border-bottom: 2px solid #0172B4;
+  border-bottom: none;
   background: #168ACE;
   color: #FFF;
   height: auto;

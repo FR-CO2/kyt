@@ -1,7 +1,6 @@
 <header class="navbar navbar-static-top navbar-default">
     <div id="logo" class="navbar-header">
         <a class="navbar-brand" ui-sref="app.dashboard">
-            <img class="logo" src="../images/CO2-Logo.png" alt="logo" title="CO2" height="48"/>
             KyT
         </a>
     </div>
@@ -11,7 +10,7 @@
                 Dashboard
             </a>
         </li>
-        <li class="navbar-text dropdown">
+        <li class="navbar-text dropdown" ng-if="appCtrl.currentuser.projects.length > 0 || appCtrl.currentuser.applicationRole === 'ADMIN'">
             <a class="dropdown-toggle" role="dropdown" data-toggle="dropdown"  aria-expanded="true" id="projectsDropdown">
                 Mes projets
                 <span class="caret"></span>
@@ -20,6 +19,12 @@
                 <li ng-repeat="project in appCtrl.currentuser.projects">
                     <a ui-sref="app.project.kanban({projectId: project.id })">
                         {{project.name}}
+                    </a>
+                </li>
+                <li ng-if="appCtrl.currentuser.applicationRole === 'ADMIN'">
+                    <a ui-sref="app.projects">
+                        <span class="glyphicon glyphicon-folder-open"></span>&nbsp;
+                        <span>Administrer les projets</span>
                     </a>
                 </li>
             </ul>
@@ -39,12 +44,6 @@
                 </a>
             </li>
             <li ng-if="appCtrl.currentuser.applicationRole === 'ADMIN'">
-                <a ui-sref="app.projects">
-                    <span class="glyphicon glyphicon-folder-open"></span>
-                    <span>Administrer projets</span>
-                </a>
-            </li>
-            <li ng-if="appCtrl.currentuser.applicationRole === 'ADMIN'">
                 <a ui-sref="app.users">
                     <span class="glyphicon glyphicon-user"></span>
                     <span>Administrer utilisateurs</span>
@@ -55,7 +54,7 @@
                     <span class="glyphicon glyphicon-log-out"></span>
                     <span>Logout</span>
                 </a>
-            </li>  
+            </li>
         </ul>
     </div>
 </header>
