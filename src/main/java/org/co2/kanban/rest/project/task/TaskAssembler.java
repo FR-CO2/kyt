@@ -7,6 +7,7 @@ package org.co2.kanban.rest.project.task;
 
 import java.sql.Timestamp;
 import org.co2.kanban.repository.allocation.Allocation;
+import org.co2.kanban.repository.member.Member;
 import org.co2.kanban.rest.project.ProjectController;
 import org.co2.kanban.rest.project.category.CategoryController;
 import org.co2.kanban.rest.project.member.MemberController;
@@ -65,14 +66,16 @@ public class TaskAssembler extends ResourceAssemblerSupport<Task, TaskResource> 
         resource.add(linkTo(methodOn(ProjectController.class).get(task.getProject().getId())).withRel("project"));
         resource.add(linkTo(methodOn(StateController.class).get(task.getProject().getId(), task.getState().getId())).withRel("state"));
         resource.add(linkTo(methodOn(TaskController.class).get(task.getProject().getId(), task.getId())).withSelfRel());
-        if (task.getAssignee() != null) {
-            resource.add(linkTo(methodOn(MemberController.class).get(task.getProject().getId(),task.getAssignee().getId())).withRel("assignee"));
+        if (task.getAssignees() != null) {
+            for (Member assignee : task.getAssignees()) {
+                resource.add(linkTo(methodOn(MemberController.class).get(task.getProject().getId(), assignee.getId())).withRel("assignee"));
+            }
         }
         if (task.getSwimlane() != null) {
-            resource.add(linkTo(methodOn(SwimlaneController.class).get( task.getProject().getId(), task.getSwimlane().getId())).withRel("swimlane"));
+            resource.add(linkTo(methodOn(SwimlaneController.class).get(task.getProject().getId(), task.getSwimlane().getId())).withRel("swimlane"));
         }
         if (task.getCategory() != null) {
-            resource.add(linkTo(methodOn(CategoryController.class).get( task.getProject().getId(), task.getCategory().getId())).withRel("category"));
+            resource.add(linkTo(methodOn(CategoryController.class).get(task.getProject().getId(), task.getCategory().getId())).withRel("category"));
         }
         resource.add(linkTo(methodOn(CommentController.class).comments(task.getProject().getId(), task.getId())).withRel("comment"));
         resource.add(linkTo(methodOn(AllocationController.class).list(task.getProject().getId(), task.getId())).withRel("allocation"));

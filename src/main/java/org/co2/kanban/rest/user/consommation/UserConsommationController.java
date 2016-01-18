@@ -7,7 +7,6 @@ package org.co2.kanban.rest.user.consommation;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import org.co2.kanban.repository.allocation.Allocation;
@@ -20,7 +19,6 @@ import org.co2.kanban.repository.task.TaskRepository;
 import org.co2.kanban.repository.user.ApplicationUser;
 import org.co2.kanban.repository.user.ApplicationUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -59,7 +57,7 @@ public class UserConsommationController {
         List<UserTaskImputationResource> results = new ArrayList<>();
         Iterable<Allocation> allocations = allocationRepository.findByMemberUserAndAllocationDate(appUser, time);
         Iterator<Allocation> allocationsIterator = allocations.iterator();
-        Iterable<Task> tasks = taskRepositoy.findByAssigneeUserAndPlannedStartBeforeAndPlannedEndingAfterAndStateCloseStateFalse(appUser, time, time);
+        Iterable<Task> tasks = taskRepositoy.findByAssigneesUserAndPlannedStartBeforeAndPlannedEndingAfterAndStateCloseStateFalse(appUser, time, time);
         for (Task task : tasks) {
             UserTaskImputationResource resource = new UserTaskImputationResource(task);
             while (allocationsIterator.hasNext()) {

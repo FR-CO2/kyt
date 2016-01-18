@@ -6,7 +6,11 @@ endpoints :
 
 spring:
     profiles:
-        active: dev-h2 
+        active: dev-postgresql 
+    jpa:
+        generate-ddl: false
+        hibernate:
+            ddl-auto: none
     mvc:
         favicon:
             enabled: false
@@ -42,6 +46,8 @@ spring:
         url: jdbc:postgresql:postgres
         username: postgres
         password: Wxegdej5
+liquibase:
+    drop-first: true
 ---
 
 endpoints :
