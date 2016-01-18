@@ -52,6 +52,9 @@
             vm.loadCategory = function () {
                 vm.categories = project.resource("category").query();
             };
+            vm.toggleSwimlane = function (e) {
+                $(e.target).parent().parent().toggleClass('kanban__swimlane--collapsed');
+            }
         };
         kanbanController.$inject = ["$uibModal", "project", "kanbanService"];
         return kanbanController;
