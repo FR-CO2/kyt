@@ -1,4 +1,5 @@
 <div class="row" id="task">
+    <div growl></div>
     <h2>
         #{{taskCtrl.task.id}}
     </h2>
@@ -34,11 +35,16 @@
             </div>
         </fieldset>
         <fieldset>
-            <div class="form-group col-md-3">
+            <div class="form-group col-md-5">
                 <label for="assignee">Assigné à </label>
-                <input class="form-control" ng-model="taskCtrl.task.assignee.username"
+                <input class="form-control" ng-model="taskCtrl.selecteduser.username"
                        typeahead-editable="false" typeahead-on-select="taskCtrl.selectAssignee($item, $model, $label)" 
-                       uib-typeahead="member as member.username for member in taskCtrl.getMembers($viewValue)" />
+                       uib-typeahead="member as member.username for member in taskCtrl.getMembers($viewValue)" placeholder="Ajouter un utilisateur"/>
+                <ul>
+                    <li  ng-repeat="member in taskCtrl.task.assignees">
+                        {{member.username}}
+                    </li>
+                </ul>
             </div>
         </fieldset>
         <fieldset>

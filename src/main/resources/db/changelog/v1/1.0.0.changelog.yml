@@ -377,7 +377,9 @@ databaseChangeLog:
                 sequenceName: task_pkey_seq
                 ordererd: true
             - createSequence:
-                sequenceName: user_pkey_seq                
+                sequenceName: user_pkey_seq  
+                startValue : 2
+                
         rollback:
                 - dropTable:
                     tableName: kyt_allocation

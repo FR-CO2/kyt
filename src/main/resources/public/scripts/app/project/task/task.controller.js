@@ -1,6 +1,6 @@
 (function () {
     define(["angular"], function (angular) {
-        var taskController = function ($q, $state, project, currenttask, taskAssemblerService) {
+        var taskController = function ($q, $state, project, currenttask, taskAssemblerService, growl) {
             var vm = this;
             vm.customFieldMap = {};
             project.$promise.then(function () {
@@ -24,12 +24,22 @@
                         angular.forEach(data, function (customField) {
                             vm.customFieldMap[customField.fieldName].fieldValue = customField.fieldValue;
                         });
-                    })
+                    });
                 });
             });
 
             vm.selectAssignee = function ($item, $model, $label) {
-                vm.task.assignee = $model;
+                var userAlreadyAssigned = false;
+                angular.forEach(vm.task.assignees, function (user) {
+                    if (user.id === $model.id) {
+                        userAlreadyAssigned = true;
+                        growl.error("Utilisateur déjà assigné");
+                    }
+                });
+                if (!userAlreadyAssigned) {
+                    vm.task.assignees.push($model);
+                }
+                vm.selecteduser = {};
             };
             vm.getMembers = function (term) {
                 return project.resource("member").query({search: term}).$promise;
@@ -47,7 +57,7 @@
                 });
             };
         };
-        taskController.$inject = ["$q", "$state", "project", "task", "taskAssemblerService"];
+        taskController.$inject = ["$q", "$state", "project", "task", "taskAssemblerService", "growl"];
         return taskController;
     });
 })();
