@@ -15,10 +15,12 @@
                 <fieldset class="row">
                     <div class="col-md-4 form-group">
                         <label for="precision">Par : </label>
-                        <select id="precision" class="form-control" ng-model="consommationCtrl.precision" ng-change="consommationCtrl.precisionChange()">
-                            <option value="month">Mois</option>
-                            <option value="week">Semaine</option>
-                        </select>
+                        <div class="form-control">
+                            <select id="precision" class="form-select" ng-model="consommationCtrl.precision" ng-change="consommationCtrl.precisionChange()">
+                                <option value="month">Mois</option>
+                                <option value="week">Semaine</option>
+                            </select>
+                        </div>
                     </div>
                 </fieldset>
             </form>
@@ -27,7 +29,7 @@
                     <tr>
                         <th></th>
                         <th><span class="glyphicon glyphicon-arrow-left" ng-click="consommationCtrl.previous()"></span></th>
-                        <th ng-repeat="day in consommationCtrl.days"> 
+                        <th ng-repeat="day in consommationCtrl.days">
                             <span ng-if="consommationCtrl.precision === 'week'">{{day.format('DD/MM')}}</span>
                             <span ng-if="consommationCtrl.precision === 'month'">{{day.label}}</span>
                         </th>
@@ -37,13 +39,13 @@
                 <tbody ng-repeat="entry in consommationCtrl.entries">
                     <tr>
                         <th>
-                            {{entry.username}} 
+                            {{entry.username}}
                         </th>
                         <th>
                             <span ng-if="!entry.showDetails && entry.imputations.details.length" class="glyphicon glyphicon-chevron-down" ng-click="consommationCtrl.showDetail(entry)"></span>
                             <span ng-if="entry.showDetails && entry.imputations.details.length" class="glyphicon glyphicon-chevron-up" ng-click="consommationCtrl.hideDetail(entry)"></span>
                         </th>
-                        <th ng-repeat="day in consommationCtrl.days"> 
+                        <th ng-repeat="day in consommationCtrl.days">
                             <span ng-if="consommationCtrl.precision === 'week'">{{entry.imputations.imputations[day.format("DD/MM/YYYY")]}}</span>
                             <span ng-if="consommationCtrl.precision === 'month'">{{entry.imputations.imputations[day.id]}}</span>
                         </th>

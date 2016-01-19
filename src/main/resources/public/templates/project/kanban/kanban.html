@@ -19,8 +19,8 @@
         </thead>
         <tbody class="kanban__content">
             <tr class="kanban__swimlane" ng-repeat="swimlane in kanbanCtrl.swimlanes">
-                <td class="kanban__column kanban__column--title column">
-                    <div ng-click="kanbanCtrl.toggleSwimlane($event)" >{{swimlane.name}}</div>
+                <td class="kanban__column kanban__column--title column" id="swimlane_{{swimlane.id}}" ng-click="kanbanCtrl.toggleSwimlane($event)">
+                    <div>{{swimlane.name}}</div>
                     <div ng-if="swimlane.endPlanned">({{swimlane.endPlanned | date:"dd/MM/yyyy"}})</div>
                 </td>
                 <td class="kanban__column column" ng-repeat="state in swimlane.states">

@@ -13,18 +13,24 @@
             </div>
             <div class="form-group col-md-3">
                 <label for="state">Etat</label>
-                <select ng-model="taskCtrl.task.state" required class="form-control" name="state" id="state" placeholder="Etat" ng-options="state as state.name for state in taskCtrl.states track by state.id">
-                </select>
+                <div class="form-control">
+                    <select ng-model="taskCtrl.task.state" required class="form-select" name="state" id="state" placeholder="Etat" ng-options="state as state.name for state in taskCtrl.states track by state.id">
+                    </select>
+                </div>
             </div>
             <div class="form-group col-md-3">
                 <label for="swimlane">Couloir</label>
-                <select ng-model="taskCtrl.task.swimlane" class="form-control" id="swimlane" name="swimlane" placeholder="Couloir" ng-options="swimlane as swimlane.name for swimlane in taskCtrl.swimlanes track by swimlane.id">
-                </select>
+                <div class="form-control">
+                    <select ng-model="taskCtrl.task.swimlane" class="form-select" id="swimlane" name="swimlane" placeholder="Couloir" ng-options="swimlane as swimlane.name for swimlane in taskCtrl.swimlanes track by swimlane.id">
+                    </select>
+                </div>
             </div>
             <div class="form-group col-md-3">
                 <label for="category">Catégorie</label>
-                <select ng-model="taskCtrl.task.category" class="form-control" id="category" name="category" placeholder="Catégorie" ng-options="category as category.name for category in taskCtrl.categories track by category.id">
-                </select>
+                <div class="form-control">
+                    <select ng-model="taskCtrl.task.category" class="form-select" id="category" name="category" placeholder="Catégorie" ng-options="category as category.name for category in taskCtrl.categories track by category.id">
+                    </select>
+                </div>
             </div>
         </fieldset>
         <fieldset>
@@ -37,7 +43,7 @@
             <div class="form-group col-md-3">
                 <label for="assignee">Assigné à </label>
                 <input class="form-control" ng-model="taskCtrl.task.assignee.username"
-                       typeahead-editable="false" typeahead-on-select="taskCtrl.selectAssignee($item, $model, $label)" 
+                       typeahead-editable="false" typeahead-on-select="taskCtrl.selectAssignee($item, $model, $label)"
                        uib-typeahead="member as member.username for member in taskCtrl.getMembers($viewValue)" />
             </div>
         </fieldset>
@@ -55,7 +61,7 @@
                 <input type="number" id="estimatedLoad" class="form-control" ng-model="taskCtrl.task.estimatedLoad" min="0" step="1"/>
             </div>
         </fieldset>
-        <div class="col-md-offset-9 col-md-3 inline" ng-if="projectCtrl.rights.hasEditRights"> 
+        <div class="col-md-offset-9 col-md-3 inline" ng-if="projectCtrl.rights.hasEditRights">
             <button type="button" ui-sref="app.project.kanban({projectId: projectCtrl.project.id })" class="btn btn-info">Annuler</button>
             <button type="submit" class="btn btn-info" >Enregistrer</button>
         </div>
@@ -64,9 +70,9 @@
         <div class="panel-body">
             <uib-tabset>
                 <uib-tab heading="Commentaires" ui-sref="app.project.task.comment({projectId: projectCtrl.project.id, taskId: taskCtrl.task.id })">
-                </uib-tab> 
+                </uib-tab>
                 <uib-tab heading="Consommations" ui-sref="app.project.task.allocation({projectId: projectCtrl.project.id, taskId: taskCtrl.task.id })">
-                </uib-tab> 
+                </uib-tab>
                 <!--<uib-tab heading="Historique">
                 </uib-tab> -->
             </uib-tabset>
