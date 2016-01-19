@@ -12,4 +12,5 @@ package org.co2.kanban.repository.taskfield;
  */
 public enum TaskFieldType {
 
+    TEXT, DATE, NUMBER;
 }

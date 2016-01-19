@@ -1,13 +1,13 @@
 (function () {
-    define(["angular"], function (angular) {
+    define([], function () {
         var listController = function ($uibModal, project) {
             var vm = this;
             vm.add = function () {
                 var modalInstance = $uibModal.open({
                     animation: true,
                     templateUrl: "templates/admin/project/taskfield/add.html",
-                    controller: "addSwimlaneAdminController",
-                    controllerAs: "addSwimlaneCtrl",
+                    controller: "addTaskfieldAdminController",
+                    controllerAs: "addTaskfieldCtrl",
                     resolve: {
                         project: project
                     },

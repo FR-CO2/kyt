@@ -1,7 +1,8 @@
 (function () {
     define([], function () {
-        var addController = function ($uibModalInstance, project) {
+        var addController = function ($uibModalInstance, project, fieldtypeService) {
             var vm = this;
+            vm.fieldTypes = fieldtypeService.query();
             vm.submit = function () {
                 project.resource("taskfield").save(vm.taskfield, function () {
                     $uibModalInstance.close();
@@ -10,7 +11,7 @@
                 });
             };
         };
-        addController.$inject = ["$uibModalInstance", "project"];
+        addController.$inject = ["$uibModalInstance", "project", "fieldtypeService"];
         return addController;
     });
 })();

@@ -13,6 +13,7 @@ import org.co2.kanban.rest.project.task.TaskListController;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 import org.co2.kanban.rest.project.member.MemberController;
+import org.co2.kanban.rest.project.taskfield.TaskFieldDefController;
 import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
 import org.springframework.stereotype.Component;
 
@@ -37,6 +38,8 @@ public class ProjectAssembler extends ResourceAssemblerSupport<Project, ProjectR
         resource.add(linkTo(TaskListController.class, project.getId()).withRel("task"));
         resource.add(linkTo(methodOn(ProjectController.class).get(project.getId())).withSelfRel());
         resource.add(linkTo(methodOn(ProjectController.class).roles(project.getId())).withRel("roles"));
+        resource.add(linkTo(methodOn(TaskFieldDefController.class).projectList(project.getId())).withRel("taskfield"));
+        
         return resource;
     }
 

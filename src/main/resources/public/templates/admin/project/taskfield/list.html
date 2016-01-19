@@ -16,7 +16,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="taskfield in categoryListCtrl.taskfields">
+                    <tr ng-repeat="taskfield in taskfieldListCtrl.taskfields">
                         <td>
                            {{taskfield.fieldName}}
                         </td>
@@ -27,7 +27,7 @@
                             <span class="glyphicon" ng-class="{'glyphicon-check' : taskfield.required, 'glyphicon-unchecked' : !taskfield.required}"></span>
                         </td>
                         <td>
-                            <a ng-click="taskfieldListCtrl.delete(category)">
+                            <a ng-click="taskfieldListCtrl.delete(taskfield)">
                                 <span class="glyphicon glyphicon-trash"></span>
                             </a>
                         </td>
