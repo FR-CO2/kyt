@@ -5,10 +5,13 @@
  */
 package org.co2.kanban.rest.project.task;
 
+import java.util.List;
 import org.co2.kanban.repository.project.Project;
 import org.co2.kanban.repository.project.ProjectRepository;
 import org.co2.kanban.repository.task.Task;
 import org.co2.kanban.repository.task.TaskRepository;
+import org.co2.kanban.repository.taskfield.TaskField;
+import org.co2.kanban.repository.taskfield.TaskFieldRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,6 +43,9 @@ public class TaskController {
     @Autowired
     private TaskAssembler assembler;
 
+    @Autowired
+    private TaskFieldRepository fieldRepository;
+
     @InitBinder
     protected void initBinder(WebDataBinder binder) {
         binder.setValidator(new TaskValidator());
@@ -62,8 +68,19 @@ public class TaskController {
     public TaskResource update(@PathVariable("projectId") Long projectId, @PathVariable("id") Long taskId, @Validated @RequestBody Task task) {
         Project project = projectRepository.findOne(projectId);
         task.setProject(project);
+        if (task.getCustomField() != null) {
+            saveCustomFields(task.getId(), task.getCustomField());
+        }
         Task result = repository.save(task);
         return assembler.toResource(result);
+    }
+
+    private void saveCustomFields(Long taskId, List<TaskField> fields) {
+        Task currentTask = repository.findOne(taskId);
+        for (TaskField field : fields) {
+            field.setTask(currentTask);
+        }
+        fieldRepository.save(fields);
     }
 
 }

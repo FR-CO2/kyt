@@ -56,8 +56,10 @@ public class TaskField implements Serializable {
     }
 
     public void setDefinition(TaskFieldDefinition definition) {
-        this.id.taskFieldDefId = definition.getId();
-        this.definition = definition;
+        if (definition != null) {
+            this.id.taskFieldDefId = definition.getId();
+            this.definition = definition;
+        }
     }
 
     public Task getTask() {

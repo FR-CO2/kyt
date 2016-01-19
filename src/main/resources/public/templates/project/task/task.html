@@ -55,6 +55,13 @@
                 <input type="number" id="estimatedLoad" class="form-control" ng-model="taskCtrl.task.estimatedLoad" min="0" step="1"/>
             </div>
         </fieldset>
+        <fieldset id="customfields">
+            <div class="form-group col-md-3" ng-repeat="customfield in taskCtrl.customFieldMap">
+                <label for="{{customfield.definition.fieldName}}">{{customfield.definition.fieldName}}</label>
+                <input type="{{customfield.definition.type}}" id="{{customfield.definition.fieldName}}" class="form-control"
+                       ng-required="customfield.definition.required" ng-model="customfield.fieldValue"/>
+            </div>
+        </fieldset>
         <div class="col-md-offset-9 col-md-3 inline" ng-if="projectCtrl.rights.hasEditRights"> 
             <button type="button" ui-sref="app.project.kanban({projectId: projectCtrl.project.id })" class="btn btn-info">Annuler</button>
             <button type="submit" class="btn btn-info" >Enregistrer</button>

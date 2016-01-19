@@ -16,6 +16,7 @@ import org.co2.kanban.rest.project.swimlane.SwimlaneController;
 import org.co2.kanban.repository.task.Task;
 import org.co2.kanban.rest.project.task.allocation.AllocationController;
 import org.co2.kanban.rest.project.task.comment.CommentController;
+import org.co2.kanban.rest.project.task.field.TaskFieldController;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
@@ -79,7 +80,7 @@ public class TaskAssembler extends ResourceAssemblerSupport<Task, TaskResource> 
         }
         resource.add(linkTo(methodOn(CommentController.class).comments(task.getProject().getId(), task.getId())).withRel("comment"));
         resource.add(linkTo(methodOn(AllocationController.class).list(task.getProject().getId(), task.getId())).withRel("allocation"));
-
+        resource.add(linkTo(methodOn(TaskFieldController.class).list(task.getProject().getId(), task.getId())).withRel("customfield"));
         return resource;
     }
 }
