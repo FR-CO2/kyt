@@ -40,21 +40,9 @@
                     });
                 }
             };
-            vm.selectAssignee = function ($item, $model, $label, task) {
-                task.assignee = $model;
-            };
-            vm.getMembers = function (term) {
-                return project.resource("member").query({search: term}).$promise;
-            };
-            vm.saveTask = function (task) {
-                task.resource("self").save(null, task, null);
-            };
-            vm.loadCategory = function () {
-                vm.categories = project.resource("category").query();
-            };
             vm.toggleSwimlane = function (e) {
                 $(e.target).parent().parent().toggleClass('kanban__swimlane--collapsed');
-            }
+            };
         };
         kanbanController.$inject = ["$uibModal", "project", "kanbanService"];
         return kanbanController;

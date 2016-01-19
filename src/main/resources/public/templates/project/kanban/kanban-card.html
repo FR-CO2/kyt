@@ -12,39 +12,22 @@
                 <span ng-class="{'glyphicon glyphicon-usd' : task.exceededLoad}"></span>
             </span>
         </header>
-        <div class="kanban-card__action">
-            <span ng-if="projectCtrl.rights.hasEditRights" >
-                <a href="#" editable-text="task.assignee.username" onaftersave="kanbanCtrl.saveTask(task)"
-                   e-typeahead-on-select="kanbanCtrl.selectAssignee($item, $model, $label, task)" e-typeahead-editable="false" 
-                   e-typeahead="member as member.username for member in kanbanCtrl.getMembers($viewValue)" title="Assigné à">
-                    <span class="glyphicon glyphicon-user"></span>
-                    <span ng-if="!task.assignee">
-                        -
-                    </span>
-                    {{task.assignee.username}}
-                </a>
-            </span>
-            <span ng-if="!projectCtrl.rights.hasEditRights" >
-                <span class="glyphicon glyphicon-user"></span>
-                <span ng-if="!task.assignee">
-                    -
-                </span>
-                {{task.assignee.username}}
-            </span>
-            <span class="badge pull-right" ng-if="projectCtrl.rights.hasEditRights">
-                <a href="#" editable-select="task.category" onshow="kanbanCtrl.loadCategory()" onaftersave="kanbanCtrl.saveTask(task)" e-ng-options="category as category.name for category in kanbanCtrl.categories">
-                    <span ng-if="!task.category">
-                        -
-                    </span>
-                    <span class="glyphicon glyphicon-tag" ng-if="task.category"></span> {{task.category.name}}
-                </a>
-            </span>
-            <span class="badge pull-right" ng-if="!projectCtrl.rights.hasEditRights" >
+        <div class="kanban-card__action row">
+            <!-- A remplacer par crop user -->
+            <div class="col-md-7">
+                <ul class="list-group">
+                    <li class="list-group-item" ng-repeat="member in task.assignees">                
+                        <span class="glyphicon glyphicon-user"></span>{{member.username}}
+                    </li>
+                </ul>
+            </div>
+            <!-- Fin crop user -->
+            <div class="col-md-5 badge pull-right" >
                 <span ng-if="!task.category">
                     -
                 </span>
                 <span class="glyphicon glyphicon-tag" ng-if="task.category"></span> {{task.category.name}}
-            </span>
+            </div>
         </div>
     </div>
 
