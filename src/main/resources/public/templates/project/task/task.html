@@ -41,8 +41,8 @@
                        typeahead-editable="false" typeahead-on-select="taskCtrl.selectAssignee($item, $model, $label)" 
                        uib-typeahead="member as member.username for member in taskCtrl.getMembers($viewValue)" placeholder="Ajouter un utilisateur"/>
                 <ul>
-                    <li  ng-repeat="member in taskCtrl.task.assignees">
-                        {{member.username}}
+                    <li  ng-repeat="member in taskCtrl.task.assignees track by $index" ng-click="taskCtrl.removeuser($index)">
+                        {{member.username}} <span class="glyphicon glyphicon-trash"></span>
                     </li>
                 </ul>
             </div>

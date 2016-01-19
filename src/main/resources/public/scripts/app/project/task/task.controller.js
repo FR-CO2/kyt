@@ -39,7 +39,9 @@
                 if (!userAlreadyAssigned) {
                     vm.task.assignees.push($model);
                 }
-                vm.selecteduser = {};
+            };
+            vm.removeuser = function (index) {
+               vm.task.assignees.splice(index, 1);
             };
             vm.getMembers = function (term) {
                 return project.resource("member").query({search: term}).$promise;

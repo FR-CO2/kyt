@@ -2,3 +2,7 @@
     -webkit-box-shadow: none;
     margin-bottom: 2px;
 }
+
+td.column ul {
+    min-height: max-content;
+}
