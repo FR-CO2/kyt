@@ -21,7 +21,7 @@
                         vm.task.customField.push(vm.customFieldMap[customField.fieldName]);
                     });
                     vm.task.resource("customfield").query(function (data) {
-                        angular.forEach(data[0], function (customField) {
+                        angular.forEach(data, function (customField) {
                             vm.customFieldMap[customField.fieldName].fieldValue = customField.fieldValue;
                         });
                     })

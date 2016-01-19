@@ -28,7 +28,6 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -45,8 +44,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/api/project")
 public class ProjectController {
 
+    private static final String MESSAGE_KEY_NOT_FOUND = "project.error.notfound";
+
     private static final String MESSAGE_KEY_CONFLICT_NAME = "project.error.conflict.name";
-    
+
     @Autowired
     private ProjectRepository repository;
 
@@ -102,7 +103,11 @@ public class ProjectController {
 
     @RequestMapping(value = "/{projectId}", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ProjectResource> get(@PathVariable("projectId") Long projectId) {
-        return new ResponseEntity<>(assembler.toResource(repository.findOne(projectId)), HttpStatus.OK);
+        Project project = repository.findOne(projectId);
+        if (project == null) {
+            throw new BusinessException(HttpStatus.NOT_FOUND, MESSAGE_KEY_NOT_FOUND);
+        }
+        return new ResponseEntity<>(assembler.toResource(project), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{projectId}", method = RequestMethod.DELETE, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)

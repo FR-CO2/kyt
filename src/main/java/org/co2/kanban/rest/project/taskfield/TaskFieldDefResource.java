@@ -26,4 +26,8 @@ public class TaskFieldDefResource extends IdentifiableResourceSupport<TaskFieldD
     public TaskFieldType getType() {
         return this.getBean().getType();
     }
+
+    public Boolean isRequired() {
+        return this.getBean().getRequired();
+    }
 }

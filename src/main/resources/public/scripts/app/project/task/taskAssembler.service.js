@@ -19,10 +19,7 @@
                 if (task._links.swimlane) {
                     task.swimlane = taskresource.resource("swimlane").get();
                 }
-                if (task._links.assignee) {
-                    task.assignee = taskresource.resource("assignee").get();
-                }
-
+                task.assignees = taskresource.resource("assignee").query();
                 task.exceededLoad = (task.timeRemains + task.timeSpent > task.estimatedLoad);
                 if (taskresource.plannedEnding !== null) {
                     var today = moment();

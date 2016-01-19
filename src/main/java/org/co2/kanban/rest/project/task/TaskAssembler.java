@@ -15,6 +15,7 @@ import org.co2.kanban.rest.project.state.StateController;
 import org.co2.kanban.rest.project.swimlane.SwimlaneController;
 import org.co2.kanban.repository.task.Task;
 import org.co2.kanban.rest.project.task.allocation.AllocationController;
+import org.co2.kanban.rest.project.task.assignee.AssigneeController;
 import org.co2.kanban.rest.project.task.comment.CommentController;
 import org.co2.kanban.rest.project.task.field.TaskFieldController;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
@@ -67,11 +68,7 @@ public class TaskAssembler extends ResourceAssemblerSupport<Task, TaskResource> 
         resource.add(linkTo(methodOn(ProjectController.class).get(task.getProject().getId())).withRel("project"));
         resource.add(linkTo(methodOn(StateController.class).get(task.getProject().getId(), task.getState().getId())).withRel("state"));
         resource.add(linkTo(methodOn(TaskController.class).get(task.getProject().getId(), task.getId())).withSelfRel());
-        if (task.getAssignees() != null) {
-            for (Member assignee : task.getAssignees()) {
-                resource.add(linkTo(methodOn(MemberController.class).get(task.getProject().getId(), assignee.getId())).withRel("assignee"));
-            }
-        }
+        resource.add(linkTo(methodOn(AssigneeController.class).list(task.getProject().getId(), task.getId())).withRel("assignee"));
         if (task.getSwimlane() != null) {
             resource.add(linkTo(methodOn(SwimlaneController.class).get(task.getProject().getId(), task.getSwimlane().getId())).withRel("swimlane"));
         }

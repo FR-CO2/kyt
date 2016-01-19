@@ -12,6 +12,7 @@ import org.co2.kanban.repository.task.Task;
 import org.co2.kanban.repository.task.TaskRepository;
 import org.co2.kanban.repository.taskfield.TaskField;
 import org.co2.kanban.repository.taskfield.TaskFieldRepository;
+import org.co2.kanban.rest.error.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +35,8 @@ import org.springframework.web.bind.annotation.RestController;
 @PreAuthorize("@projectAccessExpression.hasMemberAccess(#projectId, principal.username)")
 public class TaskController {
 
+    private static final String MESSAGE_KEY_NOT_FOUND = "project.task.error.notfound";
+
     @Autowired
     private TaskRepository repository;
 
@@ -53,7 +56,11 @@ public class TaskController {
 
     @RequestMapping(method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public TaskResource get(@PathVariable("projectId") Long projectId, @PathVariable("id") Long taskId) {
-        return assembler.toResource(repository.findOne(taskId));
+        Task task = repository.findOne(taskId);
+        if (task == null) {
+            throw new BusinessException(HttpStatus.NOT_FOUND, MESSAGE_KEY_NOT_FOUND);
+        }
+        return assembler.toResource(task);
     }
 
     @RequestMapping(method = RequestMethod.DELETE, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
