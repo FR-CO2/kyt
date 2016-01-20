@@ -53,7 +53,8 @@
                 vm.categories = project.resource("category").query();
             };
             vm.toggleSwimlane = function (e) {
-                $(e.target).parent().parent().toggleClass('kanban__swimlane--collapsed');
+                var elem = e.currentTarget || e.srcElement;
+                $(elem).parent().toggleClass('kanban__swimlane--collapsed');
             }
         };
         kanbanController.$inject = ["$uibModal", "project", "kanbanService"];

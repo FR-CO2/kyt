@@ -17,7 +17,7 @@
                     <tr>
                         <th ng-click="tasksCtrl.tableFilter('name')">
                             Nom
-                            <span ng-class="{'glyphicon-sort-by-alphabet': tasksCtrl.sort.sortDirection === 'asc', 'glyphicon-sort-by-alphabet-alt': tasksCtrl.sort.sortDirection === 'desc'}" 
+                            <span ng-class="{'glyphicon-sort-by-alphabet': tasksCtrl.sort.sortDirection === 'asc', 'glyphicon-sort-by-alphabet-alt': tasksCtrl.sort.sortDirection === 'desc'}"
                                   class="glyphicon" ng-if="tasksCtrl.sort.field === 'name'"></span>
                         </th>
                         <th ng-click="tasksCtrl.tableFilter('state.position')">
@@ -116,14 +116,16 @@
                                         <uib-pagination total-items="tasksCtrl.tasks.page.totalElements" ng-change="tasksCtrl.loadPage()" ng-model="tasksCtrl.tasks.page.number" items-per-page="tasksCtrl.tasks.page.size" max-size="5" class="pagination-sm" boundary-links="true" rotate="false" num-pages="tasksCtrl.tasks.page.totalPages"></uib-pagination>
                                     </div>
                                 </div>
-                                <div class="col-md-3 form-inline"> 
+                                <div class="col-md-3 form-inline">
                                     <div class="form-group pull-right">
                                         <label for="nbEltUser">Nb élements :</label>
-                                        <select id="nbEltUser" ng-model="tasksCtrl.tasks.page.size" class="form-control input-sm" style="margin: 20px;" ng-change="tasksCtrl.loadPage()">
-                                            <option value="10" ng-selected="tasksCtrl.tasks.page.size === 10">10</option>
-                                            <option value="20" ng-selected="tasksCtrl.tasks.page.size === 20">20</option>
-                                            <option value="50" ng-selected="tasksCtrl.tasks.page.size === 50">50</option>
-                                        </select>
+                                        <div class="form-control">
+                                            <select id="nbEltUser" ng-model="tasksCtrl.tasks.page.size" class="form-select"  ng-change="tasksCtrl.loadPage()">
+                                                <option value="10" ng-selected="tasksCtrl.tasks.page.size === 10">10</option>
+                                                <option value="20" ng-selected="tasksCtrl.tasks.page.size === 20">20</option>
+                                                <option value="50" ng-selected="tasksCtrl.tasks.page.size === 50">50</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

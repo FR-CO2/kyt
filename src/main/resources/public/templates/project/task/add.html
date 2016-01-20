@@ -12,9 +12,11 @@
             </div>
             <div class="form-group">
                 <label for="category">Catégorie</label>
-                <select ng-model="addTaskCtrl.task.category.id" class="form-control" id="category" name="category" placeholder="Catégorie">
-                    <option value="{{category.id}}" ng-repeat="category in addTaskCtrl.categories">{{category.name}}</option>
-                </select>
+                <div class="form-control">
+                    <select ng-model="addTaskCtrl.task.category.id" class="form-select" id="category" name="category" placeholder="Catégorie">
+                        <option value="{{category.id}}" ng-repeat="category in addTaskCtrl.categories">{{category.name}}</option>
+                    </select>
+                </div>
             </div>
             <div class="form-group">
                 <label for="description">Description</label>
@@ -23,7 +25,7 @@
             <div class="form-group">
                 <label for="assignee">Assigné à </label>
                 <input class="form-control" ng-model="addTaskCtrl.task.assignee.username"
-                       typeahead-editable="false" typeahead-on-select="addTaskCtrl.selectAssignee($item, $model, $label)" 
+                       typeahead-editable="false" typeahead-on-select="addTaskCtrl.selectAssignee($item, $model, $label)"
                        uib-typeahead="member as member.username for member in addTaskCtrl.getMembers($viewValue)" />
             </div>
             <div class="form-group">
