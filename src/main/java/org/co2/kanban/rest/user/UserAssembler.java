@@ -5,6 +5,7 @@
  */
 package org.co2.kanban.rest.user;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
@@ -44,6 +45,13 @@ public class UserAssembler extends ResourceAssemblerSupport<ApplicationUser, Use
         links.add(linkTo(ProjectController.class).withRel("project"));
         links.add(linkTo(UserTaskController.class, user.getId()).withRel("task"));
         links.add(linkTo(UserConsommationController.class, user.getId()).withRel("consommation"));
+        if (user.getPhoto() != null) {
+            try {
+                links.add(linkTo(methodOn(ApplicationUserController.class).getPhoto(user.getId())).withRel("photo"));
+            } catch (IOException ioex) {
+                //Todo log error;
+            }
+        }
         return links;
     }
 }

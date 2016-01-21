@@ -11,7 +11,7 @@
                 var app = angular.module("kanban",
                         ["ui.router", "ngStorage", "ngSanitize", "ui.sortable",
                             "http-auth-interceptor", "xeditable", "ngResource",
-                            "hateoas", "ui.bootstrap", "ui.bootstrap.tpls",
+                            "hateoas", "ui.bootstrap", "ui.bootstrap.tpls", 
                             loginModule.name, dashboardModule.name,
                             projectModule.name, adminModule.name])
                         .config(appConfig)

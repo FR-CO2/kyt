@@ -21,11 +21,11 @@ require.config({
         ngAnimate: '../../webjars/angularjs/1.4.8/angular-animate.min',
         ngAria: '../../webjars/angularjs/1.4.8/angular-aria.min',
         ngSanitize: '../../webjars/angularjs/1.4.8/angular-sanitize.min',
-        hateoas: '../lib/angular-hateoas/angular-hateoas',
+        hateoas: '../lib/angular-hateoas/angular-hateoas.min',
         uiBootstrap: '../../webjars/angular-ui-bootstrap/0.14.3/ui-bootstrap.min',
         uiBootstrapTpl: '../../webjars/angular-ui-bootstrap/0.14.3/ui-bootstrap-tpls.min',
         uiCalendar: '../lib/angular-ui-calendar/calendar',
-        growl: '../../webjars/angular-growl-2/0.7.3/angular-growl.min'
+        growl: '../../webjars/angular-growl-2/0.7.3/angular-growl.min',
     },
     shim: {
         bootstrap: {

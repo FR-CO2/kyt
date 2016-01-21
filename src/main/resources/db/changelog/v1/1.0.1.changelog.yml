@@ -155,4 +155,17 @@ databaseChangeLog:
                     constraintName: fk_assignee_task
                     referencedColumnNames: id
                     referencedTableName: kyt_member        
-                            
+  - changeSet:
+        id: schema-1.0.1-photoprofil
+        author: courtib
+        changes:
+            - addColumn:
+                    tableName: kyt_user
+                    columns:
+                    - column:
+                        name: photo
+                        type: BLOB
+        rollback:
+            - dropColumn:
+                columnName: photo
+                tableName: kyt_user               

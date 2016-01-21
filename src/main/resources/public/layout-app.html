@@ -32,7 +32,8 @@
     </ul>
     <div class="nav navbar-nav  navbar-right dropdown">
         <a class="navbar-text dropdown-toggle account" data-toggle="dropdown" id="accountDropdown" aria-expanded="true">
-            <span class="glyphicon glyphicon-user"></span>
+            <span ng-if="!appCtrl.currentuser.photo" class="glyphicon glyphicon-user"></span>
+            <img ng-if="appCtrl.currentuser.photo" class="glyphicon" ng-src="{{appCtrl.currentuser.photo}}" alt="{{appCtrl.currentuser.username}}">
             {{appCtrl.currentuser.username}}
             <span class="caret"></span>
         </a>

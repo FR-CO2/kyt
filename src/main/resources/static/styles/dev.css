@@ -6,3 +6,7 @@
 td.column ul {
     min-height: max-content;
 }
+
+.navbar-nav img.glyphicon {
+    width : 25%;
+}

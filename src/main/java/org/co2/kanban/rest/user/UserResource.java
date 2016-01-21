@@ -13,7 +13,8 @@ import org.co2.kanban.rest.IdentifiableResourceSupport;
  *
  * @author ben
  */
-public class UserResource extends IdentifiableResourceSupport <ApplicationUser>{
+public class UserResource extends IdentifiableResourceSupport<ApplicationUser> {
+
     
     public UserResource(ApplicationUser user) {
         super(user);
@@ -23,7 +24,6 @@ public class UserResource extends IdentifiableResourceSupport <ApplicationUser>{
         return this.getBean().getUsername();
     }
 
-
     public String getEmail() {
         return this.getBean().getEmail();
     }
@@ -31,5 +31,5 @@ public class UserResource extends IdentifiableResourceSupport <ApplicationUser>{
     public ApplicationUserRole getApplicationRole() {
         return this.getBean().getApplicationRole();
     }
-    
+
 }
