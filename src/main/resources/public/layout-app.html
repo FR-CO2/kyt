@@ -1,16 +1,14 @@
-<header class="navbar navbar-static-top navbar-default">
-    <div id="logo" class="navbar-header">
-        <a class="navbar-brand" ui-sref="app.dashboard">
-            KyT
-        </a>
-    </div>
-    <ul class="nav navbar-nav">
-        <li class="navbar-text">
+<header class="nav nav--main">
+    <a class="nav__brand" ui-sref="app.dashboard">
+        KyT
+    </a>
+    <ul class="nav__links">
+        <li class="nav__link">
             <a ui-sref="app.dashboard">
                 Dashboard
             </a>
         </li>
-        <li class="navbar-text dropdown" ng-if="appCtrl.currentuser.projects.length > 0 || appCtrl.currentuser.applicationRole === 'ADMIN'">
+        <li class="nav__link dropdown" ng-if="appCtrl.currentuser.projects.length > 0 || appCtrl.currentuser.applicationRole === 'ADMIN'">
             <a class="dropdown-toggle" role="dropdown" data-toggle="dropdown"  aria-expanded="true" id="projectsDropdown">
                 Mes projets
                 <span class="caret"></span>
@@ -30,8 +28,8 @@
             </ul>
         </li>
     </ul>
-    <div class="nav navbar-nav  navbar-right dropdown">
-        <a class="navbar-text dropdown-toggle account" data-toggle="dropdown" id="accountDropdown" aria-expanded="true">
+    <div class="nav__links nav__links--right dropdown">
+        <a class="nav__link dropdown-toggle account" data-toggle="dropdown" id="accountDropdown" aria-expanded="true">
             <span class="glyphicon glyphicon-user"></span>
             {{appCtrl.currentuser.username}}
             <span class="caret"></span>
