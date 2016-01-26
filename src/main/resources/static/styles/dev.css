@@ -8,5 +8,11 @@ td.column ul {
 }
 
 .navbar-nav img.glyphicon {
-    width : 25%;
+    width : 40px;
+    border-radius: 20px;
+}
+
+.crop-photo {
+    width : 40px;
+    border-radius: 20px;
 }
