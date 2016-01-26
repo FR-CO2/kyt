@@ -5,9 +5,11 @@
             vm.currentuser = currentuser;
             currentuser.$promise.then(function () {
                 currentuser.projects = currentuser.resource("project").query();
-                 $http.get(currentuser._links.photo).then(function(result) {
-                     currentuser.photo = result.data;
-                 });
+                if (currentuser._links.photo) {
+                    $http.get(currentuser._links.photo).then(function (result) {
+                        currentuser.photo = result.data;
+                    });
+                };
             });
             vm.logout = function () {
                 delete $sessionStorage.oauth;

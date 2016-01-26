@@ -4,7 +4,7 @@
         function authTokenHttpInterceptor($sessionStorage) {
             return {
                 "request": function (config) {
-                    if (config.url.indexOf(".html") === -1 && $sessionStorage.oauth) {
+                    if (config.url && config.url.indexOf(".html") === -1 && $sessionStorage.oauth) {
                         config.headers.authorization = $sessionStorage.oauth.token_type + " " + $sessionStorage.oauth.access_token;
                         config.withCredentials = true;
                     }

@@ -5,8 +5,8 @@
  */
 
 (function () {
-    define([], function () {
-        var taskAssemblerService = function (HateoasInterface, moment) {
+    define(["angular"], function (angular) {
+        var taskAssemblerService = function ($http, HateoasInterface, moment) {
             return function (task) {
                 var taskresource = task;
                 if (!task.resource) {
@@ -19,7 +19,16 @@
                 if (task._links.swimlane) {
                     task.swimlane = taskresource.resource("swimlane").get();
                 }
-                task.assignees = taskresource.resource("assignee").query();
+                task.assignees = taskresource.resource("assignee").query(function (assignees) {
+                    angular.forEach(assignees, function (assignee) {
+                        if (assignee._links.photo) {
+                            $http.get(assignee._links.photo).then(function (result) {
+                                assignee.photo = result.data;
+                            });
+                        }
+                    });
+                    return assignees;
+                });
                 task.exceededLoad = (task.timeRemains + task.timeSpent > task.estimatedLoad);
                 if (taskresource.plannedEnding !== null) {
                     var today = moment();
@@ -35,7 +44,7 @@
                 return task;
             };
         };
-        taskAssemblerService.$inject = ["HateoasInterface", "moment"];
+        taskAssemblerService.$inject = ["$http", "HateoasInterface", "moment"];
         return taskAssemblerService;
     });
 })();

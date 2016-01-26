@@ -6,6 +6,7 @@
 package org.co2.kanban.rest.project.member;
 
 
+import java.io.IOException;
 import org.co2.kanban.repository.member.Member;
 import org.co2.kanban.rest.project.ProjectController;
 import org.co2.kanban.rest.project.member.imputation.ImputationController;
@@ -32,6 +33,13 @@ public class MemberAssembler extends ResourceAssemblerSupport<Member, MemberReso
         resource.add(linkTo(methodOn(MemberController.class).get( member.getProject().getId(), member.getId())).withSelfRel());
         resource.add(linkTo(methodOn(ProjectController.class).get(member.getProject().getId())).withRel("project"));
         resource.add(linkTo(methodOn(ApplicationUserController.class).get(member.getUser().getId())).withRel("user"));
+        if (member.getUser().getPhoto() != null) {
+            try {
+                resource.add(linkTo(methodOn(ApplicationUserController.class).getPhoto(member.getUser().getId())).withRel("photo"));
+            } catch (IOException ioex) {
+                //Todo log error;
+            }
+        }
         resource.add(linkTo(ImputationController.class, member.getProject().getId(), member.getId()).withRel("imputation"));
         return resource;
     }

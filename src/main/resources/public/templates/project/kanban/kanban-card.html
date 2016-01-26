@@ -16,8 +16,10 @@
             <!-- A remplacer par crop user -->
             <div class="col-md-7">
                 <ul class="list-group">
-                    <li class="list-group-item" ng-repeat="member in task.assignees">                
-                        <span class="glyphicon glyphicon-user"></span>{{member.username}}
+                    <li class="list-group-item" ng-repeat="member in task.assignees">      
+                        <img ng-if="member.photo" class="glyphicon" ng-src="{{member.photo}}" alt="{{member.username}}">
+                        <span ng-if="!member.photo" class="glyphicon glyphicon-user"></span>
+                        {{member.username}}
                     </li>
                 </ul>
             </div>
