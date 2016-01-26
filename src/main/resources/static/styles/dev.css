@@ -7,11 +7,6 @@ td.column ul {
     min-height: max-content;
 }
 
-.navbar-nav img.glyphicon {
-    width : 40px;
-    border-radius: 20px;
-}
-
 .crop-photo {
     width : 40px;
     border-radius: 20px;
