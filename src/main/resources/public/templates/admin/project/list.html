@@ -1,68 +1,67 @@
-<section class="container-fluid app__content">
-    <div class="col-md-12">
-        <div class="panel">
-            <div class="panel-heading">
-                    <h2 class="panel-heading-title">Liste des projets</h2>
-                    <div class="panel-heading-action">
-                        <button class="btn btn-info" ng-click="projectListAdminCtrl.add()"><span class="glyphicon glyphicon-plus-sign"></span>Ajouter</button>
-                    </div>
-            </div>
-            <div class="panel-body">
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>Nom</th>
-                            <th>Etats</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="project in projectListAdminCtrl.projects._embedded.projectResourceList" >
-                            <td>
-                                {{project.name}}
-                            </td>
-                            <td class="text-justify">
-                                <ul class="list-inline">
-                                    <li ng-repeat="state in project.states" ng-if="!state.kanbanHide">
-                                        {{state.name}} <span class="badge alert-info">{{state.taskCount}}</span>
-                                    </li>
-                                </ul>
-                            </td>
-                            <td>
-                                <a ui-sref="app.project.edit({projectId: project.id})">
-                                    <span class="glyphicon glyphicon-edit"></span>
-                                </a>
-                                <a ng-click="projectListAdminCtrl.delete(project)">
-                                    <span class="glyphicon glyphicon-trash"></span>
-                                </a>
-                            </td>
-                        </tr>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td colspan="3">
-                                <div class="col-md-6 col-md-offset-3" >
-                                    <div class="center-block text-center">
-                                        <uib-pagination total-items="projectCtrl.projects.page.nbElt" ng-model="projectCtrl.projects.page.number" items-per-page="projectCtrl.projects.page.size" max-size="5" class="pagination-sm" boundary-links="true" rotate="false" num-pages="projectCtrl.projects.page.totalPages" ng-change="projectCtrl.pageChanged()"></uib-pagination>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 form-inline">
-                                    <div class="form-group pull-right">
-                                        <label for="nbEltUser">Nb élements :</label>
-                                        <div class="form-control">
-                                            <select id="nbEltUser" ng-model="projectCtrl.projects.page.nbElt" class="form-select">
-                                                <option value="10">10</option>
-                                                <option value="20">20</option>
-                                                <option value="50">50</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
-        </div>
+<header class="heading nav nav--subNav">
+  <h2 class="heading__title pull-left">Liste des projets</h2>
+  <div class="heading__action pull-right">
+    <button class="btn btn-info" ng-click="projectListAdminCtrl.add()"><span class="glyphicon glyphicon-plus-sign"></span>Ajouter</button>
+  </div>
+</header>
+<section class="content">
+  <div class="panel">
+    <div class="panel-body">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>Nom</th>
+            <th>Etats</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="project in projectListAdminCtrl.projects._embedded.projectResourceList">
+            <td>
+              {{project.name}}
+            </td>
+            <td class="text-justify">
+              <ul class="list-inline">
+                <li ng-repeat="state in project.states" ng-if="!state.kanbanHide">
+                  {{state.name}} <span class="badge alert-info">{{state.taskCount}}</span>
+                </li>
+              </ul>
+            </td>
+            <td>
+              <a ui-sref="app.project.edit({projectId: project.id})">
+                <span class="glyphicon glyphicon-edit"></span>
+              </a>
+              <a ng-click="projectListAdminCtrl.delete(project)">
+                <span class="glyphicon glyphicon-trash"></span>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="3">
+              <div class="col-md-6 col-md-offset-3">
+                <div class="center-block text-center">
+                  <uib-pagination total-items="projectCtrl.projects.page.nbElt" ng-model="projectCtrl.projects.page.number" items-per-page="projectCtrl.projects.page.size" max-size="5" class="pagination-sm" boundary-links="true" rotate="false" num-pages="projectCtrl.projects.page.totalPages"
+                  ng-change="projectCtrl.pageChanged()"></uib-pagination>
+                </div>
+              </div>
+              <div class="col-md-3 form-inline">
+                <div class="form-group pull-right">
+                  <label for="nbEltUser">Nb élements :</label>
+                  <div class="form-control">
+                    <select id="nbEltUser" ng-model="projectCtrl.projects.page.nbElt" class="form-select">
+                      <option value="10">10</option>
+                      <option value="20">20</option>
+                      <option value="50">50</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
     </div>
+  </div>
 </section>

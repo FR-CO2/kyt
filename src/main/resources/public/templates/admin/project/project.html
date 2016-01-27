@@ -1,23 +1,23 @@
-<div class="row" id="task">
-    <div growl></div>
-    <h2>
+<header class="heading">
+    <h2 class="heading__title pull-left">
         Projet {{projectEditCtrl.project.name}}
     </h2>
+    <uib-tabset class="toto">
+        <uib-tab class="tutu" heading="Catégorie" ui-sref="app.project.edit.category({projectId: projectEditCtrl.project.id})" >
+        </uib-tab>
+        <uib-tab heading="Etat" ui-sref="app.project.edit.state({projectId: projectEditCtrl.project.id})">
+        </uib-tab>
+        <uib-tab heading="Couloir" ui-sref="app.project.edit.swimlane({projectId: projectEditCtrl.project.id})">
+        </uib-tab>
+        <uib-tab heading="Membre" ui-sref="app.project.edit.member({projectId: projectEditCtrl.project.id})">
+        </uib-tab>
+    </uib-tabset>
+</header>
+<section class="content">
+    <div growl></div>
     <div class="panel">
         <div class="panel-body">
-            <uib-tabset>
-                <uib-tab heading="Champs personnalisés tâche" ui-sref="app.project.edit.taskfield({projectId: projectEditCtrl.project.id})" >
-                </uib-tab> 
-                <uib-tab heading="Catégorie" ui-sref="app.project.edit.category({projectId: projectEditCtrl.project.id})" >
-                </uib-tab> 
-                <uib-tab heading="Etat" ui-sref="app.project.edit.state({projectId: projectEditCtrl.project.id})">
-                </uib-tab> 
-                <uib-tab heading="Couloir" ui-sref="app.project.edit.swimlane({projectId: projectEditCtrl.project.id})">
-                </uib-tab> 
-                <uib-tab heading="Membre" ui-sref="app.project.edit.member({projectId: projectEditCtrl.project.id})">
-                </uib-tab> 
-            </uib-tabset>
             <div ui-view></div>
         </div>
     </div>
-</div>
+</section>

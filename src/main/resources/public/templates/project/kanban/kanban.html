@@ -6,32 +6,34 @@
         <button ng-if="projectCtrl.rights.hasEditRights" class="btn btn-info btn-sm" ng-click="kanbanCtrl.addTask()"><span class="glyphicon glyphicon-plus-sign"></span> Nouvelle tâche</button>
     </div>
 </header>
-<div class="panel">
-    <table class="table kanban__table">
-        <thead class="kanban__header">
-            <tr>
-                <th class="kanban__column--title"> &nbsp;</th>
-                <th ng-repeat="state in kanbanCtrl.states" class="kanban__column--title" style="width : {{86 / kanbanCtrl.states.length}}%" id="column{{state.id}}">
-                    {{state.name}}
-                    <span class="badge alert-info">{{state.taskCount}}</span>
-                </th>
-            </tr>
-        </thead>
-        <tbody class="kanban__content">
-            <tr class="kanban__swimlane" ng-repeat="swimlane in kanbanCtrl.swimlanes">
-                <td class="kanban__column kanban__column--title column" id="swimlane_{{swimlane.id}}" ng-click="kanbanCtrl.toggleSwimlane($event)">
-                    <div>{{swimlane.name}}</div>
-                    <div ng-if="swimlane.endPlanned">({{swimlane.endPlanned | date:"dd/MM/yyyy"}})</div>
-                </td>
-                <td class="kanban__column column" ng-repeat="state in swimlane.states">
-                    <ul class="list-unstyled" as-sortable="kanbanCtrl.kanbanSortOptions" data-rowindex="{{swimlane.id}}" data-columnindex="{{state.id}}" ng-model="state.tasks">
-                        <li ng-repeat="task in state.tasks" as-sortable-item>
-                            <div ng-include="'/templates/project/kanban/kanban-card.html'" as-sortable-item-handle></div>
-                        </li>
+<section class="content">
+    <div class="panel kanban__container">
+        <table class="table kanban__table">
+            <thead class="kanban__header">
+                <tr>
+                    <th class="kanban__column--title"> &nbsp;</th>
+                    <th ng-repeat="state in kanbanCtrl.states" class="kanban__column--title" style="width : {{86 / kanbanCtrl.states.length}}%" id="column{{state.id}}">
+                        {{state.name}}
+                        <span class="badge alert-info">{{state.taskCount}}</span>
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="kanban__content">
+                <tr class="kanban__swimlane" ng-repeat="swimlane in kanbanCtrl.swimlanes">
+                    <td class="kanban__column kanban__column--title column" id="swimlane_{{swimlane.id}}" ng-click="kanbanCtrl.toggleSwimlane($event)">
+                        <div>{{swimlane.name}}</div>
+                        <div ng-if="swimlane.endPlanned">({{swimlane.endPlanned | date:"dd/MM/yyyy"}})</div>
+                    </td>
+                    <td class="kanban__column column" ng-repeat="state in swimlane.states">
+                        <ul class="list-unstyled" as-sortable="kanbanCtrl.kanbanSortOptions" data-rowindex="{{swimlane.id}}" data-columnindex="{{state.id}}" ng-model="state.tasks">
+                            <li ng-repeat="task in state.tasks" as-sortable-item>
+                                <div ng-include="'/templates/project/kanban/kanban-card.html'" as-sortable-item-handle></div>
+                            </li>
 
-                    </ul>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+                        </ul>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>

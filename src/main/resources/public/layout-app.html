@@ -28,8 +28,8 @@
             </ul>
         </li>
     </ul>
-    <div class="nav navbar-nav  navbar-right dropdown">
-        <a class="navbar-text dropdown-toggle account" data-toggle="dropdown" id="accountDropdown" aria-expanded="true">
+    <div class="nav__links nav__links--right dropdown">
+        <a class="nav__link dropdown-toggle account" data-toggle="dropdown" id="accountDropdown" aria-expanded="true">
             <span ng-if="!appCtrl.currentuser.photo" class="crop-photo glyphicon glyphicon-user"></span>
             <img ng-if="appCtrl.currentuser.photo" class="crop-photo" ng-src="{{appCtrl.currentuser.photo}}" alt="{{appCtrl.currentuser.username}}">
             {{appCtrl.currentuser.username}}
