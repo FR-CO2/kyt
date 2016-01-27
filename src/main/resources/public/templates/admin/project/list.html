@@ -49,11 +49,13 @@
                                 <div class="col-md-3 form-inline">
                                     <div class="form-group pull-right">
                                         <label for="nbEltUser">Nb élements :</label>
-                                        <select id="nbEltUser" ng-model="projectCtrl.projects.page.nbElt" class="form-control input-sm" style="margin: 20px;">
-                                            <option value="10">10</option>
-                                            <option value="20">20</option>
-                                            <option value="50">50</option>
-                                        </select>
+                                        <div class="form-control">
+                                            <select id="nbEltUser" ng-model="projectCtrl.projects.page.nbElt" class="form-select">
+                                                <option value="10">10</option>
+                                                <option value="20">20</option>
+                                                <option value="50">50</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
                             </td>
