@@ -393,21 +393,30 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* line 44, ../../../../../co2themes/sass/theme/_kanban.sass */
-td.column ul {
+td.column > ul {
   min-height: 100px;
 }
 
-/* line 47, ../../../../../co2themes/sass/theme/_kanban.sass */
+/* line 48, ../../../../../co2themes/sass/theme/_kanban.sass */
+td.column > ul .kanban-card:first-of-type {
+  margin-top: 0;
+}
+/* line 50, ../../../../../co2themes/sass/theme/_kanban.sass */
+td.column > ul .kanban-card:last-of-type {
+  margin-bottom: 0;
+}
+
+/* line 53, ../../../../../co2themes/sass/theme/_kanban.sass */
 .kanban-card {
   border: none;
   background: #FFF;
   border-top: #F1F3F5 1px solid;
   border-radius: 0.25em;
   overflow: hidden;
-  margin-bottom: 1em;
+  margin: 0.5em 0;
   box-shadow: 0px 0.125em 0.125em 0em rgba(0, 0, 0, 0.2);
 }
-/* line 55, ../../../../../co2themes/sass/theme/_kanban.sass */
+/* line 61, ../../../../../co2themes/sass/theme/_kanban.sass */
 .kanban-card__task {
   font-size: 16px;
   line-height: 1.2em;
@@ -415,26 +424,26 @@ td.column ul {
   border-top: none;
   padding: 0.5em;
 }
-/* line 60, ../../../../../co2themes/sass/theme/_kanban.sass */
+/* line 66, ../../../../../co2themes/sass/theme/_kanban.sass */
 .kanban-card__heading {
   font-size: 1.2em;
   line-height: 1.5em;
   margin: 0.5em 0;
 }
-/* line 64, ../../../../../co2themes/sass/theme/_kanban.sass */
+/* line 70, ../../../../../co2themes/sass/theme/_kanban.sass */
 .kanban-card__heading a {
   color: #000;
 }
-/* line 66, ../../../../../co2themes/sass/theme/_kanban.sass */
+/* line 72, ../../../../../co2themes/sass/theme/_kanban.sass */
 .kanban-card__heading a span {
   color: #0288d1;
 }
-/* line 68, ../../../../../co2themes/sass/theme/_kanban.sass */
+/* line 74, ../../../../../co2themes/sass/theme/_kanban.sass */
 .kanban-card__date {
   padding: 0.5em;
   background: #F1F3F5;
 }
-/* line 71, ../../../../../co2themes/sass/theme/_kanban.sass */
+/* line 77, ../../../../../co2themes/sass/theme/_kanban.sass */
 .kanban-card .badge {
   background-color: transparent;
 }

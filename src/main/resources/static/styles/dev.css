@@ -3,10 +3,6 @@
     margin-bottom: 2px;
 }
 
-td.column ul {
-    min-height: max-content;
-}
-
 .crop-photo {
     width : 40px;
     border-radius: 20px;

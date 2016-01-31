@@ -1,38 +1,34 @@
-<div class="kanban-card">
-    <div class="kanban-card__task center-block" style="border-left: 0.5em solid {{task.category.bgcolor}}">
-        <header class="kanban-card__heading">
-            <span>
-                <a ui-sref="app.project.task({projectId: projectCtrl.project.id, taskId: task.id })" 
-                   ng-app=""title="Accéder au détail de la tâche">
-                    <span>#{{task.id}}</span>
-                    {{task.name}}
-                </a>
-            </span>
-            <span class="pull-right exceeded" ng-if="task.exceededLoad">
+<div class="kanban-card__task center-block" style="border-left: 0.5em solid {{task.category.bgcolor}}">
+  <header class="kanban-card__heading">
+    <span>
+    <a ui-sref="app.project.task({projectId: projectCtrl.project.id, taskId: task.id })" ng-app=""title="Accéder au détail de la tâche">
+        <span>#{{task.id}}</span> {{task.name}}
+    </a>
+    </span>
+    <span class="pull-right exceeded" ng-if="task.exceededLoad">
                 <span ng-class="{'glyphicon glyphicon-usd' : task.exceededLoad}"></span>
-            </span>
-        </header>
-        <div class="kanban-card__action row">
-            <!-- A remplacer par crop user -->
-            <div class="col-md-7">
-                <ul class="list-inline">
-                    <li ng-repeat="member in task.assignees">      
-                        <img ng-if="member.photo" class="crop-photo" ng-src="{{member.photo}}" alt="{{member.username}}" data-toggle="tooltip" data-placement="bottom" title="{{member.username}}">
-                        <span ng-if="!member.photo" class="crop-photo glyphicon glyphicon-user" data-toggle="tooltip" data-placement="bottom" title="{{member.username}}"></span>
-                    </li>
-                </ul>
-            </div>
-            <!-- Fin crop user -->
-            <div class="col-md-5 badge pull-right" >
-                <span ng-if="!task.category">
+    </span>
+  </header>
+  <div class="kanban-card__action row">
+    <!-- A remplacer par crop user -->
+    <div class="col-md-7">
+      <ul class="list-inline">
+        <li ng-repeat="member in task.assignees">
+          <img ng-if="member.photo" class="crop-photo" ng-src="{{member.photo}}" alt="{{member.username}}" data-toggle="tooltip" data-placement="bottom" title="{{member.username}}">
+          <span ng-if="!member.photo" class="crop-photo glyphicon glyphicon-user" data-toggle="tooltip" data-placement="bottom" title="{{member.username}}"></span>
+        </li>
+      </ul>
+    </div>
+    <!-- Fin crop user -->
+    <div class="col-md-5 badge pull-right">
+      <span ng-if="!task.category">
                     -
                 </span>
-                <span class="glyphicon glyphicon-tag" ng-if="task.category"></span> {{task.category.name}}
-            </div>
-        </div>
+      <span class="glyphicon glyphicon-tag" ng-if="task.category"></span> {{task.category.name}}
     </div>
+  </div>
+</div>
 
-    <div class="kanban-card__date text-right" ng-if="task.plannedEnding" ng-class="{'exceeded' : task.exceededDate}">
-        <span class="glyphicon glyphicon-calendar"></span> {{task.plannedEnding| date:'dd/MM/yyyy'}}
-    </div>
+<div class="kanban-card__date text-right" ng-if="task.plannedEnding" ng-class="{'exceeded' : task.exceededDate}">
+  <span class="glyphicon glyphicon-calendar"></span> {{task.plannedEnding| date:'dd/MM/yyyy'}}
 </div>
