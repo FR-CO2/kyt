@@ -3,10 +3,10 @@
         var taskController = function ($q, $state, project, currenttask, taskAssemblerService, growl) {
             var vm = this;
             vm.customFieldMap = {};
+            vm.task = currenttask;
             project.$promise.then(function () {
                 currenttask.$promise.then(function () {
                     vm.task = taskAssemblerService(currenttask);
-                    $state.transitionTo("app.project.task.comment", {projectId: project.id, taskId: vm.task.id});
                 });
                 vm.categories = project.resource("category").query();
                 vm.states = project.resource("state").query();

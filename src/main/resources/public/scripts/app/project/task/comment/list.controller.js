@@ -1,7 +1,8 @@
 (function () {
     define([], function () {
-        var listController = function ($uibModal, currenttask) {
+        var listController = function ($uibModal, scope) {
             var vm = this;
+            var currenttask = scope.taskCtrl.task;
             vm.add = function () {
                 var modalInstance = $uibModal.open({
                     animation: true,
@@ -61,9 +62,11 @@
                     }
                 });
             };
-            vm.comments = currenttask.resource("comment").query();
+            currenttask.$promise.then(function () {
+                vm.comments = currenttask.resource("comment").query();
+            });
         };
-        listController.$inject = ["$uibModal", "task"];
+        listController.$inject = ["$uibModal", "$scope"];
         return listController;
     });
 })();

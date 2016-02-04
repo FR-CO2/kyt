@@ -22,12 +22,6 @@
                 },
                 url: "task/:taskId"
             });
-            $stateProvider.state("app.project.task.comment", {
-                templateUrl: "templates/project/task/comment/list.html",
-                controller: "commentListController",
-                controllerAs: "commentListCtrl",
-                url: "/comment"
-            });
             $stateProvider.state("app.project.task.allocation", {
                 templateUrl: "templates/project/task/allocation/list.html",
                 controller: "allocationListController",
