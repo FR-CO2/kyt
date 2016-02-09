@@ -176,26 +176,28 @@ textarea.form-control {
   float: left;
   padding: 0 1em;
   position: relative;
+  cursor: pointer;
 }
-/* line 24, ../../../../../co2themes/sass/bootstrap/_nav.sass */
+/* line 25, ../../../../../co2themes/sass/bootstrap/_nav.sass */
 .nav__link a, .nav__link a.nav__link, .nav__brand a, .nav__brand a.nav__link {
   font-size: 1.125em;
   text-decoration: none;
+  position: relative;
 }
-/* line 28, ../../../../../co2themes/sass/bootstrap/_nav.sass */
+/* line 30, ../../../../../co2themes/sass/bootstrap/_nav.sass */
 .nav__brand {
   font-size: 2em;
 }
-/* line 32, ../../../../../co2themes/sass/bootstrap/_nav.sass */
+/* line 34, ../../../../../co2themes/sass/bootstrap/_nav.sass */
 .nav__link--right {
   float: right;
 }
-/* line 35, ../../../../../co2themes/sass/bootstrap/_nav.sass */
+/* line 37, ../../../../../co2themes/sass/bootstrap/_nav.sass */
 .nav--main {
   position: relative;
   background: #FFF;
 }
-/* line 38, ../../../../../co2themes/sass/bootstrap/_nav.sass */
+/* line 40, ../../../../../co2themes/sass/bootstrap/_nav.sass */
 .nav--main::before {
   position: absolute;
   bottom: -1em;
@@ -211,7 +213,7 @@ textarea.form-control {
   background-image: -webkit-linear-gradient(left, #103352, #0277bd);
   background-image: linear-gradient(to right, #103352, #0277bd);
 }
-/* line 47, ../../../../../co2themes/sass/bootstrap/_nav.sass */
+/* line 49, ../../../../../co2themes/sass/bootstrap/_nav.sass */
 .nav--subNav {
   background-image: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJvYmplY3RCb3VuZGluZ0JveCIgeDE9IjAuMCIgeTE9IjAuNSIgeDI9IjEuMCIgeTI9IjAuNSI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzEwMzM1MiIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzAyNzdiZCIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JhZCkiIC8+PC9zdmc+IA==');
   background-size: 100%;
@@ -220,23 +222,23 @@ textarea.form-control {
   background-image: -webkit-linear-gradient(left, #103352, #0277bd);
   background-image: linear-gradient(to right, #103352, #0277bd);
 }
-/* line 49, ../../../../../co2themes/sass/bootstrap/_nav.sass */
+/* line 51, ../../../../../co2themes/sass/bootstrap/_nav.sass */
 .nav-tabs {
   list-style-type: none;
   line-height: 2.125em;
   padding: 0;
   margin: 0;
 }
-/* line 54, ../../../../../co2themes/sass/bootstrap/_nav.sass */
+/* line 56, ../../../../../co2themes/sass/bootstrap/_nav.sass */
 .nav-tabs .nav__link, .nav-tabs .nav__link a, .nav-tabs a.nav__link {
   color: rgba(255, 255, 255, 0.65);
   transition: all 0.5s;
 }
-/* line 57, ../../../../../co2themes/sass/bootstrap/_nav.sass */
+/* line 59, ../../../../../co2themes/sass/bootstrap/_nav.sass */
 .nav-tabs .nav__link:hover, .nav-tabs .nav__link a:hover, .nav-tabs a.nav__link:hover {
   color: rgba(255, 255, 255, 0.85);
 }
-/* line 59, ../../../../../co2themes/sass/bootstrap/_nav.sass */
+/* line 61, ../../../../../co2themes/sass/bootstrap/_nav.sass */
 .nav-tabs .nav__link.active, .nav-tabs .nav__link.active a, .nav-tabs a.nav__link.active {
   color: white;
 }
@@ -267,7 +269,7 @@ textarea.form-control {
 /* line 7, ../../../../../co2themes/sass/theme/_crop.sass */
 .crop--nav {
   position: absolute;
-  left: -40px;
+  left: -50px;
   top: 50%;
   margin-top: -20px;
 }
@@ -314,7 +316,7 @@ body {
 .heading__title {
   display: inline-block;
   float: left;
-  width: 33.33333%;
+  width: 25%;
   margin: 0;
   margin-right: 1em;
   color: rgba(255, 255, 255, 0.9);
@@ -325,8 +327,13 @@ body {
   font-size: 1.5rem;
   position: relative;
 }
+/* line 30, ../../../../../co2themes/sass/theme/_layout.sass */
+.heading__nav {
+  width: 33.33333%;
+  margin: 0 auto;
+}
 
-/* line 31, ../../../../../co2themes/sass/theme/_layout.sass */
+/* line 33, ../../../../../co2themes/sass/theme/_layout.sass */
 .content {
   padding: 1em;
 }
