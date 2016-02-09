@@ -5,7 +5,6 @@
  */
 package org.co2.kanban.rest.project.swimlane;
 
-import javax.transaction.Transactional;
 import org.co2.kanban.repository.swimlane.Swimlane;
 import org.co2.kanban.repository.swimlane.SwimlaneRepository;
 import org.co2.kanban.repository.project.Project;

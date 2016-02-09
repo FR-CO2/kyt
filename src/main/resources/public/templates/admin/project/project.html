@@ -2,10 +2,10 @@
     <h2 class="heading__title pull-left">
         Projet {{projectEditCtrl.project.name}}
     </h2>
-    <uib-tabset class="toto">
-        <uib-tab heading="Champs personnalisés tâche" ui-sref="app.project.edit.taskfield({projectId: projectEditCtrl.project.id})" >
+    <uib-tabset>
+        <uib-tab class="nav__link" heading="Champs personnalisés" ui-sref="app.project.edit.taskfield({projectId: projectEditCtrl.project.id})" >
         </uib-tab> 
-        <uib-tab class="tutu" heading="Catégorie" ui-sref="app.project.edit.category({projectId: projectEditCtrl.project.id})" >
+        <uib-tab class="nav__link" heading="Catégorie" ui-sref="app.project.edit.category({projectId: projectEditCtrl.project.id})" >
         </uib-tab>
         <uib-tab class="nav__link" heading="Etat" ui-sref="app.project.edit.state({projectId: projectEditCtrl.project.id})">
         </uib-tab>

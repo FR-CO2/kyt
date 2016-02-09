@@ -47,7 +47,7 @@ spring:
         username: postgres
         password: Wxegdej5
 liquibase:
-    drop-first: true
+    drop-first: false
 ---
 
 endpoints :
