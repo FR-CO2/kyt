@@ -514,13 +514,6 @@ td.column > ul .kanban-card:last-of-type {
   z-index: 1051;
 }
 
-/* line 39, ../../../../../co2themes/sass/app.sass */
-#task {
-  background-color: #FFF;
-  padding-top: 1.2em;
-  padding-bottom: 1.2em;
-}
-
 /* line 44, ../../../../../co2themes/sass/app.sass */
 .no-project {
   padding-left: 10px;

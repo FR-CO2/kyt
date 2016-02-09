@@ -24,11 +24,10 @@
             vm.save = function () {
                 if (!vm.error) {
                     var formData = new FormData();
-                    angular.forEach(vm.profil, function (value, key) {
-                        if (typeof value !== "function") {
-                            formData.append(key, value);
-                        }
-                    });
+                    formData.append("id", vm.profil.id);
+                    formData.append("password", vm.profil.password);
+                    formData.append("email", vm.profil.email);
+                    formData.append("photo", vm.profil.photo);
                     $http({
                         method: "POST",
                         url: currentuser._links.self,
