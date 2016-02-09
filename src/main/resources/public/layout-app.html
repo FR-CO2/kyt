@@ -28,34 +28,36 @@
             </ul>
         </li>
     </ul>
-    <div class="nav__links nav__links--right dropdown">
-        <a class="nav__link dropdown-toggle account" data-toggle="dropdown" id="accountDropdown" aria-expanded="true">
-            <span ng-if="!appCtrl.currentuser.photo" class="crop-photo glyphicon glyphicon-user"></span>
-            <img ng-if="appCtrl.currentuser.photo" class="crop-photo" ng-src="{{appCtrl.currentuser.photo}}" alt="{{appCtrl.currentuser.username}}">
-            {{appCtrl.currentuser.username}}
-            <span class="caret"></span>
-        </a>
-        <ul class="dropdown-menu" aria-labelledby="accountDropdown">
-            <li>
-                <a ui-sref="app.profil">
-                    <span class="glyphicon glyphicon-cog"></span>
-                    <span>Profil</span>
-                </a>
-            </li>
-            <li ng-if="appCtrl.currentuser.applicationRole === 'ADMIN'">
-                <a ui-sref="app.users">
-                    <span class="glyphicon glyphicon-user"></span>
-                    <span>Administrer utilisateurs</span>
-                </a>
-            </li>
-            <li>
-                <a ng-click="appCtrl.logout()">
-                    <span class="glyphicon glyphicon-log-out"></span>
-                    <span>Logout</span>
-                </a>
-            </li>
-        </ul>
-    </div>
+    <ul class="nav__links nav__links--right">
+        <li class="nav__link nav__link--right dropdown">
+            <a class="dropdown-toggle account" data-toggle="dropdown" id="accountDropdown" aria-expanded="true">
+                <span ng-if="!appCtrl.currentuser.photo" class="glyphicon glyphicon-user"></span>
+                <img ng-if="appCtrl.currentuser.photo" class="crop crop--nav" ng-src="{{appCtrl.currentuser.photo}}" alt="{{appCtrl.currentuser.username}}">
+                {{appCtrl.currentuser.username}}
+                <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu pull-right" aria-labelledby="accountDropdown">
+                <li>
+                    <a ui-sref="app.profil">
+                        <span class="glyphicon glyphicon-cog"></span>
+                        <span>Profil</span>
+                    </a>
+                </li>
+                <li ng-if="appCtrl.currentuser.applicationRole === 'ADMIN'">
+                    <a ui-sref="app.users">
+                        <span class="glyphicon glyphicon-user"></span>
+                        <span>Administrer utilisateurs</span>
+                    </a>
+                </li>
+                <li>
+                    <a ng-click="appCtrl.logout()">
+                        <span class="glyphicon glyphicon-log-out"></span>
+                        <span>Logout</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+    </ul>
 </header>
 
 <div class="app__container" ui-view="">
