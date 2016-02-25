@@ -4,64 +4,42 @@
     <button class="btn btn-info" ng-click="projectListAdminCtrl.add()"><span class="glyphicon glyphicon-plus-sign"></span>Ajouter</button>
   </div>
 </header>
-<section class="content">
-  <div class="panel">
-    <div class="panel-body">
-      <table class="table table-hover">
-        <thead>
-          <tr>
-            <th>Nom</th>
-            <th>Etats</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr ng-repeat="project in projectListAdminCtrl.projects._embedded.projectResourceList">
-            <td>
-              {{project.name}}
-            </td>
-            <td class="text-justify">
-              <ul class="list-inline">
-                <li ng-repeat="state in project.states" ng-if="!state.kanbanHide">
-                  {{state.name}} <span class="badge alert-info">{{state.taskCount}}</span>
-                </li>
-              </ul>
-            </td>
-            <td>
-              <a ui-sref="app.project.edit({projectId: project.id})">
-                <span class="glyphicon glyphicon-edit"></span>
-              </a>
-              <a ng-click="projectListAdminCtrl.delete(project)">
-                <span class="glyphicon glyphicon-trash"></span>
-              </a>
-            </td>
-          </tr>
-        </tbody>
-        <tfoot>
-          <tr>
-            <td colspan="3">
-              <div class="col-md-6 col-md-offset-3">
-                <div class="center-block text-center">
-                  <uib-pagination total-items="projectCtrl.projects.page.nbElt" ng-model="projectCtrl.projects.page.number" items-per-page="projectCtrl.projects.page.size" max-size="5" class="pagination-sm" boundary-links="true" rotate="false" num-pages="projectCtrl.projects.page.totalPages"
-                  ng-change="projectCtrl.pageChanged()"></uib-pagination>
-                </div>
-              </div>
-              <div class="col-md-3 form-inline">
-                <div class="form-group pull-right">
-                  <label for="nbEltUser">Nb élements :</label>
-                  <div class="form-control">
-                    <select id="nbEltUser" ng-model="projectCtrl.projects.page.nbElt" class="form-select">
-                      <option value="10">10</option>
-                      <option value="20">20</option>
-                      <option value="50">50</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-            </td>
-          </tr>
-        </tfoot>
-      </table>
+<section class="content cards">
+  <div class="card card--project" ng-repeat="project in projectListAdminCtrl.projects._embedded.projectResourceList">
+    <div class="card__item">
+      <h1 class="card__title">{{project.name}}</h1>
+      <div class="card__infos">
+        <dl class="card__info" ng-repeat="state in project.states" ng-if="!state.kanbanHide">
+          <dd class="card__info__value">{{state.taskCount}}</dd>
+          <dt class="card__info__title">{{state.name}}</dt>
+        </dl>
+      </div>
+      <a ui-sref="app.project.edit({projectId: project.id})">
+        <span class="glyphicon glyphicon-edit"></span>
+      </a>
+      <a ng-click="projectListAdminCtrl.delete(project)">
+        <span class="glyphicon glyphicon-trash"></span>
+      </a>
+    </div>
+  </div>
+
+
+  <div class="col-md-6 col-md-offset-3">
+    <div class="center-block text-center">
+      <uib-pagination total-items="projectCtrl.projects.page.nbElt" ng-model="projectCtrl.projects.page.number" items-per-page="projectCtrl.projects.page.size" max-size="5" class="pagination-sm" boundary-links="true" rotate="false" num-pages="projectCtrl.projects.page.totalPages"
+      ng-change="projectCtrl.pageChanged()"></uib-pagination>
+    </div>
+  </div>
+  <div class="col-md-3 form-inline">
+    <div class="form-group pull-right">
+      <label for="nbEltUser">Nb élements :</label>
+      <div class="form-control">
+        <select id="nbEltUser" ng-model="projectCtrl.projects.page.nbElt" class="form-select">
+          <option value="10">10</option>
+          <option value="20">20</option>
+          <option value="50">50</option>
+        </select>
+      </div>
     </div>
   </div>
 </section>
