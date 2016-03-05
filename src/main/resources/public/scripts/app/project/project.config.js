@@ -42,6 +42,12 @@
                 controllerAs: "kanbanCtrl",
                 url: "kanban"
             });
+            $stateProvider.state("app.project.gantt", {
+                templateUrl: "templates/project/gantt/gantt.html",
+                controller: "ganttController",
+                controllerAs: "ganttCtrl",
+                url: "gantt"
+            });
         };
         config.$inject = ["$stateProvider"];
         return config;
