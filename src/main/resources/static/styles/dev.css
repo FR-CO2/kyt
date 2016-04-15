@@ -8,8 +8,15 @@
 }
 
 #task form {
-  background-color: #FFF;
-  padding-top: 1.2em;
-  padding-bottom: 3em;
-  border-radius: 1em;
+    background-color: #FFF;
+    padding-top: 1.2em;
+    padding-bottom: 3em;
+    border-radius: 1em;
+}
+
+.cropArea {
+    background: #E4E4E4;
+    overflow: hidden;
+    width:500px;
+    height:350px;
 }

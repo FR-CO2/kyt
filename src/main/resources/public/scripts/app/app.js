@@ -4,14 +4,14 @@
         "directive/error.directive", "admin/admin.module", "profil/profil.controller", "moment",
         "uiRouter", "ngStorage", "ngAuth", "xeditable", "ngResource", 
         "ngSortable", "hateoas", "uiBootstrap", "uiBootstrapTpl", 
-        "ngSanitize", "growl"],
+        "ngSanitize", "growl", "ngImgCrop"],
             function (angular, appConfig, appRun, loginModule, appController,
                     dashboardModule, projectModule, samePasswordDirective, 
-                    errorDirective, adminModule, profilController, moment) {
+                    errorDirective, adminModule, profilController, moment ) {
                 var app = angular.module("kanban",
                         ["ui.router", "ngStorage", "ngSanitize", "ui.sortable",
                             "http-auth-interceptor", "xeditable", "ngResource",
-                            "hateoas", "ui.bootstrap", "ui.bootstrap.tpls", 
+                            "hateoas", "ui.bootstrap", "ui.bootstrap.tpls", "ngImgCrop", 
                             loginModule.name, dashboardModule.name,
                             projectModule.name, adminModule.name])
                         .config(appConfig)

@@ -15,12 +15,12 @@
                 var reader = new FileReader();
                 reader.onload = function (evt) {
                     scope.$apply(function () {
-                        vm.profil.photo = evt.target.result;
+                        vm.profil.photoTemp = evt.target.result;
                     });
                 };
                 reader.readAsDataURL(file);
             };
-            angular.element(document.querySelector('#photo')).on('change', handleFileSelect);
+            angular.element(document.querySelector('#photoProfil')).on('change', handleFileSelect);
             vm.save = function () {
                 if (!vm.error) {
                     var formData = new FormData();

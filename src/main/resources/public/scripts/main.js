@@ -26,6 +26,7 @@ require.config({
         uiBootstrapTpl: '../../webjars/angular-ui-bootstrap/0.14.3/ui-bootstrap-tpls.min',
         uiCalendar: '../lib/angular-ui-calendar/calendar',
         growl: '../../webjars/angular-growl-2/0.7.3/angular-growl.min',
+        ngImgCrop: '../../webjars/ngImgCrop/0.3.2/compile/minified/ng-img-crop'
     },
     shim: {
         bootstrap: {
@@ -91,6 +92,9 @@ require.config({
             deps: ["angular"]
         },
         growl: {
+            deps: ["angular"]
+        },
+        ngImgCrop : {
             deps: ["angular"]
         }
     },

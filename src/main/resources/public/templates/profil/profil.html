@@ -1,48 +1,53 @@
 <header class="heading nav nav--subNav">
-  <h2 class="heading__title pull-left"><span class="glyphicon glyphicon-user"></span> {{profilCtrl.profil.username}}</h2>
-  <div class="heading__action pull-righ">
-    <button class="btn btn-info btn-sm" ng-click="usersCtrl.add()"><span class="glyphicon glyphicon-plus-sign"></span>Ajouter</button>
-  </div>
+    <h2 class="heading__title pull-left"><span class="glyphicon glyphicon-user"></span> {{profilCtrl.profil.username}}</h2>
+    <div class="heading__action pull-righ">
+        <button class="btn btn-info btn-sm" ng-click="usersCtrl.add()"><span class="glyphicon glyphicon-plus-sign"></span>Ajouter</button>
+    </div>
 </header>
 <section class="content">
-  <div class="panel">
-    <div class="panel-body">
-      <alert type="danger" ng-if="profilCtrl.error">{{profilCtrl.error.message}}</alert>
-      <form ng-submit="profilCtrl.save()">
-        <div class="form-group">
-          <label for="role">Rôle</label>
-          <input ng-disabled="true" type="text" class="form-control" id="role" ng-model="profilCtrl.profil.applicationRole" />
+    <div class="panel">
+        <div class="panel-body">
+            <alert type="danger" ng-if="profilCtrl.error">{{profilCtrl.error.message}}</alert>
+            <form ng-submit="profilCtrl.save()">
+                <div class="form-group">
+                    <label for="role">Rôle</label>
+                    <input ng-disabled="true" type="text" class="form-control" id="role" ng-model="profilCtrl.profil.applicationRole" />
+                </div>
+                <div class="form-group">
+                    <label for="password">Nouveau mot de passe</label>
+                    <input type="password" class="form-control" id="password" ng-model="profilCtrl.profil.password" />
+                </div>
+                <div class="form-group">
+                    <same-password password="profilCtrl.profil.password" error="profilCtrl.error" placeholder="Confirmer votre mot de passe" ></same-password>
+                </div>
+                <div class="form-group">
+                    <label for="email">Modifier mon adresse email</label>
+                    <input type="email" class="form-control" id="email" ng-model="profilCtrl.profil.email" />
+                </div>
+                <div class="form-group" style="background-color: #FFF">
+                    <input type="file" id="photoProfil" />
+                    <!--<img ng-src="{{profilCtrl.profil.photo}}" />-->
+                </div>
+                <div class="cropArea">
+                    <img-crop image="profilCtrl.profil.photoTemp" result-image="profilCtrl.profil.photo"></img-crop>
+                </div>
+                <div>Image redimensionnée:</div>
+                <div><img ng-src="{{profilCtrl.profil.photo}}" /></div>
+                <div>
+                    <button type="submit" class="btn btn-info center-block">modifier</button>
+                </div>
+            </form>
         </div>
-        <div class="form-group">
-          <label for="password">Nouveau mot de passe</label>
-          <input type="password" class="form-control" id="password" ng-model="profilCtrl.profil.password" />
-        </div>
-        <div class="form-group">
-            <same-password password="profilCtrl.profil.password" error="profilCtrl.error" placeholder="Confirmer votre mot de passe" ></same-password>
-        </div>
-        <div class="form-group">
-          <label for="email">Modifier mon adresse email</label>
-          <input type="email" class="form-control" id="email" ng-model="profilCtrl.profil.email" />
-        </div>
-        <div class="form-group" style="background-color: #FFF">
-          <input type="file" id="photo" />
-          <img ng-src="{{profilCtrl.profil.photo}}" />
-        </div>
-        <div>
-          <button type="submit" class="btn btn-info center-block">modifier</button>
-        </div>
-      </form>
     </div>
-  </div>
-  <div ng-if="profilCtrl.profil.members">
-    <h3>Mes projets</h3>
-    <table class="table">
-      <tbody>
-        <tr ng-repeat="member in profilCtrl.profil.members">
-          <td>{{member.projectName}}</td>
-          <td>{{member.projectRole}}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+    <div ng-if="profilCtrl.profil.members">
+        <h3>Mes projets</h3>
+        <table class="table">
+            <tbody>
+                <tr ng-repeat="member in profilCtrl.profil.members">
+                    <td>{{member.projectName}}</td>
+                    <td>{{member.projectRole}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </section>

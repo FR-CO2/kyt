@@ -135,6 +135,12 @@
             <artifactId>momentjs</artifactId>
             <version>2.5.0</version>
         </dependency>
+        
+        <dependency>
+            <groupId>org.webjars.bower</groupId>
+            <artifactId>ngImgCrop</artifactId>
+            <version>0.3.2</version>
+        </dependency>
 
     </dependencies>
     
