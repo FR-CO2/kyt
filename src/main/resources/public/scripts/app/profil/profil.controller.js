@@ -25,7 +25,9 @@
                 if (!vm.error) {
                     var formData = new FormData();
                     formData.append("id", vm.profil.id);
-                    formData.append("password", vm.profil.password);
+                    if (vm.profil.password !== undefined) {
+                        formData.append("password", vm.profil.password);
+                    }
                     formData.append("email", vm.profil.email);
                     formData.append("photo", vm.profil.photo);
                     $http({
