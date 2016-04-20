@@ -20,13 +20,16 @@ require.config({
         ngAuth: '../../webjars/angular-http-auth/1.2.2/http-auth-interceptor',
         ngAnimate: '../../webjars/angularjs/1.4.8/angular-animate.min',
         ngAria: '../../webjars/angularjs/1.4.8/angular-aria.min',
-        ngSanitize: '../../webjars/angularjs/1.4.8/angular-sanitize.min',
         hateoas: '../lib/angular-hateoas/angular-hateoas.min',
         uiBootstrap: '../../webjars/angular-ui-bootstrap/0.14.3/ui-bootstrap.min',
         uiBootstrapTpl: '../../webjars/angular-ui-bootstrap/0.14.3/ui-bootstrap-tpls.min',
         uiCalendar: '../lib/angular-ui-calendar/calendar',
         growl: '../../webjars/angular-growl-2/0.7.3/angular-growl.min',
-        ngImgCrop: '../../webjars/ngImgCrop/0.3.2/compile/minified/ng-img-crop'
+        ngImgCrop: '../../webjars/ngImgCrop/0.3.2/compile/minified/ng-img-crop',
+        rangy: '../../webjars/rangy/1.3.0/rangy-core',
+        rangySelection: '../../webjars/rangy/1.3.0/rangy-selectionsaverestore',
+        textAngular : '../../webjars/textAngular/1.5.0/dist/textAngular.min',
+        textAngularSanitize : '../../webjars/textAngular/1.5.0/dist/textAngular-sanitize.min'
     },
     shim: {
         bootstrap: {
@@ -67,9 +70,6 @@ require.config({
         ngAria: {
             deps: ["angular"]
         },
-        ngSanitize: {
-            deps: ["angular"]
-        },
         uiBootstrap: {
             deps: ["angular", "bootstrap"]
         },
@@ -96,6 +96,19 @@ require.config({
         },
         ngImgCrop : {
             deps: ["angular"]
+        },
+        'rangy-core':{
+            exports: 'rangy'
+        },
+        'rangy-selectionsaverestore':{
+            deps: ["angular", "rangy-core"],
+            exports:'rangySelection'
+        },
+        textAngularSanitize: {
+            deps: ["angular"]
+        },
+        textAngular : {
+            deps :["angular", "textAngularSanitize", "rangy", "rangySelection"]
         }
     },
     baseUrl: 'scripts/app',

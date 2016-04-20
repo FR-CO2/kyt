@@ -4,6 +4,7 @@
             var vm = this;
             vm.customFieldMap = {};
             vm.task = currenttask;
+            //vm.task.description;
             project.$promise.then(function () {
                 currenttask.$promise.then(function () {
                     vm.task = taskAssemblerService(currenttask);

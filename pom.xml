@@ -141,6 +141,17 @@
             <artifactId>ngImgCrop</artifactId>
             <version>0.3.2</version>
         </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>rangy</artifactId>
+            <version>1.3.0</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.webjars.bower</groupId>
+            <artifactId>textAngular</artifactId>
+            <version>1.5.0</version>
+        </dependency>
 
     </dependencies>
     
