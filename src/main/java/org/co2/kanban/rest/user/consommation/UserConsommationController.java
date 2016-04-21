@@ -7,8 +7,10 @@ package org.co2.kanban.rest.user.consommation;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import org.co2.kanban.repository.allocation.Allocation;
 import org.co2.kanban.repository.allocation.AllocationRepository;
 import org.co2.kanban.repository.member.Member;
@@ -54,7 +56,8 @@ public class UserConsommationController {
             @RequestParam("date") Long date) {
         ApplicationUser appUser = repository.findOne(userId);
         Timestamp time = new Timestamp(date);
-        List<UserTaskImputationResource> results = new ArrayList<>();
+        List<UserTaskImputationResource> results;
+        Map<Long, UserTaskImputationResource> mapTemp = new HashMap<>();
         Iterable<Allocation> allocations = allocationRepository.findByMemberUserAndAllocationDate(appUser, time);
         Iterator<Allocation> allocationsIterator = allocations.iterator();
         Iterable<Task> tasks = taskRepositoy.findByAssigneesUserAndPlannedStartBeforeAndPlannedEndingAfterAndStateCloseStateFalse(appUser, time, time);
@@ -72,21 +75,35 @@ public class UserConsommationController {
                 //TODO récuperer le RAF au lieu de a charge estimée
                 resource.setTimeRemains(task.getEstimatedLoad());
             }
-            results.add(resource);
+            mapTemp.put(resource.getTaskId(), resource);
         }
         for (Allocation allocation : allocations) {
             UserTaskImputationResource resource = new UserTaskImputationResource(allocation.getTask());
-            resource.setTimeRemains(allocation.getTimeRemains());
+
+            if (resource.getTimeRemains() == null) {
+                if (allocation.getTimeRemains() != null) {
+                    resource.setTimeRemains(allocation.getTimeRemains());
+                } else {
+                    resource.setTimeRemains(allocation.getTask().getEstimatedLoad());
+                }
+            }
             resource.setTimeSpent(allocation.getTimeSpent());
-            results.add(resource);
+            if (mapTemp.get(resource.getTaskId()) == null) {
+                mapTemp.put(resource.getTaskId(), resource);
+            } else {
+                mapTemp.replace(resource.getTaskId(), resource);
+            }
         }
+
+        results = new ArrayList<UserTaskImputationResource>(mapTemp.values());
         return results;
     }
 
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity create(@PathVariable("userId") Long userId,
             @RequestParam("date") Long date,
-            @RequestBody UserTaskImputationResource[] imputations) {
+            @RequestBody UserTaskImputationResource[] imputations
+    ) {
         ApplicationUser appUser = repository.findOne(userId);
         Timestamp time = new Timestamp(date);
         for (UserTaskImputationResource imputation : imputations) {
@@ -100,8 +117,16 @@ public class UserConsommationController {
                 allocation.setMember(member);
                 allocation.setAllocationDate(time);
             }
-            allocation.setTimeSpent(imputation.getTimeSpent());
-            allocation.setTimeRemains(imputation.getTimeRemains());
+            Float timeSpent = 0F;
+            Float timeRemains = 0F;
+            if(imputation.getTimeSpent() != null){
+                timeSpent = imputation.getTimeSpent();
+            }
+            if(imputation.getTimeRemains() != null){
+                timeRemains = imputation.getTimeRemains();
+            }
+            allocation.setTimeSpent(timeSpent);
+            allocation.setTimeRemains(timeRemains);
             allocationRepository.save(allocation);
         }
         return new ResponseEntity(HttpStatus.CREATED);
