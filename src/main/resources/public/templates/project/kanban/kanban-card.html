@@ -14,7 +14,7 @@
     <div class="col-md-7">
       <ul class="list-inline">
         <li ng-repeat="member in task.assignees">
-          <img ng-if="member.photo" class="crop-photo" ng-src="{{member.photo}}" alt="{{member.username}}" data-toggle="tooltip" data-placement="bottom" title="{{member.username}}">
+          <img ng-if="member.photo" class="crop-photo crop" ng-src="{{member.photo}}" alt="{{member.username}}" data-toggle="tooltip" data-placement="bottom" title="{{member.username}}">
           <span ng-if="!member.photo" class="crop-photo glyphicon glyphicon-user" data-toggle="tooltip" data-placement="bottom" title="{{member.username}}"></span>
         </li>
       </ul>
