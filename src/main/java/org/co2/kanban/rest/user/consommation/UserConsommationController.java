@@ -122,17 +122,14 @@ public class UserConsommationController {
                 allocation.setMember(member);
                 allocation.setAllocationDate(time);
             }
-            Float timeSpent = 0F;
-            Float timeRemains = 0F;
-            if(imputation.getTimeSpent() != null){
-                timeSpent = imputation.getTimeSpent();
+            
+            allocation.setTimeSpent(imputation.getTimeSpent());
+            allocation.setTimeRemains(imputation.getTimeRemains());
+            if(imputation.getTimeSpent() == null || imputation.getTimeSpent() == 0F){
+                allocationRepository.delete(allocation);
+            }else{
+                allocationRepository.save(allocation);
             }
-            if(imputation.getTimeRemains() != null){
-                timeRemains = imputation.getTimeRemains();
-            }
-            allocation.setTimeSpent(timeSpent);
-            allocation.setTimeRemains(timeRemains);
-            allocationRepository.save(allocation);
         }
         return new ResponseEntity(HttpStatus.CREATED);
     }
