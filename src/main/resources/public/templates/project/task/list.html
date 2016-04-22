@@ -78,10 +78,14 @@
                             {{task.category.name}}
                         </td>
                         <td>
-                            <span ng-if="!task.assignee">
+                            <span ng-if="!task.assignees">
                                 -
                             </span>
-                            {{task.assignee.username}}
+                            <span ng-repeat="assignee in task.assignees">
+                                <span ng-if="assignee.photo">
+                                    <img src="{{assignee.photo}}" alt="{{assignee.username}}" title="{{assignee.username}}" class="crop"/>
+                                </span>
+                            </span>
                         </td>
                         <td>
                             {{task.plannedStart| date:'dd/MM/yyyy'}}
