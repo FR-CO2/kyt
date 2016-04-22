@@ -55,12 +55,17 @@ public class UserConsommationController {
     public Iterable<UserTaskImputationResource> list(@PathVariable("userId") Long userId,
             @RequestParam("date") Long date) {
         ApplicationUser appUser = repository.findOne(userId);
+        long oneDay = 1 * 24 * 60 * 60 * 1000;
+        Long dateMoreOneDay = date + oneDay;
+        Long dateLessOneDay = date - oneDay;
         Timestamp time = new Timestamp(date);
+        Timestamp timeMoreOneDay = new Timestamp(dateMoreOneDay);
+        Timestamp timeLessOneDay = new Timestamp(dateLessOneDay);
         List<UserTaskImputationResource> results;
         Map<Long, UserTaskImputationResource> mapTemp = new HashMap<>();
         Iterable<Allocation> allocations = allocationRepository.findByMemberUserAndAllocationDate(appUser, time);
         Iterator<Allocation> allocationsIterator = allocations.iterator();
-        Iterable<Task> tasks = taskRepositoy.findByAssigneesUserAndPlannedStartBeforeAndPlannedEndingAfterAndStateCloseStateFalse(appUser, time, time);
+        Iterable<Task> tasks = taskRepositoy.findByAssigneesUserAndPlannedStartBeforeAndPlannedEndingAfterAndStateCloseStateFalse(appUser, timeMoreOneDay, timeLessOneDay);
         for (Task task : tasks) {
             UserTaskImputationResource resource = new UserTaskImputationResource(task);
             while (allocationsIterator.hasNext()) {
