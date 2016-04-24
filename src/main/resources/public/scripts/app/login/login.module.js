@@ -1,11 +1,7 @@
-(function () {
-    define(['angular', "login/auth.service", "login/currentuser.service",
-        "login/login.controller"],
-            function (angular, appAuthService, currentUserService, loginController) {
-                return angular.module('kanban.login', [])
-                        .controller("loginController", loginController)
-                        .service("appAuthService", appAuthService)
-                        .service("currentUserService", currentUserService);
-                ;
-            });
-})();
+var loginController = require("./login.controller");
+var appAuthService = require("./auth.service");
+var currentUserService = require("./currentuser.service");
+module.exports = angular.module('kanban.login', [])
+        .controller("loginController", loginController)
+        .service("appAuthService", appAuthService)
+        .service("currentUserService", currentUserService);

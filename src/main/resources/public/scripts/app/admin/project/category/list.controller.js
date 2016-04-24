@@ -1,5 +1,3 @@
-(function () {
-    define([], function () {
         var listController = function ($uibModal, project) {
             var vm = this;
             vm.add = function () {
@@ -35,6 +33,4 @@
             vm.reload();
         };
         listController.$inject = ["$uibModal", "project"];
-        return listController;
-    });
-})();
+        module.exports = listController;

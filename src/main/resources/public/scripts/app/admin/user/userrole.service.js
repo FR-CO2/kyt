@@ -1,15 +1,5 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-(function () {
-    define([], function () {
-        var userRoleService = function ($resource) {
-            return $resource("/api/role");
-        };
-        userRoleService.$inject = ["$resource"];
-        return userRoleService;
-    });
-})();
+var userRoleService = function ($resource) {
+    return $resource("/api/role");
+};
+userRoleService.$inject = ["$resource"];
+module.exports = userRoleService;

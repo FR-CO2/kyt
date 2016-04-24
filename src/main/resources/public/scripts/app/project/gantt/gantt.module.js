@@ -1,8 +1,3 @@
-(function () {
-    define(['angular',
-        "project/gantt/gantt.controller"],
-            function (angular, ganttController) {
-                return angular.module('kanban.project.gantt', [])
-                        .controller("ganttController", ganttController);
-            });
-})();
+var ganttController = require("./gantt.controller");
+module.exports = angular.module('kanban.project.gantt', [])
+        .controller("ganttController", ganttController);

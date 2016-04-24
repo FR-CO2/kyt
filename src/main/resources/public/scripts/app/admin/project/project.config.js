@@ -1,5 +1,3 @@
-(function () {
-    define([], function () {
         var config = function ($stateProvider) {
             $stateProvider.state("app.projects", {
                 controller: "listProjectAdminController",
@@ -45,7 +43,5 @@
             });
         };
         config.$inject = ["$stateProvider"];
-        return config;
-    });
-})();
+        module.exports = config;
 

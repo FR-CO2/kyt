@@ -1,11 +1,7 @@
-(function () {
-    define(['angular', "project/task/comment/list.controller",
-        "project/task/comment/add.controller",
-        "project/task/comment/reply.controller"],
-            function (angular, listController, addController, replyController) {
-                return angular.module('kanban.project.task.comment', [])
-                        .controller("commentListController", listController)
-                        .controller("commentAddController", addController)
-                        .controller("commentReplyController", replyController);
-            });
-})();
+var listController = require("./list.controller");
+var addController = require("./add.controller");
+var replyController = require("./reply.controller");
+module.exports = angular.module('kanban.project.task.comment', [])
+        .controller("commentListController", listController)
+        .controller("commentAddController", addController)
+        .controller("commentReplyController", replyController);
