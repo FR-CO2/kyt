@@ -6,6 +6,7 @@ module.exports = angular.module("kanban.project.gantt", ["gantt", 'gantt.sortabl
     'gantt.bounds',
     'gantt.progress',
     'gantt.table',
+    'gantt.tree',
     'gantt.groups',
     'gantt.resizeSensor'])
         .controller("ganttController", ganttController);
