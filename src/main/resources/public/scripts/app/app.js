@@ -11,7 +11,7 @@ var adminModule = require("./admin/admin.module");
 var profilController = require("./profil/profil.controller");
 
 angular.module("kanban",
-        ["ui.router", "ngStorage", "ngSanitize", "ui.sortable",
+        ["ui.router", "ngStorage", "ngSanitize", "ui.sortable", "angularMoment",
             "http-auth-interceptor", "xeditable", "ngResource",
             "hateoas", "ui.bootstrap", "ui.bootstrap.tpls", "ngImgCrop", "textAngular",
             loginModule.name, dashboardModule.name,
@@ -20,7 +20,6 @@ angular.module("kanban",
         .run(appRun)
         .controller("appController", appController)
         .controller("profilController", profilController)
-        .value("moment", moment)
         .directive("samePassword", samePasswordDirective)
         .directive("errors", errorDirective);
 
