@@ -59,7 +59,7 @@
                 </div>
                 <div class="form-group col-md-4">
                     <label for="estimatedLoad">Charge totale</label>
-                    <input type="number" id="estimatedLoad" class="form-control" ng-model="taskCtrl.task.estimatedLoad" min="0" step="1"/>
+                    <input type="number" id="estimatedLoad" class="form-control" ng-model="taskCtrl.task.estimatedLoad" min="0" step="{{taskCtrl.allocation.value}}"/>
                 </div>
             </fieldset>
             <fieldset id="customfields">

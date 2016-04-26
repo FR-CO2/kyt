@@ -11,6 +11,7 @@ var taskController = function ($q, $state, project, currenttask, taskAssemblerSe
         vm.categories = project.resource("category").query();
         vm.states = project.resource("state").query();
         vm.swimlanes = project.resource("swimlane").query();
+        vm.allocation = project.resource("allocation").get({key: 'step'});
         var customfields = project.resource("taskfield").query();
         $q.all([customfields.$promise, currenttask.$promise]).then(function (data) {
             vm.task.customField = [];

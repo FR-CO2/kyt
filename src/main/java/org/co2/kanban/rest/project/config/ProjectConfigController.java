@@ -65,7 +65,7 @@ public class ProjectConfigController {
     
     @RequestMapping(value = "/{category}",params = {"key"}, method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public ProjectConfigResource getByName(@PathVariable("projectId") Long projectId, @PathVariable("category") ProjectConfigType category,
-            @RequestParam(name="keyConfig") String keyConfig) {
+            @RequestParam(name="key") String keyConfig) {
         Project project = projectRepository.findOne(projectId);
         if (project == null) {
             throw new BusinessException(HttpStatus.NOT_FOUND, MESSAGE_KEY_CONFLICT_NAME);
