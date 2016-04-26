@@ -16,5 +16,5 @@ public interface ProjectConfigRepository extends PagingAndSortingRepository<Proj
 
     Iterable<ProjectConfig> findByProject(Project project);
     Iterable<ProjectConfig> findByProjectAndCategory(Project project, ProjectConfigType category);
-
+    ProjectConfig findByProjectAndCategoryAndKeyConfig(Project project, ProjectConfigType category, String keyConfig);
 }

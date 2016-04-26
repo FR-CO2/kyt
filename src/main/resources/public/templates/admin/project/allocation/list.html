@@ -2,9 +2,6 @@
     <div class="panel">
         <div class="panel-heading">
             <h2 class="panel-heading-title">Configuration des imputations</h2>
-            <div class="panel-heading-action">
-                <button class="btn btn-info btn-sm" ng-click="imputationListCtrl.add()"><span class="glyphicon glyphicon-plus-sign"></span>Nouvelle imputation</button>
-            </div>
         </div>
         <div class="panel-body">
             <table class="table table-hover">
@@ -12,26 +9,22 @@
                     <tr>
                         <th>Nom de l'unité</th>
                         <th>Unité</th>
-                        <th>Total d'une journée</th>
-                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="imputation in imputationListCtrl.imputations">
+                    <tr ng-repeat="allocation in allocationListCtrl.allocations">
                         <td>
-                            <a href="#" editable-text="inputation.name" onaftersave="imputationListCtrl.saveImputation(inputation)"
-                               e-required onhide="imputationListCtrl.reload()" 
+                            <a href="#" editable-text="allocation.key" onaftersave="allocationListCtrl.saveAllocation(allocation)"
+                               e-required onhide="allocationListCtrl.reload()" 
                                title="Modifier le nom de l'unité d'imputation">
-                                {{imputation.name}}
+                                {{allocation.key}}
                             </a>
                         </td>
                         <td>
-                            <a editable-color="imputation.bgcolor" onaftersave="inputationListCtrl.saveImputation(inputation)" title="Modifier la catégorie">
-                                <span style="background-color: {{imputation.bgcolor}}; border: 1px solid; padding-top:4px; padding-left:15px">&nbsp;</span>
-                            </a>
-                        <td>
-                            <a ng-click="imputationListCtrl.delete(imputation)">
-                                <span class="glyphicon glyphicon-trash"></span>
+                            <a href="#" editable-text="allocation.value" onaftersave="allocationListCtrl.saveAllocation(allocation)"
+                               e-required onhide="allocationListCtrl.reload()" 
+                               title="Modifier la valeur de l'unité d'imputation">
+                               {{allocation.value}}
                             </a>
                         </td>
                     </tr>

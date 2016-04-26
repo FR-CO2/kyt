@@ -21,15 +21,15 @@ var listController = function ($uibModal, project) {
             vm.reload();
         });
     };
-    vm.saveImputation = function (imputation) {
-        var result = imputation.resource("self").save(imputation).$promise;
+    vm.saveAllocation = function (allocation) {
+        var result = allocation.resource("self").save(allocation).$promise;
         result.catch(function (error) {
             error.data = error.data.message;
         });
         return result;
     };
     vm.reload = function () {
-        vm.allocation = project.resource("projectConfig").query();
+        vm.allocations = project.resource("allocation").query();
     };
     vm.reload();
 };

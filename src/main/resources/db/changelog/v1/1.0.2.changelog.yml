@@ -21,16 +21,16 @@ databaseChangeLog:
                             nullable: false
                     - column:
                         name: category
+                        type: int
+                        constraints:
+                            nullable: false
+                    - column:
+                        name: key_config
                         type: varchar(255)
                         constraints:
                             nullable: false
                     - column:
-                        name: keyConfig
-                        type: varchar(255)
-                        constraints:
-                            nullable: false
-                    - column:
-                        name: valueConfig
+                        name: value_config
                         type: varchar(255)
                         constraints:
                             nullable: false

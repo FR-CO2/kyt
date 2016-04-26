@@ -9,6 +9,8 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import org.co2.kanban.repository.category.Category;
+import org.co2.kanban.repository.config.ProjectConfig;
+import org.co2.kanban.repository.config.ProjectConfigType;
 import org.co2.kanban.repository.member.ProjectRole;
 import org.co2.kanban.repository.project.Project;
 import org.co2.kanban.repository.project.ProjectRepository;
@@ -95,6 +97,7 @@ public class ProjectController {
         }
         newProject.setStates(getDefaultStates(newProject));
         newProject.setCategories(getDefaultCategories(newProject));
+        newProject.setConfig(getDefaultConfigAllocation(newProject));
         Project result = repository.save(newProject);
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(linkTo(methodOn(this.getClass()).get(result.getId())).toUri());
@@ -164,6 +167,29 @@ public class ProjectController {
         defaults.add(defect);
         defaults.add(evolution);
         defaults.add(assistance);
+        return defaults;
+    }
+    
+    private List<ProjectConfig> getDefaultConfigAllocation(Project project) {
+        ProjectConfig day = new ProjectConfig();
+        day.setKey("name");
+        day.setValue("journée");
+        day.setProject(project);
+        day.setType(ProjectConfigType.ALLOCATION);
+        ProjectConfig step = new ProjectConfig();
+        step.setKey("step");
+        step.setValue("0.1");
+        step.setProject(project);
+        step.setType(ProjectConfigType.ALLOCATION);
+        ProjectConfig max = new ProjectConfig();
+        max.setKey("max");
+        max.setValue("1");
+        max.setProject(project);
+        max.setType(ProjectConfigType.ALLOCATION);
+        List<ProjectConfig> defaults = new ArrayList<>();
+        defaults.add(day);
+        defaults.add(step);
+        defaults.add(max);
         return defaults;
     }
 }

@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.co2.kanban.repository.config.ProjectConfigRepository;
 import org.co2.kanban.repository.config.ProjectConfigType;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  *
@@ -34,7 +35,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 public class ProjectConfigController {
 
     
-    private static final String MESSAGE_KEY_CONFLICT_NAME = "project.imputation.error.conflict.name";
+    private static final String MESSAGE_KEY_CONFLICT_NAME = "project.allocation.error.conflict.name";
     
     @Autowired
     private ProjectConfigRepository repository;
@@ -48,23 +49,33 @@ public class ProjectConfigController {
     @RequestMapping(method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public Iterable<ProjectConfigResource> projectList(@PathVariable("projectId") Long projectId) {
         Project project = projectRepository.findOne(projectId);
-        if (repository.findByProject(project) != null) {
+        if (project == null) {
             throw new BusinessException(HttpStatus.NOT_FOUND, MESSAGE_KEY_CONFLICT_NAME);
         }
         return assembler.toResources(repository.findByProject(project));
     }
-    @RequestMapping(value="/{category}", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{category}", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public Iterable<ProjectConfigResource> get(@PathVariable("projectId") Long projectId, @PathVariable("category") ProjectConfigType category) {
         Project project = projectRepository.findOne(projectId);
-        if (repository.findByProject(project) != null) {
+        if (project == null) {
             throw new BusinessException(HttpStatus.NOT_FOUND, MESSAGE_KEY_CONFLICT_NAME);
         }
         return assembler.toResources(repository.findByProjectAndCategory(project, category));
     }
+    
+    @RequestMapping(value = "/{category}",params = {"key"}, method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    public ProjectConfigResource getByName(@PathVariable("projectId") Long projectId, @PathVariable("category") ProjectConfigType category,
+            @RequestParam(name="keyConfig") String keyConfig) {
+        Project project = projectRepository.findOne(projectId);
+        if (project == null) {
+            throw new BusinessException(HttpStatus.NOT_FOUND, MESSAGE_KEY_CONFLICT_NAME);
+        }
+        return assembler.toResource(repository.findByProjectAndCategoryAndKeyConfig(project, category, keyConfig));
+    }
 
     @PreAuthorize("@projectAccessExpression.hasManagerAccess(#projectId, principal.username)")
     @RequestMapping(method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity create(@PathVariable("projectId") Long projectId, @RequestBody ProjectConfig config) {
+    public ResponseEntity update(@PathVariable("projectId") Long projectId, @RequestBody ProjectConfig config) {
         Project project = projectRepository.findOne(projectId);
         if (repository.findByProject(project) != null) {
             throw new BusinessException(HttpStatus.CONFLICT, MESSAGE_KEY_CONFLICT_NAME);

@@ -5,6 +5,7 @@
  */
 package org.co2.kanban.rest.project;
 
+import org.co2.kanban.repository.config.ProjectConfigType;
 import org.co2.kanban.repository.project.Project;
 import org.co2.kanban.rest.project.category.CategoryController;
 import org.co2.kanban.rest.project.config.ProjectConfigController;
@@ -40,7 +41,7 @@ public class ProjectAssembler extends ResourceAssemblerSupport<Project, ProjectR
         resource.add(linkTo(methodOn(ProjectController.class).get(project.getId())).withSelfRel());
         resource.add(linkTo(methodOn(ProjectController.class).roles(project.getId())).withRel("roles"));
         resource.add(linkTo(methodOn(TaskFieldDefController.class).projectList(project.getId())).withRel("taskfield"));
-        resource.add(linkTo(methodOn(ProjectConfigController.class).projectList(project.getId())).withRel("config"));
+        resource.add(linkTo(methodOn(ProjectConfigController.class).get(project.getId(), ProjectConfigType.ALLOCATION)).withRel("allocation"));
         return resource;
     }
 

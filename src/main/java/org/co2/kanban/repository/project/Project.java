@@ -117,11 +117,11 @@ public class Project implements Serializable, Identifiable {
         this.categories = categories;
     }
     
-    public List<ProjectConfig> getImputations(){
+    public List<ProjectConfig> getConfig(){
         return config;
     }
     
-    public void setImputation(List<ProjectConfig> config){
+    public void setConfig(List<ProjectConfig> config){
         this.config= config;
     }
     

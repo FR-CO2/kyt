@@ -1,17 +1,19 @@
 <div class="panel panel-info">
     <div class="panel-heading">
-        <span class="glyphicon glyphicon-plus-sign"></span> Nouvelle catégorie
+        <span class="glyphicon glyphicon-plus-sign"></span> Nouvelle variable d'imputation
     </div>
     <div class="panel-body">
-        <alert type="danger" ng-if="addCategoryCtrl.error">
-            <errors errors="addCategoryCtrl.error"></errors>
+        <alert type="danger" ng-if="addAllocationCtrl.error">
+            <errors errors="addAllocationCtrl.error"></errors>
         </alert>
-        <form id="login" role="form" ng-submit="addCategoryCtrl.submit()">
+        <form id="login" role="form" ng-submit="addAllocationCtrl.submit()">
             <div class="form-group">
-                <input type="text" required ng-model="addCategoryCtrl.category.name" class="form-control" name="taskName" placeholder="Nom de la catégorie"/>
+                <select ng-model="addAllocationCtrl.allocations" name="allocationConfig" id="allocationConfig">
+                    <option ng-repeat="option in addAllocationCtrl.allocations" value="{{option.valueConfig}}">{{option.keyConfig}}</option>
+                </select>
             </div>
             <div class="form-group">
-                <input type="color" ng-model="addCategoryCtrl.category.bgcolor" />
+                <input type="text" ng-model="addAllocationCtrl.allocation.valueConfig"  class="form-control" name="valueConfig" placeholder="Valeur de la variable"/>
             </div>
             <div>
                 <button type="submit"  class="btn btn-info center-block">valider</button>
