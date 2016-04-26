@@ -1,0 +1,42 @@
+<div class="col-md-12">
+    <div class="panel">
+        <div class="panel-heading">
+            <h2 class="panel-heading-title">Configuration des imputations</h2>
+            <div class="panel-heading-action">
+                <button class="btn btn-info btn-sm" ng-click="imputationListCtrl.add()"><span class="glyphicon glyphicon-plus-sign"></span>Nouvelle imputation</button>
+            </div>
+        </div>
+        <div class="panel-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Nom de l'unité</th>
+                        <th>Unité</th>
+                        <th>Total d'une journée</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="imputation in imputationListCtrl.imputations">
+                        <td>
+                            <a href="#" editable-text="inputation.name" onaftersave="imputationListCtrl.saveImputation(inputation)"
+                               e-required onhide="imputationListCtrl.reload()" 
+                               title="Modifier le nom de l'unité d'imputation">
+                                {{imputation.name}}
+                            </a>
+                        </td>
+                        <td>
+                            <a editable-color="imputation.bgcolor" onaftersave="inputationListCtrl.saveImputation(inputation)" title="Modifier la catégorie">
+                                <span style="background-color: {{imputation.bgcolor}}; border: 1px solid; padding-top:4px; padding-left:15px">&nbsp;</span>
+                            </a>
+                        <td>
+                            <a ng-click="imputationListCtrl.delete(imputation)">
+                                <span class="glyphicon glyphicon-trash"></span>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
