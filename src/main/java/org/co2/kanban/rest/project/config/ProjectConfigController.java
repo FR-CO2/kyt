@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class ProjectConfigController {
 
     
-    private static final String MESSAGE_KEY_CONFLICT_NAME = "project.allocation.error.conflict.name";
+    private static final String MESSAGE_KEY_CONFLICT_NAME = "project.config.error.project.not.found";
     
     @Autowired
     private ProjectConfigRepository repository;
@@ -77,7 +77,7 @@ public class ProjectConfigController {
     @RequestMapping(method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity update(@PathVariable("projectId") Long projectId, @RequestBody ProjectConfig config) {
         Project project = projectRepository.findOne(projectId);
-        if (repository.findByProject(project) != null) {
+        if (repository.findByProject(project) == null) {
             throw new BusinessException(HttpStatus.CONFLICT, MESSAGE_KEY_CONFLICT_NAME);
         }
         config.setProject(project);

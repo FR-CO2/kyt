@@ -16,13 +16,8 @@ var listController = function ($uibModal, project) {
             vm.reload();
         });
     };
-    vm.delete = function (imputation) {
-        imputation.resource("self").delete(null, function () {
-            vm.reload();
-        });
-    };
     vm.saveAllocation = function (allocation) {
-        var result = allocation.resource("self").save(allocation).$promise;
+        var result = project.resource("config").save(allocation).$promise;
         result.catch(function (error) {
             error.data = error.data.message;
         });

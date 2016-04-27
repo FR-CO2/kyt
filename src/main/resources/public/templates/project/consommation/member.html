@@ -47,7 +47,7 @@
                             <span ng-if="entry.showDetails && entry.imputations.details.length" class="glyphicon glyphicon-chevron-up" ng-click="consommationCtrl.hideDetail(entry)"></span>
                         </th>
                         <th ng-repeat="day in consommationCtrl.days">
-                            <span ng-if="consommationCtrl.precision === 'week'">{{entry.imputations.imputations[day.format("DD/MM/YYYY")]}}</span>
+                            <span ng-if="consommationCtrl.precision === 'week'"><span ng-class="{'exceeded-date' : consommationCtrl.max.value != entry.imputations.imputations[day.format('DD/MM/YYYY')]}">{{entry.imputations.imputations[day.format("DD/MM/YYYY")]}}</span></span>
                             <span ng-if="consommationCtrl.precision === 'month'">{{entry.imputations.imputations[day.id]}}</span>
                         </th>
                         <th>&nbsp;</th>

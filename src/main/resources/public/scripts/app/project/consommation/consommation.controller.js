@@ -38,6 +38,8 @@ var consomationController = function (moment, project, consomationService) {
             vm.days = getWeekDays(moment, vm.start);
             end = moment(vm.start).add(8, 'days');
             vm.entries = consomationService.loadConsommations(project, vm.start, end);
+            vm.max = project.resource("max").get();
+            
         } else {
             vm.start = vm.start.startOf('month');
             vm.days = getMonthDays(moment, vm.start, vm.start.month());
@@ -66,6 +68,9 @@ var consomationController = function (moment, project, consomationService) {
             vm.start = vm.start.add(1, "months");
         }
         vm.precisionChange();
+    };
+    vm.checkAllocation = function(allocation){
+        return allocation === vm.max.value;
     };
     vm.precisionChange();
 };
