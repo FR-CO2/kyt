@@ -45,7 +45,7 @@
                 controller: "listAllocationAdminController",
                 controllerAs: "allocationListCtrl",
                 templateUrl: "templates/admin/project/allocation/list.html",
-                url: "/customfield"
+                url: "/allocation"
             });
         };
         config.$inject = ["$stateProvider"];
