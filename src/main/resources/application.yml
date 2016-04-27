@@ -45,7 +45,7 @@ spring:
         driverClassName: org.postgresql.Driver
         url: jdbc:postgresql:postgres
         username: postgres
-        password: Wxegdej5
+        password: gigi181263
 liquibase:
     drop-first: false
 ---
