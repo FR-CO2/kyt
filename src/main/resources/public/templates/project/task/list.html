@@ -85,6 +85,9 @@
                                 <span ng-if="assignee.photo">
                                     <img src="{{assignee.photo}}" alt="{{assignee.username}}" title="{{assignee.username}}" class="crop"/>
                                 </span>
+                                <span ng-if="!assignee.photo">
+                                    {{assignee.username}}
+                                </span>
                             </span>
                         </td>
                         <td>
