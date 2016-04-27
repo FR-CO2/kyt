@@ -42,6 +42,7 @@ public class ProjectAssembler extends ResourceAssemblerSupport<Project, ProjectR
         resource.add(linkTo(methodOn(ProjectController.class).roles(project.getId())).withRel("roles"));
         resource.add(linkTo(methodOn(TaskFieldDefController.class).projectList(project.getId())).withRel("taskfield"));
         resource.add(linkTo(methodOn(ProjectConfigController.class).get(project.getId(), ProjectConfigType.ALLOCATION)).withRel("allocation"));
+        resource.add(linkTo(methodOn(ProjectConfigController.class).getByName(project.getId(), ProjectConfigType.ALLOCATION,"step")).withRel("step"));
         return resource;
     }
 
