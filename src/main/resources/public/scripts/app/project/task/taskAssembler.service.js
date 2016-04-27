@@ -32,7 +32,6 @@ var taskAssemblerService = function ($http, HateoasInterface, moment) {
         if (taskresource.plannedStart !== null) {
             task.plannedStart = moment(taskresource.plannedStart).toDate();
         }
-
         return task;
     };
 };
