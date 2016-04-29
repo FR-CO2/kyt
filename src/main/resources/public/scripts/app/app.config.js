@@ -23,7 +23,10 @@ var config = function ($stateProvider, $httpProvider, HateoasInterceptorProvider
         resolve: {
             currentuser: ["currentUserService", function (currentUserService) {
                     return currentUserService.get();
-                }]
+                }],
+            appParameters : [ "parameterService", function (parameterService) {
+                    return parameterService.query();
+            }]
         }
     });
     $stateProvider.state("app.dashboard", {

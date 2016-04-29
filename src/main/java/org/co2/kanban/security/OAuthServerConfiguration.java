@@ -47,7 +47,7 @@ public class OAuthServerConfiguration {
         @Override
         public void configure(HttpSecurity http) throws Exception {
             http.authorizeRequests()
-                    .antMatchers(HttpMethod.POST, "/api/project", "/api/user").hasAuthority(ApplicationUserRole.ADMIN.name())
+                    .antMatchers(HttpMethod.POST, "/api/project", "/api/user", "/api/parameter/**" ).hasAuthority(ApplicationUserRole.ADMIN.name())
                     .antMatchers(HttpMethod.DELETE, "/api/project", "/api/user/**").hasAuthority(ApplicationUserRole.ADMIN.name())
                     .antMatchers("/api/**").authenticated();
         }

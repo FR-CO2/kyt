@@ -1,5 +1,5 @@
 
-var dashboardController = function ($uibModal, HateoasInterface, currentuser, taskAssemblerService, uiCalendarConfig, moment) {
+var dashboardController = function ($uibModal, HateoasInterface, currentuser, taskAssemblerService, uiCalendarConfig, moment, appParameters) {
     var vm = this;
     vm.tasks = {
         page: {
@@ -75,6 +75,9 @@ var dashboardController = function ($uibModal, HateoasInterface, currentuser, ta
                 },
                 currentuser: function () {
                     return currentuser;
+                }, 
+                appParameters : function() {
+                    return appParameters;
                 }
             },
             size: "md"
@@ -83,5 +86,5 @@ var dashboardController = function ($uibModal, HateoasInterface, currentuser, ta
     };
     vm.eventsSource = [];
 };
-dashboardController.$inject = ["$uibModal", "HateoasInterface", "currentuser", "taskAssemblerService", "uiCalendarConfig", "moment"];
+dashboardController.$inject = ["$uibModal", "HateoasInterface", "currentuser", "taskAssemblerService", "uiCalendarConfig", "moment", "appParameters"];
 module.exports = dashboardController;

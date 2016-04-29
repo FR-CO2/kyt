@@ -2,11 +2,11 @@
 ---
 databaseChangeLog:
   - changeSet:
-        id: schema-1.0.2-dynprojectconfig
+        id: schema-1.0.2-dynapiparameter
         author: stan
         changes:
             - createTable:
-                tableName: kyt_project_config
+                tableName: kyt_api_parameter
                 columns:
                     - column:
                         name: id
@@ -15,33 +15,81 @@ databaseChangeLog:
                             primaryKey: true
                             nullable: false
                     - column:
-                        name: project_id
-                        type: BIGINT
-                        constraints:
-                            nullable: false
-                    - column:
                         name: category
                         type: int
                         constraints:
                             nullable: false
                     - column:
-                        name: key_config
+                        name: key_param
                         type: varchar(255)
                         constraints:
                             nullable: false
                     - column:
-                        name: value_config
+                        name: value_param
                         type: varchar(255)
                         constraints:
                             nullable: false
-            - addForeignKeyConstraint:
-                baseColumnNames: project_id
-                baseTableName: kyt_project_config
-                constraintName: fk_project_config_project
-                referencedColumnNames: id
-                referencedTableName: kyt_project
             - createSequence:
-                sequenceName: config_pkey_seq
+                sequenceName: parameter_pkey_seq
         rollback:
                 - dropTable:
-                    tableName: kyt_project_config
+                    tableName: kyt_api_parameter
+  - changeSet:   
+        id: data-1.0.2
+        author: stan
+        changes:
+            insert :
+                tableName : kyt_api_parameter
+                columns:
+                - column:
+                    name: id
+                    valueNumeric: 1
+                - column:
+                    name: category
+                    value: 0
+                - column:
+                    name: key_param
+                    value: name
+                - column:
+                    name: value_param
+                    value: 'journée'
+            insert :
+                tableName : kyt_api_parameter
+                columns:
+                - column:
+                    name: id
+                    valueNumeric: 2
+                - column:
+                    name: category
+                    value: 0
+                - column:
+                    name: key_param
+                    value: step
+                - column:
+                    name: value_param
+                    value: 0.1
+            insert :
+                tableName : kyt_api_parameter
+                columns:
+                - column:
+                    name: id
+                    valueNumeric: 3
+                - column:
+                    name: category
+                    value: 0
+                - column:
+                    name: key_param
+                    value: max
+                - column:
+                    name: value_param
+                    value: 1
+            rollback:
+                - delete:
+                    tableName: kyt_api_parameter
+                    where: id=1
+                - delete:
+                    tableName: kyt_api_parameter
+                    where: id=2
+                - delete:
+                    tableName: kyt_api_parameter
+                    where: id=3

@@ -21,7 +21,7 @@ public class UserTaskImputationResource extends ResourceSupport {
     private Float timeSpent = 0F;
 
     private Float timeRemains = null;
-
+    
     public UserTaskImputationResource() {
     }
 

@@ -9,6 +9,6 @@ package org.co2.kanban.repository.config;
  *
  * @author granels
  */
-public enum ProjectConfigType {
+public enum ParameterType {
     ALLOCATION
 }

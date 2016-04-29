@@ -5,7 +5,6 @@
  */
 package org.co2.kanban.repository.project;
 
-import com.sun.javafx.scene.control.skin.VirtualFlow;
 import org.co2.kanban.repository.member.Member;
 import org.co2.kanban.repository.state.State;
 import org.co2.kanban.repository.swimlane.Swimlane;
@@ -18,12 +17,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import org.co2.kanban.repository.Identifiable;
 import org.co2.kanban.repository.category.Category;
-import org.co2.kanban.repository.config.ProjectConfig;
 
 /**
  *
@@ -57,9 +54,7 @@ public class Project implements Serializable, Identifiable {
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     private List<Category> categories = new ArrayList<>();
-    
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
-    private List<ProjectConfig> config =new ArrayList<>();
+
 
     public Long getId() {
         return id;
@@ -116,13 +111,4 @@ public class Project implements Serializable, Identifiable {
     public void setCategories(List<Category> categories) {
         this.categories = categories;
     }
-    
-    public List<ProjectConfig> getConfig(){
-        return config;
-    }
-    
-    public void setConfig(List<ProjectConfig> config){
-        this.config= config;
-    }
-    
 }

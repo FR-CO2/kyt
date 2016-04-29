@@ -1,0 +1,29 @@
+<header class="heading nav nav--subNav">
+  <h2 class="heading__title pull-left">Liste des paramètres</h2>
+</header>
+<section class="content">
+  <div class="panel">
+    <div class="panel-body">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>Nom</th>
+            <th>Valeur</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="parameter in parameterCtrl.parameters">
+            <td>
+              {{parameter.keyParam}}
+            </td>
+            <td>
+                <a href="#" editable-text="parameter.valueParam" onaftersave="parameterCtrl.saveParameter(parameter)" title="Modifier le paramètre">
+                    {{parameter.valueParam}}
+                </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
