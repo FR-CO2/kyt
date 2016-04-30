@@ -2,8 +2,9 @@
   <h2 class="heading__title pull-left">Liste des paramètres</h2>
 </header>
 <section class="content">
-  <div class="panel">
+  <div class="panel" ng-repeat="parameterByCategory in parameterCtrl.parameters">
     <div class="panel-body">
+        <h3 class="pull-left">{{parameterByCategory.category}}</h3>
       <table class="table table-hover">
         <thead>
           <tr>
@@ -12,7 +13,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="parameter in parameterCtrl.parameters">
+          <tr ng-repeat="parameter in parameterByCategory.parameter">
             <td>
               {{parameter.keyParam}}
             </td>

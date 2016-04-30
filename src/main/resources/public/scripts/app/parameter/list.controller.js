@@ -9,7 +9,7 @@ var listController = function ($uibModal, parameterService) {
         return result;
     };
     vm.reload = function () {
-        vm.parameters = parameterService.query({category : "ALLOCATION"});
+        vm.parameters = parameterService.query();
     };
     vm.reload();
 };

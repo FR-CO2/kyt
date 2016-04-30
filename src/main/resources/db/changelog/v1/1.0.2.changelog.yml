@@ -35,7 +35,7 @@ databaseChangeLog:
                 - dropTable:
                     tableName: kyt_api_parameter
   - changeSet:   
-        id: data-1.0.2
+        id: data-1.0.2.0
         author: stan
         changes:
             insert :
@@ -53,6 +53,14 @@ databaseChangeLog:
                 - column:
                     name: value_param
                     value: 'journée'
+            rollback:
+                - delete:
+                    tableName: kyt_api_parameter
+                    where: id=1
+  - changeSet:   
+        id: data-1.0.2.1
+        author: stan
+        changes:
             insert :
                 tableName : kyt_api_parameter
                 columns:
@@ -68,6 +76,14 @@ databaseChangeLog:
                 - column:
                     name: value_param
                     value: 0.1
+            rollback:
+                - delete:
+                    tableName: kyt_api_parameter
+                    where: id=2
+  - changeSet:   
+        id: data-1.0.2.2
+        author: stan
+        changes:
             insert :
                 tableName : kyt_api_parameter
                 columns:
@@ -84,12 +100,6 @@ databaseChangeLog:
                     name: value_param
                     value: 1
             rollback:
-                - delete:
-                    tableName: kyt_api_parameter
-                    where: id=1
-                - delete:
-                    tableName: kyt_api_parameter
-                    where: id=2
                 - delete:
                     tableName: kyt_api_parameter
                     where: id=3

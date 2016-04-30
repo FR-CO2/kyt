@@ -11,49 +11,39 @@ import java.util.List;
 import java.util.Map;
 import org.co2.kanban.repository.config.ParameterType;
 import org.co2.kanban.repository.config.Parameter;
-import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author granels
  */
+@Component
 public class ParameterByCategoryAssembler{
 
     public List<ParameterByCategoryResource> filterByCategory(Iterable<Parameter> entities) {
+        List<ParameterByCategoryResource> result = new ArrayList<>();
         Map<ParameterType, List<Parameter>> mapParameter = new HashMap<>();
-        List<Parameter> listTemp = new ArrayList<>();
-        ParameterType api = null;
         for(Parameter parameter : entities){
             if(!mapParameter.containsKey(parameter.getCategory())){
-                if(!listTemp.isEmpty() && api != null){
-                    mapParameter.put(api, listTemp);
-                }
-                api = parameter.getCategory();
-                listTemp= new ArrayList<>();
+                    mapParameter.put(parameter.getCategory(), new ArrayList<Parameter>());
             }
-            listTemp.add(parameter);
+            mapParameter.get(parameter.getCategory()).add(parameter);
         }
-        
-        return this.toResource(mapParameter);
+        for (Map.Entry<ParameterType, List<Parameter>> parametersCategory : mapParameter.entrySet()) {
+            result.add(toResource(parametersCategory));
+        }
+        return result;
     }
 
-    public List<ParameterByCategoryResource> toResource(Map<ParameterType, List<Parameter>> mapParameters) {
-        List<ParameterByCategoryResource> list = new ArrayList<>();
-        for (Map.Entry<ParameterType, List<Parameter>> entry : mapParameters.entrySet()) {
-		ParameterByCategoryResource param = new ParameterByCategoryResource();
-                param.setCategory(entry.getKey());
-                param.setParameter(this.convert(entry.getValue()));
-                list.add(param);
-	}
-        
-        return list;
-    }
-
-    private List<ParameterResource> convert(List<Parameter> listParam){
+    public ParameterByCategoryResource toResource(Map.Entry<ParameterType, List<Parameter>> entry) {
+        ParameterByCategoryResource resource = new ParameterByCategoryResource();
         List<ParameterResource> list = new ArrayList<>();
-        for(Parameter param : listParam){
+        for(Parameter param : entry.getValue()){
             list.add(new ParameterResource(param));
         }
-        return list;
+        resource.setCategory(entry.getKey());
+        resource.setParameter(list);
+        return resource;
     }
+
 }

@@ -28,15 +28,15 @@ public class ParameterController {
     @Autowired
     private ParameterRepository repository;
 
-    //@Autowired
-    //private ParameterByCategoryAssembler assemblerByCategory;
+    @Autowired
+    private ParameterByCategoryAssembler assemblerByCategory;
 
     @Autowired
     private ParameterAssembler assembler;
 
    @RequestMapping(method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public Iterable<ParameterResource> query() {
-        return assembler.toResources(repository.findAll());
+    public Iterable<ParameterByCategoryResource> query() {
+        return assemblerByCategory.filterByCategory(repository.findAll());
     }
 
     @RequestMapping(value = "/{category}", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
