@@ -1,8 +1,18 @@
 
-var taskController = function ($q, $state, project, currenttask, taskAssemblerService, growl) {
+var taskController = function ($q, $state, project, currenttask, taskAssemblerService, growl, appParameters ) {
     var vm = this;
     vm.customFieldMap = {};
     vm.task = currenttask;
+    
+    vm.allocation = {};
+    for(var i = 0; i < appParameters.length; i++){
+        if(appParameters[i].category === 'ALLOCATION'){
+            for(var j = 0; j < appParameters[i].parameter.length; j ++){
+                vm.allocation[appParameters[i].parameter[j].keyParam] = appParameters[i].parameter[j].valueParam;
+            }
+            break;
+        };
+    }
     //vm.task.description;
     project.$promise.then(function () {
         currenttask.$promise.then(function () {
@@ -11,7 +21,6 @@ var taskController = function ($q, $state, project, currenttask, taskAssemblerSe
         vm.categories = project.resource("category").query();
         vm.states = project.resource("state").query();
         vm.swimlanes = project.resource("swimlane").query();
-        vm.allocation = project.resource("step").get();
         var customfields = project.resource("taskfield").query();
         $q.all([customfields.$promise, currenttask.$promise]).then(function (data) {
             vm.task.customField = [];
@@ -59,5 +68,5 @@ var taskController = function ($q, $state, project, currenttask, taskAssemblerSe
         });
     };
 };
-taskController.$inject = ["$q", "$state", "project", "task", "taskAssemblerService", "growl"];
+taskController.$inject = ["$q", "$state", "project", "task", "taskAssemblerService", "growl", "appParameters"];
 module.exports = taskController;

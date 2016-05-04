@@ -36,10 +36,10 @@
                         {{task.taskName}}
                     </td>
                     <td class="form-group col-md-3">
-                        <input type="number" id="estimatedLoad" class="form-control" ng-model="task.timeSpent" min="0" step="1"/>
+                        <input type="number" id="estimatedLoad" class="form-control" ng-model="task.timeSpent" min="0" step="{{addImputationCtrl.allocations.step}}"/>
                     </td>
                     <td class="form-group col-md-3">
-                        <input type="number" id="estimatedLoad" class="form-control" ng-model="task.timeRemains" min="0" step="1"/>
+                        <input type="number" id="estimatedLoad" class="form-control" ng-model="task.timeRemains" min="0" step="{{addImputationCtrl.allocations.step}}"/>
                     </td>
                 </tr>
             </table>
