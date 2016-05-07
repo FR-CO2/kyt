@@ -4,3 +4,4 @@ $.css.map
 .DS_Store
 /node/
 /jspm_packages/
+.idea/

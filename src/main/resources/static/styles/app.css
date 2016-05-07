@@ -6,7 +6,7 @@
 }
 
 /* line 25, ../../../../../co2themes/sass/_utilities.sass */
-[ng-click] {
+[ng-click], [toggler] {
   cursor: pointer;
 }
 
@@ -281,6 +281,19 @@ textarea.form-control {
   left: -50px;
   top: 50%;
   margin-top: -20px;
+}
+
+/* line 12, ../../../../../co2themes/sass/theme/_crop.sass */
+.cropArea {
+  background: #E4E4E4;
+  overflow: hidden;
+  width: 500px;
+  height: 350px;
+}
+
+/* line 19, ../../../../../co2themes/sass/theme/_crop.sass */
+.cropImage {
+  border-radius: 150px;
 }
 
 /* line 1, ../../../../../co2themes/sass/theme/_layout.sass */
@@ -617,18 +630,33 @@ td.column > ul .kanban-card:last-of-type {
   z-index: 1051;
 }
 
-/* line 44, ../../../../../co2themes/sass/app.sass */
+/* line 40, ../../../../../co2themes/sass/app.sass */
+#task {
+  background-color: #FFF;
+  padding-top: 1.2em;
+  padding-bottom: 1.2em;
+  padding: 2em;
+}
+/* line 46, ../../../../../co2themes/sass/app.sass */
+#task form {
+  background-color: #FFF;
+  padding-top: 1.2em;
+  padding-bottom: 3em;
+  border-radius: 1em;
+}
+
+/* line 52, ../../../../../co2themes/sass/app.sass */
 .no-project {
   padding-left: 10px;
   color: #000;
 }
 
-/* line 50, ../../../../../co2themes/sass/app.sass */
+/* line 57, ../../../../../co2themes/sass/app.sass */
 .kanban-card .badge {
   color: #000;
 }
 
-/* line 54, ../../../../../co2themes/sass/app.sass */
+/* line 61, ../../../../../co2themes/sass/app.sass */
 .datecell {
   border: none !important;
   font-size: 10px !important;
@@ -639,7 +667,13 @@ td.column > ul .kanban-card:last-of-type {
    * transform: rotate(70deg); */
 }
 
-/* line 64, ../../../../../co2themes/sass/app.sass */
+/* line 70, ../../../../../co2themes/sass/app.sass */
 .exceeded-date, .exceeded-load, .exceeded {
   color: red;
+}
+
+/* line 73, ../../../../../co2themes/sass/app.sass */
+.list-group {
+  -webkit-box-shadow: none;
+  margin-bottom: 2px;
 }

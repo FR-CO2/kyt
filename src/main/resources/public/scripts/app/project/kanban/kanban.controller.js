@@ -38,9 +38,6 @@ var kanbanController = function ($uibModal, project, kanbanService) {
             });
         }
     };
-    vm.toggleSwimlane = function (e) {
-        $(e.target).parent().parent().toggleClass('kanban__swimlane--collapsed');
-    };
 };
 kanbanController.$inject = ["$uibModal", "project", "kanbanService"];
 module.exports = kanbanController;
