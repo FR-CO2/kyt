@@ -49,7 +49,7 @@ var consomationController = function (moment, project, consomationService, alloc
             vm.entries = consomationService.loadConsommations(project, vm.start, end);
             //TODO Regroupe par semaine vm.days et vm.entries
             vm.entries.$promise.then(function () {
-                var grouped = consomationService.groupByWeek(vm.entries, vm.days)
+                var grouped = consomationService.groupByWeek(vm.entries, vm.days);
                 vm.entries = grouped.entries;
                 vm.days = grouped.weeks;
             });
