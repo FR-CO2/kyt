@@ -20,10 +20,11 @@ function getMonthDays(moment, start, month) {
     return days;
 }
 
-var consomationController = function (moment, project, consomationService) {
+var consomationController = function (moment, project, consomationService, allocationService, appParameters) {
     var vm = this;
     vm.precision = "week";
     vm.start = moment().startOf('isoWeek');
+    vm.allocations = {};
     var end = moment(vm.start);
     vm.showDetail = function (entry) {
         entry.showDetails = true;
@@ -38,8 +39,9 @@ var consomationController = function (moment, project, consomationService) {
             vm.days = getWeekDays(moment, vm.start);
             end = moment(vm.start).add(8, 'days');
             vm.entries = consomationService.loadConsommations(project, vm.start, end);
-            vm.max = project.resource("max").get();
-            
+            vm.entries.$promise.then(function () {
+                consomationService.checkMissingByDay(vm.entries, appParameters);
+            });
         } else {
             vm.start = vm.start.startOf('month');
             vm.days = getMonthDays(moment, vm.start, vm.start.month());
@@ -69,10 +71,10 @@ var consomationController = function (moment, project, consomationService) {
         }
         vm.precisionChange();
     };
-    vm.checkAllocation = function(allocation){
+    vm.checkAllocation = function (allocation) {
         return allocation === vm.max.value;
     };
     vm.precisionChange();
 };
-consomationController.$inject = ["moment", "project", "consomationService"];
+consomationController.$inject = ["moment", "project", "consomationService", "allocationService", "appParameters"];
 module.exports = consomationController;

@@ -12,7 +12,6 @@ function groupWeeks(days) {
             weeks[i] = [];
         }
         weeks[i].push(day);
-
     });
     angular.forEach(weeks, function (week) {
         var weekObj = {
@@ -25,12 +24,21 @@ function groupWeeks(days) {
     return result;
 }
 
-var consommationService = function () {
+function convertStringToDate(strDate) {
+    var tabDate = strDate.split("/");
+    try {
+        return new Date(tabDate[1] + "/" + tabDate[0] + "/" + tabDate[2]);
+    } catch (err) {
+
+    }
+}
+
+var consommationService = function (allocationService) {
     return {
         loadConsommations: function (project, start, end) {
             return project.resource("member").query(function (data) {
                 angular.forEach(data, function (member) {
-                    // need to multipy by 1000 for get UNIX Timestamp
+// need to multipy by 1000 for get UNIX Timestamp
                     member.imputations = member.resource("imputation")
                             .get({start: start.format("X") * 1000,
                                 end: end.format("X") * 1000});
@@ -53,7 +61,6 @@ var consommationService = function () {
                         groupedImputations[week.id] = timeSpent;
                     });
                     entry.imputations.imputations = groupedImputations;
-
                     angular.forEach(entry.imputations.details, function (detail) {
                         var groupedDetailsImputation = [];
                         angular.forEach(grouped.weeks, function (week) {
@@ -68,8 +75,22 @@ var consommationService = function () {
                 });
             });
             return grouped;
+        },
+        checkMissingByDay: function (entries, appParameters) {
+            var allocations = allocationService.loadAllocation(appParameters);
+            angular.forEach(entries, function (entry) {
+                entry.imputations.$promise.then(function () {
+                    for (var i = 0; i < entry.imputations.imputations.length; i++) {
+                        if (entry.imputations.imputations[i].valImputation !== parseInt(allocations.max) &&
+                                convertStringToDate(entry.imputations.imputations[i].imputationDate) < new Date()) {
+                            entry.imputations.imputations[i].areMissing = true;
+                        }
+                    }
+                });
+            });
         }
+
     };
 };
-consommationService.$inject = [];
+consommationService.$inject = ["allocationService"];
 module.exports = consommationService;
