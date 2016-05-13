@@ -3,7 +3,8 @@
         <span class="glyphicon glyphicon-time"></span> Imputations du {{addImputationCtrl.day.format()}}
     </div>
     <div class="panel-body">
-        <alert type="danger" ng-if="addImputationCtrl.form.error">{{addImputationCtrl.form.error}}</alert>
+        <alert type="danger" ng-if="addImputationCtrl.error">
+            <errors errors="{{addImputationCtrl.error.message}}"></errors></alert>
         <form id="imputation" role="form" ng-submit="addImputationCtrl.submit()">
             <fieldset>
                 <div class="form-group col-md-offset-7">

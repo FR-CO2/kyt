@@ -29,6 +29,8 @@ var addController = function ($uibModalInstance,allocationService, day, currentu
         // need to multipy by 1000 for get UNIX Timestamp
         currentuser.resource("consommation").save({date: day.format("X") * 1000}, vm.imputations, function () {
             $uibModalInstance.close();
+        }, function (error) {
+            vm.error = error.data;
         });
     };
 };
