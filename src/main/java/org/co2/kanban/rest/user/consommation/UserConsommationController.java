@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import org.co2.kanban.repository.allocation.Allocation;
 import org.co2.kanban.repository.allocation.AllocationRepository;
+import org.co2.kanban.repository.config.Parameter;
 import org.co2.kanban.repository.member.Member;
 import org.co2.kanban.repository.member.MemberRepository;
 import org.co2.kanban.repository.project.Project;
@@ -30,6 +31,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.co2.kanban.repository.config.ParameterRepository;
+import org.co2.kanban.repository.config.ParameterType;
+import org.co2.kanban.rest.error.BusinessException;
 
 /**
  *
@@ -50,6 +54,12 @@ public class UserConsommationController {
 
     @Autowired
     private AllocationRepository allocationRepository;
+
+    @Autowired
+    private ParameterRepository parameterRepository;
+
+    private static final String MAX_ALLOCATION = "max";
+    private static final String MESSAGE_KEY_ALLOCATION_MAX = "user.consommation.error.max";
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Iterable<UserTaskImputationResource> list(@PathVariable("userId") Long userId,
@@ -100,7 +110,7 @@ public class UserConsommationController {
             }
         }
 
-        results = new ArrayList<UserTaskImputationResource>(mapTemp.values());
+        results = new ArrayList<>(mapTemp.values());
         return results;
     }
 
@@ -110,6 +120,15 @@ public class UserConsommationController {
             @RequestBody UserTaskImputationResource[] imputations
     ) {
         ApplicationUser appUser = repository.findOne(userId);
+        Parameter max = parameterRepository.findByCategoryAndKeyParam(ParameterType.ALLOCATION, MAX_ALLOCATION);
+        Float sumImputation = 0F;
+        for (UserTaskImputationResource imputation : imputations) {
+            sumImputation += imputation.getTimeSpent();
+        }
+        // If sumImputation is sup to max, the user entered a bad allocation
+        if (Float.compare(sumImputation, Float.parseFloat(max.getValueParam())) == 1) {
+            throw new BusinessException(HttpStatus.PRECONDITION_FAILED, MESSAGE_KEY_ALLOCATION_MAX);
+        }
         Timestamp time = new Timestamp(date);
         for (UserTaskImputationResource imputation : imputations) {
             Task task = taskRepositoy.findOne(imputation.getTaskId());
@@ -122,12 +141,12 @@ public class UserConsommationController {
                 allocation.setMember(member);
                 allocation.setAllocationDate(time);
             }
-            
+
             allocation.setTimeSpent(imputation.getTimeSpent());
             allocation.setTimeRemains(imputation.getTimeRemains());
-            if(imputation.getTimeSpent() == null || imputation.getTimeSpent() == 0F){
+            if (imputation.getTimeSpent() == null || imputation.getTimeSpent() == 0F) {
                 allocationRepository.delete(allocation);
-            }else{
+            } else {
                 allocationRepository.save(allocation);
             }
         }
