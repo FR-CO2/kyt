@@ -4,7 +4,7 @@
     </div>
     <div class="panel-body">
         <alert type="danger" ng-if="addImputationCtrl.error">
-            <errors errors="{{addImputationCtrl.error.message}}"></errors></alert>
+            <errors errors="addImputationCtrl.error"></errors></alert>
         <form id="imputation" role="form" ng-submit="addImputationCtrl.submit()">
             <fieldset>
                 <div class="form-group col-md-offset-7">

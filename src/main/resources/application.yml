@@ -18,6 +18,10 @@ spring:
         client:
             client-id: kanban
             client-secret: nosecret
+    messages:
+        basename: messages
+        cache-seconds: -1
+        encoding: UTF-8 
 liquibase:
     change-log: classpath:/db/changelog/db.changelog-master.yml
 logging:
@@ -65,3 +69,5 @@ spring:
         minIdle: 2
         initialSize: 5
         removeAbandoned: true
+
+    

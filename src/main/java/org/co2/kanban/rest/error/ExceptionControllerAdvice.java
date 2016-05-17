@@ -41,7 +41,7 @@ public class ExceptionControllerAdvice extends ResponseEntityExceptionHandler {
     protected ResponseEntity handleBuisinessException(BusinessException e) {
         Error result = new Error(ErrorPhase.INPUT_VALIDATION);
         Locale locale = LocaleContextHolder.getLocale();
-        String bundleMessage = messageSource.getMessage(e.getMessageKey(), null, locale);
+        String bundleMessage= messageSource.getMessage(e.getMessageKey(), null, locale);
         result.addMessage(new ErrorMessage(bundleMessage));
         return new ResponseEntity<>(result, e.getStatus());
     }
