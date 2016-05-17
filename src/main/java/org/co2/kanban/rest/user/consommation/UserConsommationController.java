@@ -127,7 +127,7 @@ public class UserConsommationController {
         }
         // If sumImputation is sup to max, the user entered a bad allocation
         if (Float.compare(sumImputation, Float.parseFloat(max.getValueParam())) == 1) {
-            throw new BusinessException(HttpStatus.PRECONDITION_FAILED, MESSAGE_KEY_ALLOCATION_MAX);
+            throw new BusinessException(HttpStatus.PRECONDITION_FAILED, MESSAGE_KEY_ALLOCATION_MAX, new Object[]{max.getValueParam()});
         }
         Timestamp time = new Timestamp(date);
         for (UserTaskImputationResource imputation : imputations) {
