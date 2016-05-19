@@ -6,6 +6,8 @@
 package org.co2.kanban.rest.project.taskfield;
 
 import org.co2.kanban.repository.taskfield.TaskFieldDefinition;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
 import org.springframework.stereotype.Component;
 
@@ -23,6 +25,7 @@ public class TaskFieldDefAssembler extends ResourceAssemblerSupport<TaskFieldDef
     @Override
     public TaskFieldDefResource toResource(TaskFieldDefinition entity) {
         TaskFieldDefResource resource = new TaskFieldDefResource(entity);
+        resource.add(linkTo(methodOn(TaskFieldDefController.class).get(entity.getProject().getId(), entity.getId())).withSelfRel());
         return resource;
     }
 

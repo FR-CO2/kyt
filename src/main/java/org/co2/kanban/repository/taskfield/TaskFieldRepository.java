@@ -16,5 +16,7 @@ public interface TaskFieldRepository extends PagingAndSortingRepository<TaskFiel
     
     TaskField findByDefinitionAndTask(TaskFieldDefinition def, Task task);
     
+    Iterable<TaskField> findByDefinition(TaskFieldDefinition def);
+    
     Iterable<TaskField> findByTask(Task task);
 }

@@ -7,8 +7,11 @@ package org.co2.kanban.rest.project.taskfield;
 
 import org.co2.kanban.repository.project.Project;
 import org.co2.kanban.repository.project.ProjectRepository;
+import org.co2.kanban.repository.taskfield.TaskField;
 import org.co2.kanban.repository.taskfield.TaskFieldDefinition;
 import org.co2.kanban.repository.taskfield.TaskFieldDefinitionRepository;
+import org.co2.kanban.repository.taskfield.TaskFieldRepository;
+import org.co2.kanban.rest.error.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
@@ -38,12 +41,17 @@ public class TaskFieldDefController {
 
     @Autowired
     private TaskFieldDefinitionRepository repository;
+    
+    @Autowired
+    private TaskFieldRepository taskFieldRepository;
 
     @Autowired
     private ProjectRepository projectRepository;
 
     @Autowired
     private TaskFieldDefAssembler assembler;
+    
+    private static final String MESSAGE_KEY_PRECONDITION_DELETE = "project.taskfield.error.precondition.delete";
 
     @RequestMapping(method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public Iterable<TaskFieldDefResource> projectList(@PathVariable("projectId") Long projectId) {
@@ -54,6 +62,21 @@ public class TaskFieldDefController {
     @RequestMapping(value = "/{defId}", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public TaskFieldDefResource get(@PathVariable("projectId") Long projectId, @PathVariable("defId") Long defId) {
         return assembler.toResource(repository.findOne(defId));
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("@projectAccessExpression.hasManagerAccess(#projectId, principal.username)")
+    public ResponseEntity delete(@PathVariable("projectId") Long projectId, @PathVariable("id") Long id) {
+        TaskFieldDefinition taskField = repository.findOne(id);
+        if(taskField.getName() == null){
+            throw new BusinessException(HttpStatus.PRECONDITION_FAILED, MESSAGE_KEY_PRECONDITION_DELETE);
+        }
+        Iterable<TaskField>listTask =  taskFieldRepository.findByDefinition(taskField);
+        for(TaskField task : listTask){
+            taskFieldRepository.delete(task);
+        }
+        repository.delete(taskField.getId());
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
     @RequestMapping(method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
