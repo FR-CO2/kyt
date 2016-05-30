@@ -12,8 +12,10 @@
                     <div class="row">
                         <div class="col-md-8">
                             <div class="row">
-                                <div class="col-md-5">Nom</div>
+                                <div class="col-md-4">Nom</div>
                                 <div class="col-md-3">Date de fin prévue</div>
+                                <div class="col-md-3">Nombre de tâches associées</div>
+                                <div class="col-md-2">Couloir repliable</div>
                             </div>
                         </div>
                     </div>
@@ -23,7 +25,7 @@
                 <div class="row" ng-repeat="swimlane in swimlaneListCtrl.swimlanes" as-sortable-item>
                     <div class="col-md-8" as-sortable-item-handle>
                         <div class="row">
-                            <div class="col-md-5">
+                            <div class="col-md-4">
                                 <a href="#" editable-text="swimlane.name" onaftersave="swimlaneListCtrl.saveSwimlane(swimlane)"
                                    e-required onhide="swimlaneListCtrl.reload()" 
                                    title="Modifier le couloir">
@@ -41,9 +43,12 @@
                                 </a>
                             </div>
                             <div class="col-md-3">
-                                <span class="badge  pull-right">
+                                <span class="badge">
                                     {{swimlane.taskCount}}
                                 </span>
+                            </div>
+                            <div class="col-md-2">
+                                <span class="glyphicon" ng-class="{'glyphicon-check' : swimlane.collapsable, 'glyphicon-unchecked' : !swimlane.collapsable}"></span>
                             </div>
                         </div>
                     </div>

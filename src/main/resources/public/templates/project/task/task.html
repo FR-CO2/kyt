@@ -1,10 +1,14 @@
-<div class="container-fluid app__content" id="task">
-    <div growl></div>
-    <h2>
+<header class="heading nav nav--subNav">
+    <h2 class="heading__title pull-left">
         #{{taskCtrl.task.id}}
     </h2>
+</header>
+
+<section class="content" id="task">
+    <div growl></div>
+
     <div class="col-md-8">
-        <form id="edittask" role="form" ng-submit="taskCtrl.submit()">
+        <form id="edittask" class="panel" role="form" ng-submit="taskCtrl.submit()">
             <alert type="danger" ng-if="taskCtrl.error">
                 <errors errors="taskCtrl.error"></errors>
             </alert>
@@ -75,11 +79,9 @@
             </div>
         </form>
     </div>
-    <div class="col-md-4">
-        <div class="panel">
-            <div class="panel-body" ng-controller="commentListController as commentListCtrl">
-                <div ng-include="'templates/project/task/comment/list.html'"></div>
-            </div>
+    <aside class="col-md-4">
+        <div class="panel" ng-controller="commentListController as commentListCtrl">
+            <div ng-include="'templates/project/task/comment/list.html'"></div>
         </div>
-    </div>
-</div>
+    </aside>
+</section>

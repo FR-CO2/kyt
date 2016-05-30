@@ -42,6 +42,8 @@ public class Swimlane implements Serializable, Identifiable {
 
     private Timestamp endPlanned;
 
+    private Boolean collapsable;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "swimlane")
     private List<Task> tasks;
 
@@ -96,5 +98,9 @@ public class Swimlane implements Serializable, Identifiable {
     public void setEndPlanned(Timestamp endPlanned) {
         this.endPlanned = endPlanned;
     }
+
+    public Boolean getCollapsable() { return collapsable; }
+
+    public void setCollapsable(Boolean collapsable) { this.collapsable = collapsable; }
 
 }
