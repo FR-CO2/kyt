@@ -24,7 +24,13 @@ var taskController = function ($q, $state, project, currenttask, taskAssemblerSe
             });
             vm.task.resource("customfield").query(function (data) {
                 angular.forEach(data, function (customField) {
-                    vm.customFieldMap[customField.fieldName].fieldValue = customField.fieldValue;
+                    if(vm.customFieldMap[customField.fieldName].definition.type === "NUMBER"){
+                        vm.customFieldMap[customField.fieldName].fieldValue = parseFloat(customField.fieldValue);
+                    } else if(vm.customFieldMap[customField.fieldName].definition.type === "DATE"){
+                        vm.customFieldMap[customField.fieldName].fieldValue = new Date(customField.fieldValue);
+                    } else {
+                        vm.customFieldMap[customField.fieldName].fieldValue = customField.fieldValue;
+                    }
                 });
             });
         });

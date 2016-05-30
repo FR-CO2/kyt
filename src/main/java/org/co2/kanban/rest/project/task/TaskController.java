@@ -5,6 +5,9 @@
  */
 package org.co2.kanban.rest.project.task;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import org.co2.kanban.repository.project.Project;
 import org.co2.kanban.repository.project.ProjectRepository;
@@ -12,6 +15,7 @@ import org.co2.kanban.repository.task.Task;
 import org.co2.kanban.repository.task.TaskRepository;
 import org.co2.kanban.repository.taskfield.TaskField;
 import org.co2.kanban.repository.taskfield.TaskFieldRepository;
+import org.co2.kanban.repository.taskfield.TaskFieldType;
 import org.co2.kanban.rest.error.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,6 +38,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class TaskController {
 
     private static final String MESSAGE_KEY_NOT_FOUND = "project.task.error.notfound";
+    private static final String MESSAGE_CAST_DATE_KO = "project.task.error.cast.date";
+    private static final String MESSAGE_CAST_NUMBER_KO = "project.task.error.cast.number";
 
     @Autowired
     private TaskRepository repository;
@@ -69,6 +75,7 @@ public class TaskController {
         Project project = projectRepository.findOne(projectId);
         task.setProject(project);
         if (task.getCustomField() != null) {
+            checkCustomFields(task.getCustomField());
             saveCustomFields(task.getId(), task.getCustomField());
         }
         Task result = repository.save(task);
@@ -83,4 +90,27 @@ public class TaskController {
         fieldRepository.save(fields);
     }
 
+    private void checkCustomFields(List<TaskField> fields) {
+        for (TaskField field : fields) {
+            if (field.getFieldValue() != null) {
+                if (TaskFieldType.DATE.equals(field.getDefinition().getType())) {
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+                    try {
+                        Date date = sdf.parse(field.getFieldValue());
+                        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                        field.setFieldValue(format.format(date));
+                    } catch (ParseException ex) {
+                        throw new BusinessException(HttpStatus.PRECONDITION_FAILED, MESSAGE_CAST_DATE_KO);
+                    }
+                } else if (TaskFieldType.NUMBER.equals(field.getDefinition().getType())) {
+                    try {
+                        Integer i = Integer.parseInt(field.getFieldValue());
+                        field.setFieldValue(i.toString());
+                    } catch (NumberFormatException ex) {
+                        throw new BusinessException(HttpStatus.PRECONDITION_FAILED, MESSAGE_CAST_NUMBER_KO);
+                    }
+                }
+            }
+        }
+    }
 }
