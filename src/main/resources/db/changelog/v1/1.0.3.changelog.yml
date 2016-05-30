@@ -1,0 +1,17 @@
+## YAML Template.
+---
+databaseChangeLog:
+  - changeSet:
+        id: schema-1.0.3-collapsableswimlane
+        author: seb
+        changes:
+            - addColumn:
+                    tableName: kyt_swimlane
+                    columns:
+                    - column:
+                        name: collapsable
+                        type: boolean
+        rollback:
+            - dropColumn:
+                columnName: collapsable
+                tableName: kyt_swimlane
