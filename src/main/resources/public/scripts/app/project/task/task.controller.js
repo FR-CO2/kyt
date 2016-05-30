@@ -1,9 +1,9 @@
 
-var taskController = function ($q, $state, project, currenttask, taskAssemblerService, allocationService, growl, appParameters ) {
+var taskController = function ($q, $state, project, currenttask, taskAssemblerService, allocationService, growl, appParameters) {
     var vm = this;
     vm.customFieldMap = {};
     vm.task = currenttask;
-    
+
     vm.allocation = allocationService.loadAllocation(appParameters);
     //vm.task.description;
     project.$promise.then(function () {
@@ -24,10 +24,14 @@ var taskController = function ($q, $state, project, currenttask, taskAssemblerSe
             });
             vm.task.resource("customfield").query(function (data) {
                 angular.forEach(data, function (customField) {
-                    if(vm.customFieldMap[customField.fieldName].definition.type === "NUMBER"){
+                    if (vm.customFieldMap[customField.fieldName].definition.type === "NUMBER") {
                         vm.customFieldMap[customField.fieldName].fieldValue = parseFloat(customField.fieldValue);
-                    } else if(vm.customFieldMap[customField.fieldName].definition.type === "DATE"){
-                        vm.customFieldMap[customField.fieldName].fieldValue = new Date(customField.fieldValue);
+                    } else if (vm.customFieldMap[customField.fieldName].definition.type === "DATE") {
+                        if (customField.fieldValue !== null) {
+                            vm.customFieldMap[customField.fieldName].fieldValue = new Date(customField.fieldValue);
+                        } else {
+                            vm.customFieldMap[customField.fieldName].fieldValue = new Date();
+                        }
                     } else {
                         vm.customFieldMap[customField.fieldName].fieldValue = customField.fieldValue;
                     }
@@ -66,5 +70,5 @@ var taskController = function ($q, $state, project, currenttask, taskAssemblerSe
         });
     };
 };
-taskController.$inject = ["$q", "$state", "project", "task", "taskAssemblerService","allocationService", "growl", "appParameters"];
+taskController.$inject = ["$q", "$state", "project", "task", "taskAssemblerService", "allocationService", "growl", "appParameters"];
 module.exports = taskController;
