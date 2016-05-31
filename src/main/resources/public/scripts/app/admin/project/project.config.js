@@ -41,12 +41,6 @@
                 templateUrl: "templates/admin/project/taskfield/list.html",
                 url: "/customfield"
             });
-            $stateProvider.state("app.project.edit.allocation", {
-                controller: "listAllocationAdminController",
-                controllerAs: "allocationListCtrl",
-                templateUrl: "templates/admin/project/allocation/list.html",
-                url: "/allocation"
-            });
         };
         config.$inject = ["$stateProvider"];
         module.exports = config;

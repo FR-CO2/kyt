@@ -62,7 +62,7 @@ public class SwimlaneController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Swimlane> get(@PathVariable("projectId") Long projectId, @PathVariable("id") Long id) {
+    public ResponseEntity<SwimlaneResource> get(@PathVariable("projectId") Long projectId, @PathVariable("id") Long id) {
         Swimlane swimlane = repository.findOne(id);
         return new ResponseEntity(assembler.toResource(swimlane), HttpStatus.OK);
     }
