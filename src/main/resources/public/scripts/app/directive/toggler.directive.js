@@ -3,12 +3,15 @@ module.exports = function () {
     return {
         restrict: "A",
         scope: {
-            toggleClass: '@toggleClass'
+            toggleClass: '@',
+            toggleActive: '='
         },
         link: function (scope, elem) {
-            angular.element(elem).on('click', function () {
-                angular.element(elem).parent().toggleClass(scope.toggleClass);
-            });
+            if (scope.toggleActive) {
+                angular.element(elem).on('click', function () {
+                    angular.element(elem).parent().toggleClass(scope.toggleClass);
+                });
+            }
         }
     };
 };

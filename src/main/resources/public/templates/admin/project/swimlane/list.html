@@ -26,9 +26,7 @@
                     <div class="col-md-8" as-sortable-item-handle>
                         <div class="row">
                             <div class="col-md-4">
-                                <a href="#" editable-text="swimlane.name" onaftersave="swimlaneListCtrl.saveSwimlane(swimlane)"
-                                   e-required onhide="swimlaneListCtrl.reload()" 
-                                   title="Modifier le couloir">
+                                <a href="#" editable-text="swimlane.name" onaftersave="swimlaneListCtrl.saveSwimlane(swimlane)" e-required onhide="swimlaneListCtrl.reload()" title="Modifier le couloir">
                                     {{swimlane.name}} 
                                 </a>
                             </div>
@@ -48,7 +46,9 @@
                                 </span>
                             </div>
                             <div class="col-md-2">
-                                <span class="glyphicon" ng-class="{'glyphicon-check' : swimlane.collapsable, 'glyphicon-unchecked' : !swimlane.collapsable}"></span>
+                                <a href="#" editable-checkbox="swimlane.collapsable" onaftersave="swimlaneListCtrl.saveSwimlane(swimlane)" onhide="swimlaneListCtrl.reload()" title="Modifier le couloir">
+                                    <span class="glyphicon" ng-class="{'glyphicon-check' : swimlane.collapsable, 'glyphicon-unchecked' : !swimlane.collapsable}"></span>
+                                </a>
                             </div>
                         </div>
                     </div>
