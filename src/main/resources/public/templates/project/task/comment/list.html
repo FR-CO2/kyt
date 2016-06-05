@@ -1,28 +1,23 @@
-<div class="col-md-12" >
-    <div class="panel">
-        <div class="panel-heading">
-            <h3 class="panel-heading-title">Commentaires </h3>
-            <div class="panel-heading-action">
-                <button class="btn btn-info btn-sm" ng-click="commentListCtrl.add()" title="Ajouter un commentaire"><span class="glyphicon glyphicon-comment"></span>Nouveau</button>
-            </div>
+<div class="panel">
+    <div class="panel-heading">
+        <h3 class="panel-heading-title">Commentaires </h3>
+        <div class="panel-heading-action">
+            <button class="btn btn-info btn-sm" ng-click="commentListCtrl.add()" title="Ajouter un commentaire"><span class="glyphicon glyphicon-comment"></span>Commenter</button>
         </div>
-        <div class="panel-body">
-            <div ng-repeat="comment in commentListCtrl.comments" class="panel panel-default comment">
-                <div class="row">
-                    <div class="col-md-7">
-                        Commentaire  de {{comment.writer}} le {{comment.writingDate| date:'dd-MM-yyyy'}} - <span class="badge">{{comment.nbReply}} réponse<span ng-show="comment.nbReply > 1">s</span></span>
-                    </div>
-                    <div class="pull-right" ng-if="projectCtrl.rights.hasAdminRights">
+    </div>
+    <div class="panel-body">
+        <div class="comments">
+            <blockquote ng-repeat="comment in commentListCtrl.comments" class="comment" cite="{{comment.writer}}">
+                <cite class="comment__header">Commentaire  de {{comment.writer}} le {{comment.writingDate| date:'dd-MM-yyyy'}}</cite>
+                <q class="comment__content">{{comment.comment}}</q>
+                <div class="comment__footer">
+                    <span class="badge">{{comment.nbReply}} réponse<span ng-show="comment.nbReply > 1">s</span></span>
+                    <div class="comment__action" ng-if="projectCtrl.rights.hasAdminRights">
                         <a ng-click="commentListCtrl.delete(null, comment)" title="delete">
                             <span class="glyphicon glyphicon-trash"></span>
                         </a>
                     </div>
-                </div>
-                <div class="row">
-                    {{comment.comment}}
-                </div>
-                <div class="row">
-                    <div ng-if="commentListCtrl.selectedComment !== undefined && comment.showComment">
+                    <div ng-if="commentListCtrl.selectedComment !== undefined && comment.showComment" class="replies">
                         <div ng-include="'templates/project/task/comment/reply.html'" ng-controller="commentReplyController as commentReplyCtrl"></div>
                     </div>
                     <a class="btn btn-info btn-spaceLeft pull-right" ng-click="commentListCtrl.reply(comment)" title="reply">
@@ -31,21 +26,21 @@
                     <a class="btn btn-info pull-right" ng-if="comment.nbReply > 0" ng-click="commentListCtrl.showHideReply(comment)" ng-switch on="comment.showComment">
                         <span class="animate-switch" ng-switch-when="true">
                             <span class="glyphicon glyphicon-eye-close"></span>
-                            <span ng-switch="comment.nbReply" title="Cacher"> cacher 
+                            <span ng-switch="comment.nbReply" title="Cacher"> cacher
                                 <span ng-switch-when="1">la réponse</span>
                                 <span ng-switch-default>les réponses</span>
                             </span>
                         </span>
                         <span class="animate-switch" ng-switch-default>
                             <span class="glyphicon glyphicon-eye-open"></span>
-                            <span ng-switch="comment.nbReply" title="Afficher"> voir 
+                            <span ng-switch="comment.nbReply" title="Afficher"> voir
                                 <span ng-switch-when="1">la réponse</span>
                                 <span ng-switch-default>les réponses</span>
                             </span>
                         </span>
                     </a>
                 </div>
-            </div>
+            </blockquote>
         </div>
     </div>
 </div>

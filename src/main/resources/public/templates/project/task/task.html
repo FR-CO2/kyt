@@ -12,7 +12,7 @@
             <alert type="danger" ng-if="taskCtrl.error">
                 <errors errors="taskCtrl.error"></errors>
             </alert>
-            <fieldset>
+            <fieldset class="panel-body">
                 <div class="form-group col-md-3">
                     <label for="taskname">Nom de la tâche</label>
                     <input type="text" required ng-model="taskCtrl.task.name" class="form-control" id="taskname" name="taskName" placeholder="Nom de la tâche"/>
@@ -33,13 +33,13 @@
                     </select>
                 </div>
             </fieldset>
-            <fieldset>
-                <div class="form-group col-md-12">
+            <fieldset class="panel-body">
+                <div class="form-group">
                     <label for="description">Description</label>
                     <text-angular rows="12" maxlength="8000" ng-model="taskCtrl.task.description" id="description"  name="description" placeholder="Description"></text-angular>
                 </div>
             </fieldset>
-            <fieldset>
+            <fieldset class="panel-body">
                 <div class="form-group col-md-5">
                     <label for="assignee">Assigné à </label>
                     <input class="form-control" ng-model="taskCtrl.selecteduser.username"
@@ -52,7 +52,7 @@
                     </ul>
                 </div>
             </fieldset>
-            <fieldset>
+            <fieldset class="panel-body">
                 <div class="form-group col-md-4">
                     <label for="plannedStart">Date de début </label>
                     <input type="date" id="plannedStart" class="form-control" ng-model="taskCtrl.task.plannedStart" value="{{taskCtrl.task.plannedStartValue}}"/>
@@ -66,21 +66,21 @@
                     <input type="number" id="estimatedLoad" class="form-control" ng-model="taskCtrl.task.estimatedLoad" min="0" step="{{taskCtrl.allocation.step}}"/>
                 </div>
             </fieldset>
-            <fieldset id="customfields">
+            <fieldset id="customfields" class="panel-body">
                 <div class="form-group col-md-3" ng-repeat="customfield in taskCtrl.customFieldMap">
                     <label for="{{customfield.definition.fieldName}}">{{customfield.definition.fieldName}}</label>
                     <input type="{{customfield.definition.type}}" id="{{customfield.definition.fieldName}}" class="form-control"
                            ng-required="customfield.definition.required" ng-model="customfield.fieldValue"/>
                 </div>
             </fieldset>
-            <div class="col-md-4 col-md-offset-4 inline" ng-if="projectCtrl.rights.hasEditRights"> 
+            <div class="panel-footer" ng-if="projectCtrl.rights.hasEditRights">
                 <button type="button" ui-sref="app.project.kanban({projectId: projectCtrl.project.id })" class="btn btn-info">Annuler</button>
                 <button type="submit" class="btn btn-info" >Enregistrer</button>
             </div>
         </form>
     </div>
     <aside class="col-md-4">
-        <div class="panel" ng-controller="commentListController as commentListCtrl">
+        <div ng-controller="commentListController as commentListCtrl">
             <div ng-include="'templates/project/task/comment/list.html'"></div>
         </div>
     </aside>
