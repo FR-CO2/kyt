@@ -40,6 +40,7 @@ public class TaskController {
     private static final String MESSAGE_KEY_NOT_FOUND = "project.task.error.notfound";
     private static final String MESSAGE_CAST_DATE_KO = "project.task.error.cast.date";
     private static final String MESSAGE_CAST_NUMBER_KO = "project.task.error.cast.number";
+    private static final String MESSAGE_FIELD_REQUIRED = "project.task.error.field.required";
 
     @Autowired
     private TaskRepository repository;
@@ -110,6 +111,8 @@ public class TaskController {
                         throw new BusinessException(HttpStatus.PRECONDITION_FAILED, MESSAGE_CAST_NUMBER_KO);
                     }
                 }
+            }else if(field.getDefinition().getRequired()){
+                throw new BusinessException(HttpStatus.PRECONDITION_FAILED, MESSAGE_FIELD_REQUIRED);
             }
         }
     }

@@ -27,11 +27,12 @@ var taskController = function ($q, $state, project, currenttask, taskAssemblerSe
                     if (vm.customFieldMap[customField.fieldName].definition.type === "NUMBER") {
                         vm.customFieldMap[customField.fieldName].fieldValue = parseFloat(customField.fieldValue);
                     } else if (vm.customFieldMap[customField.fieldName].definition.type === "DATE") {
+                        vm.customFieldMap[customField.fieldName].fieldValue = null;
                         if (customField.fieldValue !== null) {
                             vm.customFieldMap[customField.fieldName].fieldValue = new Date(customField.fieldValue);
-                        } else {
+                        } else if(vm.customFieldMap[customField.fieldName].definition.required=== true) {
                             vm.customFieldMap[customField.fieldName].fieldValue = new Date();
-                        }
+                        } 
                     } else {
                         vm.customFieldMap[customField.fieldName].fieldValue = customField.fieldValue;
                     }
