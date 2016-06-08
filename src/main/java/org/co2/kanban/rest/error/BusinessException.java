@@ -18,9 +18,18 @@ public class BusinessException extends RuntimeException {
     
     private final String messageKey;
     
+    private final Object[] param;
+    
     public BusinessException(HttpStatus status, String messageKey) {
         this.messageKey = messageKey;
         this.status = status;
+        this.param = null;
+    }
+    
+    public BusinessException(HttpStatus status, String messageKey, Object[] param) {
+        this.messageKey = messageKey;
+        this.status = status;
+        this.param = param;
     }
 
     public HttpStatus getStatus() {
@@ -31,4 +40,7 @@ public class BusinessException extends RuntimeException {
         return messageKey;
     }
     
+    public Object[] getParam(){
+        return param;
+    }
 }

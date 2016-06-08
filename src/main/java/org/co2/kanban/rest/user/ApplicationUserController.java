@@ -5,11 +5,15 @@
  */
 package org.co2.kanban.rest.user;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.security.Principal;
 import org.co2.kanban.repository.user.ApplicationUser;
 import org.co2.kanban.repository.user.ApplicationUserRepository;
 import org.co2.kanban.rest.error.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
@@ -29,6 +33,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -39,6 +44,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/api/user")
 public class ApplicationUserController {
 
+    
+    private static final String MESSAGE_KEY_PHOTO_NOT_FOUND = "user.photo.error.notfound";
+    
     @Autowired
     private ApplicationUserRepository repository;
 
@@ -95,7 +103,7 @@ public class ApplicationUserController {
     @RequestMapping(value = "/{id}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity update(@PathVariable("id") Long userId, @RequestBody ApplicationUser user) {
         ApplicationUser updatedUser = repository.findOne(userId);
-        if (user.getPassword() !=null) {
+        if (user.getPassword() != null) {
             String passwordDigest = bcryptEncoder.encode(user.getPassword());
             updatedUser.setPassword(passwordDigest);
         }
@@ -103,5 +111,18 @@ public class ApplicationUserController {
         updatedUser.setEmail(user.getEmail());
         repository.save(updatedUser);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @ResponseBody
+    @PreAuthorize("permitAll()")
+    @RequestMapping(value="/{id}/photo", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
+    public ResponseEntity<InputStreamResource> getPhoto(@PathVariable("id") Long userId) throws IOException {
+        ApplicationUser user = repository.findOne(userId);
+        if (user.getPhoto() == null) {
+            throw new BusinessException(HttpStatus.NOT_FOUND, MESSAGE_KEY_PHOTO_NOT_FOUND);
+        }
+        InputStream in = new ByteArrayInputStream(user.getPhoto());
+        InputStreamResource resource = new InputStreamResource(in);
+        return new ResponseEntity<>(resource, HttpStatus.OK);
     }
 }

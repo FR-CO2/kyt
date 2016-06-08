@@ -55,6 +55,7 @@ public class Project implements Serializable, Identifiable {
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     private List<Category> categories = new ArrayList<>();
 
+
     public Long getId() {
         return id;
     }
@@ -110,5 +111,4 @@ public class Project implements Serializable, Identifiable {
     public void setCategories(List<Category> categories) {
         this.categories = categories;
     }
-    
 }

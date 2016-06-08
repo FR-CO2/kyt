@@ -41,5 +41,9 @@ public class SwimlaneResource extends IdentifiableResourceSupport<Swimlane> {
     public Timestamp getEndPlanned() {
         return this.getBean().getEndPlanned();
     }
+
+    public Boolean getCollapsable() {
+        return this.getBean().getCollapsable();
+    }
     
 }

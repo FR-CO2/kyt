@@ -1,5 +1,3 @@
-(function () {
-    define([], function () {
         var config = function ($stateProvider) {
             $stateProvider.state("app.projects", {
                 controller: "listProjectAdminController",
@@ -37,9 +35,13 @@
                 templateUrl: "templates/admin/project/state/list.html",
                 url: "/state"
             });
+            $stateProvider.state("app.project.edit.taskfield", {
+                controller: "listTaskfieldAdminController",
+                controllerAs: "taskfieldListCtrl",
+                templateUrl: "templates/admin/project/taskfield/list.html",
+                url: "/customfield"
+            });
         };
         config.$inject = ["$stateProvider"];
-        return config;
-    });
-})();
+        module.exports = config;
 

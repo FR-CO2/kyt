@@ -50,11 +50,13 @@
                         </tr>
                     </tbody>
                     <tfoot>
-                    <td colspan="8">
-                        <div class="center-block text-center">
-                            <uib-pagination total-items="homeCtrl.tasks.nbElt" ng-model="dashboardCtrl.tasks.number" items-per-page="homeCtrl.tasks.size" max-size="5" class="pagination-sm" boundary-links="true" rotate="false" num-pages="homeCtrl.tasks.totalPages" ng-change="homeCtrl.pageTasksChanged()"></uib-pagination>
-                        </div>
-                    </td>
+                        <tr>
+                            <td colspan="8">
+                                <div class="center-block text-center">
+                                    <uib-pagination total-items="homeCtrl.tasks.nbElt" ng-model="dashboardCtrl.tasks.number" items-per-page="homeCtrl.tasks.size" max-size="5" class="pagination-sm" boundary-links="true" rotate="false" num-pages="homeCtrl.tasks.totalPages" ng-change="homeCtrl.pageTasksChanged()"></uib-pagination>
+                                </div>
+                            </td>
+                        </tr>
                     </tfoot>
                 </table>
             </div>

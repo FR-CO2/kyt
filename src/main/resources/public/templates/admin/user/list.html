@@ -1,75 +1,71 @@
-<section class="container-fluid app__content">
-    <div class="col-md-12">
-        <div class="panel">
-            <div class="panel-heading">
-                <h2 class="panel-heading-title">Liste des utilisateurs</h2>
-                <div class="panel-heading-action">
-                    <button class="btn btn-info btn-sm"  ng-click="usersCtrl.add()"><span class="glyphicon glyphicon-plus-sign"></span>Ajouter</button>
-                </div>
-            </div>
-            <div class="panel-body">
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>Nom</th>
-                            <th>Email</th>
-                            <th>Rôle</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="user in usersCtrl.users._embedded.userResourceList">
-                            <td>
-                                {{user.username}}
-                            </td>
-                            <td>
-                                <a href="#" editable-text="user.email" onaftersave="usersCtrl.saveUser(user)"
-                                   title="Modifier l'utilisateur">
+<header class="heading nav nav--subNav">
+  <h2 class="heading__title pull-left">Liste des utilisateurs</h2>
+  <div class="heading__action pull-righ">
+    <button class="btn btn-info btn-sm" ng-click="usersCtrl.add()"><span class="glyphicon glyphicon-plus-sign"></span>Ajouter</button>
+  </div>
+</header>
+<section class="content">
+  <div class="panel">
+    <div class="panel-body">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>Nom</th>
+            <th>Email</th>
+            <th>Rôle</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="user in usersCtrl.users._embedded.userResourceList">
+            <td>
+              {{user.username}}
+            </td>
+            <td>
+              <a href="#" editable-text="user.email" onaftersave="usersCtrl.saveUser(user)" title="Modifier l'utilisateur">
                                     {{user.email}}
                                 </a>
-                            </td>
-                            <td>
-                                <a ng-if="user.id !== appCtrl.currentuser.id" href="#" editable-select="user.applicationRole"
-                                   onaftersave="usersCtrl.saveUser(user)"
-                                   e-ng-options="userRole for userRole in usersCtrl.userRoles">
+            </td>
+            <td>
+              <a ng-if="user.id !== appCtrl.currentuser.id" href="#" editable-select="user.applicationRole" onaftersave="usersCtrl.saveUser(user)" e-ng-options="userRole for userRole in usersCtrl.userRoles">
                                     {{user.applicationRole}}
                                 </a>
-                                <span ng-if="user.id === appCtrl.currentuser.id">{{user.applicationRole}}</span>
-                            </td>
-                            <td>
-                                <a ng-click="usersCtrl.delete(user)" ng-if="user.id !== appCtrl.currentuser.id">
-                                    <span class="glyphicon glyphicon-trash"></span>
-                                </a>
-                            </td>
-                        </tr>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td colspan="4">
-                                <div class="row">
-                                    <div class="col-md-6 col-md-offset-3" >
-                                        <div class="center-block text-center">
-                                            <uib-pagination total-items="userCtrl.users.page.totalElements" ng-model="userCtrl.users.page.numPage" items-per-page="userCtrl.users.page.size" max-size="5" class="pagination-sm" boundary-links="true" rotate="false" num-pages="userCtrl.users.page.totalPages" ng-click="userCtrl.pageChanged()"></uib-pagination>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3 form-inline">
-                                        <div class="form-group pull-right">
-                                            <div class="form-control">
-                                                <label for="nbEltUser">Nb élements :</label>
-                                                <select id="nbEltUser" ng-model="userCtrl.users.page.nbElt" class="form-select" ng-change="userCtrl.pageChanged()">
-                                                    <option value="10">10</option>
-                                                    <option value="20">20</option>
-                                                    <option value="50">50</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
-        </div>
+              <span ng-if="user.id === appCtrl.currentuser.id">{{user.applicationRole}}</span>
+            </td>
+            <td>
+              <a ng-click="usersCtrl.delete(user)" ng-if="user.id !== appCtrl.currentuser.id">
+                <span class="glyphicon glyphicon-trash"></span>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="4">
+              <div class="row">
+                <div class="col-md-6 col-md-offset-3">
+                  <div class="center-block text-center">
+                    <uib-pagination total-items="userCtrl.users.page.totalElements" ng-model="userCtrl.users.page.numPage" items-per-page="userCtrl.users.page.size" max-size="5" class="pagination-sm" boundary-links="true" rotate="false" num-pages="userCtrl.users.page.totalPages"
+                    ng-click="userCtrl.pageChanged()"></uib-pagination>
+                  </div>
+                </div>
+                <div class="col-md-3 form-inline">
+                  <div class="form-group pull-right">
+                    <label for="nbEltUser">Nb élements :</label>
+                    <div class="form-control">
+                      <select id="nbEltUser" ng-model="userCtrl.users.page.nbElt" class="form-select" ng-change="userCtrl.pageChanged()">
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="50">50</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
     </div>
+  </div>
 </section>

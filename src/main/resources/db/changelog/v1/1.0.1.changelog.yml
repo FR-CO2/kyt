@@ -1,0 +1,171 @@
+## YAML Template.
+---
+databaseChangeLog:
+  - changeSet:
+        id: schema-1.0.1-dyntaskfields
+        author: courtib
+        changes:
+            - createTable:
+                tableName: kyt_task_field_def
+                columns:
+                    - column:
+                        name: id
+                        type: BIGINT
+                        constraints:
+                            primaryKey: true
+                            nullable: false
+                    - column:
+                        name: project_id
+                        type: BIGINT
+                        constraints:
+                            nullable: false
+                    - column:
+                        name: name
+                        type: varchar(255)
+                        constraints:
+                            nullable: false
+                    - column:
+                        name: type
+                        type: int
+                        constraints:
+                            nullable: false
+                    - column:
+                        name: required
+                        type: boolean
+            - createTable:
+                tableName: kyt_task_field
+                columns:
+                    - column:
+                        name: task_id
+                        type: BIGINT
+                        constraints:
+                            nullable: false  
+                    - column:
+                        name: task_field_def_id
+                        type: BIGINT
+                        constraints:
+                            nullable: false  
+                    - column:
+                        name: field_value
+                        type: varchar(255)
+            - addForeignKeyConstraint:
+                baseColumnNames: project_id
+                baseTableName: kyt_task_field_def
+                constraintName: fk_task_def_project
+                referencedColumnNames: id
+                referencedTableName: kyt_project
+            - addForeignKeyConstraint:
+                baseColumnNames: task_id
+                baseTableName: kyt_task_field
+                constraintName: fk_task_field
+                referencedColumnNames: id
+                referencedTableName: kyt_task   
+            - addForeignKeyConstraint:
+                baseColumnNames: task_field_def_id
+                baseTableName: kyt_task_field
+                constraintName: fk_task_field_def
+                referencedColumnNames: id
+                referencedTableName: kyt_task_field_def                
+            - createSequence:
+                sequenceName: task_field_def_pkey_seq           
+        rollback:
+                - dropTable:
+                    tableName: kyt_task_field
+                - dropTable:
+                    tableName: kyt_task_field_def
+  - changeSet:
+        id: schema-1.0.1-linkedtask
+        author: courtib
+        changes:
+            - createTable:
+                tableName: kyt_task_link
+                columns:
+                    - column:
+                        name: task_parent_id
+                        type: BIGINT
+                        constraints:
+                            nullable: false
+                    - column:
+                        name: task_child_id
+                        type: BIGINT
+                        constraints:
+                            nullable: false
+            - addForeignKeyConstraint:
+                baseColumnNames: task_parent_id
+                baseTableName: kyt_task_link
+                constraintName: fk_task_link_parent
+                referencedColumnNames: id
+                referencedTableName: kyt_task 
+            - addForeignKeyConstraint:
+                baseColumnNames: task_child_id
+                baseTableName: kyt_task_link
+                constraintName: fk_task_link_children
+                referencedColumnNames: id
+                referencedTableName: kyt_task                          
+        rollback:
+                - dropTable:
+                    tableName: kyt_task_link
+  - changeSet:
+        id: schema-1.0.1-multiassignee
+        author: courtib
+        changes:
+            - createTable:
+                tableName: kyt_task_assignee
+                columns:
+                    - column:
+                        name: task_id
+                        type: BIGINT
+                        constraints:
+                            nullable: false
+                    - column:
+                        name: member_id
+                        type: BIGINT
+                        constraints:
+                            nullable: false
+            - addForeignKeyConstraint:
+                baseColumnNames: task_id
+                baseTableName: kyt_task_assignee
+                constraintName: fk_task_assignee
+                referencedColumnNames: id
+                referencedTableName: kyt_task 
+            - addForeignKeyConstraint:
+                baseColumnNames: member_id
+                baseTableName: kyt_task_assignee
+                constraintName: fk_task_member
+                referencedColumnNames: id
+                referencedTableName: kyt_member    
+            - dropForeignKeyConstraint:
+                baseTableName: kyt_task
+                constraintName: fk_assignee_task
+            - dropColumn:
+                columnName: assignee
+                tableName: kyt_task
+        rollback:
+                - dropTable:
+                    tableName: kyt_task_assignee   
+                - addColumn:
+                    tableName: kyt_task
+                    columns:
+                    - column:
+                        name: assignee
+                        type: BIGINT
+                - addForeignKeyConstraint:
+                    baseColumnNames: assignee
+                    baseTableName: kyt_task
+                    constraintName: fk_assignee_task
+                    referencedColumnNames: id
+                    referencedTableName: kyt_member        
+  - changeSet:
+        id: schema-1.0.1-photoprofil
+        author: courtib
+        changes:
+            - addColumn:
+                    tableName: kyt_user
+                    columns:
+                    - column:
+                        name: photo
+                        type: BLOB
+        rollback:
+            - dropColumn:
+                columnName: photo
+                tableName: kyt_user               

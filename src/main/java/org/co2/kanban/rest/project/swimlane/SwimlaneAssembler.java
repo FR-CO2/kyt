@@ -10,7 +10,6 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 import org.co2.kanban.repository.swimlane.Swimlane;
 import org.co2.kanban.rest.project.ProjectController;
-import org.co2.kanban.rest.project.member.MemberController;
 import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
 import org.springframework.stereotype.Component;
 

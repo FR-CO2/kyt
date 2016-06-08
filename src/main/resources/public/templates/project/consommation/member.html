@@ -3,6 +3,7 @@
     <div class="heading__action pull-right">
         <button class="btn btn-info btn-sm" ui-sref="app.project.tasks({projectId: projectCtrl.project.id })"><span class="glyphicon glyphicon-tasks"></span> Voir toutes les tâches</button>
         <button class="btn btn-info btn-sm" ui-sref="app.project.kanban({projectId: projectCtrl.project.id })"><span class="glyphicon glyphicon-equalizer"></span> Kanban</button>
+        <button ng-if="projectCtrl.rights.hasEditRights" class="btn btn-info btn-sm" ui-sref="app.project.gantt({projectId: projectCtrl.project.id })"><span class="glyphicon glyphicon-road"></span> Gantt</button>
     </div>
 </header>
 <div class="col-md-12">
@@ -34,7 +35,7 @@
                             <span ng-if="consommationCtrl.precision === 'month'">{{day.label}}</span>
                         </th>
                         <th><span class="glyphicon glyphicon-arrow-right" ng-click="consommationCtrl.next()"></span></th>
-                    <tr>
+                    </tr>
                 </thead>
                 <tbody ng-repeat="entry in consommationCtrl.entries">
                     <tr>
@@ -45,8 +46,8 @@
                             <span ng-if="!entry.showDetails && entry.imputations.details.length" class="glyphicon glyphicon-chevron-down" ng-click="consommationCtrl.showDetail(entry)"></span>
                             <span ng-if="entry.showDetails && entry.imputations.details.length" class="glyphicon glyphicon-chevron-up" ng-click="consommationCtrl.hideDetail(entry)"></span>
                         </th>
-                        <th ng-repeat="day in consommationCtrl.days">
-                            <span ng-if="consommationCtrl.precision === 'week'">{{entry.imputations.imputations[day.format("DD/MM/YYYY")]}}</span>
+                        <th ng-repeat="imputation in entry.imputations.imputations">
+                            <span ng-if="consommationCtrl.precision === 'week'"><span ng-class="{'exceeded-date' : imputation.areMissing}">{{imputation.valImputation}}</span></span>
                             <span ng-if="consommationCtrl.precision === 'month'">{{entry.imputations.imputations[day.id]}}</span>
                         </th>
                         <th>&nbsp;</th>

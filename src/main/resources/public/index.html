@@ -8,18 +8,55 @@
         <link rel="icon" type="image/x-icon" href="/kyt.ico">
         <link rel="stylesheet" type="text/css" href="styles/normalize.css"/>
         <link rel="stylesheet" type="text/css" href="styles/bootstrap.css"/>
-        <link rel="stylesheet" type="text/css" href="styles/font-awesome.css"/>
         <link rel="stylesheet" type="text/css" href="webjars/ng-sortable/1.1.9/ng-sortable.min.css"/>
         <link rel="stylesheet" type="text/css" href="webjars/angular-xeditable/0.1.9/css/xeditable.css">
         <link rel="stylesheet" type="text/css" href="webjars/fullcalendar/2.4.0/fullcalendar.min.css"/>
         <link rel="stylesheet" type="text/css" href="webjars/angular-growl-2/0.7.3/angular-growl.min.css">
+        <link rel="stylesheet" type="text/css" href="webjars/ngImgCrop/0.3.2/compile/minified/ng-img-crop.css">
+        <link rel="stylesheet" type="text/css" href="webjars/angular-ui-tree/2.13.0/angular-ui-tree.min.css">
+        <link rel="stylesheet" type="text/css" href="scripts/lib/angular-gantt/angular-gantt.min.css">
+        <link rel="stylesheet" type="text/css" href="scripts/lib/angular-gantt/angular-gantt-plugins.min.css">
+        <link rel='stylesheet' type="text/css" href='webjars/font-awesome/4.6.3/css/font-awesome.css'>
+        <link rel='stylesheet' type="text/css" href='webjars/textAngular/1.5.0/dist/textAngular.css'>
         <link rel="stylesheet" type="text/css" href="styles/app.css"/>
         <link rel="stylesheet" type="text/css" href="styles/dev.css"/>
+
     </head>
-    <body class="ng-cloak">
+    <body class="ng-cloak" ng-app="kanban">
         <div class="wrapper" ui-view></div>
 
-        <script type="text/javascript" src="webjars/requirejs/2.1.22/require.min.js"></script>
-        <script type="text/javascript" src="scripts/main.js"></script>
+        <script type="text/javascript" src="/webjars/jquery/2.1.4/jquery.min.js"></script>
+        <script type="text/javascript" src="/webjars/momentjs/2.12.0/min/moment.min.js"></script>
+        <script type="text/javascript" src="/webjars/fullcalendar/2.4.0/fullcalendar.min.js"></script>
+        <script type="text/javascript" src="/webjars/fullcalendar/2.4.0/lang/fr.js"></script>
+        <script type="text/javascript" src="/webjars/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+        <script type="text/javascript" src="/webjars/angularjs/1.4.8/angular.min.js"></script>
+        <script type="text/javascript" src="/webjars/ng-sortable/1.1.9/ng-sortable.min.js"></script>
+        <script type="text/javascript" src="/webjars/angular-ui-router/0.2.15/angular-ui-router.min.js"></script>
+        <script type="text/javascript" src="/webjars/angular-ui-bootstrap/0.14.3/ui-bootstrap.min.js"></script>
+        <script type="text/javascript" src="/webjars/angular-ui-bootstrap/0.14.3/ui-bootstrap-tpls.min.js"></script>
+        <script type="text/javascript" src="/webjars/angular-http-auth/1.2.2/http-auth-interceptor.js"></script>
+        <script type="text/javascript" src="/webjars/angular-growl-2/0.7.3/angular-growl.min.js"></script>
+        <script type="text/javascript" src="/webjars/angular-xeditable/0.1.9/js/xeditable.min.js"></script>
+        <script type="text/javascript" src="/webjars/angular-http-auth/1.2.2/http-auth-interceptor.js"></script>
+        <script type="text/javascript" src="/webjars/ngImgCrop/0.3.2/compile/minified/ng-img-crop.js"></script>
+        <script type="text/javascript" src="/webjars/angularjs/1.4.8/angular-resource.min.js"></script>
+        <script type="text/javascript" src="/webjars/ngStorage/0.3.0/ngStorage.min.js"></script>
+        <script type="text/javascript" src="/webjars/textAngular/1.5.0/dist/textAngular.min.js"></script>
+        <script type="text/javascript" src="/webjars/textAngular/1.5.0/dist/textAngular-sanitize.min.js"></script>
+        <script type="text/javascript" src="/webjars/textAngular/1.5.0/dist/textAngular-rangy.min.js"></script>
+        <script type="text/javascript" src="/scripts/lib/angular-hateoas/angular-hateoas.min.js"></script>
+        <script type="text/javascript" src="/scripts/lib/angular-ui-calendar/calendar.js"></script>
+        <script type="text/javascript" src="/webjars/angular-moment/0.10.3/angular-moment.min.js"></script>
+        <script type="text/javascript" src="/scripts/lib/angular-gantt/angular-gantt.min.js"></script>
+        <script type="text/javascript" src="/scripts/lib/angular-gantt/angular-gantt-plugins.min.js"></script>
+        <script type="text/javascript" src="/webjars/angular-ui-tree/2.13.0/angular-ui-tree.min.js"></script>
+        <script type="text/javascript" src="/webjars/angular-dragdrop/1.0.8/draganddrop.js"></script>
+        <script type="text/javascript" src="/scripts/lib/css-element-queries/ElementQueries.js"></script>
+        <script type="text/javascript" src="/scripts/lib/css-element-queries/ResizeSensor.js"></script>
+        <script type="text/javascript" src="/scripts/lib/jsPlumb/jsPlumb-2.1.0-min.js"></script>
+        <script type="text/javascript" src="/scripts/lib/moment-range/moment-range-2.2.0.min.js"></script>
+        <script type="text/javascript" src="scripts/bundle.js"></script>
     </body>
 </html>

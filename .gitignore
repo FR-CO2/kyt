@@ -2,3 +2,6 @@
 $.css.map
 /node_modules
 .DS_Store
+/node/
+/jspm_packages/
+.idea/

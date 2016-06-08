@@ -25,7 +25,7 @@ public class ImputationAssembler {
     public ImputationResource toResources(Timestamp start, Timestamp end, Iterable<Allocation> allocations) {
         ImputationResource imputations = new ImputationResource();
 
-        Map<String, Float> allocationDates = new HashMap<>();
+        List<ImputationByDateResource> allocationDates = new ArrayList<>();
         Map<Long, ImputationDetailResource> imputationDetails = new HashMap<>();
         List<String> times = new ArrayList<>();
         GregorianCalendar cal = new GregorianCalendar();
@@ -34,14 +34,17 @@ public class ImputationAssembler {
         while (cal.getTime().before(end)) {
             String time = sdf.format(new Timestamp(cal.getTimeInMillis()));
             times.add(time);
-            allocationDates.put(time, 0F);
+            ImputationByDateResource imputByDate = new ImputationByDateResource(time, 0F, false);
+            allocationDates.add(imputByDate);
             cal.add(GregorianCalendar.DAY_OF_MONTH, 1);
         }
         for (Allocation allocation : allocations) {
             String allocDate = sdf.format(allocation.getAllocationDate().getTime());
-            Float timeSpent = allocationDates.get(allocDate);
-            allocationDates.put(allocDate, timeSpent + allocation.getTimeSpent());
-
+            for (ImputationByDateResource imputByDate : allocationDates) {
+                if (imputByDate.getImputationDate().equals(allocDate)) {
+                    imputByDate.setValImputation(imputByDate.getValImputation()+allocation.getTimeSpent());
+                }
+            }
             if (!imputationDetails.containsKey(allocation.getTask().getId())) {
                 ImputationDetailResource detail = new ImputationDetailResource(times, allocation.getTask().getName(),
                         allocation.getTask().getId());

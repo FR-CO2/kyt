@@ -36,10 +36,10 @@ public interface TaskRepository extends PagingAndSortingRepository<Task, Long> {
 
     Page<Task> findByProject(Project project, Pageable p);
 
-    Page<Task> findByAssigneeUserAndStateCloseStateFalse(ApplicationUser user, Pageable p);
+    Page<Task> findByAssigneesUserAndStateCloseStateFalse(ApplicationUser user, Pageable p);
 
-    Iterable<Task> findByAssigneeUserAndNameContainingAndStateCloseStateFalse(ApplicationUser user, String term);
+    Iterable<Task> findByAssigneesUserAndNameContainingAndStateCloseStateFalse(ApplicationUser user, String term);
 
-    Iterable<Task> findByAssigneeUserAndPlannedStartBeforeAndPlannedEndingAfterAndStateCloseStateFalse(ApplicationUser user, Timestamp startBefore, Timestamp endAfter);
+    Iterable<Task> findByAssigneesUserAndPlannedStartBeforeAndPlannedEndingAfterAndStateCloseStateFalse(ApplicationUser user, Timestamp startBefore, Timestamp endAfter);
 
 }

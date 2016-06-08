@@ -20,12 +20,15 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import org.co2.kanban.repository.Identifiable;
 import org.co2.kanban.repository.comment.Comment;
+import org.co2.kanban.repository.taskfield.TaskField;
 
 /**
  *
@@ -48,6 +51,15 @@ public class Task implements Serializable, Identifiable {
 
     private Timestamp lastModified;
 
+    private Timestamp plannedStart;
+
+    private Timestamp plannedEnding;
+
+    private Float estimatedLoad;
+
+    @Column(length = 10000)
+    private String description;
+
     @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "category_id")
     private Category category;
@@ -64,24 +76,34 @@ public class Task implements Serializable, Identifiable {
     @JoinColumn(name = "project_id")
     private Project project;
 
-    @ManyToOne(cascade = CascadeType.DETACH)
-    @JoinColumn(name = "assignee")
-    private Member assignee;
-
-    private Timestamp plannedStart;
-
-    private Timestamp plannedEnding;
-
-    private Float estimatedLoad;
-
-    @Column(length = 10000)
-    private String description;
-
     @OneToMany(mappedBy = "task")
     private List<Allocation> allocations;
 
     @OneToMany(mappedBy = "task")
     private List<Comment> comments;
+
+    @OneToMany(mappedBy = "task")
+    private List<TaskField> customField;
+
+    @ManyToMany(mappedBy = "children")
+    private List<Task> parent;
+
+    @ManyToMany
+    @JoinTable(name = "kyt_task_link",
+            joinColumns
+            = @JoinColumn(name = "task_parent_id", referencedColumnName = "ID"),
+            inverseJoinColumns
+            = @JoinColumn(name = "task_child_id", referencedColumnName = "ID"))
+    private List<Task> children;
+
+    @ManyToMany(cascade = CascadeType.DETACH)
+    @JoinTable(name = "kyt_task_assignee",
+            joinColumns
+            = @JoinColumn(name = "task_id", referencedColumnName = "ID"),
+            inverseJoinColumns
+            = @JoinColumn(name = "member_id", referencedColumnName = "ID")
+    )
+    private List<Member> assignees;
 
     public Long getId() {
         return id;
@@ -155,12 +177,12 @@ public class Task implements Serializable, Identifiable {
         this.lastModified = lastModified;
     }
 
-    public Member getAssignee() {
-        return assignee;
+    public List<Member> getAssignees() {
+        return assignees;
     }
 
-    public void setAssignee(Member assignee) {
-        this.assignee = assignee;
+    public void setAssignees(List<Member> assignees) {
+        this.assignees = assignees;
     }
 
     public Category getCategory() {
@@ -202,5 +224,30 @@ public class Task implements Serializable, Identifiable {
     public void setComments(List<Comment> comments) {
         this.comments = comments;
     }
+
+    public List<Task> getParent() {
+        return parent;
+    }
+
+    public void setParent(List<Task> parent) {
+        this.parent = parent;
+    }
+
+    public List<Task> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<Task> children) {
+        this.children = children;
+    }
+
+    public List<TaskField> getCustomField() {
+        return customField;
+    }
+
+    public void setCustomField(List<TaskField> customField) {
+        this.customField = customField;
+    }
+    
 
 }

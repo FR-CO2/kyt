@@ -1,0 +1,39 @@
+<div class="col-md-12">
+    <div class="panel">
+        <div class="panel-heading">
+            <h2 class="panel-heading-title">Champs personnalisés du projet</h2>
+            <div class="panel-heading-action">
+                <button class="btn btn-info btn-sm" ng-click="taskfieldListCtrl.add()"><span class="glyphicon glyphicon-plus-sign"></span>Nouveau champ</button>
+            </div>
+        </div>
+        <div class="panel-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Type</th>
+                        <th>Obligatoire</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="taskfield in taskfieldListCtrl.taskfields">
+                        <td>
+                           {{taskfield.fieldName}}
+                        </td>
+                        <td>
+                            {{taskfield.type}}
+                        </td>
+                        <td>
+                            <span class="glyphicon" ng-class="{'glyphicon-check' : taskfield.required, 'glyphicon-unchecked' : !taskfield.required}"></span>
+                        </td>
+                        <td>
+                            <a ng-click="taskfieldListCtrl.delete(taskfield)">
+                                <span class="glyphicon glyphicon-trash"></span>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

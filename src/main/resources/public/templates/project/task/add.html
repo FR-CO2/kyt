@@ -12,21 +12,19 @@
             </div>
             <div class="form-group">
                 <label for="category">Catégorie</label>
-                <div class="form-control">
-                    <select ng-model="addTaskCtrl.task.category.id" class="form-select" id="category" name="category" placeholder="Catégorie">
-                        <option value="{{category.id}}" ng-repeat="category in addTaskCtrl.categories">{{category.name}}</option>
-                    </select>
-                </div>
+                <select ng-model="addTaskCtrl.task.category.id" class="form-control" id="category" name="category" placeholder="Catégorie">
+                    <option value="{{category.id}}" ng-repeat="category in addTaskCtrl.categories">{{category.name}}</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="swimlane">Couloir</label>
+                <select ng-model="addTaskCtrl.task.swimlane.id" class="form-control" id="swimlane" name="swimlane" placeholder="Couloir">
+                    <option value="{{swimlane.id}}" ng-repeat="swimlane in addTaskCtrl.swimlanes">{{swimlane.name}}</option>
+                </select>
             </div>
             <div class="form-group">
                 <label for="description">Description</label>
-                <textarea col="100" maxlength="8000" rows="12" id="description" ng-model="addTaskCtrl.task.description" class="form-control" name="description" placeholder="Description"/>
-            </div>
-            <div class="form-group">
-                <label for="assignee">Assigné à </label>
-                <input class="form-control" ng-model="addTaskCtrl.task.assignee.username"
-                       typeahead-editable="false" typeahead-on-select="addTaskCtrl.selectAssignee($item, $model, $label)"
-                       uib-typeahead="member as member.username for member in addTaskCtrl.getMembers($viewValue)" />
+                <text-angular col="100" maxlength="8000" rows="12" id="description" ng-model="addTaskCtrl.task.description" name="description" placeholder="Description" ></text-angular>
             </div>
             <div class="form-group">
                 <label for="plannedStart">Date de début prévue </label>
@@ -42,3 +40,4 @@
         </form>
     </div>
 </div>
+

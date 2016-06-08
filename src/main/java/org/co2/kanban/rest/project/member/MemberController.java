@@ -99,7 +99,7 @@ public class MemberController {
     public ResponseEntity delete(@PathVariable("projectId") Long projectId, @PathVariable("memberId") Long memberId) {
         Member member = repository.findOne(memberId);
         for (Task task : member.getTasksAssignee()) {
-            task.setAssignee(null);
+            task.getAssignees().remove(member);
         }
         repository.delete(member);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
