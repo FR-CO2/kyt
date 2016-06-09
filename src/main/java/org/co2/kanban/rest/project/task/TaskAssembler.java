@@ -7,10 +7,8 @@ package org.co2.kanban.rest.project.task;
 
 import java.sql.Timestamp;
 import org.co2.kanban.repository.allocation.Allocation;
-import org.co2.kanban.repository.member.Member;
 import org.co2.kanban.rest.project.ProjectController;
 import org.co2.kanban.rest.project.category.CategoryController;
-import org.co2.kanban.rest.project.member.MemberController;
 import org.co2.kanban.rest.project.state.StateController;
 import org.co2.kanban.rest.project.swimlane.SwimlaneController;
 import org.co2.kanban.repository.task.Task;
@@ -18,6 +16,7 @@ import org.co2.kanban.rest.project.task.allocation.AllocationController;
 import org.co2.kanban.rest.project.task.assignee.AssigneeController;
 import org.co2.kanban.rest.project.task.comment.CommentController;
 import org.co2.kanban.rest.project.task.field.TaskFieldController;
+import org.co2.kanban.rest.project.task.link.TaskLinkController;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
@@ -47,7 +46,6 @@ public class TaskAssembler extends ResourceAssemblerSupport<Task, TaskResource> 
     @Override
     public TaskResource toResource(Task task) {
         TaskResource resource = new TaskResource(task);
-        //TODO report calcul time remains 
         Float timeSpent = 0F;
         Float timeRemains = task.getEstimatedLoad();
         Timestamp timeRemainsAllocationDate = null;
@@ -78,6 +76,12 @@ public class TaskAssembler extends ResourceAssemblerSupport<Task, TaskResource> 
         resource.add(linkTo(methodOn(CommentController.class).comments(task.getProject().getId(), task.getId())).withRel("comment"));
         resource.add(linkTo(methodOn(AllocationController.class).list(task.getProject().getId(), task.getId())).withRel("allocation"));
         resource.add(linkTo(methodOn(TaskFieldController.class).list(task.getProject().getId(), task.getId())).withRel("customfield"));
+        if (task.getParent() != null && task.getParent().size() > 0) {
+            resource.add(linkTo(methodOn(TaskLinkController.class).parents(task.getProject().getId(), task.getId())).withRel("parents"));
+        }
+        if (task.getChildren() != null && task.getChildren().size() > 0) {
+            resource.add(linkTo(methodOn(TaskLinkController.class).children(task.getProject().getId(), task.getId())).withRel("children"));
+        }
         return resource;
     }
 }
