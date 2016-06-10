@@ -39,21 +39,7 @@
                     <text-angular rows="12" maxlength="8000" ng-model="taskCtrl.task.description" id="description"  name="description" placeholder="Description"></text-angular>
                 </div>
             </fieldset>
-            <fieldset class="panel-body">
-                <div class="form-group col-md-5">
-                    <label for="assignee">Assigné à </label>
-                    <input class="form-control" ng-model="taskCtrl.selecteduser.username"
-                           typeahead-editable="false" typeahead-on-select="taskCtrl.selectAssignee($item, $model, $label)" 
-                           uib-typeahead="member as member.username for member in taskCtrl.getMembers($viewValue)" placeholder="Ajouter un utilisateur"/>
-                    <ul>
-                        <li ng-repeat="member in taskCtrl.task.assignees track by $index" ng-click="taskCtrl.removeuser($index)">
-                            <img ng-if="member.photo" class="crop-photo crop" ng-src="{{member.photo}}" alt="{{member.username}}" data-toggle="tooltip" data-placement="bottom" title="{{member.username}}">
-                            <span ng-if="!member.photo" class="crop-photo glyphicon glyphicon-user" data-toggle="tooltip" data-placement="bottom" title="{{member.username}}"></span>
-                            <span class="glyphicon glyphicon-trash"></span>
-                        </li>
-                    </ul>
-                </div>
-            </fieldset>
+
             <fieldset class="panel-body">
                 <div class="form-group col-md-4">
                     <label for="plannedStart">Date de début </label>
@@ -80,10 +66,31 @@
                 <button type="submit" class="btn btn-info" >Enregistrer</button>
             </div>
         </form>
-    </div>
-    <aside class="col-md-4">
         <div ng-controller="commentListController as commentListCtrl">
             <div ng-include="'templates/project/task/comment/list.html'"></div>
         </div>
+    </div>
+    <aside class="col-md-4">
+        <form id="assigneeTask" class="panel" role="form" ng-submit="taskCtrl.submit()">
+            <div class="panel-body">
+                <div class="form-group col-md-5">
+                    <label for="assignee">Assigné à </label>
+                    <input class="form-control" ng-model="taskCtrl.selecteduser.username"
+                           typeahead-editable="false" typeahead-on-select="taskCtrl.selectAssignee($item, $model, $label)" 
+                           uib-typeahead="member as member.username for member in taskCtrl.getMembers($viewValue)" placeholder="Ajouter un utilisateur"/>
+                    <ul>
+                        <li ng-repeat="member in taskCtrl.task.assignees track by $index" ng-click="taskCtrl.removeuser($index)">
+                            <img ng-if="member.photo" class="crop-photo crop" ng-src="{{member.photo}}" alt="{{member.username}}" data-toggle="tooltip" data-placement="bottom" title="{{member.username}}">
+                            <span ng-if="!member.photo" class="crop-photo glyphicon glyphicon-user" data-toggle="tooltip" data-placement="bottom" title="{{member.username}}"></span>
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="panel-footer" ng-if="projectCtrl.rights.hasEditRights">
+                <button type="button" ui-sref="app.project.kanban({projectId: projectCtrl.project.id })" class="btn btn-info">Annuler</button>
+                <button type="submit" class="btn btn-info" >Enregistrer</button>
+            </div>
+        </form>
     </aside>
 </section>
