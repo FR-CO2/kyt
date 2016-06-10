@@ -85,9 +85,7 @@
                                 <span ng-if="assignee.photo">
                                     <img src="{{assignee.photo}}" alt="{{assignee.username}}" title="{{assignee.username}}" class="crop"/>
                                 </span>
-                                <span ng-if="!assignee.photo">
-                                    {{assignee.username}}
-                                </span>
+                                <span ng-if="!assignee.photo" class="crop-photo glyphicon glyphicon-user" data-toggle="tooltip" data-placement="bottom" title="{{assignee.username}}"></span>
                             </span>
                         </td>
                         <td>
