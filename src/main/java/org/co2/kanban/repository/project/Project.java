@@ -15,10 +15,11 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.TableGenerator;
 import org.co2.kanban.repository.Identifiable;
 import org.co2.kanban.repository.category.Category;
 
@@ -33,9 +34,9 @@ public class Project implements Serializable, Identifiable {
     private static final long serialVersionUID = -5617478169888450195L;
 
     
-    @SequenceGenerator(name = "project_generator", sequenceName = "project_pkey_seq")
+    @TableGenerator(name = "project_generator", table = "kyt_internal_sequence" )
     @Id
-    @GeneratedValue(generator = "project_generator")
+    @GeneratedValue(generator = "project_generator", strategy = GenerationType.TABLE )
     private Long id;
 
     private String name;

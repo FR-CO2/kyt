@@ -11,10 +11,11 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.TableGenerator;
 import org.co2.kanban.repository.Identifiable;
 
 /**
@@ -27,9 +28,9 @@ public class Allocation implements Serializable, Identifiable {
 
     private static final long serialVersionUID = -4133209060738613597L;
 
-    @SequenceGenerator(name = "allocation_generator", sequenceName = "allocation_pkey_seq")
+    @TableGenerator(name = "allocation_generator", table = "kyt_internal_sequence" )
     @Id
-    @GeneratedValue(generator = "allocation_generator")
+    @GeneratedValue(generator = "allocation_generator", strategy = GenerationType.TABLE)
     private Long id;
 
     @ManyToOne

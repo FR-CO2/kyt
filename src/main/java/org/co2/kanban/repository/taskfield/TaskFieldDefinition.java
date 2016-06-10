@@ -8,11 +8,12 @@ package org.co2.kanban.repository.taskfield;
 import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.TableGenerator;
 import org.co2.kanban.repository.Identifiable;
 import org.co2.kanban.repository.project.Project;
 
@@ -25,9 +26,9 @@ import org.co2.kanban.repository.project.Project;
 public class TaskFieldDefinition implements Serializable, Identifiable {
     private static final long serialVersionUID = -6657689259578628482L;
 
-    @SequenceGenerator(name = "taskfielddef_generator", sequenceName = "task_field_def_pkey_seq")
+    @TableGenerator(name = "taskfielddef_generator", table = "kyt_internal_sequence" )
     @Id
-    @GeneratedValue(generator = "taskfielddef_generator")
+    @GeneratedValue(generator = "taskfielddef_generator", strategy = GenerationType.TABLE)
     private Long id;
 
     @ManyToOne
