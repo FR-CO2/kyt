@@ -6,7 +6,11 @@ endpoints :
 
 spring:
     profiles:
-        active: dev-h2 
+        active: dev-postgresql 
+    jpa:
+        generate-ddl: false
+        hibernate:
+            ddl-auto: none
     mvc:
         favicon:
             enabled: false
@@ -14,6 +18,10 @@ spring:
         client:
             client-id: kanban
             client-secret: nosecret
+    messages:
+        basename: messages
+        cache-seconds: -1
+        encoding: UTF-8 
 liquibase:
     change-log: classpath:/db/changelog/db.changelog-master.yml
 logging:
@@ -42,6 +50,8 @@ spring:
         url: jdbc:postgresql:postgres
         username: postgres
         password: Wxegdej5
+liquibase:
+    drop-first: false
 ---
 
 endpoints :
@@ -59,3 +69,5 @@ spring:
         minIdle: 2
         initialSize: 5
         removeAbandoned: true
+
+    

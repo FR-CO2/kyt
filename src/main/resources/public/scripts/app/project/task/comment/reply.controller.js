@@ -1,5 +1,3 @@
-(function () {
-    define([], function () {
         var listController = function (scope) {
             var vm = this;
             scope.$watch("commentListCtrl.selectedComment", function (newVal, oldVal) {
@@ -10,6 +8,4 @@
             });
         };
         listController.$inject = ["$scope"];
-        return listController;
-    });
-})();
+        module.exports = listController;

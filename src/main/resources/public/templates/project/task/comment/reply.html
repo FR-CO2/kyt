@@ -1,17 +1,11 @@
-<div ng-repeat="replyComment in commentReplyCtrl.replies">
-    <div class="panel panel-default"> 
-        <div class=" panel-heading">
-            <div class="col-md-7">
-                Réponse de {{replyComment.writer}} le {{replyComment.writingDate | date:'dd-MM-yyyy'}}
-            </div>
-            <div class="pull-right" ng-if="projectCtrl.rights.hasAdminRights">
-                <a ng-click="commentListCtrl.delete(comment, replyComment)" title="delete">
-                    <span class="glyphicon glyphicon-trash"></span>
-                </a>
-            </div>
-        </div>
-        <div class="panel-body">
-            {{replyComment.comment}}
-        </div>
+<blockquote ng-repeat="replyComment in commentReplyCtrl.replies" class="reply">
+    <cite>Réponse de {{replyComment.writer}} le {{replyComment.writingDate| date:'dd-MM-yyyy'}}</cite>
+    <q class="reply__content">
+        {{replyComment.comment}}
+    </q>
+    <div class="reply__footer" ng-if="projectCtrl.rights.hasAdminRights">
+        <a ng-click="commentListCtrl.delete(comment, replyComment)" title="delete">
+            <span class="glyphicon glyphicon-trash"></span>
+        </a>
     </div>
-</div>
+</blockquote>

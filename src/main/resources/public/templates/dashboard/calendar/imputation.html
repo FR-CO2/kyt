@@ -3,7 +3,8 @@
         <span class="glyphicon glyphicon-time"></span> Imputations du {{addImputationCtrl.day.format()}}
     </div>
     <div class="panel-body">
-        <alert type="danger" ng-if="addImputationCtrl.form.error">{{addImputationCtrl.form.error}}</alert>
+        <alert type="danger" ng-if="addImputationCtrl.error">
+            <errors errors="addImputationCtrl.error"></errors></alert>
         <form id="imputation" role="form" ng-submit="addImputationCtrl.submit()">
             <fieldset>
                 <div class="form-group col-md-offset-7">
@@ -36,10 +37,10 @@
                         {{task.taskName}}
                     </td>
                     <td class="form-group col-md-3">
-                        <input type="number" id="estimatedLoad" class="form-control" ng-model="task.timeSpent" min="0" step="1"/>
+                        <input type="number" id="estimatedLoad" class="form-control" ng-model="task.timeSpent" min="0" step="{{addImputationCtrl.allocations.step}}"/>
                     </td>
                     <td class="form-group col-md-3">
-                        <input type="number" id="estimatedLoad" class="form-control" ng-model="task.timeRemains" min="0" step="1"/>
+                        <input type="number" id="estimatedLoad" class="form-control" ng-model="task.timeRemains" min="0" step="{{addImputationCtrl.allocations.step}}"/>
                     </td>
                 </tr>
             </table>

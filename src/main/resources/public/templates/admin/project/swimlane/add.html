@@ -14,8 +14,12 @@
                 <label for="plannedEnding">Date de fin prévue </label>
                 <input type="date" id="plannedEnding" class="form-control" ng-model="addSwimlaneCtrl.swimlane.endPlanned" />
             </div>
+            <div class="form-group">
+                <label for="collapsable">Couloir repliable</label>
+                <input type="checkbox" id="collapsable" ng-model="addSwimlaneCtrl.swimlane.collapsable" name="collapsable" />
+            </div>
             <div>
-                <button type="submit"  class="btn btn-info center-block">valider</button>
+                <button type="submit" class="btn btn-info center-block">Valider</button>
             </div>
         </form>
     </div>

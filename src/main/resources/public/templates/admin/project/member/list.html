@@ -16,12 +16,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="member in projectEditCtrl.project.members._embedded.memberResourceList">
+                    <tr ng-repeat="member in memberListCtrl.members._embedded.memberResourceList">
                         <td>
                             {{member.username}}
                         </td>
                         <td>
-                            <a href="#" editable-select="member.projectRole" 
+                            <a href="#" editable-select="member.projectRole"
                                onaftersave="memberListCtrl.saveMember(member)"
                                e-ng-options="projectRole for projectRole in memberListCtrl.projectRoles">
                                 {{member.projectRole}}
@@ -43,14 +43,16 @@
                                         <uib-pagination total-items="configMemberCtrl.members.page.totalElements" ng-model="configMemberCtrl.members.page.numPage" items-per-page="configMemberCtrl.members.page.size" max-size="5" class="pagination-sm" boundary-links="true" rotate="false" num-pages="configMemberCtrl.members.page.totalPages" ng-click="configMemberCtrl.pageChanged()"></uib-pagination>
                                     </div>
                                 </div>
-                                <div class="col-md-3 form-inline"> 
+                                <div class="col-md-3 form-inline">
                                     <div class="form-group pull-right">
                                         <label for="nbEltUser">Nb élements :</label>
-                                        <select id="nbEltUser" ng-model="configMemberCtrl.members.page.nbElt" class="form-control input-sm" style="margin: 20px;"  ng-change="configMemberCtrl.pageChanged()">
-                                            <option value="10">10</option>
-                                            <option value="20">20</option>
-                                            <option value="50">50</option>
-                                        </select>
+                                        <div class="form-control">
+                                            <select id="nbEltUser" ng-model="configMemberCtrl.members.page.nbElt" class="form-select"   ng-change="configMemberCtrl.pageChanged()">
+                                                <option value="10">10</option>
+                                                <option value="20">20</option>
+                                                <option value="50">50</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -61,4 +63,3 @@
         </div>
     </div>
 </div>
-

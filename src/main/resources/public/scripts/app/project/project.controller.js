@@ -1,5 +1,3 @@
-(function () {
-    define([], function () {
         var projectController = function ($state, project, userRights) {
             var vm = this;
             vm.project = project;
@@ -9,6 +7,4 @@
             vm.rights = userRights;
         };
         projectController.$inject = ["$state", "project", "userRights"];
-        return projectController;
-    });
-})();
+        module.exports = projectController;

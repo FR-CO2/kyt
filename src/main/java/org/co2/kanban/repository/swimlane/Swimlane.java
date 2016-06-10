@@ -14,11 +14,12 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.TableGenerator;
 import org.co2.kanban.repository.Identifiable;
 
 /**
@@ -31,9 +32,9 @@ public class Swimlane implements Serializable, Identifiable {
 
     private static final long serialVersionUID = -7399300524553719167L;
 
-    @SequenceGenerator(name = "swimlane_generator", sequenceName = "swimlane_pkey_seq")
+    @TableGenerator(name = "swimlane_generator", table = "kyt_internal_sequence" )
     @Id
-    @GeneratedValue(generator = "swimlane_generator")
+    @GeneratedValue(generator = "swimlane_generator", strategy = GenerationType.TABLE )
     private Long id;
 
     private String name;
@@ -41,6 +42,8 @@ public class Swimlane implements Serializable, Identifiable {
     private Long position;
 
     private Timestamp endPlanned;
+
+    private Boolean collapsable;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "swimlane")
     private List<Task> tasks;
@@ -96,5 +99,9 @@ public class Swimlane implements Serializable, Identifiable {
     public void setEndPlanned(Timestamp endPlanned) {
         this.endPlanned = endPlanned;
     }
+
+    public Boolean getCollapsable() { return collapsable; }
+
+    public void setCollapsable(Boolean collapsable) { this.collapsable = collapsable; }
 
 }

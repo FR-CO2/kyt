@@ -1,0 +1,105 @@
+## YAML Template.
+---
+databaseChangeLog:
+  - changeSet:
+        id: schema-1.0.2-dynapiparameter
+        author: stan
+        changes:
+            - createTable:
+                tableName: kyt_api_parameter
+                columns:
+                    - column:
+                        name: id
+                        type: BIGINT
+                        constraints:
+                            primaryKey: true
+                            nullable: false
+                    - column:
+                        name: category
+                        type: int
+                        constraints:
+                            nullable: false
+                    - column:
+                        name: key_param
+                        type: varchar(255)
+                        constraints:
+                            nullable: false
+                    - column:
+                        name: value_param
+                        type: varchar(255)
+                        constraints:
+                            nullable: false
+            - createSequence:
+                sequenceName: parameter_pkey_seq
+        rollback:
+                - dropTable:
+                    tableName: kyt_api_parameter
+  - changeSet:   
+        id: data-1.0.2.0
+        author: stan
+        changes:
+            insert :
+                tableName : kyt_api_parameter
+                columns:
+                - column:
+                    name: id
+                    valueNumeric: 1
+                - column:
+                    name: category
+                    value: 0
+                - column:
+                    name: key_param
+                    value: name
+                - column:
+                    name: value_param
+                    value: 'journée'
+            rollback:
+                - delete:
+                    tableName: kyt_api_parameter
+                    where: id=1
+  - changeSet:   
+        id: data-1.0.2.1
+        author: stan
+        changes:
+            insert :
+                tableName : kyt_api_parameter
+                columns:
+                - column:
+                    name: id
+                    valueNumeric: 2
+                - column:
+                    name: category
+                    value: 0
+                - column:
+                    name: key_param
+                    value: step
+                - column:
+                    name: value_param
+                    value: 0.1
+            rollback:
+                - delete:
+                    tableName: kyt_api_parameter
+                    where: id=2
+  - changeSet:   
+        id: data-1.0.2.2
+        author: stan
+        changes:
+            insert :
+                tableName : kyt_api_parameter
+                columns:
+                - column:
+                    name: id
+                    valueNumeric: 3
+                - column:
+                    name: category
+                    value: 0
+                - column:
+                    name: key_param
+                    value: max
+                - column:
+                    name: value_param
+                    value: 1
+            rollback:
+                - delete:
+                    tableName: kyt_api_parameter
+                    where: id=3

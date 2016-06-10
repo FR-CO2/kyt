@@ -1,9 +1,5 @@
-(function () {
-    define(['angular', "project/task/allocation/list.controller",
-        "project/task/allocation/add.controller"],
-            function (angular, listController, addController) {
-                return angular.module('kanban.project.task.allocation', [])
-                        .controller("allocationListController", listController)
-                        .controller("allocationAddController", addController)
-            });
-})();
+var listController = require("./list.controller");
+var addController = require("./add.controller");
+module.exports = angular.module('kanban.project.task.allocation', [])
+        .controller("allocationListController", listController)
+        .controller("allocationAddController", addController)

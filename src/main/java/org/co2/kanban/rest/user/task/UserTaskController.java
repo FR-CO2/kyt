@@ -51,7 +51,7 @@ public class UserTaskController {
             @RequestParam("size") Integer size) {
         ApplicationUser appUser = repository.findOne(userId);
         Pageable pageable = new PageRequest(page, size);
-        Page<Task> tasks = taskRepositoy.findByAssigneeUserAndStateCloseStateFalse(appUser, pageable);
+        Page<Task> tasks = taskRepositoy.findByAssigneesUserAndStateCloseStateFalse(appUser, pageable);
         return pagedTaskAssembler.toResource(tasks, taskAssembler);
     }
 
@@ -62,7 +62,7 @@ public class UserTaskController {
         ApplicationUser appUser = repository.findOne(userId);
         Timestamp startTime = new Timestamp(start);
         Timestamp endTime = new Timestamp(end);
-        Iterable<Task> tasks = taskRepositoy.findByAssigneeUserAndPlannedStartBeforeAndPlannedEndingAfterAndStateCloseStateFalse(appUser, endTime, startTime);
+        Iterable<Task> tasks = taskRepositoy.findByAssigneesUserAndPlannedStartBeforeAndPlannedEndingAfterAndStateCloseStateFalse(appUser, endTime, startTime);
         return taskAssembler.toResources(tasks);
     }
 
@@ -70,7 +70,7 @@ public class UserTaskController {
     public Iterable<TaskResource> search(@PathVariable("userId") Long userId,
             @RequestParam("search") String searchTerm) {
         ApplicationUser appUser = repository.findOne(userId);
-        Iterable<Task> tasks = taskRepositoy.findByAssigneeUserAndNameContainingAndStateCloseStateFalse(appUser, searchTerm);
+        Iterable<Task> tasks = taskRepositoy.findByAssigneesUserAndNameContainingAndStateCloseStateFalse(appUser, searchTerm);
         return taskAssembler.toResources(tasks);
     }
 

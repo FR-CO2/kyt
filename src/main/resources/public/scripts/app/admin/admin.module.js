@@ -1,7 +1,4 @@
-(function () {
-    define(['angular', "admin/project/project.module", "admin/user/user.module"],
-            function (angular, projectModule, userModule) {
-                return angular.module('kanban.admin',
-                                    [projectModule.name, userModule.name]);
-            });
-})();
+var projectModule = require("./project/project.module");
+var userModule = require("./user/user.module");
+module.exports = angular.module('kanban.admin',
+        [projectModule.name, userModule.name]);

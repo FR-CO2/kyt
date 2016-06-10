@@ -1,9 +1,5 @@
-(function () {
-    define([], function () {
-        var taskController = function () {
-            var vm = this;
-        };
-        taskController.$inject = [];
-        return taskController;
-    });
-})();
+var taskController = function () {
+    var vm = this;
+};
+taskController.$inject = [];
+module.exports = taskController;
