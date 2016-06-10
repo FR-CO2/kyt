@@ -66,6 +66,9 @@ public class TaskController {
     @RequestMapping(method = RequestMethod.DELETE, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("@projectAccessExpression.hasContributorAccess(#projectId, principal.username)")
     public ResponseEntity delete(@PathVariable("projectId") Long projectId, @PathVariable("id") Long id) {
+        Task task = repository.findOne(id);
+        Iterable<TaskField> tasksField = fieldRepository.findByTask(task);
+        fieldRepository.delete(tasksField);
         repository.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
