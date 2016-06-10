@@ -111,7 +111,7 @@ public class TaskController {
                         throw new BusinessException(HttpStatus.PRECONDITION_FAILED, MESSAGE_CAST_NUMBER_KO);
                     }
                 }
-            }else if(field.getDefinition().getRequired()){
+            }else if(field.getDefinition().getRequired() != null && field.getDefinition().getRequired()){
                 throw new BusinessException(HttpStatus.PRECONDITION_FAILED, MESSAGE_FIELD_REQUIRED);
             }
         }
