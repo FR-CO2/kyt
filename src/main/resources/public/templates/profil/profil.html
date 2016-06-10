@@ -29,10 +29,10 @@
                     <!--<img ng-src="{{profilCtrl.profil.photo}}" />-->
                 </div>
                 <div class="cropArea">
-                    <img-crop image="profilCtrl.profil.photoTemp" result-image="profilCtrl.profil.photo"></img-crop>
+                    <img-crop image="profilCtrl.photoTemp" result-image="profilCtrl.newPhoto"></img-crop>
                 </div>
                 <div>Image redimensionnée:</div>
-                <div><img ng-src="{{profilCtrl.profil.photo}}"  class="cropImage"/></div>
+                <div><img ng-src="{{profilCtrl.newPhoto}}"  class="cropImage"/></div>
                 <div>
                     <button type="submit" class="btn btn-info center-block">modifier</button>
                 </div>
