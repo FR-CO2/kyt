@@ -32,9 +32,11 @@ public class Swimlane implements Serializable, Identifiable {
 
     private static final long serialVersionUID = -7399300524553719167L;
 
-    @TableGenerator(name = "swimlane_generator", table = "kyt_internal_sequence" )
+    @TableGenerator(
+            name = "swimlane_generator", table = "kyt_internal_sequence", pkColumnName = "sequence_name",
+            valueColumnName = "sequence_next_hi_value", pkColumnValue = "swimlane_generator")
     @Id
-    @GeneratedValue(generator = "swimlane_generator", strategy = GenerationType.TABLE )
+    @GeneratedValue(generator = "swimlane_generator", strategy = GenerationType.TABLE)
     private Long id;
 
     private String name;
@@ -100,8 +102,12 @@ public class Swimlane implements Serializable, Identifiable {
         this.endPlanned = endPlanned;
     }
 
-    public Boolean getCollapsable() { return collapsable; }
+    public Boolean getCollapsable() {
+        return collapsable;
+    }
 
-    public void setCollapsable(Boolean collapsable) { this.collapsable = collapsable; }
+    public void setCollapsable(Boolean collapsable) {
+        this.collapsable = collapsable;
+    }
 
 }

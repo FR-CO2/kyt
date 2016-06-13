@@ -5,7 +5,7 @@
  */
 package org.co2.kanban.rest.user.memberof;
 
-import org.co2.kanban.repository.member.MemberRepository;
+import org.co2.kanban.repository.member.ProjectMemberRepository;
 import org.co2.kanban.repository.project.Project;
 import org.co2.kanban.repository.project.ProjectRepository;
 import org.co2.kanban.repository.user.ApplicationUser;
@@ -30,7 +30,7 @@ public class MemberOfController {
     private ApplicationUserRepository repository;
 
     @Autowired
-    private MemberRepository memberRepository;
+    private ProjectMemberRepository memberRepository;
     @Autowired
     private ProjectRepository projectRepository;
 

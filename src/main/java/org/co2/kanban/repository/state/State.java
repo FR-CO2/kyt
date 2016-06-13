@@ -29,7 +29,9 @@ public class State implements Serializable, Identifiable {
 
     private static final long serialVersionUID = -1395350709593408519L;
 
-    @TableGenerator(name = "state_generator", table = "kyt_internal_sequence")
+    @TableGenerator(
+            name = "state_generator", table = "kyt_internal_sequence", pkColumnName = "sequence_name",
+            valueColumnName = "sequence_next_hi_value", pkColumnValue = "state_generator")
     @Id
     @GeneratedValue(generator = "state_generator", strategy = GenerationType.TABLE)
     private Long id;

@@ -24,9 +24,12 @@ import org.co2.kanban.repository.project.Project;
 @Entity
 @Table(name = "kyt_task_field_def")
 public class TaskFieldDefinition implements Serializable, Identifiable {
+
     private static final long serialVersionUID = -6657689259578628482L;
 
-    @TableGenerator(name = "taskfielddef_generator", table = "kyt_internal_sequence" )
+    @TableGenerator(
+            name = "taskfielddef_generator", table = "kyt_internal_sequence", pkColumnName = "sequence_name",
+            valueColumnName = "sequence_next_hi_value", pkColumnValue = "taskfielddef_generator")
     @Id
     @GeneratedValue(generator = "taskfielddef_generator", strategy = GenerationType.TABLE)
     private Long id;

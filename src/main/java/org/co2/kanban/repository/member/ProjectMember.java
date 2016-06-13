@@ -29,11 +29,13 @@ import org.co2.kanban.repository.Identifiable;
  */
 @Entity
 @Table(name = "KYT_MEMBER")
-public class Member implements Serializable, Identifiable {
+public class ProjectMember implements Serializable, Identifiable {
 
     private static final long serialVersionUID = 4462667625489059354L;
-
-    @TableGenerator(name = "member_generator", table = "kyt_internal_sequence")
+    
+    @TableGenerator(
+            name = "member_generator", table = "kyt_internal_sequence", pkColumnName = "sequence_name",
+            valueColumnName = "sequence_next_hi_value", pkColumnValue = "member_generator")
     @Id
     @GeneratedValue(generator = "member_generator", strategy = GenerationType.TABLE)
     private Long id;
@@ -52,6 +54,7 @@ public class Member implements Serializable, Identifiable {
 
     private ProjectRole projectRole;
 
+    @Override
     public Long getId() {
         return id;
     }
@@ -111,7 +114,7 @@ public class Member implements Serializable, Identifiable {
 
     @Override
     public boolean equals(Object obj) {
-        return obj.getClass().isAssignableFrom(Member.class) && this.hashCode() == obj.hashCode();
+        return obj.getClass().isAssignableFrom(ProjectMember.class) && this.hashCode() == obj.hashCode();
     }
 
 }

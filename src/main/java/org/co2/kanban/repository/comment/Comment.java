@@ -32,7 +32,9 @@ public class Comment implements Serializable, Identifiable {
 
     private static final long serialVersionUID = 351144123076183094L;
 
-    @TableGenerator(name = "comment_generator", table = "kyt_internal_sequence")
+    @TableGenerator(
+            name = "comment_generator", table = "kyt_internal_sequence", pkColumnName = "sequence_name",
+            valueColumnName = "sequence_next_hi_value", pkColumnValue = "comment_generator")
     @Id
     @GeneratedValue(generator = "comment_generator", strategy = GenerationType.TABLE)
     private Long id;

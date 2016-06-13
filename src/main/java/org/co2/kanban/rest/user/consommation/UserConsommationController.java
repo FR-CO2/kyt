@@ -14,8 +14,8 @@ import java.util.Map;
 import org.co2.kanban.repository.allocation.Allocation;
 import org.co2.kanban.repository.allocation.AllocationRepository;
 import org.co2.kanban.repository.config.Parameter;
-import org.co2.kanban.repository.member.Member;
-import org.co2.kanban.repository.member.MemberRepository;
+import org.co2.kanban.repository.member.ProjectMember;
+import org.co2.kanban.repository.member.ProjectMemberRepository;
 import org.co2.kanban.repository.project.Project;
 import org.co2.kanban.repository.task.Task;
 import org.co2.kanban.repository.task.TaskRepository;
@@ -47,7 +47,7 @@ public class UserConsommationController {
     private ApplicationUserRepository repository;
 
     @Autowired
-    private MemberRepository memberRepository;
+    private ProjectMemberRepository memberRepository;
 
     @Autowired
     private TaskRepository taskRepositoy;
@@ -133,7 +133,7 @@ public class UserConsommationController {
         for (UserTaskImputationResource imputation : imputations) {
             Task task = taskRepositoy.findOne(imputation.getTaskId());
             Project project = task.getProject();
-            Member member = memberRepository.findByProjectAndUser(project, appUser);
+            ProjectMember member = memberRepository.findByProjectAndUser(project, appUser);
             Allocation allocation = allocationRepository.findByMemberUserAndAllocationDateAndTask(appUser, time, task);
             if (allocation == null) {
                 allocation = new Allocation();

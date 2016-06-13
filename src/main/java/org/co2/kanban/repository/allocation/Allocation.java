@@ -5,7 +5,7 @@
  */
 package org.co2.kanban.repository.allocation;
 
-import org.co2.kanban.repository.member.Member;
+import org.co2.kanban.repository.member.ProjectMember;
 import org.co2.kanban.repository.task.Task;
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -28,13 +28,15 @@ public class Allocation implements Serializable, Identifiable {
 
     private static final long serialVersionUID = -4133209060738613597L;
 
-    @TableGenerator(name = "allocation_generator", table = "kyt_internal_sequence" )
+    @TableGenerator(
+            name = "allocation_generator", table = "kyt_internal_sequence", pkColumnName = "sequence_name",
+            valueColumnName = "sequence_next_hi_value", pkColumnValue = "allocation_generator")
     @Id
     @GeneratedValue(generator = "allocation_generator", strategy = GenerationType.TABLE)
     private Long id;
 
     @ManyToOne
-    private Member member;
+    private ProjectMember member;
 
     private Timestamp allocationDate;
 
@@ -53,11 +55,11 @@ public class Allocation implements Serializable, Identifiable {
         this.id = id;
     }
 
-    public Member getMember() {
+    public ProjectMember getMember() {
         return member;
     }
 
-    public void setMember(Member member) {
+    public void setMember(ProjectMember member) {
         this.member = member;
     }
 

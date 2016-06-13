@@ -29,18 +29,19 @@ public class Category implements Serializable, Identifiable {
 
     private static final long serialVersionUID = 8473515701046153275L;
 
-    
-    @TableGenerator(name = "category_generator", table = "kyt_internal_sequence")
+    @TableGenerator(
+            name = "category_generator", table = "kyt_internal_sequence", pkColumnName = "sequence_name",
+            valueColumnName = "sequence_next_hi_value", pkColumnValue = "category_generator")
     @Id
-    @GeneratedValue(generator = "category_generator", strategy = GenerationType.TABLE )
+    @GeneratedValue(generator = "category_generator", strategy = GenerationType.TABLE)
     private Long id;
 
     private String name;
-    
+
     private String bgcolor;
-    
+
     private String color;
-    
+
     @ManyToOne
     private Project project;
 

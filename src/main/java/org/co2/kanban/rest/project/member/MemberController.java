@@ -5,8 +5,8 @@
  */
 package org.co2.kanban.rest.project.member;
 
-import org.co2.kanban.repository.member.MemberRepository;
-import org.co2.kanban.repository.member.Member;
+import org.co2.kanban.repository.member.ProjectMemberRepository;
+import org.co2.kanban.repository.member.ProjectMember;
 import org.co2.kanban.repository.project.Project;
 import org.co2.kanban.repository.project.ProjectRepository;
 import org.co2.kanban.repository.task.Task;
@@ -41,7 +41,7 @@ public class MemberController {
     private static final String MESSAGE_KEY_CONFLICT_NAME = "project.member.error.conflict.user";
     
     @Autowired
-    private MemberRepository repository;
+    private ProjectMemberRepository repository;
 
     @Autowired
     private ProjectRepository projectRepository;
@@ -50,7 +50,7 @@ public class MemberController {
     private MemberAssembler assembler;
 
     @Autowired
-    private PagedResourcesAssembler<Member> pagedAssembler;
+    private PagedResourcesAssembler<ProjectMember> pagedAssembler;
 
     @RequestMapping(params = {"page", "size"}, method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public PagedResources<MemberResource> page(@PathVariable("projectId") Long projectId,
@@ -76,13 +76,13 @@ public class MemberController {
 
     @PreAuthorize("@projectAccessExpression.hasManagerAccess(#projectId, principal.username)")
     @RequestMapping(method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity create(@PathVariable("projectId") Long projectId, @RequestBody Member member) {
+    public ResponseEntity create(@PathVariable("projectId") Long projectId, @RequestBody ProjectMember member) {
         Project project = projectRepository.findOne(projectId);
         if (repository.checkExistProjectAndUser(project, member.getUser())) {
             throw new BusinessException(HttpStatus.CONFLICT, MESSAGE_KEY_CONFLICT_NAME);
         }
         member.setProject(project);
-        Member result = repository.save(member);
+        ProjectMember result = repository.save(member);
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(linkTo(methodOn(this.getClass()).get(projectId, result.getId())).toUri());
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
@@ -90,14 +90,14 @@ public class MemberController {
 
     @RequestMapping(value = "/{memberId}", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public MemberResource get(@PathVariable("projectId") Long projectId, @PathVariable("memberId") Long memberId) {
-        Member member = repository.findOne(memberId);
+        ProjectMember member = repository.findOne(memberId);
         return assembler.toResource(member);
     }
 
     @PreAuthorize("@projectAccessExpression.hasManagerAccess(#projectId, principal.username)")
     @RequestMapping(value = "{memberId}", method = RequestMethod.DELETE, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity delete(@PathVariable("projectId") Long projectId, @PathVariable("memberId") Long memberId) {
-        Member member = repository.findOne(memberId);
+        ProjectMember member = repository.findOne(memberId);
         for (Task task : member.getTasksAssignee()) {
             task.getAssignees().remove(member);
         }
@@ -106,8 +106,8 @@ public class MemberController {
     }
 
     @RequestMapping(value = "/{memberId}", method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity update(@PathVariable("projectId") Long projectId, @PathVariable("memberId") Long memberId, @RequestBody Member member) {
-        Member current = repository.findOne(memberId);
+    public ResponseEntity update(@PathVariable("projectId") Long projectId, @PathVariable("memberId") Long memberId, @RequestBody ProjectMember member) {
+        ProjectMember current = repository.findOne(memberId);
         current.setProjectRole(member.getProjectRole());
         repository.save(current);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
