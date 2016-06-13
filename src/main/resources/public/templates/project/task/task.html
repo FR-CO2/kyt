@@ -38,13 +38,6 @@
                 </div>
             </fieldset>
             <fieldset class="panel-body">
-                <div class="form-group">
-                    <label for="description">Description</label>
-                    <text-angular rows="12" maxlength="8000" ng-model="taskCtrl.task.description" id="description"  name="description" placeholder="Description"></text-angular>
-                </div>
-            </fieldset>
-
-            <fieldset class="panel-body">
                 <div class="form-group col-md-4">
                     <label for="plannedStart">Date de début </label>
                     <input type="date" id="plannedStart" class="form-control" ng-model="taskCtrl.task.plannedStart" value="{{taskCtrl.task.plannedStartValue}}"/>
@@ -58,11 +51,37 @@
                     <input type="number" id="estimatedLoad" class="form-control" ng-model="taskCtrl.task.estimatedLoad" min="0" step="{{taskCtrl.allocation.step}}"/>
                 </div>
             </fieldset>
+            <fieldset class="panel-body">
+                <div class="form-group col-md-5">
+                    <span>Prédécesseurs :</span>
+                    <ul>
+                        <li ng-repeat="child in taskCtrl.task.children track by $index" ng-click="taskCtrl.removechild($index)">
+                            <span>{{child.id}} - {{child.name}}</span>
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="form-group col-md-5">
+                    <span>Sucesseurs :</span>
+                    <ul>
+                        <li ng-repeat="parent in taskCtrl.task.parents track by $index" ng-click="taskCtrl.removeparent($index)">
+                            <span>{{parent.id}} - {{parent.name}}</span>
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </li>
+                    </ul>
+                </div>
+            </fieldset>
             <fieldset id="customfields" class="panel-body">
                 <div class="form-group col-md-3" ng-repeat="customfield in taskCtrl.customFieldMap">
                     <label for="{{customfield.definition.fieldName}}">{{customfield.definition.fieldName}}</label>
                     <input type="{{customfield.definition.type}}" id="{{customfield.definition.fieldName}}" class="form-control"
                            ng-required="customfield.definition.required" ng-model="customfield.fieldValue"/>
+                </div>
+            </fieldset>
+            <fieldset class="panel-body">
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <text-angular rows="12" maxlength="8000" ng-model="taskCtrl.task.description" id="description"  name="description" placeholder="Description"></text-angular>
                 </div>
             </fieldset>
             <div class="panel-footer" ng-if="projectCtrl.rights.hasEditRights">
