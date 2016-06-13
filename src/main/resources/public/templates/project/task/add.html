@@ -23,6 +23,10 @@
                 </select>
             </div>
             <div class="form-group">
+                <label for="urgent">Urgent</label>
+                <input type="checkbox" ng-model="addTaskCtrl.task.urgent" class="form-control" id="urgent" name="urgent" />
+            </div>
+            <div class="form-group">
                 <label for="description">Description</label>
                 <text-angular col="100" maxlength="8000" rows="12" id="description" ng-model="addTaskCtrl.task.description" name="description" placeholder="Description" ></text-angular>
             </div>
