@@ -10,6 +10,17 @@ var appController = function ($http, currentuser, scope, $sessionStorage, $state
         }
         ;
     });
+    vm.redirectTask = function ($item, $model, $label) {
+        project = currentuser.resource("project").query({taskId: $model.id}).$promise;
+        project.then(function () {
+            $state.transitionTo("app.project.task", ({projectId: project.$$state.value[0].id, taskId: $model.id}));
+        });
+        vm.searchedTask = null;
+    };
+    vm.getTasks = function (term) {
+        return currentuser.resource("search").query({search: term}).$promise;
+    };
+
     vm.logout = function () {
         delete $sessionStorage.oauth;
         $state.transitionTo("login");

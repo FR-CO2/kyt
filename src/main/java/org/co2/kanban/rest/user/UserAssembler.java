@@ -13,12 +13,14 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 import org.co2.kanban.repository.user.ApplicationUser;
 import org.co2.kanban.rest.project.ProjectController;
+import org.co2.kanban.rest.search.TaskSearchController;
 import org.co2.kanban.rest.user.consommation.UserConsommationController;
 import org.co2.kanban.rest.user.memberof.MemberOfController;
 import org.co2.kanban.rest.user.task.UserTaskController;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
 import org.springframework.stereotype.Component;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
 /**
  *
@@ -44,6 +46,7 @@ public class UserAssembler extends ResourceAssemblerSupport<ApplicationUser, Use
         links.add(linkTo(MemberOfController.class, user.getId()).withRel("member"));
         links.add(linkTo(ProjectController.class).withRel("project"));
         links.add(linkTo(UserTaskController.class, user.getId()).withRel("task"));
+        links.add(linkTo(TaskSearchController.class, user.getId()).withRel("search"));
         links.add(linkTo(UserConsommationController.class, user.getId()).withRel("consommation"));
         if (user.getPhoto() != null) {
             try {

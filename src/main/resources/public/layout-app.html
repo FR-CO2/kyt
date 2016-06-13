@@ -64,6 +64,18 @@
             </ul>
         </li>
     </ul>
+    <ul class="nav__links nav__links--right">
+        <li class="nav__link nav__link--right">
+            <input type="search" placeholder="Rechercher une tache" 
+                   id="searchedTask" ng-model="appCtrl.searchedTask" 
+                   typeahead-editable="false"
+                   typeahead-on-select="appCtrl.redirectTask($item, $model, $label)" 
+                   typeahead-loading="appCtrl.loadingtask"
+                   uib-typeahead="task as task.name for task in appCtrl.getTasks($viewValue)">
+            <i ng-show="appCtrl.loadingtask" class="glyphicon glyphicon-refresh"></i>
+        </li>
+
+    </ul>
 </header>
 
 <div class="app__container" ui-view="">

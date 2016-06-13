@@ -12,6 +12,7 @@ import org.co2.kanban.repository.state.State;
 import org.co2.kanban.repository.swimlane.Swimlane;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 /**
@@ -42,4 +43,8 @@ public interface TaskRepository extends PagingAndSortingRepository<Task, Long> {
 
     Iterable<Task> findByAssigneesUserAndPlannedStartBeforeAndPlannedEndingAfterAndStateCloseStateFalse(ApplicationUser user, Timestamp startBefore, Timestamp endAfter);
 
+    Iterable<Task> findByprojectAndNameContaining(Project project, String term);
+    
+    @Query("select u from #{#entityName} u where u.project = ?1 and str(u.id) like %?2%")
+    Iterable<Task> findByprojectAndIdContaining(Project project, String id);
 }
