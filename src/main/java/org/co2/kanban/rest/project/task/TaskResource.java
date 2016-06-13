@@ -68,4 +68,7 @@ public class TaskResource extends IdentifiableResourceSupport<Task> {
         return getBean().getDescription();
     }
 
+    public Boolean isUrgent(){
+        return getBean().isUrgent();
+    }
 }

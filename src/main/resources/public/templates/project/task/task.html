@@ -32,6 +32,10 @@
                     <select ng-model="taskCtrl.task.category" class="form-control" id="category" name="category" placeholder="Catégorie" ng-options="category as category.name for category in taskCtrl.categories track by category.id">
                     </select>
                 </div>
+                <div class="form-group col-md-3">
+                    <label for="urgent">Urgent</label>
+                    <input ng-model="taskCtrl.task.urgent" class="form-control" id="urgent" name="urgent" type="checkbox" />
+                </div>
             </fieldset>
             <fieldset class="panel-body">
                 <div class="form-group">

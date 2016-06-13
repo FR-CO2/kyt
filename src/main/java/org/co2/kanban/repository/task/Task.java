@@ -105,6 +105,8 @@ public class Task implements Serializable, Identifiable {
             = @JoinColumn(name = "member_id", referencedColumnName = "ID")
     )
     private List<Member> assignees;
+    
+    private Boolean urgent;
 
     public Long getId() {
         return id;
@@ -249,6 +251,13 @@ public class Task implements Serializable, Identifiable {
     public void setCustomField(List<TaskField> customField) {
         this.customField = customField;
     }
-    
 
+    public Boolean isUrgent() {
+        return urgent;
+    }
+
+    public void setUrgent(Boolean urgent) {
+        this.urgent = urgent;
+    }
+    
 }
