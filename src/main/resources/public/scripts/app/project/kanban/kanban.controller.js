@@ -1,8 +1,10 @@
 var kanbanController = function ($uibModal, project, kanbanService) {
     var vm = this;
+    
     var loadKanban = function () {
         vm.states = project.resource("state").query({"kanban": true});
         vm.swimlanes = kanbanService.load(project);
+        vm.swimlanesToFiltre = vm.swimlanes;
     };
     project.$promise.then(loadKanban);
     vm.addTask = function () {
@@ -14,7 +16,7 @@ var kanbanController = function ($uibModal, project, kanbanService) {
             resolve: {
                 project: function () {
                     return project;
-                }
+                }   
             },
             size: "md"
         });
@@ -37,6 +39,11 @@ var kanbanController = function ($uibModal, project, kanbanService) {
                 vm.states = project.resource("state").query({"order": "position"});
             });
         }
+    };
+    
+    vm.resetFilter = function(){
+        vm.filter.currentuser = false;
+        vm.filter.urgent= false;
     };
 };
 kanbanController.$inject = ["$uibModal", "project", "kanbanService"];

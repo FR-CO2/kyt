@@ -8,6 +8,12 @@
     </div>
 </header>
 <section class="content">
+    <aside>
+        <h1>Filtres</h1>
+        <label for="filtreAssignee">M'est assignée</label><input type="checkbox" id="filtreAssignee" ng-model="kanbanCtrl.filter.currentuser" />
+        <label for="filtreUrgent">urgent</label><input type="checkbox" id="filtreUrgent" ng-model="kanbanCtrl.filter.urgent" />
+        <button ng-click="kanbanCtrl.resetFilter()">Reset</button>
+    </aside>
     <div class="panel kanban__container">
         <table class="table kanban__table">
             <thead class="kanban__header">
@@ -27,7 +33,7 @@
                     </td>
                     <td class="kanban__column column" ng-repeat="state in swimlane.states">
                         <ul class="list-unstyled" as-sortable="kanbanCtrl.kanbanSortOptions" data-rowindex="{{swimlane.id}}" data-columnindex="{{state.id}}" ng-model="state.tasks">
-                            <li ng-repeat="task in state.tasks" class="kanban-card kanban__tasks" as-sortable-item>
+                            <li ng-repeat="task in state.tasks  | currentuserKanbanFilter : kanbanCtrl.filter.currentuser | urgentKanbanFilter : kanbanCtrl.filter.urgent" class="kanban-card kanban__tasks" as-sortable-item>
                                 <div ng-include="'/templates/project/kanban/kanban-card.html'" as-sortable-item-handle></div>
                             </li>
                             <li class="kanban__tasks--count" ng-if="state.tasks.length"><span class="badge">{{state.tasks.length}}</span></li>

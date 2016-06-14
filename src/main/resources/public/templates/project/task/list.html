@@ -13,6 +13,29 @@
             <h2 class="panel-heading-title">Liste des tâches</h2>
         </div>
         <div class="panel-body">
+            <aside>
+                <label for="filterState">Etat</label>
+                <select id="filterState" ng-model="tasksCtrl.filter.state" ng-change="tasksCtrl.changedFilter()">
+                    <option value="all">Tous</option>
+                    <option value="{{state.id}}" ng-repeat="state in tasksCtrl.states">{{state.name}}</option>
+                </select>
+                <label for="filterSwimlane">Couloir</label>
+                <select id="filterSwimlane" ng-model="tasksCtrl.filter.swimlane" ng-change="tasksCtrl.changedFilter()">
+                    <option value="all">Tous</option>
+                    <option value="{{swimlane.id}}" ng-repeat="swimlane in tasksCtrl.swimlanes">{{swimlane.name}}</option>
+                </select>
+                <label for="filterAssignee">Assignée à</label>
+                <select id="filterAssignee" ng-model="tasksCtrl.filter.member" ng-change="tasksCtrl.changedFilter()">
+                    <option value="all">Tous</option>
+                    <option value="{{member.id}}" ng-repeat="member in tasksCtrl.members">{{member.username}}</option>
+                </select>
+                <label for="filterCategory">Catégorie</label>
+                <select id="filterCategory" ng-model="tasksCtrl.filter.category" ng-change="tasksCtrl.changedFilter()">
+                    <option value="all">Tous</option>
+                    <option value="{{category.id}}" ng-repeat="category in tasksCtrl.categories">{{category.name}}</option>
+                </select>
+                <button ng-click="tasksCtrl.resetFilter()">Reset</button>
+            </aside>
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -36,7 +59,7 @@
                             <span class="glyphicon" ng-if="tasksCtrl.sort.field === 'category'"
                                   ng-class="{'glyphicon-sort-by-alphabet': tasksCtrl.sort.sortDirection === 'asc', 'glyphicon-sort-by-alphabet-alt': tasksCtrl.sort.sortDirection === 'desc'}" ></span>
                         </th>
-                        <th ng-click="tasksCtrl.tableFilter('assignee.user.username')">
+                        <th ng-click="tasksCtrl.tableFilter('assignees.user.username')">
                             Assigné à
                             <span class="glyphicon" ng-if="tasksCtrl.sort.field === 'assignee.user.username'"
                                   ng-class="{'glyphicon-sort-by-alphabet': tasksCtrl.sort.sortDirection === 'asc', 'glyphicon-sort-by-alphabet-alt': tasksCtrl.sort.sortDirection === 'desc'}" ></span>

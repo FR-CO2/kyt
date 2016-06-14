@@ -6,7 +6,13 @@
 package org.co2.kanban.rest.project.task;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import org.co2.kanban.repository.category.Category;
+import org.co2.kanban.repository.category.CategoryRepository;
+import org.co2.kanban.repository.member.ProjectMember;
+import org.co2.kanban.repository.member.ProjectMemberRepository;
 import org.co2.kanban.repository.task.Task;
 import org.co2.kanban.repository.task.TaskRepository;
 import org.co2.kanban.repository.project.Project;
@@ -56,6 +62,12 @@ public class TaskListController {
     private SwimlaneRepository swimlaneRepository;
 
     @Autowired
+    private ProjectMemberRepository projectMemberRepository;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
+
+    @Autowired
     private PagedResourcesAssembler<Task> pagedAssembler;
 
     @Autowired
@@ -86,6 +98,38 @@ public class TaskListController {
         Project project = projectRepository.findOne(projectId);
         tasks = assembler.toResources(repository.findByProjectAndSwimlaneIsNull(project));
         return tasks;
+    }
+
+    @RequestMapping(params = {"state", "swimlane", "assignee", "category", "page", "size"}, method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    public PagedResources<TaskResource> listFilter(@PathVariable("projectId") Long projectId,
+            @RequestParam(name = "state") Long stateId,
+            @RequestParam(name = "swimlane") Long swimlaneId,
+            @RequestParam(name = "assignee") Long assigneeId,
+            @RequestParam(name = "category") Long categoryId,
+            @RequestParam(name = "page") Integer page,
+            @RequestParam(name = "size") Integer size,
+            @RequestParam(name = "sort", required = false) String sort,
+            @RequestParam(name = "sortDirection", required = false) String sortDirection) {
+
+        Project project = projectRepository.findOne(projectId);
+        Sort sorting = null;
+        if (sort != null) {
+            Sort.Direction dir = Sort.DEFAULT_DIRECTION;
+            if (sortDirection != null) {
+                dir = Sort.Direction.fromString(sortDirection);
+            }
+            sorting = new Sort(dir, sort);
+        }
+        PageRequest pageable = new PageRequest(page, size, sorting);
+        State state = stateRepository.findOne(stateId);
+        Swimlane swimlane = swimlaneRepository.findOne(swimlaneId);
+        ProjectMember member = projectMemberRepository.findOne(assigneeId);
+        List<ProjectMember> listMember = new ArrayList<>();
+        listMember.add(member);
+        Category category = categoryRepository.findOne(categoryId);
+        return pagedAssembler.toResource(repository
+                .findByProjectAndSwimlaneIfIsNotNullAndStateIfIsNotNullAndCategoryIfIsNotNullAndAssignees(project, swimlane, state,
+                        category, pageable), assembler);
     }
 
     @RequestMapping(params = {"state", "noswimlane"}, method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
