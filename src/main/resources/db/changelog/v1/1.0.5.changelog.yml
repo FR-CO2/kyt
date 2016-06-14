@@ -3,7 +3,7 @@
 databaseChangeLog:
   - changeSet:
         id: schema-1.0.5-urgenttask
-        author: seb
+        author: stan
         changes:
             - addColumn:
                     tableName: kyt_task
