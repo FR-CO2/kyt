@@ -1,7 +1,5 @@
-var kanbanController = function ($uibModal, project, kanbanService, currentuser) {
+var kanbanController = function ($uibModal, project, kanbanService) {
     var vm = this;
-    
-    vm.filtre = {swimlane :{id : 'all'}, assignee : false};
     
     var loadKanban = function () {
         vm.states = project.resource("state").query({"kanban": true});
@@ -43,15 +41,10 @@ var kanbanController = function ($uibModal, project, kanbanService, currentuser)
         }
     };
     
-    vm.changedFiltre = function(){
-        vm.swimlanes = kanbanService.filtre(project, vm.filtre.swimlane.id, vm.filtre.assignee, currentuser);
-    };
-    
-    vm.resetFiltre = function(){
-        vm.filtre.swimlane.id = "all";
-        vm.filtre.assignee = false;
-        vm.changedFiltre();
+    vm.resetFilter = function(){
+        vm.filter.currentuser = false;
+        vm.filter.urgent= false;
     };
 };
-kanbanController.$inject = ["$uibModal", "project", "kanbanService", "currentuser"];
+kanbanController.$inject = ["$uibModal", "project", "kanbanService"];
 module.exports = kanbanController;

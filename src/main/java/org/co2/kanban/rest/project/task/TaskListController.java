@@ -6,10 +6,7 @@
 package org.co2.kanban.rest.project.task;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import org.co2.kanban.repository.member.ProjectMember;
 import org.co2.kanban.repository.member.ProjectMemberRepository;
 import org.co2.kanban.repository.task.Task;
 import org.co2.kanban.repository.task.TaskRepository;
@@ -19,7 +16,6 @@ import org.co2.kanban.repository.state.State;
 import org.co2.kanban.repository.state.StateRepository;
 import org.co2.kanban.repository.swimlane.Swimlane;
 import org.co2.kanban.repository.swimlane.SwimlaneRepository;
-import org.co2.kanban.repository.user.ApplicationUser;
 import org.co2.kanban.repository.user.ApplicationUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -72,7 +68,7 @@ public class TaskListController {
 
     @Autowired
     private TaskAssembler assembler;
-
+    
     @RequestMapping(params = {"page", "size"}, method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public PagedResources<TaskResource> page(@PathVariable("projectId") Long projectId,
             @RequestParam(name = "page") Integer page,
@@ -129,37 +125,6 @@ public class TaskListController {
         State state = stateRepository.findOne(stateId);
         Swimlane swimlane = swimlaneRepository.findOne(swimlaneId);
         tasks = assembler.toResources(repository.findByProjectAndStateAndSwimlane(project, state, swimlane));
-        return tasks;
-    }
-
-    @RequestMapping(params = {"assignee","state", "noswimlane"}, method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public Iterable<TaskResource> listByStateAndNoSwimlaneAndAssignee(@PathVariable("projectId") Long projectId,
-            @RequestParam(name = "state") Long stateId, @RequestParam(name="assignee") Long userId) {
-        Iterable<TaskResource> tasks;
-        Project project = projectRepository.findOne(projectId);
-        State state = stateRepository.findOne(stateId);
-        ApplicationUser user = applicationUserRepository.findOne(userId);
-        ProjectMember projectMember = projectMemberRepository.findByProjectAndUser(project, user);
-        List<ProjectMember> listProject = new ArrayList<>();
-        listProject.add(projectMember);
-        tasks = assembler.toResources(repository.findByProjectAndStateAndSwimlaneIsNullAndAssignees(project, state, listProject));
-        return tasks;
-    }
-    
-    @RequestMapping(params = {"assignee", "state", "swimlane"}, method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public Iterable<TaskResource> listByStateAndSwimlaneAndAssigne(@PathVariable("projectId") Long projectId,
-            @RequestParam(name = "state") Long stateId,
-            @RequestParam(name = "swimlane") Long swimlaneId,
-            @RequestParam(name = "assignee") Long userId) {
-        Iterable<TaskResource> tasks;
-        Project project = projectRepository.findOne(projectId);
-        State state = stateRepository.findOne(stateId);
-        Swimlane swimlane = swimlaneRepository.findOne(swimlaneId);
-        ApplicationUser user = applicationUserRepository.findOne(userId);
-        ProjectMember projectMember = projectMemberRepository.findByProjectAndUser(project, user);
-        List<ProjectMember> listProject = new ArrayList<>();
-        listProject.add(projectMember);
-        tasks = assembler.toResources(repository.findByProjectAndStateAndSwimlaneAndAssignees(project, state, swimlane, listProject));
         return tasks;
     }
 

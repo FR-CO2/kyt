@@ -30,8 +30,6 @@ public interface TaskRepository extends PagingAndSortingRepository<Task, Long> {
     Iterable<Task> findByProjectAndSwimlaneIsNull(Project project);
 
     Iterable<Task> findByProjectAndStateAndSwimlane(Project project, State state, Swimlane swimlane);
-    
-    Iterable<Task> findByProjectAndStateAndSwimlaneAndAssignees(Project project, State state, Swimlane swimlane, List<ProjectMember> listProject);
 
     Iterable<Task> findByProjectAndState(Project project, State state);
 
@@ -39,9 +37,7 @@ public interface TaskRepository extends PagingAndSortingRepository<Task, Long> {
 
     Iterable<Task> findByProjectAndStateAndSwimlaneIsNull(Project project, State state);
     
-    Iterable<Task> findByProjectAndStateAndSwimlaneIsNullAndAssignees(Project project, State state, List<ProjectMember> listProject);
-
-    Page<Task> findByProject(Project project, Pageable p);
+        Page<Task> findByProject(Project project, Pageable p);
 
     Page<Task> findByAssigneesUserAndStateCloseStateFalse(ApplicationUser user, Pageable p);
 

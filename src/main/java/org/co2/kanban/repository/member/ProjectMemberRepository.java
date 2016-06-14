@@ -27,7 +27,7 @@ public interface ProjectMemberRepository extends PagingAndSortingRepository<Proj
     Iterable<ProjectMember> findByProjectAndUserUsernameContains(Project project, String term);
 
     ProjectMember findByProjectAndUser(Project project, ApplicationUser user);
-
+    
     @Query("select count(e)>0 from ProjectMember e where e.project= ?1 and e.user = ?2")
     Boolean checkExistProjectAndUser(Project project, ApplicationUser user);
 
