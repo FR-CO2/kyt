@@ -37,6 +37,10 @@ databaseChangeLog:
                 sequenceName: task_pkey_seq
            - dropSequence:
                 sequenceName: user_pkey_seq  
+           - dropSequence:
+                sequenceName: task_field_def_pkey_seq
+           - dropSequence:
+                sequenceName: parameter_pkey_seq  
            - sql:
                 comment: Initialize sequence table with max id if database already initialized
                 sql: insert into kyt_internal_sequence (sequence_name, sequence_next_hi_value) select 'user_generator', (COALESCE(max(id), 0) + 1) from kyt_user; 
