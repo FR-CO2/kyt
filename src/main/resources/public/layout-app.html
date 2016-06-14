@@ -64,9 +64,9 @@
             </ul>
         </li>
     </ul>
-    <ul class="nav__links nav__links--right">
-        <li class="nav__link nav__link--right">
-            <input type="search" placeholder="Rechercher une tache" 
+    <ul class="nav__links nav__links--right nav__links--form">
+        <li>
+            <input type="search" class="form-control" placeholder="Rechercher une tâche"
                    id="searchedTask" ng-model="appCtrl.searchedTask" 
                    typeahead-editable="false"
                    typeahead-on-select="appCtrl.redirectTask($item, $model, $label)" 
