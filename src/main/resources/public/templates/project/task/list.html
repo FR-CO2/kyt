@@ -36,7 +36,7 @@
                             <span class="glyphicon" ng-if="tasksCtrl.sort.field === 'category'"
                                   ng-class="{'glyphicon-sort-by-alphabet': tasksCtrl.sort.sortDirection === 'asc', 'glyphicon-sort-by-alphabet-alt': tasksCtrl.sort.sortDirection === 'desc'}" ></span>
                         </th>
-                        <th ng-click="tasksCtrl.tableFilter('assignee.user.username')">
+                        <th ng-click="tasksCtrl.tableFilter('assignees.user.username')">
                             Assigné à
                             <span class="glyphicon" ng-if="tasksCtrl.sort.field === 'assignee.user.username'"
                                   ng-class="{'glyphicon-sort-by-alphabet': tasksCtrl.sort.sortDirection === 'asc', 'glyphicon-sort-by-alphabet-alt': tasksCtrl.sort.sortDirection === 'desc'}" ></span>
