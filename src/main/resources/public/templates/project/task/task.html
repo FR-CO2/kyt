@@ -52,6 +52,12 @@
                 </div>
             </fieldset>
             <fieldset class="panel-body">
+                <div class="form-group col-md-12">
+                    <label for="link">Attaché la tâche : </label>
+                    <input class="form-control" ng-model="taskCtrl.selectedtask"
+                           typeahead-editable="false" typeahead-on-select="taskCtrl.selectTask($item, $model, $label)" 
+                           uib-typeahead="task as task.name for task in taskCtrl.getTasks($viewValue)" placeholder="Ajouter une tâche"/>                    
+                </div>
                 <div class="form-group col-md-5">
                     <span>Prédécesseurs :</span>
                     <ul>

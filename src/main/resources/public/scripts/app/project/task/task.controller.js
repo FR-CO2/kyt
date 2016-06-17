@@ -58,6 +58,14 @@ var taskController = function ($q, $state, project, currenttask, taskAssemblerSe
     vm.getMembers = function (term) {
         return project.resource("member").query({search: term}).$promise;
     };
+    vm.selectTask = function ($item, $model, $label) {
+       vm.task.resource("children").save($item, function() {
+           vm.task.children.push($item);
+       });
+    };
+    vm.getTasks = function (term) {
+        return project.resource("task").query({search: term}).$promise;
+    };
     vm.submit = function () {
         angular.forEach(vm.task.customField, function (customField) {
             if (vm.customFieldMap[customField.definition.fieldName].value) {

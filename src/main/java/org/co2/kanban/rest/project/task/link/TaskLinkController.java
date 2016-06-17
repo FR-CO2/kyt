@@ -43,7 +43,7 @@ public class TaskLinkController {
     @Autowired
     private TaskChildrenAssembler parentAssembler;
 
-    @RequestMapping(value = "child", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/child", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public ResourceSupport children(@PathVariable("projectId") Long projectId, @PathVariable("id") Long taskId) {
         Task task = repository.findOne(taskId);
         if (task == null) {
@@ -52,7 +52,7 @@ public class TaskLinkController {
         return childrenAssembler.toResource(task);
     }
 
-    @RequestMapping(value = "child", method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/child", method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity addChild(@PathVariable("id") Long taskId, @RequestBody Task taskToLink) {
         Task task = repository.findOne(taskId);
         Task childTask = repository.findOne(taskToLink.getId());
@@ -60,7 +60,7 @@ public class TaskLinkController {
             throw new BusinessException(HttpStatus.NOT_FOUND, MESSAGE_KEY_NOT_FOUND);
         }
         childTask.getParent().add(task);
-        repository.save(taskToLink);
+        repository.save(childTask);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
@@ -75,7 +75,7 @@ public class TaskLinkController {
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
-    @RequestMapping(value = "parent", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/parent", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public ResourceSupport parents(@PathVariable("projectId") Long projectId, @PathVariable("id") Long taskId) {
         Task task = repository.findOne(taskId);
         if (task == null) {

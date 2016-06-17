@@ -76,12 +76,8 @@ public class TaskAssembler extends ResourceAssemblerSupport<Task, TaskResource> 
         resource.add(linkTo(methodOn(CommentController.class).comments(task.getProject().getId(), task.getId())).withRel("comment"));
         resource.add(linkTo(methodOn(AllocationController.class).list(task.getProject().getId(), task.getId())).withRel("allocation"));
         resource.add(linkTo(methodOn(TaskFieldController.class).list(task.getProject().getId(), task.getId())).withRel("customfield"));
-        if (task.getParent() != null && task.getParent().size() > 0) {
-            resource.add(linkTo(methodOn(TaskLinkController.class).parents(task.getProject().getId(), task.getId())).withRel("parents"));
-        }
-        if (task.getChildren() != null && task.getChildren().size() > 0) {
-            resource.add(linkTo(methodOn(TaskLinkController.class).children(task.getProject().getId(), task.getId())).withRel("children"));
-        }
+        resource.add(linkTo(methodOn(TaskLinkController.class).parents(task.getProject().getId(), task.getId())).withRel("parents"));
+        resource.add(linkTo(methodOn(TaskLinkController.class).children(task.getProject().getId(), task.getId())).withRel("children"));
         return resource;
     }
 }

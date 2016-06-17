@@ -7,6 +7,8 @@ package org.co2.kanban.rest.project.task.link;
 
 import org.co2.kanban.repository.task.Task;
 import org.co2.kanban.rest.project.task.TaskController;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.ResourceSupport;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
@@ -26,11 +28,13 @@ public class TaskChildrenAssembler extends ResourceAssemblerSupport<Task, Resour
 
     @Override
     public ResourceSupport toResource(Task t) {
-        ResourceSupport resource = createResourceWithId(t.getId(), t);
+        ResourceSupport resource = new ResourceSupport();
         resource.add(linkTo(methodOn(TaskLinkController.class).children(t.getProject().getId(), t.getId())).withSelfRel());
         resource.add(linkTo(methodOn(TaskController.class).get(t.getProject().getId(), t.getId())).withRel("task"));
         for (Task child : t.getChildren()) {
-            resource.add(linkTo(methodOn(TaskController.class).get(t.getProject().getId(), child.getId())).withRel("child"));
+            Link childLink = linkTo(methodOn(TaskController.class).get(t.getProject().getId(), child.getId()))
+                    .withRel("child");
+            resource.add(childLink);
         }
         return resource;
     }

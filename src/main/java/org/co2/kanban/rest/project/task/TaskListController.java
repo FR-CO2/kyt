@@ -92,6 +92,14 @@ public class TaskListController {
         return pagedAssembler.toResource(repository.findByProject(project, pageable), assembler);
     }
 
+    @RequestMapping(params = {"search"}, method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    public Iterable<TaskResource> search(@PathVariable("projectId") Long projectId, @RequestParam("search") String searchTerm) {
+        Iterable<TaskResource> tasks;
+        Project project = projectRepository.findOne(projectId);
+        tasks = assembler.toResources(repository.findByprojectAndNameContaining(project, searchTerm));
+        return tasks;
+    }
+
     @RequestMapping(params = {"noswimlane"}, method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public Iterable<TaskResource> listNoSwimlane(@PathVariable("projectId") Long projectId) {
         Iterable<TaskResource> tasks;

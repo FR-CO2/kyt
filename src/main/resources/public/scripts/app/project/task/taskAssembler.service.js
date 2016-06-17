@@ -18,8 +18,8 @@ var taskAssemblerService = function ($http, HateoasInterface, moment) {
                         assignee.photo = result.data;
                     });
                 }
-                $http.get(assignee._links.user).then(function(result) {
-                    assignee.userId= result.data.id;
+                $http.get(assignee._links.user).then(function (result) {
+                    assignee.userId = result.data.id;
                 });
             });
             return assignees;
@@ -35,6 +35,7 @@ var taskAssemblerService = function ($http, HateoasInterface, moment) {
         if (taskresource.plannedStart !== null) {
             task.plannedStart = moment(taskresource.plannedStart).toDate();
         }
+        task.children = taskresource.resource("children").get();
         return task;
     };
 };
