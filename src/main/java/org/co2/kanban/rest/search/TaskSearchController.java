@@ -47,30 +47,8 @@ public class TaskSearchController {
     public Iterable<TaskResource> search(@PathVariable("userId") Long userId,
             @RequestParam("search") String searchTerm) {
         ApplicationUser appUser = repository.findOne(userId);
-        Iterable<Project> projects = projectRepository.findByMembersUser(appUser);
-        List<Task> tasksTemp = new ArrayList<>();
-        Long idTask = castStringToLong(searchTerm);
-        for (Project project : projects) {
-            Iterable<Task> tasks;
-            if (idTask != null) {
-                tasks = taskRepositoy.findByprojectAndIdContaining(project, idTask.toString());
-            } else {
-                tasks = taskRepositoy.findByprojectAndNameContaining(project, searchTerm);
-            }
-            for (Task task : tasks) {
-                tasksTemp.add(task);
-            }
-        }
-        return taskAssembler.toResources(tasksTemp);
-    }
-
-    private Long castStringToLong(String searchTerm) {
-        Long idTask = null;
-        try {
-            idTask = Long.parseLong(searchTerm);
-        } catch (NumberFormatException ex) {
-
-        }
-        return idTask;
+        TaskSearch search = new TaskSearch(appUser, searchTerm);
+        Iterable<Task> tasks = taskRepositoy.findAll();
+        return taskAssembler.toResources(tasks);
     }
 }

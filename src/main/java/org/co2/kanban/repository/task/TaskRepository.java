@@ -6,15 +6,14 @@
 package org.co2.kanban.repository.task;
 
 import java.sql.Timestamp;
-import java.util.List;
 import org.co2.kanban.repository.category.Category;
-import org.co2.kanban.repository.member.ProjectMember;
 import org.co2.kanban.repository.project.Project;
 import org.co2.kanban.repository.user.ApplicationUser;
 import org.co2.kanban.repository.state.State;
 import org.co2.kanban.repository.swimlane.Swimlane;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
@@ -22,7 +21,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
  *
  * @author ben
  */
-public interface TaskRepository extends PagingAndSortingRepository<Task, Long> {
+public interface TaskRepository extends PagingAndSortingRepository<Task, Long>, JpaSpecificationExecutor<Task> {
 
     Iterable<Task> findByProjectAndStateKanbanHideFalse(Project project);
 
@@ -47,7 +46,7 @@ public interface TaskRepository extends PagingAndSortingRepository<Task, Long> {
     Iterable<Task> findByAssigneesUserAndPlannedStartBeforeAndPlannedEndingAfterAndStateCloseStateFalse(ApplicationUser user, Timestamp startBefore, Timestamp endAfter);
 
     Iterable<Task> findByprojectAndNameContaining(Project project, String term);
-
+    
     @Query("select u from #{#entityName} u where u.project = ?1 and (?2 is null or u.swimlane = ?2) and (?3 is null or u.state = ?3) "
             + "and (?4 is null or u.category = ?4)")
     Page<Task> findByProjectAndSwimlaneIfIsNotNullAndStateIfIsNotNullAndCategoryIfIsNotNullAndAssignees(Project project, Swimlane swimlane,
