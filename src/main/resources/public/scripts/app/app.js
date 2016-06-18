@@ -6,6 +6,7 @@ var appController = require("./app.controller");
 var dashboardModule = require("./dashboard/dashboard.module");
 var projectModule = require("./project/project.module");
 var samePasswordDirective = require("./directive/samePassword.directive");
+var checkboxFilterDirective = require("./directive/checkboxfilter.directive");
 var errorDirective = require("./directive/error.directive");
 var togglerDirective = require("./directive/toggler.directive");
 var adminModule = require("./admin/admin.module");
@@ -22,6 +23,7 @@ angular.module("kanban",
         .run(appRun)
         .controller("appController", appController)
         .controller("profilController", profilController)
+        .directive("checkboxFilter", checkboxFilterDirective)
         .directive("samePassword", samePasswordDirective)
         .directive("errors", errorDirective)
         .directive("toggler", togglerDirective);
