@@ -48,7 +48,7 @@ public class TaskSearchController {
             @RequestParam("search") String searchTerm) {
         ApplicationUser appUser = repository.findOne(userId);
         TaskSearch search = new TaskSearch(appUser, searchTerm);
-        Iterable<Task> tasks = taskRepositoy.findAll();
+        Iterable<Task> tasks = taskRepositoy.findAll(search);
         return taskAssembler.toResources(tasks);
     }
 }
