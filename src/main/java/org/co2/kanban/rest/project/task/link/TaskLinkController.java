@@ -11,7 +11,6 @@ import org.co2.kanban.rest.error.BusinessException;
 import org.co2.kanban.rest.project.task.TaskLinkAssembler;
 import org.co2.kanban.rest.project.task.TaskLinkResource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.ResourceSupport;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -42,7 +41,6 @@ public class TaskLinkController {
     @Autowired
     private TaskLinkAssembler assembler;
 
-
     @RequestMapping(value = "/child", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public Iterable<TaskLinkResource> children(@PathVariable("projectId") Long projectId, @PathVariable("id") Long taskId) {
         Task task = repository.findOne(taskId);
@@ -59,7 +57,7 @@ public class TaskLinkController {
         if (task == null || childTask == null) {
             throw new BusinessException(HttpStatus.NOT_FOUND, MESSAGE_KEY_NOT_FOUND);
         }
-        childTask.getParent().add(task);
+        task.getChildren().add(childTask);
         repository.save(childTask);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
@@ -71,7 +69,8 @@ public class TaskLinkController {
         if (task == null || childTask == null) {
             throw new BusinessException(HttpStatus.NOT_FOUND, MESSAGE_KEY_NOT_FOUND);
         }
-        childTask.getParent().remove(task);
+        task.getChildren().remove(childTask);
+        repository.save(childTask);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
@@ -84,4 +83,27 @@ public class TaskLinkController {
         return assembler.toResources(task.getParent());
     }
 
+    @RequestMapping(value = "/parent", method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity addParent(@PathVariable("id") Long taskId, @RequestBody Task taskToLink) {
+        Task task = repository.findOne(taskId);
+        Task parentTask = repository.findOne(taskToLink.getId());
+        if (task == null || parentTask == null) {
+            throw new BusinessException(HttpStatus.NOT_FOUND, MESSAGE_KEY_NOT_FOUND);
+        }
+        task.getParent().add(parentTask);
+        repository.save(task);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
+    @RequestMapping(value = "/parent/{linkedTaskId}", method = RequestMethod.DELETE, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity removeParent(@PathVariable("id") Long taskId, @PathVariable("linkedTaskId") Long linkedTaskId) {
+        Task task = repository.findOne(taskId);
+        Task parentTask = repository.findOne(linkedTaskId);
+        if (task == null || parentTask == null) {
+            throw new BusinessException(HttpStatus.NOT_FOUND, MESSAGE_KEY_NOT_FOUND);
+        }
+        task.getParent().remove(parentTask);
+        repository.save(task);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
 }

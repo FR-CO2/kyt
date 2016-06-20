@@ -52,26 +52,26 @@
                 </div>
             </fieldset>
             <fieldset class="panel-body">
-                <div class="form-group col-md-12">
-                    <label for="link">Attaché la tâche : </label>
-                    <input class="form-control" ng-model="taskCtrl.selectedtask"
-                           typeahead-editable="false" typeahead-on-select="taskCtrl.selectTask($item, $model, $label)" 
-                           uib-typeahead="task as task.name for task in taskCtrl.getTasks($viewValue)" placeholder="Ajouter une tâche"/>                    
-                </div>
                 <div class="form-group col-md-5">
-                    <span>Prédécesseurs :</span>
+                    <span>Pré requis :</span>
+                    <input class="form-control" ng-model="selectedParent"
+                           typeahead-editable="false" typeahead-on-select="taskCtrl.addParent($item, $model, $label)" 
+                           uib-typeahead="task as task.name for task in taskCtrl.getTasks($viewValue)" placeholder="Ajouter un pré requis"/>            
                     <ul>
-                        <li ng-repeat="child in taskCtrl.children track by $index" ng-click="taskCtrl.removechild($index)">
-                            <span>{{child.id}} - {{child.name}}</span>
+                        <li ng-repeat="parent in taskCtrl.parents track by $index" ng-click="taskCtrl.removeparent($index)">
+                            <a ng-href="#/project/{{taskCtrl.task.project.id}}/task/{{parent.id}}">{{parent.id}} - {{parent.name}}</a>
                             <span class="glyphicon glyphicon-trash"></span>
                         </li>
                     </ul>
                 </div>
                 <div class="form-group col-md-5">
-                    <span>Sucesseurs :</span>
+                    <span>Requis par :</span>
+                    <input class="form-control" ng-model="selectedChild"
+                           typeahead-editable="false" typeahead-on-select="taskCtrl.addChild($item, $model, $label)" 
+                           uib-typeahead="task as task.name for task in taskCtrl.getTasks($viewValue)" placeholder="Ajouter un enfant"/>       
                     <ul>
-                        <li ng-repeat="parent in taskCtrl.parents track by $index" ng-click="taskCtrl.removeparent($index)">
-                            <span>{{parent.id}} - {{parent.name}}</span>
+                        <li ng-repeat="child in taskCtrl.children track by $index" ng-click="taskCtrl.removechild($index)">
+                            <a ng-href="#/project/{{taskCtrl.task.project.id}}/task/{{child.id}}">{{child.id}} - {{child.name}}</a>
                             <span class="glyphicon glyphicon-trash"></span>
                         </li>
                     </ul>
