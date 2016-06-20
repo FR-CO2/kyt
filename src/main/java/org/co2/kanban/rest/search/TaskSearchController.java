@@ -5,10 +5,6 @@
  */
 package org.co2.kanban.rest.search;
 
-import java.util.ArrayList;
-import java.util.List;
-import org.co2.kanban.repository.project.Project;
-import org.co2.kanban.repository.project.ProjectRepository;
 import org.co2.kanban.repository.task.Task;
 import org.co2.kanban.repository.task.TaskRepository;
 import org.co2.kanban.repository.user.ApplicationUser;
@@ -33,9 +29,6 @@ public class TaskSearchController {
 
     @Autowired
     private ApplicationUserRepository repository;
-
-    @Autowired
-    private ProjectRepository projectRepository;
 
     @Autowired
     private TaskRepository taskRepositoy;

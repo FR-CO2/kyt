@@ -7,14 +7,11 @@ package org.co2.kanban.rest.search;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import javax.persistence.criteria.Subquery;
-import org.co2.kanban.repository.member.ProjectMember;
-import org.co2.kanban.repository.project.Project;
 import org.co2.kanban.repository.task.Task;
 import org.co2.kanban.repository.user.ApplicationUser;
+import org.co2.kanban.repository.user.ApplicationUserRole;
 import org.springframework.data.jpa.domain.Specification;
 
 /**
@@ -38,8 +35,13 @@ public class TaskSearch implements Specification<Task> {
         Predicate id = cb.equal(cb.toString(root.get("id").as(Character.class)), searchTerm);
         String likeSearchTerm = "%".concat(searchTerm.toUpperCase()).concat("%");
         Predicate name = cb.like(cb.upper(root.get("name").as(String.class)), likeSearchTerm);
-
-        return cb.or(id, name);
+        
+        Predicate searchPredicate = cb.or(id, name);
+        if (!user.hasRole(ApplicationUserRole.ADMIN)) {
+             Predicate allowed = cb.equal(root.join("project").join("members").get("user").as(ApplicationUser.class), user);
+             searchPredicate = cb.and(allowed, searchPredicate);
+        }
+        return searchPredicate;        
     }
 
 }
