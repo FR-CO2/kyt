@@ -2,94 +2,104 @@
     <h2 class="heading__title pull-left">
         #{{taskCtrl.task.id}}
     </h2>
+    <ul class="nav nav-tabs pull-left">
+        <li class="nav__link"><a ui-sref="app.project.kanban({projectId: projectCtrl.project.id })"><span class="glyphicon glyphicon-equalizer"></span> Kanban</a></li>
+        <li class="nav__link"><a ui-sref="app.project.tasks({projectId: projectCtrl.project.id })"><span class="glyphicon glyphicon-tasks"></span> Liste des tâches</a></li>
+        <li class="nav__link"><a ng-if="projectCtrl.rights.hasEditRights" ui-sref="app.project.consommation({projectId: projectCtrl.project.id })"><span class="glyphicon glyphicon-time"></span> Consommations</a></li>
+        <li class="nav__link"><a ng-if="projectCtrl.rights.hasEditRights" ui-sref="app.project.gantt({projectId: projectCtrl.project.id })"><span class="glyphicon glyphicon-road"></span> Gantt</a></li>
+    </ul>
+    <div class="heading__action pull-right">
+        <button ng-if="projectCtrl.rights.hasEditRights" class="btn btn-info btn-sm" ng-click="kanbanCtrl.addTask()"><span class="glyphicon glyphicon-plus-sign"></span> Nouvelle tâche</button>
+    </div>
 </header>
 
 <section class="content" id="task">
     <div growl></div>
-
     <div class="col-md-8">
         <form id="edittask" class="panel" role="form" ng-submit="taskCtrl.submit()">
             <alert type="danger" ng-if="taskCtrl.error">
                 <errors errors="taskCtrl.error"></errors>
             </alert>
-            <fieldset class="panel-body">
-                <div class="form-group col-md-3">
-                    <label for="taskname">Nom de la tâche</label>
-                    <input type="text" required ng-model="taskCtrl.task.name" class="form-control" id="taskname" name="taskName" placeholder="Nom de la tâche"/>
-                </div>
-                <div class="form-group col-md-3">
-                    <label for="state">Etat</label>
-                    <select ng-model="taskCtrl.task.state" required class="form-control" name="state" id="state" placeholder="Etat" ng-options="state as state.name for state in taskCtrl.states track by state.id">
-                    </select>
-                </div>
-                <div class="form-group col-md-3">
-                    <label for="swimlane">Couloir</label>
-                    <select ng-model="taskCtrl.task.swimlane" class="form-control" id="swimlane" name="swimlane" placeholder="Couloir" ng-options="swimlane as swimlane.name for swimlane in taskCtrl.swimlanes track by swimlane.id">
-                    </select>
-                </div>
-                <div class="form-group col-md-3">
-                    <label for="category">Catégorie</label>
-                    <select ng-model="taskCtrl.task.category" class="form-control" id="category" name="category" placeholder="Catégorie" ng-options="category as category.name for category in taskCtrl.categories track by category.id">
-                    </select>
-                </div>
-                <div class="form-group col-md-3">
-                    <label for="urgent">Urgent</label>
-                    <input ng-model="taskCtrl.task.urgent" class="form-control" id="urgent" name="urgent" type="checkbox" />
-                </div>
-            </fieldset>
-            <fieldset class="panel-body">
-                <div class="form-group col-md-4">
-                    <label for="plannedStart">Date de début </label>
-                    <input type="date" id="plannedStart" class="form-control" ng-model="taskCtrl.task.plannedStart" value="{{taskCtrl.task.plannedStartValue}}"/>
-                </div>
-                <div class="form-group col-md-4">
-                    <label for="plannedEnding">Date de fin </label>
-                    <input type="date" id="plannedEnding" class="form-control" ng-model="taskCtrl.task.plannedEnding" value="{{taskCtrl.task.plannedEndingValue}}"/>
-                </div>
-                <div class="form-group col-md-4">
-                    <label for="estimatedLoad">Charge totale</label>
-                    <input type="number" id="estimatedLoad" class="form-control" ng-model="taskCtrl.task.estimatedLoad" min="0" step="{{taskCtrl.allocation.step}}"/>
-                </div>
-            </fieldset>
-            <fieldset class="panel-body">
-                <div class="form-group col-md-5">
-                    <span>Pré requis :</span>
-                    <input class="form-control" ng-model="selectedParent"
-                           typeahead-editable="false" typeahead-on-select="taskCtrl.addParent($item, $model, $label)" 
-                           uib-typeahead="task as task.name for task in taskCtrl.getTasks($viewValue)" placeholder="Ajouter un pré requis"/>            
-                    <ul>
-                        <li ng-repeat="parent in taskCtrl.parents track by $index">
-                            <a ng-href="#/project/{{projectCtrl.project.id}}/task/{{parent.id}}">{{parent.id}} - {{parent.name}}</a>
-                            <span class="glyphicon glyphicon-trash"  ng-click="taskCtrl.removeParent($index)"></span>
-                        </li>
-                    </ul>
-                </div>
-                <div class="form-group col-md-5">
-                    <span>Requis par :</span>
-                    <input class="form-control" ng-model="selectedChild"
-                           typeahead-editable="false" typeahead-on-select="taskCtrl.addChild($item, $model, $label)" 
-                           uib-typeahead="task as task.name for task in taskCtrl.getTasks($viewValue)" placeholder="Ajouter un enfant"/>       
-                    <ul>
-                        <li ng-repeat="child in taskCtrl.children track by $index">
-                            <a ng-href="#/project/{{projectCtrl.project.id}}/task/{{child.id}}">{{child.id}} - {{child.name}}</a>
-                            <span class="glyphicon glyphicon-trash" ng-click="taskCtrl.removeChild($index)"></span>
-                        </li>
-                    </ul>
-                </div>
-            </fieldset>
-            <fieldset id="customfields" class="panel-body">
-                <div class="form-group col-md-3" ng-repeat="customfield in taskCtrl.customFieldMap">
-                    <label for="{{customfield.definition.fieldName}}">{{customfield.definition.fieldName}}</label>
-                    <input type="{{customfield.definition.type}}" id="{{customfield.definition.fieldName}}" class="form-control"
-                           ng-required="customfield.definition.required" ng-model="customfield.fieldValue"/>
-                </div>
-            </fieldset>
-            <fieldset class="panel-body">
-                <div class="form-group">
-                    <label for="description">Description</label>
-                    <text-angular rows="12" maxlength="8000" ng-model="taskCtrl.task.description" id="description"  name="description" placeholder="Description"></text-angular>
-                </div>
-            </fieldset>
+            <div class="panel-body">
+                <fieldset>
+                    <div class="form-group col-md-3">
+                        <label for="taskname">Nom de la tâche</label>
+                        <input type="text" required ng-model="taskCtrl.task.name" class="form-control" id="taskname" name="taskName" placeholder="Nom de la tâche"/>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="state">Etat</label>
+                        <select ng-model="taskCtrl.task.state" required class="form-control" name="state" id="state" placeholder="Etat" ng-options="state as state.name for state in taskCtrl.states track by state.id">
+                        </select>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="swimlane">Couloir</label>
+                        <select ng-model="taskCtrl.task.swimlane" class="form-control" id="swimlane" name="swimlane" placeholder="Couloir" ng-options="swimlane as swimlane.name for swimlane in taskCtrl.swimlanes track by swimlane.id">
+                        </select>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="category">Catégorie</label>
+                        <select ng-model="taskCtrl.task.category" class="form-control" id="category" name="category" placeholder="Catégorie" ng-options="category as category.name for category in taskCtrl.categories track by category.id">
+                        </select>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="urgent">Urgent</label>
+                        <input ng-model="taskCtrl.task.urgent" class="form-control" id="urgent" name="urgent" type="checkbox" />
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <div class="form-group col-md-4">
+                        <label for="plannedStart">Date de début </label>
+                        <input type="date" id="plannedStart" class="form-control" ng-model="taskCtrl.task.plannedStart" value="{{taskCtrl.task.plannedStartValue}}"/>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="plannedEnding">Date de fin </label>
+                        <input type="date" id="plannedEnding" class="form-control" ng-model="taskCtrl.task.plannedEnding" value="{{taskCtrl.task.plannedEndingValue}}"/>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="estimatedLoad">Charge totale</label>
+                        <input type="number" id="estimatedLoad" class="form-control" ng-model="taskCtrl.task.estimatedLoad" min="0" step="{{taskCtrl.allocation.step}}"/>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <div class="form-group col-md-5">
+                        <span>Pré requis :</span>
+                        <input class="form-control" ng-model="selectedParent"
+                               typeahead-editable="false" typeahead-on-select="taskCtrl.addParent($item, $model, $label)"
+                               uib-typeahead="task as task.name for task in taskCtrl.getTasks($viewValue)" placeholder="Ajouter un pré requis"/>
+                        <ul>
+                            <li ng-repeat="parent in taskCtrl.parents track by $index">
+                                <a ng-href="#/project/{{projectCtrl.project.id}}/task/{{parent.id}}">{{parent.id}} - {{parent.name}}</a>
+                                <span class="glyphicon glyphicon-trash"  ng-click="taskCtrl.removeParent($index)"></span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="form-group col-md-5">
+                        <span>Requis par :</span>
+                        <input class="form-control" ng-model="selectedChild"
+                               typeahead-editable="false" typeahead-on-select="taskCtrl.addChild($item, $model, $label)"
+                               uib-typeahead="task as task.name for task in taskCtrl.getTasks($viewValue)" placeholder="Ajouter un enfant"/>
+                        <ul>
+                            <li ng-repeat="child in taskCtrl.children track by $index">
+                                <a ng-href="#/project/{{projectCtrl.project.id}}/task/{{child.id}}">{{child.id}} - {{child.name}}</a>
+                                <span class="glyphicon glyphicon-trash" ng-click="taskCtrl.removeChild($index)"></span>
+                            </li>
+                        </ul>
+                    </div>
+                </fieldset>
+                <fieldset id="customfields">
+                    <div class="form-group col-md-3" ng-repeat="customfield in taskCtrl.customFieldMap">
+                        <label for="{{customfield.definition.fieldName}}">{{customfield.definition.fieldName}}</label>
+                        <input type="{{customfield.definition.type}}" id="{{customfield.definition.fieldName}}" class="form-control"
+                               ng-required="customfield.definition.required" ng-model="customfield.fieldValue"/>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <text-angular rows="12" maxlength="8000" ng-model="taskCtrl.task.description" id="description"  name="description" placeholder="Description"></text-angular>
+                    </div>
+                </fieldset>
+            </div>
             <div class="panel-footer" ng-if="projectCtrl.rights.hasEditRights">
                 <button type="button" ui-sref="app.project.kanban({projectId: projectCtrl.project.id })" class="btn btn-info">Annuler</button>
                 <button type="submit" class="btn btn-info" >Enregistrer</button>
@@ -102,7 +112,7 @@
     <aside class="col-md-4">
         <form id="assigneeTask" class="panel" role="form" ng-submit="taskCtrl.submit()">
             <div class="panel-body">
-                <div class="form-group col-md-5">
+                <div class="form-group">
                     <label for="assignee">Assigné à </label>
                     <input class="form-control" ng-model="taskCtrl.selecteduser.username"
                            typeahead-editable="false" typeahead-on-select="taskCtrl.selectAssignee($item, $model, $label)" 
