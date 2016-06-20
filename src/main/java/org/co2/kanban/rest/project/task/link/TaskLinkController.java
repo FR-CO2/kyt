@@ -90,7 +90,7 @@ public class TaskLinkController {
         if (task == null || parentTask == null) {
             throw new BusinessException(HttpStatus.NOT_FOUND, MESSAGE_KEY_NOT_FOUND);
         }
-        task.getParent().add(parentTask);
+        parentTask.getChildren().add(task);
         repository.save(parentTask);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
@@ -102,8 +102,8 @@ public class TaskLinkController {
         if (task == null || parentTask == null) {
             throw new BusinessException(HttpStatus.NOT_FOUND, MESSAGE_KEY_NOT_FOUND);
         }
-        task.getParent().remove(parentTask);
-        repository.save(parentTask);
+        parentTask.getChildren().remove(task);
+        repository.save(task);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 }

@@ -58,9 +58,9 @@
                            typeahead-editable="false" typeahead-on-select="taskCtrl.addParent($item, $model, $label)" 
                            uib-typeahead="task as task.name for task in taskCtrl.getTasks($viewValue)" placeholder="Ajouter un pré requis"/>            
                     <ul>
-                        <li ng-repeat="parent in taskCtrl.parents track by $index" ng-click="taskCtrl.removeparent($index)">
+                        <li ng-repeat="parent in taskCtrl.parents track by $index">
                             <a ng-href="#/project/{{projectCtrl.project.id}}/task/{{parent.id}}">{{parent.id}} - {{parent.name}}</a>
-                            <span class="glyphicon glyphicon-trash"></span>
+                            <span class="glyphicon glyphicon-trash"  ng-click="taskCtrl.removeParent($index)"></span>
                         </li>
                     </ul>
                 </div>
@@ -70,9 +70,9 @@
                            typeahead-editable="false" typeahead-on-select="taskCtrl.addChild($item, $model, $label)" 
                            uib-typeahead="task as task.name for task in taskCtrl.getTasks($viewValue)" placeholder="Ajouter un enfant"/>       
                     <ul>
-                        <li ng-repeat="child in taskCtrl.children track by $index" ng-click="taskCtrl.removechild($index)">
+                        <li ng-repeat="child in taskCtrl.children track by $index">
                             <a ng-href="#/project/{{projectCtrl.project.id}}/task/{{child.id}}">{{child.id}} - {{child.name}}</a>
-                            <span class="glyphicon glyphicon-trash"></span>
+                            <span class="glyphicon glyphicon-trash" ng-click="taskCtrl.removeChild($index)"></span>
                         </li>
                     </ul>
                 </div>
