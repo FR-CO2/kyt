@@ -91,7 +91,7 @@ public class TaskLinkController {
             throw new BusinessException(HttpStatus.NOT_FOUND, MESSAGE_KEY_NOT_FOUND);
         }
         task.getParent().add(parentTask);
-        repository.save(task);
+        repository.save(parentTask);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
@@ -103,7 +103,7 @@ public class TaskLinkController {
             throw new BusinessException(HttpStatus.NOT_FOUND, MESSAGE_KEY_NOT_FOUND);
         }
         task.getParent().remove(parentTask);
-        repository.save(task);
+        repository.save(parentTask);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 }
