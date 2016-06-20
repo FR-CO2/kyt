@@ -61,7 +61,7 @@
                 <div class="form-group col-md-5">
                     <span>Prédécesseurs :</span>
                     <ul>
-                        <li ng-repeat="child in taskCtrl.task.children track by $index" ng-click="taskCtrl.removechild($index)">
+                        <li ng-repeat="child in taskCtrl.children track by $index" ng-click="taskCtrl.removechild($index)">
                             <span>{{child.id}} - {{child.name}}</span>
                             <span class="glyphicon glyphicon-trash"></span>
                         </li>
@@ -70,7 +70,7 @@
                 <div class="form-group col-md-5">
                     <span>Sucesseurs :</span>
                     <ul>
-                        <li ng-repeat="parent in taskCtrl.task.parents track by $index" ng-click="taskCtrl.removeparent($index)">
+                        <li ng-repeat="parent in taskCtrl.parents track by $index" ng-click="taskCtrl.removeparent($index)">
                             <span>{{parent.id}} - {{parent.name}}</span>
                             <span class="glyphicon glyphicon-trash"></span>
                         </li>
