@@ -9,7 +9,7 @@ var taskController = function ($q, $state, project, currenttask, taskAssemblerSe
     project.$promise.then(function () {
         currenttask.$promise.then(function () {
             vm.task = taskAssemblerService(currenttask);
-            vm.children = vm.task.resource("children").get();
+            vm.children = vm.task.resource("children").query();
         });
         vm.categories = project.resource("category").query();
         vm.states = project.resource("state").query();

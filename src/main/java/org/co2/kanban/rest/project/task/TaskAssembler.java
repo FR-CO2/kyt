@@ -17,10 +17,10 @@ import org.co2.kanban.rest.project.task.assignee.AssigneeController;
 import org.co2.kanban.rest.project.task.comment.CommentController;
 import org.co2.kanban.rest.project.task.field.TaskFieldController;
 import org.co2.kanban.rest.project.task.link.TaskLinkController;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
 import org.springframework.stereotype.Component;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
 /**
  *

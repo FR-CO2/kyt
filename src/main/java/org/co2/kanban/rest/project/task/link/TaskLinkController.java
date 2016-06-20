@@ -8,6 +8,8 @@ package org.co2.kanban.rest.project.task.link;
 import org.co2.kanban.repository.task.Task;
 import org.co2.kanban.repository.task.TaskRepository;
 import org.co2.kanban.rest.error.BusinessException;
+import org.co2.kanban.rest.project.task.TaskLinkAssembler;
+import org.co2.kanban.rest.project.task.TaskLinkResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.ResourceSupport;
 import org.springframework.http.HttpStatus;
@@ -38,18 +40,16 @@ public class TaskLinkController {
     private TaskRepository repository;
 
     @Autowired
-    private TaskChildrenAssembler childrenAssembler;
+    private TaskLinkAssembler assembler;
 
-    @Autowired
-    private TaskChildrenAssembler parentAssembler;
 
     @RequestMapping(value = "/child", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public ResourceSupport children(@PathVariable("projectId") Long projectId, @PathVariable("id") Long taskId) {
+    public Iterable<TaskLinkResource> children(@PathVariable("projectId") Long projectId, @PathVariable("id") Long taskId) {
         Task task = repository.findOne(taskId);
         if (task == null) {
             throw new BusinessException(HttpStatus.NOT_FOUND, MESSAGE_KEY_NOT_FOUND);
         }
-        return childrenAssembler.toResource(task);
+        return assembler.toResources(task.getChildren());
     }
 
     @RequestMapping(value = "/child", method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
@@ -76,12 +76,12 @@ public class TaskLinkController {
     }
 
     @RequestMapping(value = "/parent", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public ResourceSupport parents(@PathVariable("projectId") Long projectId, @PathVariable("id") Long taskId) {
+    public Iterable<TaskLinkResource> parents(@PathVariable("projectId") Long projectId, @PathVariable("id") Long taskId) {
         Task task = repository.findOne(taskId);
         if (task == null) {
             throw new BusinessException(HttpStatus.NOT_FOUND, MESSAGE_KEY_NOT_FOUND);
         }
-        return parentAssembler.toResource(task);
+        return assembler.toResources(task.getParent());
     }
 
 }

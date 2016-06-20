@@ -3,29 +3,27 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.co2.kanban.rest.search;
+package org.co2.kanban.repository.task;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import org.co2.kanban.repository.task.Task;
-import org.co2.kanban.repository.user.ApplicationUser;
-import org.co2.kanban.repository.user.ApplicationUserRole;
+import org.co2.kanban.repository.project.Project;
 import org.springframework.data.jpa.domain.Specification;
 
 /**
  *
  * @author courtib
  */
-public class TaskSearch implements Specification<Task> {
+public class ProjectTaskSearchSpecification  implements Specification<Task> {
 
-    private final ApplicationUser user;
+    private final Project project;
 
     private final String searchTerm;
 
-    public TaskSearch(ApplicationUser user, String searchTerm) {
-        this.user = user;
+    public ProjectTaskSearchSpecification(Project project, String searchTerm) {
+        this.project = project;
         this.searchTerm = searchTerm;
     }
 
@@ -35,13 +33,10 @@ public class TaskSearch implements Specification<Task> {
         Predicate id = cb.equal(cb.toString(root.get("id").as(Character.class)), searchTerm);
         String likeSearchTerm = "%".concat(searchTerm.toUpperCase()).concat("%");
         Predicate name = cb.like(cb.upper(root.get("name").as(String.class)), likeSearchTerm);
-        
-        Predicate searchPredicate = cb.or(id, name);
-        if (!user.hasRole(ApplicationUserRole.ADMIN)) {
-             Predicate allowed = cb.equal(root.join("project").join("members").get("user").as(ApplicationUser.class), user);
-             searchPredicate = cb.and(allowed, searchPredicate);
-        }
+        Predicate projectPredicate = cb.equal(root.join("project"), project);
+        Predicate searchPredicate = cb.and(projectPredicate, cb.or(id, name));
         return searchPredicate;        
     }
 
+    
 }

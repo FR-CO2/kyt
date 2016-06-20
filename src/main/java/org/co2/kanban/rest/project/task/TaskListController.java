@@ -5,6 +5,7 @@
  */
 package org.co2.kanban.rest.project.task;
 
+import org.co2.kanban.repository.task.ProjectTaskSearchSpecification;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
@@ -21,6 +22,7 @@ import org.co2.kanban.repository.state.State;
 import org.co2.kanban.repository.state.StateRepository;
 import org.co2.kanban.repository.swimlane.Swimlane;
 import org.co2.kanban.repository.swimlane.SwimlaneRepository;
+import org.co2.kanban.repository.task.TaskSearchSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -39,6 +41,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
 /**
  *
@@ -94,10 +103,10 @@ public class TaskListController {
 
     @RequestMapping(params = {"search"}, method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public Iterable<TaskResource> search(@PathVariable("projectId") Long projectId, @RequestParam("search") String searchTerm) {
-        Iterable<TaskResource> tasks;
         Project project = projectRepository.findOne(projectId);
-        tasks = assembler.toResources(repository.findByprojectAndNameContaining(project, searchTerm));
-        return tasks;
+        ProjectTaskSearchSpecification search = new ProjectTaskSearchSpecification(project, searchTerm);
+        Iterable<Task> tasks = repository.findAll(search);
+        return assembler.toResources(tasks);
     }
 
     @RequestMapping(params = {"noswimlane"}, method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
