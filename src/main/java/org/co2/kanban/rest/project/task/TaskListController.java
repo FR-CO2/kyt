@@ -7,12 +7,7 @@ package org.co2.kanban.rest.project.task;
 
 import org.co2.kanban.repository.task.ProjectTaskSearchSpecification;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import org.co2.kanban.repository.category.Category;
-import org.co2.kanban.repository.category.CategoryRepository;
-import org.co2.kanban.repository.member.ProjectMember;
 import org.co2.kanban.repository.member.ProjectMemberRepository;
 import org.co2.kanban.repository.task.Task;
 import org.co2.kanban.repository.task.TaskRepository;
@@ -22,13 +17,12 @@ import org.co2.kanban.repository.state.State;
 import org.co2.kanban.repository.state.StateRepository;
 import org.co2.kanban.repository.swimlane.Swimlane;
 import org.co2.kanban.repository.swimlane.SwimlaneRepository;
-import org.co2.kanban.repository.task.TaskSearchSpecification;
+import org.co2.kanban.repository.task.ProjectTaskFilterSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedResources;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -41,12 +35,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
 /**
@@ -71,35 +60,13 @@ public class TaskListController {
     private SwimlaneRepository swimlaneRepository;
 
     @Autowired
-    private ProjectMemberRepository projectMemberRepository;
-
-    @Autowired
-    private CategoryRepository categoryRepository;
-
-    @Autowired
     private PagedResourcesAssembler<Task> pagedAssembler;
 
     @Autowired
-    private TaskAssembler assembler;
+    private ProjectMemberRepository projectMemberRepository;
 
-    @RequestMapping(params = {"page", "size"}, method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public PagedResources<TaskResource> page(@PathVariable("projectId") Long projectId,
-            @RequestParam(name = "page") Integer page,
-            @RequestParam(name = "size") Integer size,
-            @RequestParam(name = "sort", required = false) String sort,
-            @RequestParam(name = "sortDirection", required = false) String sortDirection) {
-        Project project = projectRepository.findOne(projectId);
-        Sort sorting = null;
-        if (sort != null) {
-            Sort.Direction dir = Sort.DEFAULT_DIRECTION;
-            if (sortDirection != null) {
-                dir = Sort.Direction.fromString(sortDirection);
-            }
-            sorting = new Sort(dir, sort);
-        }
-        PageRequest pageable = new PageRequest(page, size, sorting);
-        return pagedAssembler.toResource(repository.findByProject(project, pageable), assembler);
-    }
+    @Autowired
+    private TaskAssembler assembler;
 
     @RequestMapping(params = {"search"}, method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public Iterable<TaskResource> search(@PathVariable("projectId") Long projectId, @RequestParam("search") String searchTerm) {
@@ -117,12 +84,9 @@ public class TaskListController {
         return tasks;
     }
 
-    @RequestMapping(params = {"state", "swimlane", "assignee", "category", "page", "size"}, method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(params = {"page", "size", "sort"}, method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public PagedResources<TaskResource> listFilter(@PathVariable("projectId") Long projectId,
-            @RequestParam(name = "state") Long stateId,
-            @RequestParam(name = "swimlane") Long swimlaneId,
-            @RequestParam(name = "assignee") Long assigneeId,
-            @RequestParam(name = "category") Long categoryId,
+            @ModelAttribute TaskListFilter filter,
             @RequestParam(name = "page") Integer page,
             @RequestParam(name = "size") Integer size,
             @RequestParam(name = "sort", required = false) String sort,
@@ -138,15 +102,9 @@ public class TaskListController {
             sorting = new Sort(dir, sort);
         }
         PageRequest pageable = new PageRequest(page, size, sorting);
-        State state = stateRepository.findOne(stateId);
-        Swimlane swimlane = swimlaneRepository.findOne(swimlaneId);
-        ProjectMember member = projectMemberRepository.findOne(assigneeId);
-        List<ProjectMember> listMember = new ArrayList<>();
-        listMember.add(member);
-        Category category = categoryRepository.findOne(categoryId);
+        ProjectTaskFilterSpecification search = new ProjectTaskFilterSpecification(project, filter);
         return pagedAssembler.toResource(repository
-                .findByProjectAndSwimlaneIfIsNotNullAndStateIfIsNotNullAndCategoryIfIsNotNullAndAssignees(project, swimlane, state,
-                        category, pageable), assembler);
+                .findAll(search, pageable), assembler);
     }
 
     @RequestMapping(params = {"state", "noswimlane"}, method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)

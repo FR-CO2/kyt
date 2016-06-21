@@ -1,2 +1,3 @@
 .fc-day-number{cursor:pointer}
 .fc-past, .fc-today, .fc-future{cursor:pointer}
+.checkboxDropdown__filters--show {z-index: 1;}
