@@ -8,163 +8,142 @@
     </ul>
     <div class="heading__action pull-right">
         <button ng-if="projectCtrl.rights.hasEditRights" class="btn btn-info btn-sm" ng-click="tasksCtrl.addTask()"><span class="glyphicon glyphicon-plus-sign"></span> Nouvelle tâche</button>
+        <checkbox-filter filter-title="Filtres">
+            <ul class="checkboxDropdown__list">
+                <li class="checkboxDropdown__item"><label for="filterState">Etat</label>
+                    <select id="filterState" ng-model="tasksCtrl.filter.state" ng-change="tasksCtrl.changedFilter()">
+                        <option value="all">Tous</option>
+                        <option value="{{state.id}}" ng-repeat="state in tasksCtrl.states">{{state.name}}</option>
+                    </select></li>
+                <li class="checkboxDropdown__item"> <label for="filterSwimlane">Couloir</label>
+                    <select id="filterSwimlane" ng-model="tasksCtrl.filter.swimlane" ng-change="tasksCtrl.changedFilter()">
+                        <option value="all">Tous</option>
+                        <option value="{{swimlane.id}}" ng-repeat="swimlane in tasksCtrl.swimlanes">{{swimlane.name}}</option>
+                    </select></li>
+                <li class="checkboxDropdown__item"<label for="filterAssignee">Assignée à</label>
+                <select id="filterAssignee" ng-model="tasksCtrl.filter.member" ng-change="tasksCtrl.changedFilter()">
+                    <option value="all">Tous</option>
+                    <option value="{{member.id}}" ng-repeat="member in tasksCtrl.members">{{member.username}}</option>
+                </select>></li>
+                <li class="checkboxDropdown__item"><label for="filterCategory">Catégorie</label>
+                    <select id="filterCategory" ng-model="tasksCtrl.filter.category" ng-change="tasksCtrl.changedFilter()">
+                        <option value="all">Tous</option>
+                        <option value="{{category.id}}" ng-repeat="category in tasksCtrl.categories">{{category.name}}</option>
+                    </select></li>
+                <li class="checkboxDropdown__item"><button ng-click="tasksCtrl.resetFilter()">Reset</button></li>
+            </ul>
+        </checkbox-filter>
+        <checkbox-filter filter-title="Trier par">
+            <ul class="checkboxDropdown__list">
+                <li class="checkboxDropdown__item" ng-click="tasksCtrl.tableFilter('name')">
+                    Nom
+                                <span ng-class="{'glyphicon-sort-by-alphabet': tasksCtrl.sort.sortDirection === 'asc', 'glyphicon-sort-by-alphabet-alt': tasksCtrl.sort.sortDirection === 'desc'}"
+                                      class="glyphicon" ng-if="tasksCtrl.sort.field === 'name'"></span>
+                </li>
+                <li class="checkboxDropdown__item" ng-click="tasksCtrl.tableFilter('state.position')">
+                    Etat
+                                <span class="glyphicon" ng-if="tasksCtrl.sort.field === 'state.position'"
+                                      ng-class="{'glyphicon-sort-by-attributes': tasksCtrl.sort.sortDirection === 'asc', 'glyphicon-sort-by-attributes-alt': tasksCtrl.sort.sortDirection === 'desc'}"></span>
+                </li>
+                <li class="checkboxDropdown__item" ng-click="tasksCtrl.tableFilter('swimlane.position')">
+                    Couloir
+                                <span class="glyphicon" ng-if="tasksCtrl.sort.field === 'swimlane.position'"
+                                      ng-class="{'glyphicon-sort-by-attributes': tasksCtrl.sort.sortDirection === 'asc', 'glyphicon-sort-by-attributes-alt': tasksCtrl.sort.sortDirection === 'desc'}"></span>
+                </li>
+                <li class="checkboxDropdown__item" ng-click="tasksCtrl.tableFilter('category')">
+                    Categorie
+                                <span class="glyphicon" ng-if="tasksCtrl.sort.field === 'category'"
+                                      ng-class="{'glyphicon-sort-by-alphabet': tasksCtrl.sort.sortDirection === 'asc', 'glyphicon-sort-by-alphabet-alt': tasksCtrl.sort.sortDirection === 'desc'}" ></span>
+                </li>
+                <li class="checkboxDropdown__item" ng-click="tasksCtrl.tableFilter('assignees.user.username')">
+                    Assigné à
+                                <span class="glyphicon" ng-if="tasksCtrl.sort.field === 'assignee.user.username'"
+                                      ng-class="{'glyphicon-sort-by-alphabet': tasksCtrl.sort.sortDirection === 'asc', 'glyphicon-sort-by-alphabet-alt': tasksCtrl.sort.sortDirection === 'desc'}" ></span>
+                </li>
+                <li class="checkboxDropdown__item" ng-click="tasksCtrl.tableFilter('plannedStart')">
+                    Date début
+                                <span class="glyphicon" ng-if="tasksCtrl.sort.field === 'plannedStart'"
+                                      ng-class="{'glyphicon-sort-by-order': tasksCtrl.sort.sortDirection === 'asc', 'glyphicon-sort-by-order-alt': tasksCtrl.sort.sortDirection === 'desc'}" ></span>
+                </li>
+                <li class="checkboxDropdown__item" ng-click="tasksCtrl.tableFilter('plannedEnding')">
+                    Date fin
+                                <span class="glyphicon" ng-if="tasksCtrl.sort.field === 'plannedEnding'"
+                                      ng-class="{'glyphicon-sort-by-order': tasksCtrl.sort.sortDirection === 'asc', 'glyphicon-sort-by-order-alt': tasksCtrl.sort.sortDirection === 'desc'}" ></span>
+                </li>
+            </ul>
+        </checkbox-filter>
     </div>
 </header>
 <div class="col-md-12">
     <div class="panel">
-        <div class="panel-heading">
-            <h2 class="panel-heading-title">Liste des tâches</h2>
-        </div>
         <div class="panel-body">
-            <aside>
-                <label for="filterState">Etat</label>
-                <select id="filterState" ng-model="tasksCtrl.filter.state" ng-change="tasksCtrl.changedFilter()">
-                    <option value="all">Tous</option>
-                    <option value="{{state.id}}" ng-repeat="state in tasksCtrl.states">{{state.name}}</option>
-                </select>
-                <label for="filterSwimlane">Couloir</label>
-                <select id="filterSwimlane" ng-model="tasksCtrl.filter.swimlane" ng-change="tasksCtrl.changedFilter()">
-                    <option value="all">Tous</option>
-                    <option value="{{swimlane.id}}" ng-repeat="swimlane in tasksCtrl.swimlanes">{{swimlane.name}}</option>
-                </select>
-                <label for="filterAssignee">Assignée à</label>
-                <select id="filterAssignee" ng-model="tasksCtrl.filter.member" ng-change="tasksCtrl.changedFilter()">
-                    <option value="all">Tous</option>
-                    <option value="{{member.id}}" ng-repeat="member in tasksCtrl.members">{{member.username}}</option>
-                </select>
-                <label for="filterCategory">Catégorie</label>
-                <select id="filterCategory" ng-model="tasksCtrl.filter.category" ng-change="tasksCtrl.changedFilter()">
-                    <option value="all">Tous</option>
-                    <option value="{{category.id}}" ng-repeat="category in tasksCtrl.categories">{{category.name}}</option>
-                </select>
-                <button ng-click="tasksCtrl.resetFilter()">Reset</button>
-            </aside>
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th ng-click="tasksCtrl.tableFilter('name')">
-                            Nom
-                            <span ng-class="{'glyphicon-sort-by-alphabet': tasksCtrl.sort.sortDirection === 'asc', 'glyphicon-sort-by-alphabet-alt': tasksCtrl.sort.sortDirection === 'desc'}"
-                                  class="glyphicon" ng-if="tasksCtrl.sort.field === 'name'"></span>
-                        </th>
-                        <th ng-click="tasksCtrl.tableFilter('state.position')">
-                            Etat
-                            <span class="glyphicon" ng-if="tasksCtrl.sort.field === 'state.position'"
-                                  ng-class="{'glyphicon-sort-by-attributes': tasksCtrl.sort.sortDirection === 'asc', 'glyphicon-sort-by-attributes-alt': tasksCtrl.sort.sortDirection === 'desc'}"></span>
-                        </th>
-                        <th ng-click="tasksCtrl.tableFilter('swimlane.position')">
-                            Couloir
-                            <span class="glyphicon" ng-if="tasksCtrl.sort.field === 'swimlane.position'"
-                                  ng-class="{'glyphicon-sort-by-attributes': tasksCtrl.sort.sortDirection === 'asc', 'glyphicon-sort-by-attributes-alt': tasksCtrl.sort.sortDirection === 'desc'}"></span>
-                        </th>
-                        <th ng-click="tasksCtrl.tableFilter('category')">
-                            Categorie
-                            <span class="glyphicon" ng-if="tasksCtrl.sort.field === 'category'"
-                                  ng-class="{'glyphicon-sort-by-alphabet': tasksCtrl.sort.sortDirection === 'asc', 'glyphicon-sort-by-alphabet-alt': tasksCtrl.sort.sortDirection === 'desc'}" ></span>
-                        </th>
-                        <th ng-click="tasksCtrl.tableFilter('assignees.user.username')">
-                            Assigné à
-                            <span class="glyphicon" ng-if="tasksCtrl.sort.field === 'assignee.user.username'"
-                                  ng-class="{'glyphicon-sort-by-alphabet': tasksCtrl.sort.sortDirection === 'asc', 'glyphicon-sort-by-alphabet-alt': tasksCtrl.sort.sortDirection === 'desc'}" ></span>
-                        </th>
-                        <th ng-click="tasksCtrl.tableFilter('plannedStart')">
-                            Date début
-                            <span class="glyphicon" ng-if="tasksCtrl.sort.field === 'plannedStart'"
-                                  ng-class="{'glyphicon-sort-by-order': tasksCtrl.sort.sortDirection === 'asc', 'glyphicon-sort-by-order-alt': tasksCtrl.sort.sortDirection === 'desc'}" ></span>
-                        </th>
-                        <th ng-click="tasksCtrl.tableFilter('plannedEnding')">
-                            Date fin
-                            <span class="glyphicon" ng-if="tasksCtrl.sort.field === 'plannedEnding'"
-                                  ng-class="{'glyphicon-sort-by-order': tasksCtrl.sort.sortDirection === 'asc', 'glyphicon-sort-by-order-alt': tasksCtrl.sort.sortDirection === 'desc'}" ></span>
-                        </th>
-                        <th>Charge estimée</th>
-                        <th>Consommée</th>
-                        <th>Charge réevaluée</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="task in tasksCtrl.tasks._embedded.taskResourceList">
-                        <td>
-                            {{task.name}}
-                        </td>
-                        <td>
-                            {{task.state.name}}
-                        </td>
-                        <td>
-                            <span ng-if="!task.swimlane">
-                                -
-                            </span>
-                            {{task.swimlane.name}}
-                        </td>
-                        <td>
-                            <span ng-if="!task.category">
-                                -
-                            </span>
-                            {{task.category.name}}
-                        </td>
-                        <td>
-                            <span ng-if="!task.assignees">
-                                -
-                            </span>
-                            <span ng-repeat="assignee in task.assignees">
-                                <span ng-if="assignee.photo">
-                                    <img src="{{assignee.photo}}" alt="{{assignee.username}}" title="{{assignee.username}}" class="crop"/>
-                                </span>
-                                <span ng-if="!assignee.photo" class="crop-photo glyphicon glyphicon-user" data-toggle="tooltip" data-placement="bottom" title="{{assignee.username}}"></span>
-                            </span>
-                        </td>
-                        <td>
-                            {{task.plannedStart| date:'dd/MM/yyyy'}}
-                        </td>
-                        <td ng-class="{'exceeded-date' : task.exceededDate}">
-                            {{task.plannedEnding| date:'dd/MM/yyyy'}}
-                        </td>
-                        <td>
-                            {{task.estimatedLoad}}
-                        </td>
-                        <td>
-                            {{task.timeSpent}}
-                        </td>
-                        <td ng-class="{'exceeded-load' : task.exceededLoad}">
-                            {{task.timeRemains}}
-                        </td>
-                        <td >
-                            <a ui-sref="app.project.task({projectId: projectCtrl.project.id, taskId: task.id })" title="edit">
-                                <span class="glyphicon glyphicon-edit"></span>
-                            </a>
-                            <a ng-click="tasksCtrl.delete(task)" title="delete" ng-if="projectCtrl.rights.hasAdminRights">
-                                <span class="glyphicon glyphicon-trash"></span>
-                            </a>
-                        </td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td colspan="11">
-                            <div class="row">
-                                <div class="col-md-6 col-md-offset-3" >
-                                    <div class="center-block text-center">
-                                        <uib-pagination total-items="tasksCtrl.tasks.page.totalElements" ng-change="tasksCtrl.loadPage()" ng-model="tasksCtrl.tasks.page.number" items-per-page="tasksCtrl.tasks.page.size" max-size="5" class="pagination-sm" boundary-links="true" rotate="false" num-pages="tasksCtrl.tasks.page.totalPages"></uib-pagination>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 form-inline">
-                                    <div class="form-group pull-right">
-                                        <label for="nbEltUser">Nb élements :</label>
-                                        <div class="form-control">
-                                            <select id="nbEltUser" ng-model="tasksCtrl.tasks.page.size" class="form-select"  ng-change="tasksCtrl.loadPage()">
-                                                <option value="10" ng-selected="tasksCtrl.tasks.page.size === 10">10</option>
-                                                <option value="20" ng-selected="tasksCtrl.tasks.page.size === 20">20</option>
-                                                <option value="50" ng-selected="tasksCtrl.tasks.page.size === 50">50</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                </tfoot>
-            </table>
-        </div>
+            <ul class="cards">
+                <li class="card" ng-repeat="task in tasksCtrl.tasks._embedded.taskResourceList">
+                    {{task.name}}
+
+                    {{task.state.name}}
+
+                    <span ng-if="!task.swimlane">
+                        -
+                    </span>
+                    {{task.swimlane.name}}
+
+                    <span ng-if="!task.category">
+                        -
+                    </span>
+                    {{task.category.name}}
+
+                    <span ng-if="!task.assignees">
+                        -
+                    </span>
+                    <span ng-repeat="assignee in task.assignees">
+                        <span ng-if="assignee.photo">
+                            <img src="{{assignee.photo}}" alt="{{assignee.username}}" title="{{assignee.username}}" class="crop"/>
+                        </span>
+                        <span ng-if="!assignee.photo" class="crop-photo glyphicon glyphicon-user" data-toggle="tooltip" data-placement="bottom" title="{{assignee.username}}"></span>
+                    </span>
+
+                    {{task.plannedStart| date:'dd/MM/yyyy'}}
+
+                    <span ng-class="{'exceeded-date' : task.exceededDate}">
+                        {{task.plannedEnding| date:'dd/MM/yyyy'}}
+                    </span>
+
+                    {{task.estimatedLoad}}
+
+                    {{task.timeSpent}}
+
+                    <span ng-class="{'exceeded-load' : task.exceededLoad}">
+                        {{task.timeRemains}}
+                    </span>
+
+                    <a ui-sref="app.project.task({projectId: projectCtrl.project.id, taskId: task.id })" title="edit">
+                        <span class="glyphicon glyphicon-edit"></span>
+                    </a>
+                    <a ng-click="tasksCtrl.delete(task)" title="delete" ng-if="projectCtrl.rights.hasAdminRights">
+                        <span class="glyphicon glyphicon-trash"></span>
+                    </a>
+                </li>
+            </ul>
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3" >
+                    <div class="center-block text-center">
+                        <uib-pagination total-items="tasksCtrl.tasks.page.totalElements" ng-change="tasksCtrl.loadPage()" ng-model="tasksCtrl.tasks.page.number" items-per-page="tasksCtrl.tasks.page.size" max-size="5" class="pagination-sm" boundary-links="true" rotate="false" num-pages="tasksCtrl.tasks.page.totalPages"></uib-pagination>
+                    </div>
+                </div>
+                <div class="col-md-3 form-inline">
+                    <div class="form-group pull-right">
+                        <label for="nbEltUser">Nb élements :</label>
+                        <div class="form-control">
+                            <select id="nbEltUser" ng-model="tasksCtrl.tasks.page.size" class="form-select"  ng-change="tasksCtrl.loadPage()">
+                                <option value="10" ng-selected="tasksCtrl.tasks.page.size === 10">10</option>
+                                <option value="20" ng-selected="tasksCtrl.tasks.page.size === 20">20</option>
+                                <option value="50" ng-selected="tasksCtrl.tasks.page.size === 50">50</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ul>
     </div>
 </div>
