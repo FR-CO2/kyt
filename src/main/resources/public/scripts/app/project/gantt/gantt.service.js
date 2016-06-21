@@ -22,11 +22,19 @@ var ganttService = function ($q) {
     };
 
     var fetchToGanttTask = function (task) {
+        var startDate = moment();
+        var endDate = moment();
+        if (task.plannedStart) {
+            startDate = task.plannedStart;
+        }
+        if (task.plannedEnding) {
+            endDate = task.plannedEnding;
+        }
         return {
             id: task.id,
             name: task.name,
-            from: task.plannedStart,
-            to: task.plannedEnding,
+            from: startDate,
+            to: endDate,
             color: "#0288d1"
         }
     };
