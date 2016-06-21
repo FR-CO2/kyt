@@ -58,30 +58,26 @@ var taskController = function ($uibModal, project, taskAssemblerService, Hateoas
         vm.loadPage();
     };
     vm.changedFilter = function () {
-        
-        var stateIdChecked = 0;
+
+        var filter = {};
         if (vm.filter.state !== "all") {
-            stateIdChecked = vm.filter.state;
+            filter.idState = vm.filter.state;
         }
 
-        var swimlaneIdChecked = 0;
         if (vm.filter.swimlane !== "all") {
-            swimlaneIdChecked = vm.filter.swimlane;
+            filter.idSwimlane = vm.filter.swimlane;
         }
 
-        var assigneeIdChecked = 0;
         if (vm.filter.member !== "all") {
-            assigneeIdChecked = vm.filter.member;
+            filter.idAssignee = vm.filter.member;
         }
 
-        var categoryIdChecked = 0;
         if (vm.filter.category !== 'all') {
-            categoryIdChecked = vm.filter.category;
+            filter.idCategory = vm.filter.category;
         }
-        var tasks = [];
-        project.resource("task").get({"state": stateIdChecked, "swimlane": swimlaneIdChecked,
-            "assignee": assigneeIdChecked, 'category': categoryIdChecked, page: vm.tasks.page.number - 1,
-            size: vm.tasks.page.size, sort: vm.sort.field, sortDirection: vm.sort.sortDirection}, function (data) {
+        project.resource("task").get({idState: filter.idState, idSwimlane : filter.idSwimlane, idAssignee : filter.idAssignee,
+            idCategory : filter.idCategory, page: vm.tasks.page.number - 1,
+                    size: vm.tasks.page.size, sort: vm.sort.field, sortDirection: vm.sort.sortDirection}, function (data) {
             if (data._embedded) {
                 angular.forEach(data._embedded.taskResourceList, taskAssemblerService);
             }
