@@ -68,10 +68,18 @@ public class TaskListController {
     @Autowired
     private TaskAssembler assembler;
 
+    /**
+     *
+     * @param projectId
+     * @param idTask
+     * @param searchTerm
+     * @return
+     */
     @RequestMapping(params = {"search"}, method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public Iterable<TaskResource> search(@PathVariable("projectId") Long projectId, @RequestParam("search") String searchTerm) {
+    public Iterable<TaskResource> search(@PathVariable("projectId") Long projectId,  @RequestParam("idTask") Long idTask,
+            @RequestParam("search") String searchTerm) {
         Project project = projectRepository.findOne(projectId);
-        ProjectTaskSearchSpecification search = new ProjectTaskSearchSpecification(project, searchTerm);
+        ProjectTaskSearchSpecification search = new ProjectTaskSearchSpecification(project, idTask, searchTerm);
         Iterable<Task> tasks = repository.findAll(search);
         return assembler.toResources(tasks);
     }

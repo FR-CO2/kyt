@@ -16,15 +16,17 @@ import org.springframework.data.jpa.domain.Specification;
  *
  * @author courtib
  */
-public class ProjectTaskSearchSpecification  implements Specification<Task> {
+public class ProjectTaskSearchSpecification implements Specification<Task> {
 
     private final Project project;
 
     private final String searchTerm;
+    private final Long idTask;
 
-    public ProjectTaskSearchSpecification(Project project, String searchTerm) {
+    public ProjectTaskSearchSpecification(Project project, Long idTask, String searchTerm) {
         this.project = project;
         this.searchTerm = searchTerm;
+        this.idTask = idTask;
     }
 
     @Override
@@ -34,9 +36,8 @@ public class ProjectTaskSearchSpecification  implements Specification<Task> {
         String likeSearchTerm = "%".concat(searchTerm.toUpperCase()).concat("%");
         Predicate name = cb.like(cb.upper(root.get("name").as(String.class)), likeSearchTerm);
         Predicate projectPredicate = cb.equal(root.join("project"), project);
-        Predicate searchPredicate = cb.and(projectPredicate, cb.or(id, name));
-        return searchPredicate;        
+        Predicate task = cb.notEqual(root.get("id").as(Long.class), this.idTask);
+        return cb.and(projectPredicate, task, cb.or(id,name));
     }
 
-    
 }

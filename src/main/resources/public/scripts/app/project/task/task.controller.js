@@ -77,7 +77,7 @@ var taskController = function ($q, $state, project, currenttask, taskAssemblerSe
         vm.parents.splice(index, 1);
     };
     vm.getTasks = function (term) {
-        return project.resource("task").query({search: term}).$promise;
+        return project.resource("task").query({idTask : vm.task.id,search: term}).$promise;
     };
     vm.submit = function () {
         angular.forEach(vm.task.customField, function (customField) {
