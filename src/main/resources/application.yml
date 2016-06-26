@@ -6,7 +6,7 @@ endpoints :
 
 spring:
     profiles:
-        active: dev-h2
+        active: dev-postgresql
     jpa:
         generate-ddl: false
         hibernate:
@@ -47,7 +47,7 @@ spring:
     datasource:
         platform: postgresql
         driverClassName: org.postgresql.Driver
-        url: jdbc:postgresql:postgres
+        url: jdbc:postgresql:kyt
         username: postgres
         password: Wxegdej5
 liquibase:
