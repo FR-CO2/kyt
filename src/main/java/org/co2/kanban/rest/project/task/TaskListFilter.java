@@ -15,6 +15,7 @@ public class TaskListFilter {
     private Long idSwimlane;
     private Long idCategory;
     private Long idAssignee;
+    private Boolean deleted;
 
     public Long getIdState() {
         return idState;
@@ -46,6 +47,14 @@ public class TaskListFilter {
 
     public void setIdAssignee(Long idAssignee) {
         this.idAssignee = idAssignee;
+    }
+
+    public Boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 
 }

@@ -1,0 +1,12 @@
+## YAML Template.
+---
+databaseChangeLog:
+    - changeSet:
+        id: schema-1.0.8-task_deleted_notnullable
+        author: stan
+        changes:
+            - addNotNullConstraint:
+                    tableName: kyt_task
+                    columnDataType: boolean
+                    columnName: deleted
+                    defaultNullValue: false

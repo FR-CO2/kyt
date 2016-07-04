@@ -20,7 +20,7 @@
                         <option value="all">Tous</option>
                         <option value="{{swimlane.id}}" ng-repeat="swimlane in tasksCtrl.swimlanes">{{swimlane.name}}</option>
                     </select></li>
-                <li class="checkboxDropdown__item"<label for="filterAssignee">Assignée à</label>
+                <li class="checkboxDropdown__item"><label for="filterAssignee">Assignée à</label>
                 <select id="filterAssignee" ng-model="tasksCtrl.filter.member" ng-change="tasksCtrl.changedFilter()">
                     <option value="all">Tous</option>
                     <option value="{{member.id}}" ng-repeat="member in tasksCtrl.members">{{member.username}}</option>
@@ -30,6 +30,8 @@
                         <option value="all">Tous</option>
                         <option value="{{category.id}}" ng-repeat="category in tasksCtrl.categories">{{category.name}}</option>
                     </select></li>
+                <li class="checkboxDropdown__item"><label for="filtreDeleted">Supprimées</label>
+                    <input type="checkbox" id="filtreDeleted" ng-model="tasksCtrl.filter.deleted" ng-change="tasksCtrl.changedFilter()"/>
                 <li class="checkboxDropdown__item"><button ng-click="tasksCtrl.resetFilter()">Reset</button></li>
             </ul>
         </checkbox-filter>

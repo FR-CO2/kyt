@@ -75,8 +75,12 @@ var taskController = function ($uibModal, project, taskAssemblerService, Hateoas
         if (vm.filter.category !== 'all') {
             filter.idCategory = vm.filter.category;
         }
+        
+        if(vm.filter.deleted){
+            filter.deleted = true;
+        }
         project.resource("task").get({idState: filter.idState, idSwimlane : filter.idSwimlane, idAssignee : filter.idAssignee,
-            idCategory : filter.idCategory, page: vm.tasks.page.number - 1,
+            idCategory : filter.idCategory, deleted : filter.deleted, page: vm.tasks.page.number - 1,
                     size: vm.tasks.page.size, sort: vm.sort.field, sortDirection: vm.sort.sortDirection}, function (data) {
             if (data._embedded) {
                 angular.forEach(data._embedded.taskResourceList, taskAssemblerService);
