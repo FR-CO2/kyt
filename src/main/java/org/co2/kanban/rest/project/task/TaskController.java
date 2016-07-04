@@ -32,7 +32,6 @@ import org.co2.kanban.rest.error.BusinessException;
 import org.co2.kanban.rest.project.task.histo.TaskHistoAssembler;
 import org.co2.kanban.rest.project.task.histo.TaskHistoResource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.serializer.Serializer;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -98,9 +97,8 @@ public class TaskController {
     @PreAuthorize("@projectAccessExpression.hasContributorAccess(#projectId, principal.username)")
     public ResponseEntity delete(@PathVariable("projectId") Long projectId, @PathVariable("id") Long id) {
         Task task = repository.findOne(id);
-        Iterable<TaskField> tasksField = fieldRepository.findByTask(task);
-        fieldRepository.delete(tasksField);
-        repository.delete(id);
+        task.setDeleted(Boolean.TRUE);
+        repository.save(task);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

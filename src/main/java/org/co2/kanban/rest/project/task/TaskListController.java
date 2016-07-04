@@ -156,6 +156,7 @@ public class TaskListController {
         task.setState(defaultState);
         Date now = new Date();
         task.setCreated(new Timestamp(now.getTime()));
+        task.setDeleted(Boolean.FALSE);
         Task result = repository.save(task);
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(linkTo(methodOn(TaskController.class).get(result.getProject().getId(), result.getId())).toUri());
