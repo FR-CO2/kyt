@@ -20,18 +20,17 @@
                         <option value="all">Tous</option>
                         <option value="{{swimlane.id}}" ng-repeat="swimlane in tasksCtrl.swimlanes">{{swimlane.name}}</option>
                     </select></li>
-                <li class="checkboxDropdown__item"><label for="filterAssignee">Assignée à</label>
-                <select id="filterAssignee" ng-model="tasksCtrl.filter.member" ng-change="tasksCtrl.changedFilter()">
-                    <option value="all">Tous</option>
-                    <option value="{{member.id}}" ng-repeat="member in tasksCtrl.members">{{member.username}}</option>
-                </select>></li>
+                <li class="checkboxDropdown__item"<label for="filterAssignee">Assignée à</label>
+                    <select id="filterAssignee" ng-model="tasksCtrl.filter.member" ng-change="tasksCtrl.changedFilter()">
+                        <option value="all">Tous</option>
+                        <option value="{{member.id}}" ng-repeat="member in tasksCtrl.members">{{member.username}}</option>
+                    </select>
+                </li>
                 <li class="checkboxDropdown__item"><label for="filterCategory">Catégorie</label>
                     <select id="filterCategory" ng-model="tasksCtrl.filter.category" ng-change="tasksCtrl.changedFilter()">
                         <option value="all">Tous</option>
                         <option value="{{category.id}}" ng-repeat="category in tasksCtrl.categories">{{category.name}}</option>
                     </select></li>
-                <li class="checkboxDropdown__item"><label for="filtreDeleted">Supprimées</label>
-                    <input type="checkbox" id="filtreDeleted" ng-model="tasksCtrl.filter.deleted" ng-change="tasksCtrl.changedFilter()"/>
                 <li class="checkboxDropdown__item"><button ng-click="tasksCtrl.resetFilter()">Reset</button></li>
             </ul>
         </checkbox-filter>
@@ -83,23 +82,22 @@
             <article class="card__item">
                 <div class="card__header">
                     <h3 class="card__title">{{task.name}}</h3>
-                    <a ng-if="!task.deleted" class="btn btn-danger pull-right" ng-click="tasksCtrl.delete(task)" title="delete" ng-if="projectCtrl.rights.hasAdminRights"><span class="glyphicon glyphicon-trash"></span></a>&nbsp;
-                    <a class="btn pull-right" ui-sref="app.project.task({projectId: projectCtrl.project.id, taskId: task.id })" title="edit">Editer</a>
+                    <div class="card__action">
+                        <a class="btn btn-danger pull-right" ng-click="tasksCtrl.delete(task)" title="delete" ng-if="projectCtrl.rights.hasAdminRights"><span class="glyphicon glyphicon-trash"></span></a>&nbsp;
+                        <a class="btn pull-right" ui-sref="app.project.task({projectId: projectCtrl.project.id, taskId: task.id })" title="edit">Editer</a>
+                    </div>
                 </div>
-                <div class="card__content">
-                    <span></span>
-                    {{task.state.name}}
-
-                    <span ng-if="!task.swimlane">
-                        -
-                    </span>
-                    {{task.swimlane.name}}
-
-                    <span ng-if="!task.category">
-                        -
-                    </span>
-                    {{task.category.name}}
-                </div>
+                <ul class="card__contentList">
+                    <li class="card__content">{{task.state.name}}</li>
+                    <li class="card__content">
+                        <span ng-if="!task.swimlane">-</span>
+                        {{task.swimlane.name}}
+                    </li>
+                    <li class="card__content">
+                        <span ng-if="!task.category">-</span>
+                        {{task.category.name}}
+                    </li>
+                </ul>
                 <ul  ng-repeat="assignee in task.assignees">
                     <li ng-if="assignee.photo">
                         <img src="{{assignee.photo}}" alt="{{assignee.username}}" title="{{assignee.username}}" class="crop"/>
