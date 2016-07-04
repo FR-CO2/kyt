@@ -28,13 +28,13 @@ public interface TaskRepository extends PagingAndSortingRepository<Task, Long>, 
 
     Iterable<Task> findByProjectAndSwimlaneIsNull(Project project);
 
-    Iterable<Task> findByProjectAndStateAndSwimlane(Project project, State state, Swimlane swimlane);
+    Iterable<Task> findByProjectAndStateAndSwimlaneAndDeletedIsFalse(Project project, State state, Swimlane swimlane);
 
     Iterable<Task> findByProjectAndState(Project project, State state);
 
     Iterable<Task> findByProjectAndSwimlane(Project project, Swimlane swimlane);
 
-    Iterable<Task> findByProjectAndStateAndSwimlaneIsNull(Project project, State state);
+    Iterable<Task> findByProjectAndStateAndSwimlaneIsNullAndDeletedIsFalse(Project project, State state);
 
     Page<Task> findByProject(Project project, Pageable p);
 
