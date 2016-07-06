@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.Converter;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,7 +22,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 import org.co2.kanban.repository.Identifiable;
+import org.co2.kanban.repository.converter.JSONConverter;
 import org.co2.kanban.repository.task.Task;
+import org.co2.kanban.repository.user.ApplicationUser;
 
 /**
  *
@@ -39,52 +43,19 @@ public class Comment implements Serializable, Identifiable {
     @GeneratedValue(generator = "comment_generator", strategy = GenerationType.TABLE)
     private Long id;
 
-    private String writer;
-
-    private Timestamp writingDate;
-
     @ManyToOne
     private Task task;
 
-    @Column(length = 10000)
-    private String comment;
+    @Convert(converter = JSONConverter.class)
+    private CommentContent content;
 
-    @ManyToOne
-    private Comment parent;
-
-    @OneToMany(mappedBy = "parent", cascade = CascadeType.REMOVE)
-    private List<Comment> reply = new ArrayList<>();
-
+    @Override
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getWriter() {
-        return writer;
-    }
-
-    public void setWriter(String writer) {
-        this.writer = writer;
-    }
-
-    public Timestamp getWritingDate() {
-        return writingDate;
-    }
-
-    public void setWritingDate(Timestamp writingDate) {
-        this.writingDate = writingDate;
-    }
-
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
     }
 
     public Task getTask() {
@@ -95,20 +66,48 @@ public class Comment implements Serializable, Identifiable {
         this.task = task;
     }
 
-    public Comment getParent() {
-        return parent;
+    public CommentContent getContent() {
+        return content;
     }
 
-    public void setParent(Comment parent) {
-        this.parent = parent;
+    public void setContent(CommentContent content) {
+        this.content = content;
     }
+    
+    public static class CommentContent implements Serializable {
 
-    public List<Comment> getReply() {
-        return reply;
-    }
+        private static final long serialVersionUID = -7472437090233919708L;
 
-    public void setReply(List<Comment> reply) {
-        this.reply = reply;
+        private ApplicationUser writer;
+
+        private Timestamp writingDate;
+
+        private String comment;
+
+        public ApplicationUser getWriter() {
+            return writer;
+        }
+
+        public void setWriter(ApplicationUser writer) {
+            this.writer = writer;
+        }
+
+        public Timestamp getWritingDate() {
+            return writingDate;
+        }
+
+        public void setWritingDate(Timestamp writingDate) {
+            this.writingDate = writingDate;
+        }
+
+        public String getComment() {
+            return comment;
+        }
+
+        public void setComment(String comment) {
+            this.comment = comment;
+        }      
+        
     }
 
 }

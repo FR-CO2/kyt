@@ -22,15 +22,15 @@ public class CommentResource extends IdentifiableResourceSupport<Comment> {
     }
 
     public String getComment() {
-        return this.getBean().getComment();
+        return this.getBean().getContent().getComment();
     }
 
     public String getWriter() {
-        return this.getBean().getWriter();
+        return this.getBean().getContent().getWriter().getUsername();
     }
     
     public Timestamp getWritingDate() {
-        return this.getBean().getWritingDate();
+        return this.getBean().getContent().getWritingDate();
     }
 
     public int getNbReply() {

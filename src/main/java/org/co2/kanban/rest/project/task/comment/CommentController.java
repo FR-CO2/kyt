@@ -5,7 +5,6 @@
  */
 package org.co2.kanban.rest.project.task.comment;
 
-
 import java.security.Principal;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -13,6 +12,8 @@ import org.co2.kanban.repository.comment.Comment;
 import org.co2.kanban.repository.comment.CommentRepository;
 import org.co2.kanban.repository.task.Task;
 import org.co2.kanban.repository.task.TaskRepository;
+import org.co2.kanban.repository.user.ApplicationUser;
+import org.co2.kanban.repository.user.ApplicationUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +35,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class CommentController {
 
     @Autowired
+    private ApplicationUserRepository userRepository;
+
+    @Autowired
     private TaskRepository taskRepository;
 
     @Autowired
@@ -41,51 +45,40 @@ public class CommentController {
 
     @Autowired
     private CommentAssembler assembler;
-    
+
     @RequestMapping(method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public Iterable<CommentResource> comments(@PathVariable("projectId") Long projectId, @PathVariable("taskId") Long taskId) {
         Task task = taskRepository.findOne(taskId);
-        Iterable<Comment> comments = repository.findByTaskAndParentIsNull(task);
+        Iterable<Comment> comments = repository.findByTask(task);
         return assembler.toResources(comments);
     }
 
-    @RequestMapping(value="/{commentId}", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{commentId}", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public CommentResource get(@PathVariable("projectId") Long projectId, @PathVariable("commentId") Long commentId) {
         Comment comment = repository.findOne(commentId);
         return assembler.toResource(comment);
     }
-    
-    @RequestMapping(value="/{commentId}", method = RequestMethod.DELETE, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+
+    @RequestMapping(value = "/{commentId}", method = RequestMethod.DELETE, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("@projectAccessExpression.hasManagerAccess(#projectId, principal.username)")
     public ResponseEntity delete(@PathVariable("projectId") Long projectId, @PathVariable("commentId") Long commentId) {
         repository.delete(commentId);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
-    
+
     @RequestMapping(method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity create(@PathVariable("projectId") Long projectId, @AuthenticationPrincipal Principal user, @PathVariable("taskId") Long taskId, @RequestBody Comment comment) {
+    public ResponseEntity create(@PathVariable("projectId") Long projectId, @AuthenticationPrincipal Principal user, @PathVariable("taskId") Long taskId, @RequestBody CommentResource comment) {
         Task task = taskRepository.findOne(taskId);
-        comment.setTask(task);
-        comment.setWriter(user.getName());
-        comment.setWritingDate(new Timestamp(new Date().getTime()));
-        repository.save(comment);
+        ApplicationUser writer = userRepository.findByUsername(user.getName());
+        Comment creatingComment = new Comment();
+        creatingComment.setTask(task);
+        Comment.CommentContent content = new Comment.CommentContent();
+        content.setWriter(writer);
+        content.setWritingDate(new Timestamp(new Date().getTime()));
+        content.setComment(comment.getComment());
+        creatingComment.setContent(content);
+        repository.save(creatingComment);
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/{commentId}/reply", method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity reply(@PathVariable("projectId") Long projectId, @AuthenticationPrincipal Principal user, @PathVariable("taskId") Long taskId, @PathVariable("commentId") Long parentCommentId, @RequestBody Comment comment) {
-        Comment parent = repository.findOne(parentCommentId);
-        comment.setWriter(user.getName());
-        comment.setWritingDate(new Timestamp(new Date().getTime()));
-        comment.setParent(parent);
-        comment.setTask(parent.getTask());
-        repository.save(comment);
-        return new ResponseEntity(HttpStatus.CREATED);
-    }
-
-    @RequestMapping(value = "/{commentId}/reply", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public Iterable<CommentResource> listReplies(@PathVariable("projectId") Long projectId, @PathVariable("commentId") Long commentId) {
-        Comment parent = repository.findOne(commentId);
-        return assembler.toResources(parent.getReply());
-    }
 }

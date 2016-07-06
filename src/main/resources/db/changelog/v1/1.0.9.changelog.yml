@@ -1,0 +1,25 @@
+## YAML Template.
+---
+databaseChangeLog:
+    - changeSet:
+        id: schema-1.0.9-task_comment
+        author: stan
+        changes:
+            - dropColumn:
+                columnName: comment
+                tableName: kyt_task_comment
+            - dropColumn:
+                columnName: writer
+                tableName: kyt_task_comment
+            - dropColumn:
+                columnName: writing_date
+                tableName: kyt_task_comment
+            - dropColumn:
+                columnName: parent_id
+                tableName: kyt_task_comment 
+            - addColumn:
+                    tableName: kyt_task_comment
+                    columns:
+                    - column:
+                        name: urgent
+                        type: boolean

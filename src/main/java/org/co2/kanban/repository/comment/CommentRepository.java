@@ -14,5 +14,5 @@ import org.springframework.data.repository.CrudRepository;
  */
 public interface CommentRepository extends CrudRepository<Comment, Long> {
     
-    Iterable<Comment> findByTaskAndParentIsNull(Task task);
+    Iterable<Comment> findByTask(Task task);
 }
