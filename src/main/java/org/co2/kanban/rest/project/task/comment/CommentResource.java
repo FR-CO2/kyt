@@ -14,8 +14,6 @@ import org.co2.kanban.rest.IdentifiableResourceSupport;
  * @author ben
  */
 public class CommentResource extends IdentifiableResourceSupport<Comment> {
-
-    private int nbReply;
     
     public CommentResource(Comment bean) {
         super(bean);
@@ -33,12 +31,5 @@ public class CommentResource extends IdentifiableResourceSupport<Comment> {
         return this.getBean().getContent().getWritingDate();
     }
 
-    public int getNbReply() {
-        return nbReply;
-    }
-
-    public void setNbReply(int nbReply) {
-        this.nbReply = nbReply;
-    }
     
 }

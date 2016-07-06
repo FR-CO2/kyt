@@ -67,7 +67,7 @@ public class CommentController {
     }
 
     @RequestMapping(method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity create(@PathVariable("projectId") Long projectId, @AuthenticationPrincipal Principal user, @PathVariable("taskId") Long taskId, @RequestBody CommentResource comment) {
+    public ResponseEntity create(@PathVariable("projectId") Long projectId, @AuthenticationPrincipal Principal user, @PathVariable("taskId") Long taskId, @RequestBody Comment.CommentContent comment) {
         Task task = taskRepository.findOne(taskId);
         ApplicationUser writer = userRepository.findByUsername(user.getName());
         Comment creatingComment = new Comment();

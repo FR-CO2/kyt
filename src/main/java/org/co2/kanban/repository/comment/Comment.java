@@ -7,18 +7,12 @@ package org.co2.kanban.repository.comment;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Convert;
-import javax.persistence.Converter;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 import org.co2.kanban.repository.Identifiable;
@@ -46,7 +40,7 @@ public class Comment implements Serializable, Identifiable {
     @ManyToOne
     private Task task;
 
-    @Convert(converter = JSONConverter.class)
+    @Convert(converter = CommentContentConverter.class)
     private CommentContent content;
 
     @Override
