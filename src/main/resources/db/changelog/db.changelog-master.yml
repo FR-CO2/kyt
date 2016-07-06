@@ -17,4 +17,6 @@ databaseChangeLog:
     -  include:
         file: db/changelog/v1/1.0.6.changelog.yml
     -  include:
-        file: db/changelog/v1/1.0.9.changelog.yml        
+        file: db/changelog/v1/1.0.7.changelog.yml
+    -  include:
+        file: db/changelog/v1/1.0.8.changelog.yml

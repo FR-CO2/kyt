@@ -121,7 +121,8 @@ public class TaskListController {
         Iterable<TaskResource> tasks;
         Project project = projectRepository.findOne(projectId);
         State state = stateRepository.findOne(stateId);
-        tasks = assembler.toResources(repository.findByProjectAndStateAndSwimlaneIsNull(project, state));
+        
+        tasks = assembler.toResources(repository.findByProjectAndStateAndSwimlaneIsNullAndDeletedIsFalse(project, state));
         return tasks;
     }
 
@@ -143,7 +144,7 @@ public class TaskListController {
         Project project = projectRepository.findOne(projectId);
         State state = stateRepository.findOne(stateId);
         Swimlane swimlane = swimlaneRepository.findOne(swimlaneId);
-        tasks = assembler.toResources(repository.findByProjectAndStateAndSwimlane(project, state, swimlane));
+        tasks = assembler.toResources(repository.findByProjectAndStateAndSwimlaneAndDeletedIsFalse(project, state, swimlane));
         return tasks;
     }
 
@@ -156,6 +157,7 @@ public class TaskListController {
         task.setState(defaultState);
         Date now = new Date();
         task.setCreated(new Timestamp(now.getTime()));
+        task.setDeleted(Boolean.FALSE);
         Task result = repository.save(task);
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(linkTo(methodOn(TaskController.class).get(result.getProject().getId(), result.getId())).toUri());

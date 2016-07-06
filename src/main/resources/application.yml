@@ -6,7 +6,7 @@ endpoints :
 
 spring:
     profiles:
-        active: dev-h2
+        active: dev-postgresql
     jpa:
         generate-ddl: false
         hibernate:
@@ -27,7 +27,7 @@ liquibase:
 logging:
     level:
         org.springframework.security: INFO
-        org.hibernate: INFO
+        org.hibernate: DEBUG
 
 ---
            

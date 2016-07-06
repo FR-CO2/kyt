@@ -50,6 +50,10 @@ public class ProjectTaskFilterSpecification implements Specification<Task> {
         if(this.taskListFilter.getIdAssignee() != null){
             predicats.add(cb.equal(root.join("assignees").get("id").as(Long.class), this.taskListFilter.getIdAssignee()));
         }
+        
+        if(this.taskListFilter.isDeleted() == null || !this.taskListFilter.isDeleted()){
+            predicats.add(cb.equal(root.get("deleted").as(Boolean.class), Boolean.FALSE));
+        }
         Predicate searchPredicate = cb.and(predicats.toArray(new Predicate[predicats.size()]));
         return searchPredicate;
     }

@@ -109,6 +109,8 @@ public class Task implements Serializable, Identifiable {
     private List<ProjectMember> assignees;
     
     private Boolean urgent;
+    
+    private Boolean deleted;
 
     public Long getId() {
         return id;
@@ -260,6 +262,14 @@ public class Task implements Serializable, Identifiable {
 
     public void setUrgent(Boolean urgent) {
         this.urgent = urgent;
+    }
+    
+    public Boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
     }
     
 }
