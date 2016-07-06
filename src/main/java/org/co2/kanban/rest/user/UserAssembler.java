@@ -8,7 +8,6 @@ package org.co2.kanban.rest.user;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 import org.co2.kanban.repository.user.ApplicationUser;
