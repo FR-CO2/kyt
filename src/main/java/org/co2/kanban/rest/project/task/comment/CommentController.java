@@ -69,10 +69,13 @@ public class CommentController {
     @RequestMapping(method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity create(@PathVariable("projectId") Long projectId, @AuthenticationPrincipal Principal user, @PathVariable("taskId") Long taskId, @RequestBody Comment.CommentContent comment) {
         Task task = taskRepository.findOne(taskId);
-        ApplicationUser writer = userRepository.findByUsername(user.getName());
+        ApplicationUser currentUser = userRepository.findByUsername(user.getName());
         Comment creatingComment = new Comment();
         creatingComment.setTask(task);
         Comment.CommentContent content = new Comment.CommentContent();
+        Comment.CommentWriter writer = new Comment.CommentWriter();
+        writer.setId(currentUser.getId());
+        writer.setUsername(currentUser.getUsername());
         content.setWriter(writer);
         content.setWritingDate(new Timestamp(new Date().getTime()));
         content.setComment(comment.getComment());

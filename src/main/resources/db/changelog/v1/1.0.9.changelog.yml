@@ -21,5 +21,5 @@ databaseChangeLog:
                     tableName: kyt_task_comment
                     columns:
                     - column:
-                        name: urgent
-                        type: boolean
+                        name: content
+                        type: varchar(10000)

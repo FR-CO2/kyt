@@ -72,17 +72,17 @@ public class Comment implements Serializable, Identifiable {
 
         private static final long serialVersionUID = -7472437090233919708L;
 
-        private ApplicationUser writer;
+        private CommentWriter writer;
 
         private Timestamp writingDate;
 
         private String comment;
 
-        public ApplicationUser getWriter() {
+        public CommentWriter getWriter() {
             return writer;
         }
 
-        public void setWriter(ApplicationUser writer) {
+        public void setWriter(CommentWriter writer) {
             this.writer = writer;
         }
 
@@ -104,4 +104,25 @@ public class Comment implements Serializable, Identifiable {
         
     }
 
+     public static class CommentWriter implements Serializable {
+         private Long id;
+         private String username;
+
+        public Long getId() {
+            return id;
+        }
+
+        public void setId(Long id) {
+            this.id = id;
+        }
+
+        public String getUsername() {
+            return username;
+        }
+
+        public void setUsername(String username) {
+            this.username = username;
+        }
+         
+     }
 }
