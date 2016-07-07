@@ -6,22 +6,14 @@
 <section class="comments">
     <blockquote ng-repeat="comment in commentListCtrl.comments" class="comment" cite="{{comment.writer}}">
         <cite class="comment__header">Commentaire  de {{comment.writer}} le {{comment.writingDate| date:'dd-MM-yyyy'}}</cite>
+        <div class="comment__action pull-right" ng-if="projectCtrl.rights.hasAdminRights">
+            <a ng-click="commentListCtrl.delete(null, comment)" title="delete" class="btn btn-danger pull-right"><span class="glyphicon glyphicon-trash"></span></a>
+        </div>
         <q class="comment__content">{{comment.comment}}</q>
         <div class="comment__footer">
-            <div class="comment__action" ng-if="projectCtrl.rights.hasAdminRights">
-                <a ng-click="commentListCtrl.delete(null, comment)" title="delete">
-                    <span class="glyphicon glyphicon-trash"></span>
-                </a>
-            </div>
             <div ng-if="commentListCtrl.selectedComment !== undefined && comment.showComment" class="replies">
                 <div ng-include="'templates/project/task/comment/reply.html'" ng-controller="commentReplyController as commentReplyCtrl"></div>
             </div>
-            <a class="btn btn-info btn-spaceLeft pull-right" ng-click="commentListCtrl.reply(comment)" title="reply">
-                <span class="glyphicon glyphicon-comment"></span> Répondre
-            </a>
-            <a class="btn btn-info pull-right" ng-if="comment.nbReply > 0" ng-click="commentListCtrl.showHideReply(comment)" ng-switch on="comment.showComment">
-                {{comment.nbReply}} réponse<span ng-show="comment.nbReply > 1">s</span>
-            </a>
         </div>
     </blockquote>
 </section>
