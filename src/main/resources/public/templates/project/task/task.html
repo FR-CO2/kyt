@@ -117,11 +117,14 @@
                     <input class="form-control" ng-model="taskCtrl.selecteduser.username"
                            typeahead-editable="false" typeahead-on-select="taskCtrl.selectAssignee($item, $model, $label)" 
                            uib-typeahead="member as member.username for member in taskCtrl.getMembers($viewValue)" placeholder="Ajouter un utilisateur"/>
-                    <ul>
-                        <li ng-repeat="member in taskCtrl.task.assignees track by $index" ng-click="taskCtrl.removeuser($index)">
-                            <img ng-if="member.photo" class="crop-photo crop" ng-src="{{member.photo}}" alt="{{member.username}}" data-toggle="tooltip" data-placement="bottom" title="{{member.username}}">
-                            <span ng-if="!member.photo" class="crop-photo glyphicon glyphicon-user" data-toggle="tooltip" data-placement="bottom" title="{{member.username}}"></span>
-                            <span class="glyphicon glyphicon-trash"></span>
+                    <ul class="userIcons">
+                        <li ng-repeat="assignee in taskCtrl.task.assignees track by $index" ng-click="taskCtrl.removeuser($index)" class="userIcons__item">
+                            <span class="userIcons__username">{{assignee.username}}</span>
+                            <div class="crop">
+                                <div class="userIcons__actions"><span class="fa fa-trash"></span></div>
+                                <img src="{{assignee.photo}}" alt="{{assignee.username}}" title="{{assignee.username}}" ng-if="assignee.photo" width="40" height="40"/>
+                                <span class="glyphicon glyphicon-user" ng-if="!assignee.photo"></span>
+                            </div>
                         </li>
                     </ul>
                 </div>
