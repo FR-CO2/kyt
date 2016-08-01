@@ -5,9 +5,11 @@
  */
 package org.co2.kanban.rest.project.task;
 
+import java.security.Principal;
 import org.co2.kanban.repository.task.ProjectTaskSearchSpecification;
 import java.sql.Timestamp;
 import java.util.Date;
+import org.co2.kanban.business.project.task.history.Archivable;
 import org.co2.kanban.repository.member.ProjectMemberRepository;
 import org.co2.kanban.repository.task.Task;
 import org.co2.kanban.repository.task.TaskRepository;
@@ -37,6 +39,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 /**
  *
@@ -150,7 +153,10 @@ public class TaskListController {
 
     @RequestMapping(method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("@projectAccessExpression.hasContributorAccess(#projectId, principal.username)")
-    public ResponseEntity create(@PathVariable("projectId") Long projectId, @Validated @RequestBody Task task) {
+    @Archivable
+    public ResponseEntity create(@PathVariable("projectId") Long projectId,
+            @AuthenticationPrincipal Principal user,
+            @Validated @RequestBody Task task) {
         Project project = projectRepository.findOne(projectId);
         task.setProject(project);
         State defaultState = stateRepository.findByProjectAndPosition(project, 0L);
@@ -161,6 +167,7 @@ public class TaskListController {
         Task result = repository.save(task);
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(linkTo(methodOn(TaskController.class).get(result.getProject().getId(), result.getId())).toUri());
+        headers.set("taskId", result.getId().toString());
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 

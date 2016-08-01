@@ -16,9 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 import org.co2.kanban.repository.Identifiable;
-import org.co2.kanban.repository.converter.JSONConverter;
 import org.co2.kanban.repository.task.Task;
-import org.co2.kanban.repository.user.ApplicationUser;
 
 /**
  *
@@ -105,6 +103,8 @@ public class Comment implements Serializable, Identifiable {
     }
 
      public static class CommentWriter implements Serializable {
+
+        private static final long serialVersionUID = -6386458204407712256L;
          private Long id;
          private String username;
 

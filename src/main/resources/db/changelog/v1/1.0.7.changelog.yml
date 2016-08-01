@@ -35,8 +35,8 @@ databaseChangeLog:
                         constraints:
                             nullable: false
                     - column:
-                        name: file
-                        type: BLOB
+                        name: histo_content
+                        type: varchar(10000)
                         constraints:
                             nullable: false
            - createTable:
@@ -69,8 +69,8 @@ databaseChangeLog:
                         constraints:
                             nullable: false
                     - column:
-                        name: file
-                        type: BLOB
+                        name: content
+                        type: blob
                         constraints:
                             nullable: false
            - addColumn:
