@@ -41,6 +41,12 @@
                 templateUrl: "templates/admin/project/taskfield/list.html",
                 url: "/customfield"
             });
+            $stateProvider.state("app.project.edit.taskhisto", {
+                controller: "listTaskHistoAdminController",
+                controllerAs: "taskHistoListCtrl",
+                templateUrl: "templates/admin/project/taskhisto/list.html",
+                url: "/taskHisto"
+            });
         };
         config.$inject = ["$stateProvider"];
         module.exports = config;

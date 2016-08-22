@@ -5,8 +5,8 @@
  */
 package org.co2.kanban.security.project;
 
-import org.co2.kanban.repository.member.Member;
-import org.co2.kanban.repository.member.MemberRepository;
+import org.co2.kanban.repository.member.ProjectMember;
+import org.co2.kanban.repository.member.ProjectMemberRepository;
 import org.co2.kanban.repository.member.ProjectRole;
 import org.co2.kanban.repository.project.Project;
 import org.co2.kanban.repository.project.ProjectRepository;
@@ -24,7 +24,7 @@ import org.springframework.stereotype.Component;
 public class ProjectAccessExpression {
 
     @Autowired
-    private MemberRepository repository;
+    private ProjectMemberRepository repository;
 
     @Autowired
     private ApplicationUserRepository userRepository;
@@ -38,7 +38,7 @@ public class ProjectAccessExpression {
             return true;
         }
         Project project = projectRepository.findOne(projectId);
-        Member member = repository.findByProjectAndUser(project, user);
+        ProjectMember member = repository.findByProjectAndUser(project, user);
         if (member != null) {
             return member.hasRole(ProjectRole.MANAGER);
         }
@@ -51,7 +51,7 @@ public class ProjectAccessExpression {
             return true;
         }
         Project project = projectRepository.findOne(projectId);
-        Member member = repository.findByProjectAndUser(project, user);
+        ProjectMember member = repository.findByProjectAndUser(project, user);
         if (member != null) {
             return member.hasRole(ProjectRole.MANAGER)
                     || member.hasRole(ProjectRole.CONTRIBUTOR);

@@ -16,19 +16,19 @@ import org.springframework.data.repository.PagingAndSortingRepository;
  *
  * @author ben
  */
-public interface MemberRepository extends PagingAndSortingRepository<Member, Long> {
+public interface ProjectMemberRepository extends PagingAndSortingRepository<ProjectMember, Long> {
 
-    Page<Member> findByProject(Project project, Pageable p);
+    Page<ProjectMember> findByProject(Project project, Pageable p);
 
-    Iterable<Member> findByProjectAndUserUsernameLike(Project project, String username);
+    Iterable<ProjectMember> findByProjectAndUserUsernameLike(Project project, String username);
 
-    Iterable<Member> findByProject(Project project);
+    Iterable<ProjectMember> findByProject(Project project);
 
-    Iterable<Member> findByProjectAndUserUsernameContains(Project project, String term);
-
-    Member findByProjectAndUser(Project project, ApplicationUser user);
-
-    @Query("select count(e)>0 from Member e where e.project= ?1 and e.user = ?2")
+    Iterable<ProjectMember> findByProjectAndUserUsernameContains(Project project, String term);
+    
+    ProjectMember findByProjectAndUser(Project project, ApplicationUser user);
+    
+    @Query("select count(e)>0 from ProjectMember e where e.project= ?1 and e.user = ?2")
     Boolean checkExistProjectAndUser(Project project, ApplicationUser user);
 
 }

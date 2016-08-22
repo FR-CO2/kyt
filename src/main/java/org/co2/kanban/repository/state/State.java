@@ -11,11 +11,12 @@ import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.TableGenerator;
 import org.co2.kanban.repository.Identifiable;
 
 /**
@@ -28,9 +29,11 @@ public class State implements Serializable, Identifiable {
 
     private static final long serialVersionUID = -1395350709593408519L;
 
-    @SequenceGenerator(name = "state_generator", sequenceName = "state_pkey_seq")
+    @TableGenerator(
+            name = "state_generator", table = "kyt_internal_sequence", pkColumnName = "sequence_name",
+            valueColumnName = "sequence_next_hi_value", pkColumnValue = "state_generator")
     @Id
-    @GeneratedValue(generator = "state_generator")
+    @GeneratedValue(generator = "state_generator", strategy = GenerationType.TABLE)
     private Long id;
 
     private String name;

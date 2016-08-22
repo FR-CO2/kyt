@@ -1,0 +1,87 @@
+## YAML Template.
+---
+databaseChangeLog:
+    - changeSet:
+        id: schema-1.0.7-task_histo_and_comment
+        author: stan
+        changes:
+           - createTable:
+                tableName: kyt_task_histo
+                columns:
+                    - column:
+                        name: id
+                        type: BIGINT
+                        constraints:
+                            primaryKey: true
+                            nullable: false
+                    - column:
+                        name: task_id
+                        type: int
+                        constraints:
+                            nullable: false
+                    - column:
+                        name: version_id
+                        type: int
+                        constraints:
+                            nullable: false
+                    - column:
+                        name: date_modif
+                        type: DATE
+                        constraints:
+                            nullable: false
+                    - column:
+                        name: member_id
+                        type: int
+                        constraints:
+                            nullable: false
+                    - column:
+                        name: histo_content
+                        type: varchar(10000)
+                        constraints:
+                            nullable: false
+           - createTable:
+                tableName: kyt_task_comment_histo
+                columns:
+                    - column:
+                        name: id
+                        type: BIGINT
+                        constraints:
+                            primaryKey: true
+                            nullable: false
+                    - column:
+                        name: comment_id
+                        type: int
+                        constraints:
+                            nullable: false
+                    - column:
+                        name: parent_id
+                        type: int
+                        constraints:
+                            nullable: false
+                    - column:
+                        name: task_id
+                        type: int
+                        constraints:
+                            nullable: false
+                    - column:
+                        name: date_modif
+                        type: DATE
+                        constraints:
+                            nullable: false
+                    - column:
+                        name: content
+                        type: blob
+                        constraints:
+                            nullable: false
+           - addColumn:
+                    tableName: kyt_task
+                    columns:
+                    - column:
+                        name: deleted
+                        type: boolean
+                        valueBoolean : false
+        rollback:
+                - dropTable:
+                    tableName: kyt_task_histo
+                - dropTable:
+                    tableName: kyt_comment_histo

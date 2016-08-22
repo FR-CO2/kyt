@@ -5,7 +5,7 @@
  */
 package org.co2.kanban.rest.user.memberof;
 
-import org.co2.kanban.repository.member.Member;
+import org.co2.kanban.repository.member.ProjectMember;
 import org.co2.kanban.rest.project.ProjectController;
 import org.co2.kanban.rest.project.member.MemberController;
 import org.co2.kanban.rest.user.ApplicationUserController;
@@ -19,14 +19,14 @@ import org.springframework.stereotype.Component;
  * @author ben
  */
 @Component
-public class MemberOfAssembler extends ResourceAssemblerSupport<Member, MemberOfResource> {
+public class MemberOfAssembler extends ResourceAssemblerSupport<ProjectMember, MemberOfResource> {
 
     public MemberOfAssembler() {
         super(MemberController.class, MemberOfResource.class);
     }
 
     @Override
-    public MemberOfResource toResource(Member entity) {
+    public MemberOfResource toResource(ProjectMember entity) {
         if (entity == null) {
             return null;
         }

@@ -19,6 +19,7 @@ var kanbanService = function ($q, taskAssemblerService) {
         });
         return result;
     };
+
     var retrieveTaskNoSwimlane = function (project, states) {
         var result = [];
         var i = 0;

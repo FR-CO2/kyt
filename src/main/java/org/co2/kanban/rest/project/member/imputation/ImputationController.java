@@ -8,8 +8,8 @@ package org.co2.kanban.rest.project.member.imputation;
 import java.sql.Timestamp;
 import org.co2.kanban.repository.allocation.Allocation;
 import org.co2.kanban.repository.allocation.AllocationRepository;
-import org.co2.kanban.repository.member.Member;
-import org.co2.kanban.repository.member.MemberRepository;
+import org.co2.kanban.repository.member.ProjectMember;
+import org.co2.kanban.repository.member.ProjectMemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ImputationController {
 
     @Autowired
-    private MemberRepository repository;
+    private ProjectMemberRepository repository;
 
     @Autowired
     private AllocationRepository allocationRepository;
@@ -41,7 +41,7 @@ public class ImputationController {
             @PathVariable("memberId") Long memberId,
             @RequestParam("start") Long start,
             @RequestParam("end") Long end) {
-        Member member = repository.findOne(memberId);
+        ProjectMember member = repository.findOne(memberId);
         Timestamp startTime = new Timestamp(start);
         Timestamp endTime = new Timestamp(end);
         Iterable<Allocation> allocationsMember = allocationRepository.findByMemberAndAllocationDateBetween(member, startTime, endTime);

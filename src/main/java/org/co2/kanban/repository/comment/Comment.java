@@ -7,17 +7,14 @@ package org.co2.kanban.repository.comment;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.TableGenerator;
 import org.co2.kanban.repository.Identifiable;
 import org.co2.kanban.repository.task.Task;
 
@@ -31,57 +28,26 @@ public class Comment implements Serializable, Identifiable {
 
     private static final long serialVersionUID = 351144123076183094L;
 
-    @SequenceGenerator(name = "comment_generator", sequenceName = "comment_pkey_seq")
+    @TableGenerator(
+            name = "comment_generator", table = "kyt_internal_sequence", pkColumnName = "sequence_name",
+            valueColumnName = "sequence_next_hi_value", pkColumnValue = "comment_generator")
     @Id
-    @GeneratedValue(generator = "comment_generator")
+    @GeneratedValue(generator = "comment_generator", strategy = GenerationType.TABLE)
     private Long id;
-
-    private String writer;
-
-    private Timestamp writingDate;
 
     @ManyToOne
     private Task task;
 
-    @Column(length = 10000)
-    private String comment;
+    @Convert(converter = CommentContentConverter.class)
+    private CommentContent content;
 
-    @ManyToOne
-    private Comment parent;
-
-    @OneToMany(mappedBy = "parent", cascade = CascadeType.REMOVE)
-    private List<Comment> reply = new ArrayList<>();
-
+    @Override
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getWriter() {
-        return writer;
-    }
-
-    public void setWriter(String writer) {
-        this.writer = writer;
-    }
-
-    public Timestamp getWritingDate() {
-        return writingDate;
-    }
-
-    public void setWritingDate(Timestamp writingDate) {
-        this.writingDate = writingDate;
-    }
-
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
     }
 
     public Task getTask() {
@@ -92,20 +58,71 @@ public class Comment implements Serializable, Identifiable {
         this.task = task;
     }
 
-    public Comment getParent() {
-        return parent;
+    public CommentContent getContent() {
+        return content;
     }
 
-    public void setParent(Comment parent) {
-        this.parent = parent;
+    public void setContent(CommentContent content) {
+        this.content = content;
+    }
+    
+    public static class CommentContent implements Serializable {
+
+        private static final long serialVersionUID = -7472437090233919708L;
+
+        private CommentWriter writer;
+
+        private Timestamp writingDate;
+
+        private String comment;
+
+        public CommentWriter getWriter() {
+            return writer;
+        }
+
+        public void setWriter(CommentWriter writer) {
+            this.writer = writer;
+        }
+
+        public Timestamp getWritingDate() {
+            return writingDate;
+        }
+
+        public void setWritingDate(Timestamp writingDate) {
+            this.writingDate = writingDate;
+        }
+
+        public String getComment() {
+            return comment;
+        }
+
+        public void setComment(String comment) {
+            this.comment = comment;
+        }      
+        
     }
 
-    public List<Comment> getReply() {
-        return reply;
-    }
+     public static class CommentWriter implements Serializable {
 
-    public void setReply(List<Comment> reply) {
-        this.reply = reply;
-    }
+        private static final long serialVersionUID = -6386458204407712256L;
+         private Long id;
+         private String username;
 
+        public Long getId() {
+            return id;
+        }
+
+        public void setId(Long id) {
+            this.id = id;
+        }
+
+        public String getUsername() {
+            return username;
+        }
+
+        public void setUsername(String username) {
+            this.username = username;
+        }
+         
+     }
 }

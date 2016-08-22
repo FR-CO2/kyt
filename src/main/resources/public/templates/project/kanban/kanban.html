@@ -1,10 +1,19 @@
 <header class="heading nav nav--subNav">
     <h2 class="heading__title pull-left">Projet : {{projectCtrl.project.name}}</h2>
+    <ul class="nav nav-tabs pull-left">
+        <li class="nav__link active"><a ui-sref="app.project.kanban({projectId: projectCtrl.project.id })"><span class="glyphicon glyphicon-equalizer"></span> Kanban</a></li>
+        <li class="nav__link"><a ui-sref="app.project.tasks({projectId: projectCtrl.project.id })"><span class="glyphicon glyphicon-tasks"></span> Liste des tâches</a></li>
+        <li class="nav__link"><a ng-if="projectCtrl.rights.hasEditRights" ui-sref="app.project.consommation({projectId: projectCtrl.project.id })"><span class="glyphicon glyphicon-time"></span> Consommations</a></li>
+        <li class="nav__link"><a ng-if="projectCtrl.rights.hasEditRights" ui-sref="app.project.gantt({projectId: projectCtrl.project.id })"><span class="glyphicon glyphicon-road"></span> Gantt</a></li>
+    </ul>
     <div class="heading__action pull-right">
-        <button class="btn btn-info btn-sm" ui-sref="app.project.tasks({projectId: projectCtrl.project.id })"><span class="glyphicon glyphicon-tasks"></span> Voir toutes les tâches</button>
-        <button ng-if="projectCtrl.rights.hasEditRights" class="btn btn-info btn-sm" ui-sref="app.project.consommation({projectId: projectCtrl.project.id })"><span class="glyphicon glyphicon-time"></span> Consommations</button>
-        <button ng-if="projectCtrl.rights.hasEditRights" class="btn btn-info btn-sm" ui-sref="app.project.gantt({projectId: projectCtrl.project.id })"><span class="glyphicon glyphicon-road"></span> Gantt</button>
         <button ng-if="projectCtrl.rights.hasEditRights" class="btn btn-info btn-sm" ng-click="kanbanCtrl.addTask()"><span class="glyphicon glyphicon-plus-sign"></span> Nouvelle tâche</button>
+        <checkbox-filter filter-title="Filtrer">
+            <ul class="checkboxDropdown__list">
+                <li class="checkboxDropdown__item"><input type="checkbox" id="filtreAssignee" ng-model="kanbanCtrl.filter.currentuser" /><label for="filtreAssignee">M'est assignée</label></li>
+                <li class="checkboxDropdown__item"><input type="checkbox" id="filtreUrgent" ng-model="kanbanCtrl.filter.urgent" /><label for="filtreUrgent">urgent</label></li>
+            </ul>
+        </checkbox-filter>
     </div>
 </header>
 <section class="content">
@@ -27,7 +36,7 @@
                     </td>
                     <td class="kanban__column column" ng-repeat="state in swimlane.states">
                         <ul class="list-unstyled" as-sortable="kanbanCtrl.kanbanSortOptions" data-rowindex="{{swimlane.id}}" data-columnindex="{{state.id}}" ng-model="state.tasks">
-                            <li ng-repeat="task in state.tasks" class="kanban-card kanban__tasks" as-sortable-item>
+                            <li ng-repeat="task in state.tasks  | currentuserKanbanFilter : kanbanCtrl.filter.currentuser | urgentKanbanFilter : kanbanCtrl.filter.urgent" class="kanban-card kanban__tasks" as-sortable-item>
                                 <div ng-include="'/templates/project/kanban/kanban-card.html'" as-sortable-item-handle></div>
                             </li>
                             <li class="kanban__tasks--count" ng-if="state.tasks.length"><span class="badge">{{state.tasks.length}}</span></li>

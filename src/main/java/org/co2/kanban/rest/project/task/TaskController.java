@@ -5,10 +5,14 @@
  */
 package org.co2.kanban.rest.project.task;
 
+import java.io.IOException;
+import java.security.Principal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import org.co2.kanban.business.project.task.history.Archivable;
+import org.co2.kanban.repository.member.ProjectMemberRepository;
 import org.co2.kanban.repository.project.Project;
 import org.co2.kanban.repository.project.ProjectRepository;
 import org.co2.kanban.repository.task.Task;
@@ -16,11 +20,15 @@ import org.co2.kanban.repository.task.TaskRepository;
 import org.co2.kanban.repository.taskfield.TaskField;
 import org.co2.kanban.repository.taskfield.TaskFieldRepository;
 import org.co2.kanban.repository.taskfield.TaskFieldType;
+import org.co2.kanban.repository.taskhisto.TaskHistoRepository;
+import org.co2.kanban.repository.user.ApplicationUserRepository;
 import org.co2.kanban.rest.error.BusinessException;
+import org.co2.kanban.rest.project.task.histo.TaskHistoAssembler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -54,6 +62,18 @@ public class TaskController {
     @Autowired
     private TaskFieldRepository fieldRepository;
 
+    @Autowired
+    private TaskHistoRepository taskHistoRepository;
+
+    @Autowired
+    private TaskHistoAssembler taskHistoAssembler;
+
+    @Autowired
+    private ApplicationUserRepository applicationUserRepository;
+
+    @Autowired
+    private ProjectMemberRepository projectMemberRepository;
+
     @RequestMapping(method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public TaskResource get(@PathVariable("projectId") Long projectId, @PathVariable("id") Long taskId) {
         Task task = repository.findOne(taskId);
@@ -65,14 +85,23 @@ public class TaskController {
 
     @RequestMapping(method = RequestMethod.DELETE, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("@projectAccessExpression.hasContributorAccess(#projectId, principal.username)")
-    public ResponseEntity delete(@PathVariable("projectId") Long projectId, @PathVariable("id") Long id) {
-        repository.delete(id);
+    @Archivable
+    public ResponseEntity delete(@PathVariable("projectId") Long projectId,
+            @AuthenticationPrincipal Principal user,
+            @PathVariable("id") Long id) {
+        Task task = repository.findOne(id);
+        task.setDeleted(Boolean.TRUE);
+        repository.save(task);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @RequestMapping(method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("@projectAccessExpression.hasContributorAccess(#projectId, principal.username)")
-    public TaskResource update(@PathVariable("projectId") Long projectId, @PathVariable("id") Long taskId, @Validated @RequestBody Task task) {
+    @Archivable
+    public TaskResource update(@PathVariable("projectId") Long projectId,
+            @AuthenticationPrincipal Principal user,
+            @PathVariable("id") Long taskId,
+            @Validated @RequestBody Task task) throws IOException {
         Project project = projectRepository.findOne(projectId);
         task.setProject(project);
         if (task.getCustomField() != null) {
@@ -111,9 +140,10 @@ public class TaskController {
                         throw new BusinessException(HttpStatus.PRECONDITION_FAILED, MESSAGE_CAST_NUMBER_KO);
                     }
                 }
-            }else if(field.getDefinition().getRequired()){
+            } else if (field.getDefinition().getRequired() != null && field.getDefinition().getRequired()) {
                 throw new BusinessException(HttpStatus.PRECONDITION_FAILED, MESSAGE_FIELD_REQUIRED);
             }
         }
     }
+
 }

@@ -9,6 +9,8 @@ var taskController = function ($q, $state, project, currenttask, taskAssemblerSe
     project.$promise.then(function () {
         currenttask.$promise.then(function () {
             vm.task = taskAssemblerService(currenttask);
+            vm.children = vm.task.resource("children").query();
+            vm.parents = vm.task.resource("parents").query();
         });
         vm.categories = project.resource("category").query();
         vm.states = project.resource("state").query();
@@ -30,9 +32,9 @@ var taskController = function ($q, $state, project, currenttask, taskAssemblerSe
                         vm.customFieldMap[customField.fieldName].fieldValue = null;
                         if (customField.fieldValue !== null) {
                             vm.customFieldMap[customField.fieldName].fieldValue = new Date(customField.fieldValue);
-                        } else if(vm.customFieldMap[customField.fieldName].definition.required=== true) {
+                        } else if (vm.customFieldMap[customField.fieldName].definition.required === true) {
                             vm.customFieldMap[customField.fieldName].fieldValue = new Date();
-                        } 
+                        }
                     } else {
                         vm.customFieldMap[customField.fieldName].fieldValue = customField.fieldValue;
                     }
@@ -57,6 +59,25 @@ var taskController = function ($q, $state, project, currenttask, taskAssemblerSe
     };
     vm.getMembers = function (term) {
         return project.resource("member").query({search: term}).$promise;
+    };
+    vm.addChild = function ($item, $model, $label) {
+        vm.task.resource("children").save($item, function () {
+            vm.children.push($item);
+        });
+    };
+    vm.addParent = function ($item, $model, $label) {
+        vm.task.resource("parents").save($item, function () {
+            vm.parents.push($item);
+        });
+    };
+    vm.removeChild = function (index) {
+        vm.children.splice(index, 1);
+    };
+    vm.removeParent = function (index) {
+        vm.parents.splice(index, 1);
+    };
+    vm.getTasks = function (term) {
+        return project.resource("task").query({idTask : vm.task.id,search: term}).$promise;
     };
     vm.submit = function () {
         angular.forEach(vm.task.customField, function (customField) {

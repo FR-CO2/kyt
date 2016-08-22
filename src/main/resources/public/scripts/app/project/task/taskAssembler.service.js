@@ -18,6 +18,9 @@ var taskAssemblerService = function ($http, HateoasInterface, moment) {
                         assignee.photo = result.data;
                     });
                 }
+                $http.get(assignee._links.user).then(function (result) {
+                    assignee.userId = result.data.id;
+                });
             });
             return assignees;
         });

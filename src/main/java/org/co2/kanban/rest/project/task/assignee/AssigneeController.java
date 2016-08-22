@@ -5,7 +5,7 @@
  */
 package org.co2.kanban.rest.project.task.assignee;
 
-import org.co2.kanban.repository.member.Member;
+import org.co2.kanban.repository.member.ProjectMember;
 import org.co2.kanban.repository.task.Task;
 import org.co2.kanban.repository.task.TaskRepository;
 import org.co2.kanban.rest.error.BusinessException;
@@ -50,7 +50,7 @@ public class AssigneeController {
     }
 
     @RequestMapping(method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public HttpEntity assignee(@PathVariable("projectId") Long projectId, @PathVariable("taskId") Long taskId, @RequestBody Member member) {
+    public HttpEntity assignee(@PathVariable("projectId") Long projectId, @PathVariable("taskId") Long taskId, @RequestBody ProjectMember member) {
         Task task = repository.findOne(taskId);
         if (task == null) {
             throw new BusinessException(HttpStatus.NOT_FOUND, MESSAGE_KEY_TASK_NOT_FOUND);
@@ -64,7 +64,7 @@ public class AssigneeController {
     }
 
     @RequestMapping(method = RequestMethod.DELETE, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public HttpEntity remove(@PathVariable("projectId") Long projectId, @PathVariable("taskId") Long taskId, @RequestBody Member member) {
+    public HttpEntity remove(@PathVariable("projectId") Long projectId, @PathVariable("taskId") Long taskId, @RequestBody ProjectMember member) {
         Task task = repository.findOne(taskId);
         if (task == null) {
             throw new BusinessException(HttpStatus.NOT_FOUND, MESSAGE_KEY_TASK_NOT_FOUND);

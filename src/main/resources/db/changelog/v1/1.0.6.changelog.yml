@@ -1,0 +1,14 @@
+## YAML Template.
+---
+databaseChangeLog:
+  - changeSet:
+        id: schema-1.0.6-inituser
+        author: ben
+        changes:
+           - sql:
+                sql: delete from kyt_user where id = 1;             
+           - sql:
+                sql: insert into kyt_user (id, username, password, email, application_role) values (1, 'admin','$2a$10$v.Vkaz5PddwFwDMsIOhiwOGeAHuGqZVDhaycH.e9v1iygr6LcDppu', '', 0); 
+           - sql:
+                sql: update kyt_internal_sequence set sequence_next_hi_value = (select (max(id) + 1) from kyt_user) where sequence_name = 'user_generator' ;
+           

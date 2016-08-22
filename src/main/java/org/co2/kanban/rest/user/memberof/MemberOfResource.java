@@ -5,7 +5,7 @@
  */
 package org.co2.kanban.rest.user.memberof;
 
-import org.co2.kanban.repository.member.Member;
+import org.co2.kanban.repository.member.ProjectMember;
 import org.co2.kanban.repository.member.ProjectRole;
 import org.springframework.hateoas.ResourceSupport;
 
@@ -15,9 +15,9 @@ import org.springframework.hateoas.ResourceSupport;
  */
 public class MemberOfResource extends ResourceSupport {
 
-    private final Member member;
+    private final ProjectMember member;
 
-    public MemberOfResource(Member member) {
+    public MemberOfResource(ProjectMember member) {
         this.member = member;
     }
 

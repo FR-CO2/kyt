@@ -5,7 +5,7 @@
  */
 package org.co2.kanban.repository.project;
 
-import org.co2.kanban.repository.member.Member;
+import org.co2.kanban.repository.member.ProjectMember;
 import org.co2.kanban.repository.state.State;
 import org.co2.kanban.repository.swimlane.Swimlane;
 import org.co2.kanban.repository.task.Task;
@@ -15,10 +15,11 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.TableGenerator;
 import org.co2.kanban.repository.Identifiable;
 import org.co2.kanban.repository.category.Category;
 
@@ -32,10 +33,11 @@ public class Project implements Serializable, Identifiable {
 
     private static final long serialVersionUID = -5617478169888450195L;
 
-    
-    @SequenceGenerator(name = "project_generator", sequenceName = "project_pkey_seq")
+    @TableGenerator(
+            name = "project_generator", table = "kyt_internal_sequence", pkColumnName = "sequence_name",
+            valueColumnName = "sequence_next_hi_value", pkColumnValue = "project_generator")
     @Id
-    @GeneratedValue(generator = "project_generator")
+    @GeneratedValue(generator = "project_generator", strategy = GenerationType.TABLE )
     private Long id;
 
     private String name;
@@ -50,7 +52,7 @@ public class Project implements Serializable, Identifiable {
     private List<Swimlane> swimlanes = new ArrayList<>();
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
-    private List<Member> members = new ArrayList<>();
+    private List<ProjectMember> members = new ArrayList<>();
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     private List<Category> categories = new ArrayList<>();
@@ -96,11 +98,11 @@ public class Project implements Serializable, Identifiable {
         this.tasks = tasks;
     }
 
-    public List<Member> getMembers() {
+    public List<ProjectMember> getMembers() {
         return members;
     }
 
-    public void setMembers(List<Member> members) {
+    public void setMembers(List<ProjectMember> members) {
         this.members = members;
     }
 

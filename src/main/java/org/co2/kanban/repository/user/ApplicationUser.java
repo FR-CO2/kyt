@@ -5,7 +5,7 @@
  */
 package org.co2.kanban.repository.user;
 
-import org.co2.kanban.repository.member.Member;
+import org.co2.kanban.repository.member.ProjectMember;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,10 +13,11 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.TableGenerator;
 import org.co2.kanban.repository.Identifiable;
 
 /**
@@ -29,9 +30,11 @@ public class ApplicationUser implements Serializable, Identifiable {
 
     private static final long serialVersionUID = 1590255859243784563L;
 
-    @SequenceGenerator(name = "user_generator", sequenceName = "user_pkey_seq")
+    @TableGenerator(
+            name = "user_generator", table = "kyt_internal_sequence", pkColumnName = "sequence_name",
+            valueColumnName = "sequence_next_hi_value", pkColumnValue = "user_generator")
     @Id
-    @GeneratedValue(generator = "user_generator")
+    @GeneratedValue(generator = "user_generator", strategy = GenerationType.TABLE)
     private Long id;
 
     private String username;
@@ -46,8 +49,9 @@ public class ApplicationUser implements Serializable, Identifiable {
     private byte[] photo;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Member> members = new ArrayList<>();
+    private List<ProjectMember> members = new ArrayList<>();
 
+    @Override
     public Long getId() {
         return id;
     }
@@ -92,11 +96,11 @@ public class ApplicationUser implements Serializable, Identifiable {
         return this.getApplicationRole().equals(role);
     }
 
-    public List<Member> getMembers() {
+    public List<ProjectMember> getMembers() {
         return members;
     }
 
-    public void setMembers(List<Member> members) {
+    public void setMembers(List<ProjectMember> members) {
         this.members = members;
     }
 

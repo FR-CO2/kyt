@@ -8,9 +8,10 @@ package org.co2.kanban.repository.config;
 import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.TableGenerator;
 import org.co2.kanban.repository.Identifiable;
 
 /**
@@ -23,9 +24,11 @@ public class Parameter implements Serializable, Identifiable {
 
     private static final long serialVersionUID = -7133694782401886935L;
 
-    @SequenceGenerator(name = "config_generator", sequenceName = "parameter_pkey_seq")
+    @TableGenerator(
+            name = "config_generator", table = "kyt_internal_sequence", pkColumnName = "sequence_name",
+            valueColumnName = "sequence_next_hi_value", pkColumnValue = "config_generator")
     @Id
-    @GeneratedValue(generator = "config_generator")
+    @GeneratedValue(generator = "config_generator", strategy = GenerationType.TABLE)
     private Long id;
 
     private ParameterType category;
@@ -41,14 +44,14 @@ public class Parameter implements Serializable, Identifiable {
         this.id = id;
     }
 
-    public String getKeyParam(){
+    public String getKeyParam() {
         return this.keyParam;
     }
-    
-    public void setKeyParam(String key){
+
+    public void setKeyParam(String key) {
         this.keyParam = key;
     }
-    
+
     public void setValueParam(String value) {
         this.valueParam = value;
     }

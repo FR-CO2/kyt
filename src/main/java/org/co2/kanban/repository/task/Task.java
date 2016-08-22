@@ -8,7 +8,7 @@ package org.co2.kanban.repository.task;
 import org.co2.kanban.repository.project.Project;
 import org.co2.kanban.repository.state.State;
 import org.co2.kanban.repository.category.Category;
-import org.co2.kanban.repository.member.Member;
+import org.co2.kanban.repository.member.ProjectMember;
 import org.co2.kanban.repository.swimlane.Swimlane;
 import org.co2.kanban.repository.allocation.Allocation;
 import java.io.Serializable;
@@ -18,14 +18,15 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.TableGenerator;
 import org.co2.kanban.repository.Identifiable;
 import org.co2.kanban.repository.comment.Comment;
 import org.co2.kanban.repository.taskfield.TaskField;
@@ -40,9 +41,11 @@ public class Task implements Serializable, Identifiable {
 
     private static final long serialVersionUID = -7133694782401886935L;
 
-    @SequenceGenerator(name = "task_generator", sequenceName = "task_pkey_seq")
+    @TableGenerator(
+            name = "task_generator", table = "kyt_internal_sequence", pkColumnName = "sequence_name",
+            valueColumnName = "sequence_next_hi_value", pkColumnValue = "task_generator")
     @Id
-    @GeneratedValue(generator = "task_generator")
+    @GeneratedValue(generator = "task_generator", strategy = GenerationType.TABLE)
     private Long id;
 
     private String name;
@@ -103,7 +106,11 @@ public class Task implements Serializable, Identifiable {
             inverseJoinColumns
             = @JoinColumn(name = "member_id", referencedColumnName = "ID")
     )
-    private List<Member> assignees;
+    private List<ProjectMember> assignees;
+    
+    private Boolean urgent;
+    
+    private Boolean deleted;
 
     public Long getId() {
         return id;
@@ -177,11 +184,11 @@ public class Task implements Serializable, Identifiable {
         this.lastModified = lastModified;
     }
 
-    public List<Member> getAssignees() {
+    public List<ProjectMember> getAssignees() {
         return assignees;
     }
 
-    public void setAssignees(List<Member> assignees) {
+    public void setAssignees(List<ProjectMember> assignees) {
         this.assignees = assignees;
     }
 
@@ -248,6 +255,21 @@ public class Task implements Serializable, Identifiable {
     public void setCustomField(List<TaskField> customField) {
         this.customField = customField;
     }
-    
 
+    public Boolean isUrgent() {
+        return urgent;
+    }
+
+    public void setUrgent(Boolean urgent) {
+        this.urgent = urgent;
+    }
+    
+    public Boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
+    }
+    
 }

@@ -11,11 +11,12 @@ import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.TableGenerator;
 import org.co2.kanban.repository.Identifiable;
 
 /**
@@ -28,18 +29,19 @@ public class Category implements Serializable, Identifiable {
 
     private static final long serialVersionUID = 8473515701046153275L;
 
-    
-    @SequenceGenerator(name = "category_generator", sequenceName = "category_pkey_seq")
+    @TableGenerator(
+            name = "category_generator", table = "kyt_internal_sequence", pkColumnName = "sequence_name",
+            valueColumnName = "sequence_next_hi_value", pkColumnValue = "category_generator")
     @Id
-    @GeneratedValue(generator = "category_generator")
+    @GeneratedValue(generator = "category_generator", strategy = GenerationType.TABLE)
     private Long id;
 
     private String name;
-    
+
     private String bgcolor;
-    
+
     private String color;
-    
+
     @ManyToOne
     private Project project;
 

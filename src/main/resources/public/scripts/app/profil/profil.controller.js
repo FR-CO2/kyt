@@ -1,5 +1,6 @@
 var profilController = function (scope, $http, currentuser) {
     var vm = this;
+    vm.newPhoto = '';
     currentuser.$promise.then(function () {
         vm.profil = currentuser;
         if (currentuser._links.member) {
@@ -11,7 +12,7 @@ var profilController = function (scope, $http, currentuser) {
         var reader = new FileReader();
         reader.onload = function (evt) {
             scope.$apply(function () {
-                vm.profil.photoTemp = evt.target.result;
+                vm.photoTemp = evt.target.result;
             });
         };
         reader.readAsDataURL(file);
@@ -25,13 +26,15 @@ var profilController = function (scope, $http, currentuser) {
                 formData.append("password", vm.profil.password);
             }
             formData.append("email", vm.profil.email);
-            formData.append("photo", vm.profil.photo);
+            formData.append("photo", vm.newPhoto);
             $http({
                 method: "POST",
                 url: currentuser._links.self,
                 data: formData,
                 headers: {'Content-Type': undefined},
                 transformRequest: angular.identity
+            }).then(function() {
+                currentuser.photo = vm.newPhoto;
             });
         }
     };

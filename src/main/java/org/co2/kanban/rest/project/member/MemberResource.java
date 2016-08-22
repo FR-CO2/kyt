@@ -6,7 +6,7 @@
 package org.co2.kanban.rest.project.member;
 
 import java.io.File;
-import org.co2.kanban.repository.member.Member;
+import org.co2.kanban.repository.member.ProjectMember;
 import org.co2.kanban.repository.member.ProjectRole;
 import org.co2.kanban.rest.IdentifiableResourceSupport;
 
@@ -14,9 +14,9 @@ import org.co2.kanban.rest.IdentifiableResourceSupport;
  *
  * @author ben
  */
-public class MemberResource extends IdentifiableResourceSupport<Member> {
+public class MemberResource extends IdentifiableResourceSupport<ProjectMember> {
 
-    public MemberResource(Member member) {
+    public MemberResource(ProjectMember member) {
         super(member);
     }
 

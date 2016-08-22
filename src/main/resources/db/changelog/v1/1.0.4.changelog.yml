@@ -1,0 +1,80 @@
+## YAML Template.
+---
+databaseChangeLog:
+  - changeSet:
+        id: schema-1.0.4-tableseq_generator
+        author: ben
+        changes:
+           - createTable:
+                tableName: kyt_internal_sequence
+                columns:
+                    - column:
+                        name: sequence_name
+                        type: varchar(255)
+                        constraints:
+                            primaryKey: true
+                            nullable: false
+                    - column:
+                        name: sequence_next_hi_value
+                        type: BIGINT
+                        constraints:
+                            nullable: false
+           - dropSequence:
+                sequenceName: allocation_pkey_seq
+           - dropSequence:
+                sequenceName: category_pkey_seq                
+           - dropSequence:
+                sequenceName: comment_pkey_seq
+           - dropSequence:
+                sequenceName: member_pkey_seq
+           - dropSequence:
+                sequenceName: project_pkey_seq
+           - dropSequence:
+                sequenceName: state_pkey_seq
+           - dropSequence:
+                sequenceName: swimlane_pkey_seq
+           - dropSequence:
+                sequenceName: task_pkey_seq
+           - dropSequence:
+                sequenceName: user_pkey_seq  
+           - dropSequence:
+                sequenceName: task_field_def_pkey_seq
+           - dropSequence:
+                sequenceName: parameter_pkey_seq  
+           - sql:
+                comment: Initialize sequence table with max id if database already initialized
+                sql: insert into kyt_internal_sequence (sequence_name, sequence_next_hi_value) select 'user_generator', (COALESCE(max(id), 0) + 1) from kyt_user; 
+           - sql:
+                comment: Initialize sequence table with max id if database already initialized
+                sql: insert into kyt_internal_sequence (sequence_name, sequence_next_hi_value) select 'allocation_generator', (COALESCE(max(id), 0) + 1) from kyt_allocation; 
+           - sql:
+                comment: Initialize sequence table with max id if database already initialized
+                sql: insert into kyt_internal_sequence (sequence_name, sequence_next_hi_value) select 'category_generator', (COALESCE(max(id), 0) + 1) from KYT_CATEGORY; 
+           - sql:
+                comment: Initialize sequence table with max id if database already initialized
+                sql: insert into kyt_internal_sequence (sequence_name, sequence_next_hi_value) select 'comment_generator', (COALESCE(max(id), 0) + 1) from KYT_TASK_COMMENT; 
+           - sql:
+                comment: Initialize sequence table with max id if database already initialized
+                sql: insert into kyt_internal_sequence (sequence_name, sequence_next_hi_value) select 'config_generator', (COALESCE(max(id), 0) + 1) from KYT_API_PARAMETER; 
+           - sql:
+                comment: Initialize sequence table with max id if database already initialized
+                sql: insert into kyt_internal_sequence (sequence_name, sequence_next_hi_value) select 'member_generator', (COALESCE(max(id), 0) + 1) from KYT_MEMBER;                 
+           - sql:
+                comment: Initialize sequence table with max id if database already initialized
+                sql: insert into kyt_internal_sequence (sequence_name, sequence_next_hi_value) select 'project_generator', (COALESCE(max(id), 0) + 1) from KYT_PROJECT; 
+           - sql:
+                comment: Initialize sequence table with max id if database already initialized
+                sql: insert into kyt_internal_sequence (sequence_name, sequence_next_hi_value) select 'state_generator', (COALESCE(max(id), 0) + 1) from KYT_STATE; 
+           - sql:
+                comment: Initialize sequence table with max id if database already initialized
+                sql: insert into kyt_internal_sequence (sequence_name, sequence_next_hi_value) select 'swimlane_generator', (COALESCE(max(id), 0) + 1) from KYT_SWIMLANE; 
+           - sql:
+                comment: Initialize sequence table with max id if database already initialized
+                sql: insert into kyt_internal_sequence (sequence_name, sequence_next_hi_value) select 'task_generator', (COALESCE(max(id), 0) + 1) from KYT_TASK; 
+           - sql:
+                comment: Initialize sequence table with max id if database already initialized
+                sql: insert into kyt_internal_sequence (sequence_name, sequence_next_hi_value) select 'taskfielddef_generator', (COALESCE(max(id), 0) + 1) from kyt_task_field_def;                  
+
+        rollback:
+                - dropTable:
+                    tableName: kyt_api_parameter

@@ -5,3 +5,4 @@ $.css.map
 /node/
 /jspm_packages/
 .idea/
+ src/main/resources/public/scripts/bundle.js

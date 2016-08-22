@@ -1,0 +1,17 @@
+## YAML Template.
+---
+databaseChangeLog:
+  - changeSet:
+        id: schema-1.0.5-urgenttask
+        author: stan
+        changes:
+            - addColumn:
+                    tableName: kyt_task
+                    columns:
+                    - column:
+                        name: urgent
+                        type: boolean
+        rollback:
+            - dropColumn:
+                columnName: urgent
+                tableName: kyt_task

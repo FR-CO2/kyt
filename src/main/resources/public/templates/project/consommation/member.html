@@ -1,10 +1,11 @@
 <header class="heading">
     <h2 class="heading__title pull-left">Projet : {{projectCtrl.project.name}}</h2>
-    <div class="heading__action pull-right">
-        <button class="btn btn-info btn-sm" ui-sref="app.project.tasks({projectId: projectCtrl.project.id })"><span class="glyphicon glyphicon-tasks"></span> Voir toutes les tâches</button>
-        <button class="btn btn-info btn-sm" ui-sref="app.project.kanban({projectId: projectCtrl.project.id })"><span class="glyphicon glyphicon-equalizer"></span> Kanban</button>
-        <button ng-if="projectCtrl.rights.hasEditRights" class="btn btn-info btn-sm" ui-sref="app.project.gantt({projectId: projectCtrl.project.id })"><span class="glyphicon glyphicon-road"></span> Gantt</button>
-    </div>
+    <ul class="nav nav-tabs pull-left">
+        <li class="nav__link"><a ui-sref="app.project.kanban({projectId: projectCtrl.project.id })"><span class="glyphicon glyphicon-equalizer"></span> Kanban</a></li>
+        <li class="nav__link"><a ui-sref="app.project.tasks({projectId: projectCtrl.project.id })"><span class="glyphicon glyphicon-tasks"></span> Liste des tâches</a></li>
+        <li class="nav__link active"><a ng-if="projectCtrl.rights.hasEditRights" ui-sref="app.project.consommation({projectId: projectCtrl.project.id })"><span class="glyphicon glyphicon-time"></span> Consommations</a></li>
+        <li class="nav__link"><a ng-if="projectCtrl.rights.hasEditRights" ui-sref="app.project.gantt({projectId: projectCtrl.project.id })"><span class="glyphicon glyphicon-road"></span> Gantt</a></li>
+    </ul>
 </header>
 <div class="col-md-12">
     <div class="panel">
