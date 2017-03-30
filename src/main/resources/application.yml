@@ -3,6 +3,8 @@
 endpoints :
     shutdown :
         enabled : true
+server:
+    port: 8090
 
 spring:
     profiles:

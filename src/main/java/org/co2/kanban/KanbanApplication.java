@@ -6,6 +6,9 @@
 package org.co2.kanban;
 
 import java.util.Locale;
+
+import nl.renarj.jasdb.core.SimpleKernel;
+import nl.renarj.jasdb.core.exceptions.JasDBException;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -19,6 +22,8 @@ import org.springframework.hateoas.config.EnableHypermediaSupport;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.i18n.FixedLocaleResolver;
+
+import javax.annotation.PreDestroy;
 
 /**
  *
@@ -55,5 +60,17 @@ public class KanbanApplication {
         messageSource.setCacheSeconds(0);
 
         return messageSource;
+    }
+
+    /**
+     * Fonction qui permet de fermer jasDB lors de l'arrêt du serveur afin de ne pas locker la bdd.
+     */
+    @PreDestroy
+    protected void shutdown() {
+        try {
+            SimpleKernel.shutdown();
+        } catch (JasDBException e) {
+            e.printStackTrace();
+        }
     }
 }

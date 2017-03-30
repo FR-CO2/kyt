@@ -94,20 +94,15 @@ public class ArchivableAspect {
 
         Date date = new Date();
         taskHisto.setDateModif(new Timestamp(date.getTime()));
-        taskHisto.setTask(task);
+        taskHisto.setTaskId(task.getId());
 
         ApplicationUser appUser = applicationUserRepository.findByUsername(user.getName());
         taskHisto.setAssignee(appUser);
 
-        TaskHisto.TaskHistoContent content = new TaskHisto.TaskHistoContent();
-        HistoryUser writer = new HistoryUser();
-        writer.setId(appUser.getId());
-        writer.setUsername(appUser.getUsername());
-        content.setWriter(writer);
+        taskHisto.setUserIdWriter(appUser.getId());
+        taskHisto.setUsernameWriter(appUser.getUsername());
+        taskHisto.setActionValue(action.getValue());
 
-        content.setAction(action);
-
-        taskHisto.setHistoContent(content);
         taskHistoRepository.save(taskHisto);
     }
 }

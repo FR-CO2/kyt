@@ -33,19 +33,19 @@ public class TaskHistoAssembler extends ResourceAssemblerSupport<TaskHisto, Task
     @Override
     public TaskHistoResource toResource(TaskHisto taskHisto) {
         TaskHistoResource resource = new TaskHistoResource(taskHisto);
-        resource.add(linkTo(methodOn(ProjectController.class).get(taskHisto.getTask().getProject().getId())).withRel("project"));
-        resource.add(linkTo(methodOn(StateController.class).get(taskHisto.getTask().getProject().getId(), taskHisto.getTask().getState().getId())).withRel("state"));
-        resource.add(linkTo(methodOn(AssigneeController.class).list(taskHisto.getTask().getProject().getId(), taskHisto.getTask().getId())).withRel("assignee"));
-        if (taskHisto.getTask().getSwimlane() != null) {
-            resource.add(linkTo(methodOn(SwimlaneController.class).get(taskHisto.getTask().getProject().getId(), taskHisto.getTask().getSwimlane().getId())).withRel("swimlane"));
+        resource.add(linkTo(methodOn(ProjectController.class).get(taskHisto.getProjectId())).withRel("project"));
+        resource.add(linkTo(methodOn(StateController.class).get(taskHisto.getProjectId(), taskHisto.getStateId())).withRel("state"));
+        resource.add(linkTo(methodOn(AssigneeController.class).list(taskHisto.getProjectId(), taskHisto.getTaskId())).withRel("assignee"));
+        if (taskHisto.getSwinlameId() != null) {
+            resource.add(linkTo(methodOn(SwimlaneController.class).get(taskHisto.getTaskId(), taskHisto.getSwinlameId())).withRel("swimlane"));
         }
-        if (taskHisto.getTask().getCategory() != null) {
-            resource.add(linkTo(methodOn(CategoryController.class).get(taskHisto.getTask().getProject().getId(), taskHisto.getTask().getCategory().getId())).withRel("category"));
+        if (taskHisto.getCategoryId() != null) {
+            resource.add(linkTo(methodOn(CategoryController.class).get(taskHisto.getTaskId(), taskHisto.getCategoryId())).withRel("category"));
         }
-        resource.add(linkTo(methodOn(AllocationController.class).list(taskHisto.getTask().getProject().getId(), taskHisto.getTask().getId())).withRel("allocation"));
-        resource.add(linkTo(methodOn(TaskFieldController.class).list(taskHisto.getTask().getProject().getId(), taskHisto.getTask().getId())).withRel("customfield"));
-        resource.add(linkTo(methodOn(TaskLinkController.class).parents(taskHisto.getTask().getProject().getId(), taskHisto.getTask().getId())).withRel("parents"));
-        resource.add(linkTo(methodOn(TaskLinkController.class).children(taskHisto.getTask().getProject().getId(), taskHisto.getTask().getId())).withRel("children"));
+        resource.add(linkTo(methodOn(AllocationController.class).list(taskHisto.getProjectId(), taskHisto.getTaskId())).withRel("allocation"));
+        resource.add(linkTo(methodOn(TaskFieldController.class).list(taskHisto.getProjectId(), taskHisto.getTaskId())).withRel("customfield"));
+        resource.add(linkTo(methodOn(TaskLinkController.class).parents(taskHisto.getProjectId(), taskHisto.getTaskId())).withRel("parents"));
+        resource.add(linkTo(methodOn(TaskLinkController.class).children(taskHisto.getProjectId(), taskHisto.getTaskId())).withRel("children"));
         return resource;
     }
 
