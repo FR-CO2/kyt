@@ -8,6 +8,8 @@ package org.co2.kanban.business.project.task.history;
 import java.security.Principal;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
+
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
@@ -86,10 +88,10 @@ public class ArchivableAspect {
         Sort sorting = new Sort(dir, sort);
         PageRequest pageable = new PageRequest(1, 1, sorting);
         TaskHisto taskHisto = new TaskHisto();
-        Page<TaskHisto> page = taskHistoRepository.findTop1ByTaskId(task.getId(), pageable);
+        List<TaskHisto> tasksHisto = taskHistoRepository.findTop1ByTaskId(task.getId(), 10);
         taskHisto.setVersionId(0L);
-        if (page.getTotalElements() > 0) {
-            taskHisto.setVersionId(page.getContent().get(0).getVersionId() + 1);
+        if (tasksHisto.size() > 0) {
+            taskHisto.setVersionId(tasksHisto.get(0).getVersionId() + 1);
         }
 
         Date date = new Date();
@@ -97,8 +99,6 @@ public class ArchivableAspect {
         taskHisto.setTaskId(task.getId());
 
         ApplicationUser appUser = applicationUserRepository.findByUsername(user.getName());
-        taskHisto.setAssignee(appUser);
-
         taskHisto.setUserIdWriter(appUser.getId());
         taskHisto.setUsernameWriter(appUser.getUsername());
         taskHisto.setActionValue(action.getValue());

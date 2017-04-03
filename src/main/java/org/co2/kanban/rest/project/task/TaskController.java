@@ -20,7 +20,6 @@ import org.co2.kanban.repository.task.TaskRepository;
 import org.co2.kanban.repository.taskfield.TaskField;
 import org.co2.kanban.repository.taskfield.TaskFieldRepository;
 import org.co2.kanban.repository.taskfield.TaskFieldType;
-import org.co2.kanban.repository.taskhisto.TaskHistoRepository;
 import org.co2.kanban.repository.user.ApplicationUserRepository;
 import org.co2.kanban.rest.error.BusinessException;
 import org.co2.kanban.rest.project.task.histo.TaskHistoAssembler;
@@ -61,9 +60,6 @@ public class TaskController {
 
     @Autowired
     private TaskFieldRepository fieldRepository;
-
-    @Autowired
-    private TaskHistoRepository taskHistoRepository;
 
     @Autowired
     private TaskHistoAssembler taskHistoAssembler;

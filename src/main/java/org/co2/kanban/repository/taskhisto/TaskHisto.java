@@ -28,7 +28,6 @@ public class TaskHisto implements Identifiable {
     private Long swinlameId;
     private Long categoryId;
     private Timestamp dateModif;
-    private ApplicationUser assignee;
     private Long userIdWriter;
     private String usernameWriter;
     private int actionValue;
@@ -96,14 +95,6 @@ public class TaskHisto implements Identifiable {
     }
     public void setDateModif(Timestamp dateModif) {
         this.dateModif = dateModif;
-    }
-
-    @JasDBProperty
-    public ApplicationUser getAssignee() {
-        return assignee;
-    }
-    public void setAssignee(ApplicationUser assignee) {
-        this.assignee = assignee;
     }
 
     @JasDBProperty
