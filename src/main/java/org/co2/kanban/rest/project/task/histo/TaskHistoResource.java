@@ -5,16 +5,16 @@
  */
 package org.co2.kanban.rest.project.task.histo;
 
-import org.co2.kanban.repository.taskhisto.TaskHisto;
+import org.co2.kanban.business.project.task.history.TaskHistoRest;
 import org.co2.kanban.rest.IdentifiableResourceSupport;
 
 /**
  *
  * @author ben
  */
-public class TaskHistoResource extends IdentifiableResourceSupport<TaskHisto> {
+public class TaskHistoResource extends IdentifiableResourceSupport<TaskHistoRest> {
 
-    public TaskHistoResource(TaskHisto task) {
+    public TaskHistoResource(TaskHistoRest task) {
         super(task);
     }
 }

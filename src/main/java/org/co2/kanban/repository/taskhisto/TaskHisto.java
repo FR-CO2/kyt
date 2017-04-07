@@ -18,90 +18,126 @@ import org.co2.kanban.repository.user.ApplicationUser;
  * @author stan
  */
 @JasDBEntity(bagName = "KYT_TASK_HISTO")
-public class TaskHisto implements Identifiable {
+public class TaskHisto {
 
-    private Long id;
-    private Long taskId;
-    private Long versionId;
-    private Long projectId;
-    private Long stateId;
-    private Long swinlameId;
-    private Long categoryId;
-    private Timestamp dateModif;
-    private Long userIdWriter;
+    private String id;
+    private String taskId;
+    private String versionId;
+    private String projectId;
+    private String projectName;
+    private String stateId;
+    private String stateName;
+    private String swinlameId;
+    private String swinlameName;
+    private String categoryId;
+    private String categoryName;
+    private String dateModif;
+    private String userIdWriter;
     private String usernameWriter;
-    private int actionValue;
+    private String actionValue;
 
     @Id
     @JasDBProperty
-    public Long getId() {
+    public String getId() {
         return id;
     }
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
     @JasDBProperty
-    public Long getTaskId() {
+    public String getTaskId() {
         return taskId;
     }
-    public void setTaskId(Long taskid) {
+    public void setTaskId(String taskId) {
         this.taskId = taskId;
     }
 
     @JasDBProperty
-    public Long getVersionId() {
+    public String getVersionId() {
         return versionId;
     }
-    public void setVersionId(Long versionId) {
+    public void setVersionId(String versionId) {
         this.versionId = versionId;
     }
 
     @JasDBProperty
-    public Long getProjectId() {
+    public String getProjectId() {
         return projectId;
     }
-    public void setProjectId(Long projectId) {
+    public void setProjectId(String projectId) {
         this.projectId = projectId;
     }
 
     @JasDBProperty
-    public Long getStateId() {
+    public String getProjectName() {
+        return projectName;
+    }
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
+    }
+
+    @JasDBProperty
+    public String getStateId() {
         return stateId;
     }
-    public void setStateId(Long stateId) {
+    public void setStateId(String stateId) {
         this.stateId = stateId;
     }
 
     @JasDBProperty
-    public Long getSwinlameId() {
+    public String getStateName() {
+        return stateName;
+    }
+    public void setStateName(String stateName) {
+        this.stateName = stateName;
+    }
+
+    @JasDBProperty
+    public String getSwinlameId() {
         return swinlameId;
     }
-    public void setSwinlameId(Long swinlameId) {
+    public void setSwinlameId(String swinlameId) {
         this.swinlameId = swinlameId;
     }
 
     @JasDBProperty
-    public Long getCategoryId() {
+    public String getSwinlameName() {
+        return swinlameName;
+    }
+    public void setSwinlameName(String swinlameName) {
+        this.swinlameName = swinlameName;
+    }
+
+    @JasDBProperty
+    public String getCategoryId() {
         return categoryId;
     }
-    public void setCategoryId(Long categoryId) {
+    public void setCategoryId(String categoryId) {
         this.categoryId = categoryId;
     }
 
     @JasDBProperty
-    public Timestamp getDateModif() {
+    public String getCategoryName() {
+        return categoryName;
+    }
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
+    @JasDBProperty
+    public String getDateModif() {
         return dateModif;
     }
-    public void setDateModif(Timestamp dateModif) {
+    public void setDateModif(String dateModif) {
         this.dateModif = dateModif;
     }
 
     @JasDBProperty
-    public Long getUserIdWriter() {
+    public String getUserIdWriter() {
         return userIdWriter;
     }
-    public void setUserIdWriter(Long userIdWriter) {
+    public void setUserIdWriter(String userIdWriter) {
         this.userIdWriter = userIdWriter;
     }
 
@@ -114,10 +150,10 @@ public class TaskHisto implements Identifiable {
     }
 
     @JasDBProperty
-    public int getActionValue() {
+    public String getActionValue() {
         return actionValue;
     }
-    public void setActionValue(int actionValue) {
+    public void setActionValue(String actionValue) {
         this.actionValue = actionValue;
     }
 

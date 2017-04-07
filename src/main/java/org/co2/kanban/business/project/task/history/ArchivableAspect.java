@@ -7,6 +7,7 @@ package org.co2.kanban.business.project.task.history;
 
 import java.security.Principal;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -89,19 +90,36 @@ public class ArchivableAspect {
         PageRequest pageable = new PageRequest(1, 1, sorting);
         TaskHisto taskHisto = new TaskHisto();
         List<TaskHisto> tasksHisto = taskHistoRepository.findTop1ByTaskId(task.getId(), 10);
-        taskHisto.setVersionId(0L);
+        taskHisto.setId("0");
+        if(tasksHisto.size() > 0) {
+          taskHisto.setId(tasksHisto.get(0).getId());
+        }
+        taskHisto.setVersionId("0");
         if (tasksHisto.size() > 0) {
-            taskHisto.setVersionId(tasksHisto.get(0).getVersionId() + 1);
+            Integer numVersion = Integer.parseInt(tasksHisto.get(0).getVersionId()) + 1;
+            taskHisto.setVersionId(numVersion.toString());
         }
 
         Date date = new Date();
-        taskHisto.setDateModif(new Timestamp(date.getTime()));
-        taskHisto.setTaskId(task.getId());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        taskHisto.setDateModif(dateFormat.format(new Date()));
+        taskHisto.setTaskId(task.getId().toString());
+        taskHisto.setProjectId(project.getId().toString());
+        if(!project.getStates().isEmpty()) {
+            taskHisto.setStateId(project.getStates().get(0).getId().toString());
+        }
+        if(!project.getSwimlanes().isEmpty()){
+            taskHisto.setSwinlameId(project.getSwimlanes().get(0).getId().toString());
+        }
+        if(!project.getCategories().isEmpty()){
+            taskHisto.setCategoryId(project.getCategories().get(0).getId().toString());
+        }
+
 
         ApplicationUser appUser = applicationUserRepository.findByUsername(user.getName());
-        taskHisto.setUserIdWriter(appUser.getId());
+        taskHisto.setUserIdWriter(appUser.getId().toString());
         taskHisto.setUsernameWriter(appUser.getUsername());
-        taskHisto.setActionValue(action.getValue());
+        taskHisto.setActionValue(String.valueOf(action.getValue()));
 
         taskHistoRepository.save(taskHisto);
     }

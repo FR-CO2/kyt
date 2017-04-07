@@ -5,8 +5,8 @@
  */
 package org.co2.kanban.rest.project.task.histo;
 
+import org.co2.kanban.business.project.task.history.TaskHistoRest;
 import org.co2.kanban.rest.project.task.field.*;
-import org.co2.kanban.repository.taskhisto.TaskHisto;
 import org.co2.kanban.rest.project.ProjectController;
 import org.co2.kanban.rest.project.category.CategoryController;
 import org.co2.kanban.rest.project.state.StateController;
@@ -24,14 +24,14 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
  * @author ben
  */
 @Component
-public class TaskHistoAssembler extends ResourceAssemblerSupport<TaskHisto, TaskHistoResource> {
+public class TaskHistoAssembler extends ResourceAssemblerSupport<TaskHistoRest, TaskHistoResource> {
 
     public TaskHistoAssembler() {
         super(TaskHistoController.class, TaskHistoResource.class);
     }
 
     @Override
-    public TaskHistoResource toResource(TaskHisto taskHisto) {
+    public TaskHistoResource toResource(TaskHistoRest taskHisto) {
         TaskHistoResource resource = new TaskHistoResource(taskHisto);
         resource.add(linkTo(methodOn(ProjectController.class).get(taskHisto.getProjectId())).withRel("project"));
         resource.add(linkTo(methodOn(StateController.class).get(taskHisto.getProjectId(), taskHisto.getStateId())).withRel("state"));

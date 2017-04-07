@@ -7,8 +7,11 @@ package org.co2.kanban;
 
 import java.util.Locale;
 
+import nl.renarj.jasdb.LocalDBSession;
+import nl.renarj.jasdb.api.DBSession;
 import nl.renarj.jasdb.core.SimpleKernel;
 import nl.renarj.jasdb.core.exceptions.JasDBException;
+import nl.renarj.jasdb.core.exceptions.JasDBStorageException;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -60,6 +63,15 @@ public class KanbanApplication {
         messageSource.setCacheSeconds(0);
 
         return messageSource;
+    }
+
+    @Bean
+    public DBSession jasDbSession() {
+        try {
+            return new LocalDBSession();
+        } catch (JasDBStorageException e) {
+            throw new RuntimeException("Context jasDB non initialisé", e);
+        }
     }
 
     /**
