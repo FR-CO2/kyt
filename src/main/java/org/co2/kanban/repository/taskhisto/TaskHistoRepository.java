@@ -5,7 +5,6 @@
  */
 package org.co2.kanban.repository.taskhisto;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -21,10 +20,6 @@ import nl.renarj.jasdb.api.query.QueryResult;
 import nl.renarj.jasdb.core.exceptions.JasDBStorageException;
 import org.co2.kanban.repository.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -60,27 +55,32 @@ public class TaskHistoRepository {
         initializedSession();
         EntityBag bag = session.getBag("KYT_TASK_HISTO");
         QueryExecutor executor = bag.find(QueryBuilder.createBuilder().createBuilder().field("taskId")
-                .value(idTask));
+                .value(idTask.toString()));
         executor.limit(limitVal);
         QueryResult result = executor.execute();
         List<TaskHisto> tasksHisto = new ArrayList<>();
-        for(SimpleEntity entity : result){
+        for (SimpleEntity entity : result) {
             TaskHisto taskHisto = new TaskHisto();
             taskHisto.setId(entity.getValue("id").toString());
-            //taskHisto.setTaskHistoId(Long.parseLong(entity.getValue("id").toString()));
-            /*taskHisto.setTaskId(Long.parseLong(entity.getValues("taskId").toString()));
-            taskHisto.setVersionId(Long.parseLong(entity.getValues("versionId").toString()));
-            taskHisto.setProjectId(Long.parseLong(entity.getValues("projectId").toString()));
-            taskHisto.setStateId(Long.parseLong(entity.getValues("stateId").toString()));
-            taskHisto.setSwinlameId(Long.parseLong(entity.getValues("swinlameId").toString()));
-            taskHisto.setCategoryId(Long.parseLong(entity.getValues("categoryId").toString()));
-            taskHisto.setDateModif(entity.getValues("dateModif").toString());
-            taskHisto.setUserIdWriter(Long.parseLong(entity.getValues("userIdWriter").toString()));
-            taskHisto.setUsernameWriter(entity.getValues("usernameWriter").toString());
-            taskHisto.setActionValue(Integer.valueOf(entity.getValues("actionId").toString()).intValue());*/
+            taskHisto.setTaskId(entity.getProperty("taskId").getFirstValue().toString());
+            taskHisto.setVersionId(entity.getProperty("versionId").getFirstValue().toString());
+            taskHisto.setProjectId(entity.getProperty("projectId").getFirstValue().toString());
+            if(entity.getProperty("stateId") != null) {
+                taskHisto.setStateId(entity.getProperty("stateId").getFirstValue().toString());
+            }
+            if(entity.getProperty("swinlameId") != null) {
+                taskHisto.setSwinlameId(entity.getProperty("swinlameId").getFirstValue().toString());
+            }
+            if(entity.getProperty("categoryId") != null) {
+                taskHisto.setCategoryId(entity.getProperty("categoryId").getFirstValue().toString());
+            }
+            taskHisto.setDateModif(entity.getProperty("dateModif").getFirstValue().toString());
+            taskHisto.setUserIdWriter(entity.getProperty("userIdWriter").getFirstValue().toString());
+            taskHisto.setUsernameWriter(entity.getProperty("usernameWriter").getFirstValue().toString());
+            taskHisto.setActionValue(entity.getProperty("actionValue").getFirstValue().toString());
             tasksHisto.add(taskHisto);
         }
-        return tasksHisto;
+    return tasksHisto;
     }
 
     public TaskHisto findById(Long idTask) throws JasDBStorageException {

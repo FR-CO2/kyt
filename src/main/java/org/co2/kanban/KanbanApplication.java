@@ -5,13 +5,13 @@
  */
 package org.co2.kanban;
 
-import java.util.Locale;
-
 import nl.renarj.jasdb.LocalDBSession;
 import nl.renarj.jasdb.api.DBSession;
 import nl.renarj.jasdb.core.SimpleKernel;
 import nl.renarj.jasdb.core.exceptions.JasDBException;
 import nl.renarj.jasdb.core.exceptions.JasDBStorageException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -27,6 +27,7 @@ import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.i18n.FixedLocaleResolver;
 
 import javax.annotation.PreDestroy;
+import java.util.Locale;
 
 /**
  *
@@ -39,6 +40,8 @@ import javax.annotation.PreDestroy;
 @EnableHypermediaSupport(type = EnableHypermediaSupport.HypermediaType.HAL)
 @ComponentScan
 public class KanbanApplication {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(KanbanApplication.class);
 
     public static void main(String[] args) throws Exception {
         ConfigurableApplicationContext context = SpringApplication.run(KanbanApplication.class, args);
@@ -81,8 +84,10 @@ public class KanbanApplication {
     protected void shutdown() {
         try {
             SimpleKernel.shutdown();
+            LOGGER.error("shutdown success");
         } catch (JasDBException e) {
             e.printStackTrace();
         }
     }
+
 }

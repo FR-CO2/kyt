@@ -91,12 +91,11 @@ public class ArchivableAspect {
         TaskHisto taskHisto = new TaskHisto();
         List<TaskHisto> tasksHisto = taskHistoRepository.findTop1ByTaskId(task.getId(), 10);
         taskHisto.setId("0");
-        if(tasksHisto.size() > 0) {
-          taskHisto.setId(tasksHisto.get(0).getId());
-        }
         taskHisto.setVersionId("0");
-        if (tasksHisto.size() > 0) {
-            Integer numVersion = Integer.parseInt(tasksHisto.get(0).getVersionId()) + 1;
+
+        if(tasksHisto.size() > 0) {
+          taskHisto.setId(tasksHisto.get(tasksHisto.size()-1).getId());
+            Integer numVersion = Integer.parseInt(tasksHisto.get(tasksHisto.size()-1).getVersionId()) + 1;
             taskHisto.setVersionId(numVersion.toString());
         }
 
