@@ -134,15 +134,8 @@
                 <button type="submit" class="btn btn-info" >Enregistrer</button>
             </div>
         </form>
-        <div class="panel-body">
-            <div class="form-group">
-                <span>Historique des taches</span>
-                <ul class="userIcons">
-                    <li ng-repeat="histo in taskHistoCtrl.task.assignees">
-                        <span>{{histo.username}}</span>
-                    </li>
-                </ul>
-            </div>
+        <div ng-controller="histoController as histoTaskCtrl">
+            <div ng-include="'templates/project/task/history/list.html'"></div>
         </div>
     </aside>
 </section>

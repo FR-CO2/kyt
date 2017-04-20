@@ -6,6 +6,9 @@
 package org.co2.kanban.rest.project.task;
 
 import java.security.Principal;
+
+import org.co2.kanban.repository.category.Category;
+import org.co2.kanban.repository.category.CategoryRepository;
 import org.co2.kanban.repository.task.ProjectTaskSearchSpecification;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -58,6 +61,9 @@ public class TaskListController {
 
     @Autowired
     private StateRepository stateRepository;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     @Autowired
     private SwimlaneRepository swimlaneRepository;
@@ -161,6 +167,12 @@ public class TaskListController {
         task.setProject(project);
         State defaultState = stateRepository.findByProjectAndPosition(project, 0L);
         task.setState(defaultState);
+        if(task.getCategory() != null) {
+            task.setCategory(categoryRepository.findOne(task.getCategory().getId()));
+        }
+        if(task.getSwimlane() != null) {
+            task.setSwimlane(swimlaneRepository.findOne(task.getSwimlane().getId()));
+        }
         Date now = new Date();
         task.setCreated(new Timestamp(now.getTime()));
         task.setDeleted(Boolean.FALSE);

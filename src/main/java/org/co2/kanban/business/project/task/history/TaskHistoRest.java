@@ -31,6 +31,7 @@ public class TaskHistoRest implements Identifiable {
     private Long userIdWriter;
     private String usernameWriter;
     private int actionValue;
+    private Long allocationId;
 
     public Long getId() {
         return id;
@@ -141,18 +142,29 @@ public class TaskHistoRest implements Identifiable {
         this.actionValue = actionValue;
     }
 
-    public TaskHistoRest convertTaskHistoRest(TaskHisto taskHisto){
-        TaskHistoRest taskHistoRest = new TaskHistoRest();
-        taskHistoRest.setId(Long.parseLong(taskHisto.getId()));
+    public Long getAllocationId() {
+        return allocationId;
+    }
+    public void setAllocationId(Long allocationId) {
+        this.allocationId = allocationId;
+    }
+
+    public void convertTaskHistoRest(TaskHistoRest taskHistoRest, TaskHisto taskHisto){
         taskHistoRest.setTaskId(Long.parseLong(taskHisto.getTaskId()));
         taskHistoRest.setVersionId(Long.parseLong(taskHisto.getVersionId()));
         taskHistoRest.setProjectId(Long.parseLong(taskHisto.getProjectId()));
         taskHistoRest.setProjectName(taskHisto.getProjectName());
-        taskHistoRest.setStateId(Long.parseLong(taskHisto.getStateId()));
+        if(taskHisto.getStateId()!=null) {
+            taskHistoRest.setStateId(Long.parseLong(taskHisto.getStateId()));
+        }
         taskHistoRest.setStateName(taskHisto.getStateName());
-        taskHistoRest.setSwinlameId(Long.parseLong(taskHisto.getSwinlameId()));
+        if(taskHisto.getSwinlameId() != null) {
+            taskHistoRest.setSwinlameId(Long.parseLong(taskHisto.getSwinlameId()));
+        }
         taskHistoRest.setSwinlameName(taskHisto.getSwinlameName());
-        taskHistoRest.setCategoryId(Long.parseLong(taskHisto.getCategoryId()));
+        if(taskHisto.getCategoryId() != null) {
+            taskHistoRest.setCategoryId(Long.parseLong(taskHisto.getCategoryId()));
+        }
         taskHistoRest.setCategoryName(taskHisto.getCategoryName());
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         try {
@@ -165,6 +177,5 @@ public class TaskHistoRest implements Identifiable {
         taskHistoRest.setUserIdWriter(Long.parseLong(taskHisto.getUserIdWriter()));
         taskHistoRest.setUsernameWriter(taskHisto.getUsernameWriter());
         taskHistoRest.setActionValue(Integer.parseInt(taskHisto.getActionValue()));
-        return taskHistoRest;
     }
 }

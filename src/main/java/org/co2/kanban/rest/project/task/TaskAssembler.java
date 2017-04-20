@@ -16,6 +16,7 @@ import org.co2.kanban.rest.project.task.allocation.AllocationController;
 import org.co2.kanban.rest.project.task.assignee.AssigneeController;
 import org.co2.kanban.rest.project.task.comment.CommentController;
 import org.co2.kanban.rest.project.task.field.TaskFieldController;
+import org.co2.kanban.rest.project.task.histo.TaskHistoController;
 import org.co2.kanban.rest.project.task.link.TaskLinkController;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
@@ -78,6 +79,7 @@ public class TaskAssembler extends ResourceAssemblerSupport<Task, TaskResource> 
         resource.add(linkTo(methodOn(TaskFieldController.class).list(task.getProject().getId(), task.getId())).withRel("customfield"));
         resource.add(linkTo(methodOn(TaskLinkController.class).parents(task.getProject().getId(), task.getId())).withRel("parents"));
         resource.add(linkTo(methodOn(TaskLinkController.class).children(task.getProject().getId(), task.getId())).withRel("children"));
+        resource.add(linkTo(methodOn(TaskHistoController.class).list(task.getProject().getId(), task.getId())).withRel("histo"));
         return resource;
     }
 }

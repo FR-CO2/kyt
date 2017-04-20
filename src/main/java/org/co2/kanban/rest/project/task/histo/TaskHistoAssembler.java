@@ -42,7 +42,6 @@ public class TaskHistoAssembler extends ResourceAssemblerSupport<TaskHistoRest, 
         if (taskHisto.getCategoryId() != null) {
             resource.add(linkTo(methodOn(CategoryController.class).get(taskHisto.getTaskId(), taskHisto.getCategoryId())).withRel("category"));
         }
-        resource.add(linkTo(methodOn(AllocationController.class).list(taskHisto.getProjectId(), taskHisto.getTaskId())).withRel("allocation"));
         resource.add(linkTo(methodOn(TaskFieldController.class).list(taskHisto.getProjectId(), taskHisto.getTaskId())).withRel("customfield"));
         resource.add(linkTo(methodOn(TaskLinkController.class).parents(taskHisto.getProjectId(), taskHisto.getTaskId())).withRel("parents"));
         resource.add(linkTo(methodOn(TaskLinkController.class).children(taskHisto.getProjectId(), taskHisto.getTaskId())).withRel("children"));

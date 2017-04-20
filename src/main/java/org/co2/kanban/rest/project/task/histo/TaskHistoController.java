@@ -5,11 +5,21 @@
  */
 package org.co2.kanban.rest.project.task.histo;
 
+import nl.renarj.jasdb.core.exceptions.JasDBStorageException;
+import org.co2.kanban.business.project.task.history.TaskHistoRest;
+import org.co2.kanban.repository.taskhisto.TaskHisto;
 import org.co2.kanban.repository.taskhisto.TaskHistoRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -20,16 +30,28 @@ import org.springframework.web.bind.annotation.RestController;
 @PreAuthorize("@projectAccessExpression.hasMemberAccess(#projectId, principal.username)")
 public class TaskHistoController {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(TaskHistoController.class);
     @Autowired
     private TaskHistoRepository repository;
 
+    @Autowired
+    private TaskHistoAssembler assembler;
 
-    /*@RequestMapping(method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<InputStreamResource> list() {
-        TaskHisto taskHisto = repository.findById(400L);
-        InputStream in = new ByteArrayInputStream(taskHisto.getFile());
-        InputStreamResource resource = new InputStreamResource(in);
-        return new ResponseEntity<>(resource, HttpStatus.OK);
-    }*/
+    @RequestMapping(method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    public Iterable<TaskHistoResource> list(@PathVariable("projectId") Long projectId, @PathVariable("taskId") Long taskId) {
+        List<TaskHistoRest> tasksHistoRest = new ArrayList<>();
+        try {
+            List<TaskHisto> tasksHisto = repository.findTop1ByTaskId(taskId, 10);
+
+            for(TaskHisto taskHisto : tasksHisto) {
+                TaskHistoRest taskHistoRest = new TaskHistoRest();
+                taskHistoRest.convertTaskHistoRest(taskHistoRest, taskHisto);
+                tasksHistoRest.add(taskHistoRest);
+            }
+        } catch (JasDBStorageException ex){
+            LOGGER.error(ex.getMessage());
+        }
+        return assembler.toResources(tasksHistoRest);
+    }
 
 }

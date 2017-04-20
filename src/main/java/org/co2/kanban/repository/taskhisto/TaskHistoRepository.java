@@ -65,14 +65,18 @@ public class TaskHistoRepository {
             taskHisto.setTaskId(entity.getProperty("taskId").getFirstValue().toString());
             taskHisto.setVersionId(entity.getProperty("versionId").getFirstValue().toString());
             taskHisto.setProjectId(entity.getProperty("projectId").getFirstValue().toString());
+            taskHisto.setProjectName(entity.getProperty("projectName").getFirstValue().toString());
             if(entity.getProperty("stateId") != null) {
                 taskHisto.setStateId(entity.getProperty("stateId").getFirstValue().toString());
+                taskHisto.setStateName(entity.getProperty("stateName").getFirstValue().toString());
             }
             if(entity.getProperty("swinlameId") != null) {
                 taskHisto.setSwinlameId(entity.getProperty("swinlameId").getFirstValue().toString());
+                taskHisto.setSwinlameName(entity.getProperty("swinlameName").getFirstValue().toString());
             }
             if(entity.getProperty("categoryId") != null) {
                 taskHisto.setCategoryId(entity.getProperty("categoryId").getFirstValue().toString());
+                taskHisto.setCategoryName(entity.getProperty("categoryName").getFirstValue().toString());
             }
             taskHisto.setDateModif(entity.getProperty("dateModif").getFirstValue().toString());
             taskHisto.setUserIdWriter(entity.getProperty("userIdWriter").getFirstValue().toString());

@@ -104,14 +104,18 @@ public class ArchivableAspect {
         taskHisto.setDateModif(dateFormat.format(new Date()));
         taskHisto.setTaskId(task.getId().toString());
         taskHisto.setProjectId(project.getId().toString());
-        if(!project.getStates().isEmpty()) {
-            taskHisto.setStateId(project.getStates().get(0).getId().toString());
+        taskHisto.setProjectName(project.getName());
+        if(task.getState() != null) {
+            taskHisto.setStateId(task.getState().getId().toString());
+            taskHisto.setStateName(task.getState().getName());
         }
-        if(!project.getSwimlanes().isEmpty()){
-            taskHisto.setSwinlameId(project.getSwimlanes().get(0).getId().toString());
+        if(task.getSwimlane() != null){
+            taskHisto.setSwinlameId(task.getSwimlane().getId().toString());
+            taskHisto.setSwinlameName(task.getSwimlane().getName());
         }
-        if(!project.getCategories().isEmpty()){
-            taskHisto.setCategoryId(project.getCategories().get(0).getId().toString());
+        if(task.getCategory() != null){
+            taskHisto.setCategoryId(task.getCategory().getId().toString());
+            taskHisto.setCategoryName(task.getCategory().getName());
         }
 
 
