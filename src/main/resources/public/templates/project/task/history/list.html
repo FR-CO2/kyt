@@ -8,7 +8,7 @@
                 <cite class="histo__header">Action de {{histoTask.userNameWriter}} le {{histoTask.writingDate| date:'dd-MM-yyyy'}}</cite>
                 <q class="histo__content">Type d'action : {{histoTask.actionName}} sur le projet : {{histoTask.projectName}}<br/>
                     Etat : <span ng-if="histoTask.stateName !== null"><span ng-class="{'histo__content--not-same':!histoTask.stateNameChecked}">{{histoTask.stateName}}</span></span><span ng-if="histoTask.stateName === null">Néant</span><br/>
-                    Couloir : <span ng-if="histoTask.swimlaneName !== null"><span ng-class="{'histo__content--not-same':!histoTask.swinlamenNameChecked}">{{histoTask.swimlaneName}}</span></span><span ng-if="histoTask.swimlaneName === null">Néant</span><br/>
+                    Couloir : <span ng-if="histoTask.swimlaneName !== null"><span ng-class="{'histo__content--not-same':!histoTask.swimlaneNameChecked}">{{histoTask.swimlaneName}}</span></span><span ng-if="histoTask.swimlaneName === null">Néant</span><br/>
                     Catégorie : <span ng-if="histoTask.categoryName !== null"><span ng-class="{'histo__content--not-same':!histoTask.categoryNameChecked}">{{histoTask.categoryName}}</span></span><span ng-if="histoTask.categoryName === null">Néant</span><br/>
                 </q>
             </blockquote>
