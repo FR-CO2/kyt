@@ -34,8 +34,8 @@ var histoService = function ($http, HateoasInterface, moment) {
         }
         if(histoTask._links.swimlane){
             histoTask.swimlaneNameChecked = false ;
-            $http.get(histoTask._links.swimlane).then(function(data){
-                if (histoTask.swimlaneName === data.name) {
+            $http.get(histoTask._links.swimlane).then(function(swimlane){
+                if (histoTask.swimlaneName === swimlane.data.name) {
                     histoTask.swimlaneNameChecked = true;
                 }
             });
