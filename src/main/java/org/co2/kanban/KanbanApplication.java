@@ -68,26 +68,6 @@ public class KanbanApplication {
         return messageSource;
     }
 
-    @Bean
-    public DBSession jasDbSession() {
-        try {
-            return new LocalDBSession();
-        } catch (JasDBStorageException e) {
-            throw new RuntimeException("Context jasDB non initialisé", e);
-        }
-    }
 
-    /**
-     * Fonction qui permet de fermer jasDB lors de l'arrêt du serveur afin de ne pas locker la bdd.
-     */
-    @PreDestroy
-    protected void shutdown() {
-        try {
-            SimpleKernel.shutdown();
-            LOGGER.error("shutdown success");
-        } catch (JasDBException e) {
-            e.printStackTrace();
-        }
-    }
 
 }
