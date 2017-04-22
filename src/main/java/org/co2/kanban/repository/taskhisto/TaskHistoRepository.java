@@ -51,12 +51,14 @@ public class TaskHistoRepository {
         return tasksHisto.get(0);
     }
 
-    public List<TaskHisto> findTop1ByTaskId(Long idTask, int limitVal) throws JasDBStorageException {
+    public List<TaskHisto> findTop1ByTaskId(Long idTask, int page, int next) throws JasDBStorageException {
         initializedSession();
         EntityBag bag = session.getBag("KYT_TASK_HISTO");
         QueryExecutor executor = bag.find(QueryBuilder.createBuilder().createBuilder().field("taskId")
-                .value(idTask.toString()));
-        executor.limit(limitVal);
+                .value(idTask.toString()).sortBy("versionId"));
+        executor.paging(page, next);
+
+
         QueryResult result = executor.execute();
         List<TaskHisto> tasksHisto = new ArrayList<>();
         for (SimpleEntity entity : result) {

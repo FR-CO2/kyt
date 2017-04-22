@@ -87,9 +87,8 @@ public class ArchivableAspect {
         String sort = "DESC";
         Sort.Direction dir = Sort.Direction.DESC;
         Sort sorting = new Sort(dir, sort);
-        PageRequest pageable = new PageRequest(1, 1, sorting);
         TaskHisto taskHisto = new TaskHisto();
-        List<TaskHisto> tasksHisto = taskHistoRepository.findTop1ByTaskId(task.getId(), 10);
+        List<TaskHisto> tasksHisto = taskHistoRepository.findTop1ByTaskId(task.getId(), 1,1);
         taskHisto.setId("0");
         taskHisto.setVersionId("0");
 
