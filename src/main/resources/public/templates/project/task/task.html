@@ -6,7 +6,6 @@
         <li class="nav__link"><a ui-sref="app.project.kanban({projectId: projectCtrl.project.id })"><span class="glyphicon glyphicon-equalizer"></span> Kanban</a></li>
         <li class="nav__link"><a ui-sref="app.project.tasks({projectId: projectCtrl.project.id })"><span class="glyphicon glyphicon-tasks"></span> Liste des tâches</a></li>
         <li class="nav__link"><a ng-if="projectCtrl.rights.hasEditRights" ui-sref="app.project.consommation({projectId: projectCtrl.project.id })"><span class="glyphicon glyphicon-time"></span> Consommations</a></li>
-        <li class="nav__link"><a ng-if="projectCtrl.rights.hasEditRights" ui-sref="app.project.gantt({projectId: projectCtrl.project.id })"><span class="glyphicon glyphicon-road"></span> Gantt</a></li>
     </ul>
     <div class="heading__action pull-right">
         <button ng-if="projectCtrl.rights.hasEditRights" class="btn btn-info btn-sm" ng-click="kanbanCtrl.addTask()"><span class="glyphicon glyphicon-plus-sign"></span> Nouvelle tâche</button>

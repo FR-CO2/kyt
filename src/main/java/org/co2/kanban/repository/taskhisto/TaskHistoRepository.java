@@ -17,8 +17,10 @@ import nl.renarj.jasdb.api.model.EntityBag;
 import nl.renarj.jasdb.api.query.QueryBuilder;
 import nl.renarj.jasdb.api.query.QueryExecutor;
 import nl.renarj.jasdb.api.query.QueryResult;
+import nl.renarj.jasdb.core.exceptions.JasDBException;
 import nl.renarj.jasdb.core.exceptions.JasDBStorageException;
 import org.co2.kanban.repository.task.Task;
+import org.co2.kanban.system.jasdb.KyTJasDBSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -32,15 +34,16 @@ import javax.annotation.PostConstruct;
 public class TaskHistoRepository {
 
     @Autowired
-    private DBSession session;
+    private KyTJasDBSessionFactory sessionFactory;
 
-    @PostConstruct
-    private void initializedSession() throws JasDBStorageException {
+    private DBSession initializedSession() throws JasDBStorageException {
+        DBSession session = sessionFactory.createSession();
         session.createOrGetBag("KYT_TASK_HISTO");
+        return session;
     }
 
     public TaskHisto findByTaskAndDateModif(Task task, Date dateModif) throws JasDBStorageException {
-        initializedSession();
+        DBSession session = initializedSession();
         EntityManager entityManager = session.getEntityManager();
         QueryBuilder query = QueryBuilder.createBuilder().field("taskId").value(task.getId())
                 .field("dateModif").value(dateModif.toString());
@@ -51,14 +54,12 @@ public class TaskHistoRepository {
         return tasksHisto.get(0);
     }
 
-    public List<TaskHisto> findTop1ByTaskId(Long idTask, int page, int next) throws JasDBStorageException {
-        initializedSession();
+    public List<TaskHisto> findTop1ByTaskId(Long idTask,int page, int next) throws JasDBStorageException {
+        DBSession session = initializedSession();
         EntityBag bag = session.getBag("KYT_TASK_HISTO");
         QueryExecutor executor = bag.find(QueryBuilder.createBuilder().createBuilder().field("taskId")
-                .value(idTask.toString()).sortBy("versionId"));
+                .value(idTask.toString()));
         executor.paging(page, next);
-
-
         QueryResult result = executor.execute();
         List<TaskHisto> tasksHisto = new ArrayList<>();
         for (SimpleEntity entity : result) {
@@ -90,15 +91,17 @@ public class TaskHistoRepository {
     }
 
     public TaskHisto findById(Long idTask) throws JasDBStorageException {
-        initializedSession();
+        DBSession session = initializedSession();
         EntityManager entityManager = session.getEntityManager();
         return entityManager.findEntity(TaskHisto.class, idTask.toString());
     }
 
-    public void save(TaskHisto taskHisto) throws  JasDBStorageException{
-        initializedSession();
+    public void save(TaskHisto taskHisto) throws  JasDBException{
+        DBSession session = initializedSession();
         EntityManager entityManager = session.getEntityManager();
         String id = entityManager.persist(taskHisto).getInternalId();
+        session.closeSession();
+        sessionFactory.shutdown();
     }
 }
 
