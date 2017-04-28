@@ -16,6 +16,7 @@ import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.co2.kanban.business.project.history.HistoryUser;
 import org.co2.kanban.business.project.type.action.EnumAction;
+import org.co2.kanban.repository.allocation.Allocation;
 import org.co2.kanban.repository.member.ProjectMemberRepository;
 import org.co2.kanban.repository.project.Project;
 import org.co2.kanban.repository.project.ProjectRepository;
@@ -43,13 +44,7 @@ import org.springframework.stereotype.Service;
 public class ArchivableAspect {
 
     @Autowired
-    private TaskHistoAssembler taskHistoAssembler;
-
-    @Autowired
     private ApplicationUserRepository applicationUserRepository;
-
-    @Autowired
-    private ProjectMemberRepository projectMemberRepository;
 
     @Autowired
     private TaskHistoRepository taskHistoRepository;
@@ -84,21 +79,29 @@ public class ArchivableAspect {
             action = EnumAction.INSERT;
         }
         task = taksRepository.findOne(taskId);
+        Float totalAllocations = 0F;
+        List<Allocation> allocations = task.getAllocations();
+        if(allocations != null) {
+            for (Allocation allocation : allocations) {
+                totalAllocations += allocation.getTimeSpent();
+            }
+        }
         String sort = "DESC";
         Sort.Direction dir = Sort.Direction.DESC;
-        Sort sorting = new Sort(dir, sort);
         TaskHisto taskHisto = new TaskHisto();
+        TaskHisto lastTaskHisto = new TaskHisto();
+
         List<TaskHisto> tasksHisto = taskHistoRepository.findTop1ByTaskId(task.getId(), 1,1);
         taskHisto.setId("0");
         taskHisto.setVersionId("0");
 
         if(tasksHisto.size() > 0) {
-          taskHisto.setId(tasksHisto.get(tasksHisto.size()-1).getId());
-            Integer numVersion = Integer.parseInt(tasksHisto.get(tasksHisto.size()-1).getVersionId()) + 1;
+            taskHisto.setId(tasksHisto.get(0).getId());
+            Integer numVersion = Integer.parseInt(tasksHisto.get(0).getVersionId()) + 1;
             taskHisto.setVersionId(numVersion.toString());
+            lastTaskHisto = tasksHisto.get(0);
         }
 
-        Date date = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         taskHisto.setDateModif(dateFormat.format(new Date()));
         taskHisto.setTaskId(task.getId().toString());
@@ -117,12 +120,14 @@ public class ArchivableAspect {
             taskHisto.setCategoryName(task.getCategory().getName());
         }
 
+        taskHisto.setTotalAllocations(totalAllocations.toString());
 
         ApplicationUser appUser = applicationUserRepository.findByUsername(user.getName());
         taskHisto.setUserIdWriter(appUser.getId().toString());
         taskHisto.setUsernameWriter(appUser.getUsername());
         taskHisto.setActionValue(String.valueOf(action.getValue()));
-
-        taskHistoRepository.save(taskHisto);
+        if(!lastTaskHisto.equals(taskHisto)) {
+            taskHistoRepository.save(taskHisto);
+        }
     }
 }

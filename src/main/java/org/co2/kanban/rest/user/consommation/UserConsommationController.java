@@ -5,12 +5,14 @@
  */
 package org.co2.kanban.rest.user.consommation;
 
+import java.security.Principal;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+
+import org.co2.kanban.business.project.task.history.Archivable;
 import org.co2.kanban.repository.allocation.Allocation;
 import org.co2.kanban.repository.allocation.AllocationRepository;
 import org.co2.kanban.repository.config.Parameter;
@@ -25,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -61,14 +64,34 @@ public class UserConsommationController {
     private static final String MAX_ALLOCATION = "max";
     private static final String MESSAGE_KEY_ALLOCATION_MAX = "user.consommation.error.max";
 
+    private Long formatToGMT(Long date) throws ParseException {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy HH:mm:ss");
+        String strDateString = formatter.format(date);
+
+        formatter.applyPattern("dd MMM yyyy HH:mm:ss");
+
+        Date scheduleTime =  formatter.parse(strDateString);
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(scheduleTime);
+
+        Calendar calGMT = cal;
+        calGMT.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH),0, 0, 0);
+        //calGMT.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+        return calGMT.getTime().getTime();
+    }
+
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Iterable<UserTaskImputationResource> list(@PathVariable("userId") Long userId,
-            @RequestParam("date") Long date) {
+            @RequestParam("date") Long date) throws ParseException {
         ApplicationUser appUser = repository.findOne(userId);
         long oneDay = 1 * 24 * 60 * 60 * 1000;
         Long dateMoreOneDay = date + oneDay;
         Long dateLessOneDay = date - oneDay;
-        Timestamp time = new Timestamp(date);
+
+
+
+        Timestamp time = new Timestamp(formatToGMT(date));
         Timestamp timeMoreOneDay = new Timestamp(dateMoreOneDay);
         Timestamp timeLessOneDay = new Timestamp(dateLessOneDay);
         List<UserTaskImputationResource> results;
@@ -115,10 +138,10 @@ public class UserConsommationController {
     }
 
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity create(@PathVariable("userId") Long userId,
+    public ResponseEntity create(@AuthenticationPrincipal Principal user, @PathVariable("userId") Long userId,
             @RequestParam("date") Long date,
             @RequestBody UserTaskImputationResource[] imputations
-    ) {
+    ) throws ParseException {
         ApplicationUser appUser = repository.findOne(userId);
         Parameter max = parameterRepository.findByCategoryAndKeyParam(ParameterType.ALLOCATION, MAX_ALLOCATION);
         Float sumImputation = 0F;
@@ -129,27 +152,35 @@ public class UserConsommationController {
         if (Float.compare(sumImputation, Float.parseFloat(max.getValueParam())) == 1) {
             throw new BusinessException(HttpStatus.PRECONDITION_FAILED, MESSAGE_KEY_ALLOCATION_MAX, new Object[]{max.getValueParam()});
         }
-        Timestamp time = new Timestamp(date);
+        Timestamp time = new Timestamp(formatToGMT(date));
         for (UserTaskImputationResource imputation : imputations) {
             Task task = taskRepositoy.findOne(imputation.getTaskId());
             Project project = task.getProject();
-            ProjectMember member = memberRepository.findByProjectAndUser(project, appUser);
-            Allocation allocation = allocationRepository.findByMemberUserAndAllocationDateAndTask(appUser, time, task);
-            if (allocation == null) {
-                allocation = new Allocation();
-                allocation.setTask(task);
-                allocation.setMember(member);
-                allocation.setAllocationDate(time);
-            }
-
-            allocation.setTimeSpent(imputation.getTimeSpent());
-            allocation.setTimeRemains(imputation.getTimeRemains());
-            if (imputation.getTimeSpent() == null || imputation.getTimeSpent() == 0F) {
-                allocationRepository.delete(allocation);
-            } else {
-                allocationRepository.save(allocation);
-            }
+            createAllocation(project.getId(), user, appUser, task, imputation, time);
         }
         return new ResponseEntity(HttpStatus.CREATED);
+    }
+
+    @Archivable
+    public Task createAllocation(Long projectId, Principal user, ApplicationUser appUser, Task task, UserTaskImputationResource imputation, Timestamp time ) {
+        Project project = task.getProject();
+        ProjectMember member = memberRepository.findByProjectAndUser(project, appUser);
+        Allocation allocation = allocationRepository.findByMemberUserAndAllocationDateAndTask(appUser, time, task);
+        if (allocation == null) {
+            allocation = new Allocation();
+            allocation.setTask(task);
+            allocation.setMember(member);
+            allocation.setAllocationDate(time);
+        }
+
+        allocation.setTimeSpent(imputation.getTimeSpent());
+        allocation.setTimeRemains(imputation.getTimeRemains());
+        if ((imputation.getTimeSpent() == null || imputation.getTimeSpent() == 0F) &&
+                (imputation.getTimeRemains() == null || imputation.getTimeRemains() == 0F)) {
+            allocationRepository.delete(allocation);
+        } else {
+            allocationRepository.save(allocation);
+        }
+        return task;
     }
 }

@@ -41,6 +41,8 @@ spring:
         url: jdbc:h2:~/Sites/dev/co2/kyt
         username: sa
         password: sa
+liquibase:
+    drop-first: false
 
 ---
             

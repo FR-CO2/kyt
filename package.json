@@ -27,8 +27,7 @@
             "moment": "npm:moment@^2.13.0",
             "ng-img-crop": "npm:ng-img-crop@^0.2.0",
             "ngstorage": "npm:ngstorage@^0.3.10",
-            "ui-router": "npm:ui-router@^1.0.0-alpha.3",
-            "ng-infinite-scroll": "npm:ng-infinite-scroll@^1.3.0"
+            "ui-router": "npm:ui-router@^1.0.0-alpha.3"
         },
         "devDependencies": {
             "babel": "npm:babel-core@^5.8.24",

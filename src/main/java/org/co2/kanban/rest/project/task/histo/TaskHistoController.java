@@ -38,7 +38,7 @@ public class TaskHistoController {
 
     @RequestMapping(method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public Iterable<TaskHistoResource> list(@PathVariable("projectId") Long projectId, @PathVariable("taskId") Long taskId,
-        @RequestParam(name = "page") Integer page,
+        @RequestParam(name = "page", required = false) Integer page,
         @RequestParam(name = "size", required = false) Integer size) {
 
         List<TaskHistoRest> tasksHistoRest = new ArrayList<>();

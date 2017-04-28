@@ -14,6 +14,7 @@ import nl.renarj.jasdb.LocalDBSession;
 import nl.renarj.jasdb.api.DBSession;
 import nl.renarj.jasdb.api.SimpleEntity;
 import nl.renarj.jasdb.api.model.EntityBag;
+import nl.renarj.jasdb.api.query.Order;
 import nl.renarj.jasdb.api.query.QueryBuilder;
 import nl.renarj.jasdb.api.query.QueryExecutor;
 import nl.renarj.jasdb.api.query.QueryResult;
@@ -58,7 +59,7 @@ public class TaskHistoRepository {
         DBSession session = initializedSession();
         EntityBag bag = session.getBag("KYT_TASK_HISTO");
         QueryExecutor executor = bag.find(QueryBuilder.createBuilder().createBuilder().field("taskId")
-                .value(idTask.toString()));
+                .value(idTask.toString()).sortBy("versionId", Order.DESCENDING));
         executor.paging(page, next);
         QueryResult result = executor.execute();
         List<TaskHisto> tasksHisto = new ArrayList<>();

@@ -16,7 +16,7 @@ var parameterModule = require("./parameter/parameter.module");
 angular.module("kanban",
         ["ui.router", "ngStorage", "ngSanitize", "ui.sortable", "angularMoment",
             "http-auth-interceptor", "xeditable", "ngResource",
-            "hateoas", "ui.bootstrap", "ui.bootstrap.tpls", "ngImgCrop", "textAngular",
+            "hateoas", "ui.bootstrap", "ui.bootstrap.tpls", "ngImgCrop", "textAngular", "infinite-scroll",
             loginModule.name, dashboardModule.name,
             projectModule.name, adminModule.name, parameterModule.name])
         .config(appConfig)

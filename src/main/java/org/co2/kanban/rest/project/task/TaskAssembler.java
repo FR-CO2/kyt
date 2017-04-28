@@ -48,7 +48,10 @@ public class TaskAssembler extends ResourceAssemblerSupport<Task, TaskResource> 
     public TaskResource toResource(Task task) {
         TaskResource resource = new TaskResource(task);
         Float timeSpent = 0F;
-        Float timeRemains = task.getEstimatedLoad();
+        Float timeRemains = 0F;
+        if(task.getEstimatedLoad() != null) {
+            timeRemains = task.getEstimatedLoad();
+        }
         Timestamp timeRemainsAllocationDate = null;
         if (task.getAllocations() != null) {
             for (Allocation allocation : task.getAllocations()) {
@@ -79,7 +82,7 @@ public class TaskAssembler extends ResourceAssemblerSupport<Task, TaskResource> 
         resource.add(linkTo(methodOn(TaskFieldController.class).list(task.getProject().getId(), task.getId())).withRel("customfield"));
         resource.add(linkTo(methodOn(TaskLinkController.class).parents(task.getProject().getId(), task.getId())).withRel("parents"));
         resource.add(linkTo(methodOn(TaskLinkController.class).children(task.getProject().getId(), task.getId())).withRel("children"));
-        resource.add(linkTo(methodOn(TaskHistoController.class).list(task.getProject().getId(), task.getId(),1,1)).withRel("histo"));
+        resource.add(linkTo(methodOn(TaskHistoController.class).list(task.getProject().getId(), task.getId(), null,null)).withRel("histo"));
         return resource;
     }
 }
