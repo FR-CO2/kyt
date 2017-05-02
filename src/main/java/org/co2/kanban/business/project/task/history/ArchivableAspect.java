@@ -99,11 +99,11 @@ public class ArchivableAspect {
 
     private void addTaskHisto(Task task, Project project, Principal user, EnumAction action) throws JasDBException {
 
-        Float totalAllocations = 0F;
+        Double totalAllocations = 0D;
         List<Allocation> allocations = task.getAllocations();
         if(allocations != null) {
             for (Allocation allocation : allocations) {
-                totalAllocations= Float.sum(totalAllocations,allocation.getTimeSpent());
+                totalAllocations += allocation.getTimeSpent();
             }
         }
         String sort = "DESC";

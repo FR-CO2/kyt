@@ -43,9 +43,9 @@ public class Allocation implements Serializable, Identifiable {
     @ManyToOne
     private Task task;
 
-    private Float timeSpent;
+    private Double timeSpent;
 
-    private Float timeRemains;
+    private Double timeRemains;
 
     public Long getId() {
         return id;
@@ -79,19 +79,19 @@ public class Allocation implements Serializable, Identifiable {
         this.task = task;
     }
 
-    public Float getTimeSpent() {
+    public Double getTimeSpent() {
         return timeSpent;
     }
 
-    public void setTimeSpent(Float timeSpent) {
+    public void setTimeSpent(Double timeSpent) {
         this.timeSpent = timeSpent;
     }
 
-    public Float getTimeRemains() {
+    public Double getTimeRemains() {
         return timeRemains;
     }
 
-    public void setTimeRemains(Float timeRemains) {
+    public void setTimeRemains(Double timeRemains) {
         this.timeRemains = timeRemains;
     }
 

@@ -27,11 +27,11 @@ public class AllocationResource extends IdentifiableResourceSupport<Allocation> 
         return this.getBean().getAllocationDate();
     }
 
-    public Float getTimeSpent() {
+    public Double getTimeSpent() {
         return this.getBean().getTimeSpent();
     }
 
-    public Float getTimeRemains() {
+    public Double getTimeRemains() {
         return this.getBean().getTimeRemains();
     }
 }

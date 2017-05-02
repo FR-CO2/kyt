@@ -16,9 +16,9 @@ import org.co2.kanban.rest.IdentifiableResourceSupport;
 public class TaskResource extends IdentifiableResourceSupport<Task> {
 
 
-    private Float timeRemains;
+    private Double timeRemains;
 
-    private Float timeSpent;
+    private Double timeSpent;
 
     public TaskResource(Task task) {
         super(task);
@@ -28,19 +28,19 @@ public class TaskResource extends IdentifiableResourceSupport<Task> {
         return getBean().getName();
     }
 
-    public Float getTimeSpent() {
+    public Double getTimeSpent() {
         return timeSpent;
     }
 
-    public void setTimeSpent(Float timeSpent) {
+    public void setTimeSpent(Double timeSpent) {
         this.timeSpent = timeSpent;
     }
 
-    public Float getTimeRemains() {
+    public Double getTimeRemains() {
         return timeRemains;
     }
 
-    public void setTimeRemains(Float timeRemains) {
+    public void setTimeRemains(Double timeRemains) {
         this.timeRemains = timeRemains;
     }
 
@@ -60,7 +60,7 @@ public class TaskResource extends IdentifiableResourceSupport<Task> {
         return getBean().getPlannedEnding();
     }
 
-    public Float getEstimatedLoad() {
+    public Double getEstimatedLoad() {
         return getBean().getEstimatedLoad();
     }
 

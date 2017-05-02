@@ -58,7 +58,7 @@ public class Task implements Serializable, Identifiable {
 
     private Timestamp plannedEnding;
 
-    private Float estimatedLoad;
+    private Double estimatedLoad;
 
     @Column(length = 10000)
     private String description;
@@ -152,11 +152,11 @@ public class Task implements Serializable, Identifiable {
         this.plannedEnding = plannedEnding;
     }
 
-    public Float getEstimatedLoad() {
+    public Double getEstimatedLoad() {
         return estimatedLoad;
     }
 
-    public void setEstimatedLoad(Float estimatedLoad) {
+    public void setEstimatedLoad(Double estimatedLoad) {
         this.estimatedLoad = estimatedLoad;
     }
 

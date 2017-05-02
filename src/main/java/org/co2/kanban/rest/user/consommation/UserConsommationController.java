@@ -151,12 +151,12 @@ public class UserConsommationController {
     ) throws ParseException {
         ApplicationUser appUser = repository.findOne(userId);
         Parameter max = parameterRepository.findByCategoryAndKeyParam(ParameterType.ALLOCATION, MAX_ALLOCATION);
-        Float sumImputation = 0F;
+        Double sumImputation = 0D;
         for (UserTaskImputationResource imputation : imputations) {
             sumImputation += imputation.getTimeSpent();
         }
         // If sumImputation is sup to max, the user entered a bad allocation
-        if (Float.compare(sumImputation, Float.parseFloat(max.getValueParam())) == 1) {
+        if (Double.compare(sumImputation, Double.parseDouble(max.getValueParam())) == 1) {
             throw new BusinessException(HttpStatus.PRECONDITION_FAILED, MESSAGE_KEY_ALLOCATION_MAX, new Object[]{max.getValueParam()});
         }
         Timestamp time = new Timestamp(formatToGMT(date));

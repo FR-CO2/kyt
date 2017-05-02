@@ -18,9 +18,9 @@ public class UserTaskImputationResource extends ResourceSupport {
     
     private Long taskId;
 
-    private Float timeSpent = 0F;
+    private Double timeSpent = 0D;
 
-    private Float timeRemains = null;
+    private Double timeRemains = null;
     
     public UserTaskImputationResource() {
     }
@@ -46,19 +46,19 @@ public class UserTaskImputationResource extends ResourceSupport {
         this.taskId = taskId;
     }
 
-    public Float getTimeSpent() {
+    public Double getTimeSpent() {
         return timeSpent;
     }
 
-    public void setTimeSpent(Float timeSpent) {
+    public void setTimeSpent(Double timeSpent) {
         this.timeSpent = timeSpent;
     }
 
-    public Float getTimeRemains() {
+    public Double getTimeRemains() {
         return timeRemains;
     }
 
-    public void setTimeRemains(Float timeRemains) {
+    public void setTimeRemains(Double timeRemains) {
         this.timeRemains = timeRemains;
     }
 

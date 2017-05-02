@@ -27,7 +27,7 @@ public class TaskHistoRest implements Identifiable {
     private String swinlameName;
     private Long categoryId;
     private String categoryName;
-    private Float totalAllocation;
+    private Double totalAllocation;
     private Timestamp dateModif;
     private Long userIdWriter;
     private String usernameWriter;
@@ -114,10 +114,10 @@ public class TaskHistoRest implements Identifiable {
         this.categoryName = categoryName;
     }
 
-    public Float getTotalAllocation() {
+    public Double getTotalAllocation() {
         return totalAllocation;
     }
-    public void setTotalAllocation(Float totalAllocation) {
+    public void setTotalAllocation(Double totalAllocation) {
         this.totalAllocation = totalAllocation;
     }
 
@@ -174,9 +174,9 @@ public class TaskHistoRest implements Identifiable {
         }
         taskHistoRest.setCategoryName(taskHisto.getCategoryName());
 
-        taskHistoRest.setTotalAllocation(0F);
+        taskHistoRest.setTotalAllocation(0D);
         if(taskHisto.getTotalAllocations()!=null) {
-            taskHistoRest.setTotalAllocation(Float.parseFloat(taskHisto.getTotalAllocations()));
+            taskHistoRest.setTotalAllocation(Double.parseDouble(taskHisto.getTotalAllocations()));
         }
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");

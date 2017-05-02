@@ -34,7 +34,7 @@ public class ImputationAssembler {
         while (cal.getTime().before(end)) {
             String time = sdf.format(new Timestamp(cal.getTimeInMillis()));
             times.add(time);
-            ImputationByDateResource imputByDate = new ImputationByDateResource(time, 0F, false);
+            ImputationByDateResource imputByDate = new ImputationByDateResource(time, 0D, false);
             allocationDates.add(imputByDate);
             cal.add(GregorianCalendar.DAY_OF_MONTH, 1);
         }
