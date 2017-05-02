@@ -10,7 +10,7 @@ package org.co2.kanban.business.project.type.action;
  * @author granels
  */
 public enum EnumAction {
-    INSERT(1, "ajout"), UPDATE(2,"modification"), DELETED(3,"suppression");
+    INSERT(1, "ajout"), UPDATE(2,"modification"), DELETED(3,"suppression"), IMPUTATION(4,"imputation");
 
     private final int value;
     private final String name;

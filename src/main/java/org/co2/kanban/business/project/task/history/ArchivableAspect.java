@@ -11,7 +11,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import nl.renarj.jasdb.core.exceptions.JasDBException;
+import nl.renarj.jasdb.core.exceptions.JasDBStorageException;
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.co2.kanban.business.project.history.HistoryUser;
@@ -27,6 +30,7 @@ import org.co2.kanban.repository.taskhisto.TaskHistoRepository;
 import org.co2.kanban.repository.user.ApplicationUser;
 import org.co2.kanban.repository.user.ApplicationUserRepository;
 import org.co2.kanban.rest.project.task.histo.TaskHistoAssembler;
+import org.co2.kanban.rest.user.consommation.UserTaskImputationResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -55,13 +59,22 @@ public class ArchivableAspect {
     @Autowired
     private ProjectRepository projectRepository;
 
+    @AfterReturning(pointcut = "@annotation(org.co2.kanban.business.project.task.history.Archivable) && args(user, userId, date,imputations)",
+            returning = "result")
+    public void majAllocationHisto(JoinPoint jp, Principal user, Long userId, Long date, UserTaskImputationResource[] imputations, Object result) throws Throwable {
+        for (UserTaskImputationResource imputation : imputations) {
+            Task task = taksRepository.findOne(imputation.getTaskId());
+            Project project = task.getProject();
+            addTaskHisto(task, project, user, EnumAction.IMPUTATION);
+        }
+    }
     @AfterReturning(pointcut = "@annotation(org.co2.kanban.business.project.task.history.Archivable) && args(projectId, user, ..)",
             returning = "result")
     public void majTaskHisto(JoinPoint jp, Long projectId, Principal user, Object result) throws Throwable {
 
         Project project = projectRepository.findOne(projectId);
         Long taskId;
-        Task task;
+
         EnumAction action;
         try {
             taskId = (Long) jp.getArgs()[2];
@@ -78,12 +91,19 @@ public class ArchivableAspect {
             taskId = Long.valueOf(headers.get("taskId").get(0));
             action = EnumAction.INSERT;
         }
+
+        Task task;
         task = taksRepository.findOne(taskId);
+        addTaskHisto(task, project, user, action);
+    }
+
+    private void addTaskHisto(Task task, Project project, Principal user, EnumAction action) throws JasDBException {
+
         Float totalAllocations = 0F;
         List<Allocation> allocations = task.getAllocations();
         if(allocations != null) {
             for (Allocation allocation : allocations) {
-                totalAllocations += allocation.getTimeSpent();
+                totalAllocations= Float.sum(totalAllocations,allocation.getTimeSpent());
             }
         }
         String sort = "DESC";

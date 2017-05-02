@@ -8,6 +8,7 @@ package org.co2.kanban.rest.user.consommation;
 import java.security.Principal;
 import java.sql.Timestamp;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -64,6 +65,13 @@ public class UserConsommationController {
     private static final String MAX_ALLOCATION = "max";
     private static final String MESSAGE_KEY_ALLOCATION_MAX = "user.consommation.error.max";
 
+    /**
+     * This function permits to get the timestamp and to cast into GMT with 00:00:00. It is necessary to get the allocations
+     *
+     * @param date
+     * @return
+     * @throws ParseException
+     */
     private Long formatToGMT(Long date) throws ParseException {
         SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy HH:mm:ss");
         String strDateString = formatter.format(date);
@@ -88,8 +96,6 @@ public class UserConsommationController {
         long oneDay = 1 * 24 * 60 * 60 * 1000;
         Long dateMoreOneDay = date + oneDay;
         Long dateLessOneDay = date - oneDay;
-
-
 
         Timestamp time = new Timestamp(formatToGMT(date));
         Timestamp timeMoreOneDay = new Timestamp(dateMoreOneDay);
@@ -138,6 +144,7 @@ public class UserConsommationController {
     }
 
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @Archivable
     public ResponseEntity create(@AuthenticationPrincipal Principal user, @PathVariable("userId") Long userId,
             @RequestParam("date") Long date,
             @RequestBody UserTaskImputationResource[] imputations
@@ -162,7 +169,7 @@ public class UserConsommationController {
     }
 
     @Archivable
-    public Task createAllocation(Long projectId, Principal user, ApplicationUser appUser, Task task, UserTaskImputationResource imputation, Timestamp time ) {
+    public Task createAllocation(Long projectId, Principal user, ApplicationUser appUser, Task task, UserTaskImputationResource imputation, Timestamp time) {
         Project project = task.getProject();
         ProjectMember member = memberRepository.findByProjectAndUser(project, appUser);
         Allocation allocation = allocationRepository.findByMemberUserAndAllocationDateAndTask(appUser, time, task);
@@ -172,7 +179,6 @@ public class UserConsommationController {
             allocation.setMember(member);
             allocation.setAllocationDate(time);
         }
-
         allocation.setTimeSpent(imputation.getTimeSpent());
         allocation.setTimeRemains(imputation.getTimeRemains());
         if ((imputation.getTimeSpent() == null || imputation.getTimeSpent() == 0F) &&

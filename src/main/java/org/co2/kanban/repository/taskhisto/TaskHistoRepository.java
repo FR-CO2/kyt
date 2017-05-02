@@ -86,6 +86,9 @@ public class TaskHistoRepository {
             taskHisto.setUserIdWriter(entity.getProperty("userIdWriter").getFirstValue().toString());
             taskHisto.setUsernameWriter(entity.getProperty("usernameWriter").getFirstValue().toString());
             taskHisto.setActionValue(entity.getProperty("actionValue").getFirstValue().toString());
+            if(entity.getProperty("totalAllocations") != null) {
+                taskHisto.setTotalAllocations(entity.getProperty("totalAllocations").getFirstValue().toString());
+            }
             tasksHisto.add(taskHisto);
         }
     return tasksHisto;
