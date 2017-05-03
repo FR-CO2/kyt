@@ -1,5 +1,5 @@
 
-var taskController = function ($q, $state, project, currenttask, taskAssemblerService, allocationService, growl, appParameters) {
+var taskController = function ($q, $state, $uibModal, project, currenttask, taskAssemblerService, allocationService, growl, appParameters) {
     var vm = this;
     vm.customFieldMap = {};
     vm.task = currenttask;
@@ -42,6 +42,21 @@ var taskController = function ($q, $state, project, currenttask, taskAssemblerSe
             });
         });
     });
+    vm.addTask = function () {
+        var modalInstance = $uibModal.open({
+            animation: true,
+            templateUrl: "templates/project/task/add.html",
+            controller: "addTaskController",
+            controllerAs: "addTaskCtrl",
+            resolve: {
+                project: function () {
+                    return project;
+                }
+            },
+            size: "md"
+        });
+        modalInstance.result.then(vm.loadPage);
+    };
     vm.selectAssignee = function ($item, $model, $label) {
         var userAlreadyAssigned = false;
         angular.forEach(vm.task.assignees, function (user) {
@@ -92,5 +107,5 @@ var taskController = function ($q, $state, project, currenttask, taskAssemblerSe
         });
     };
 };
-taskController.$inject = ["$q", "$state", "project", "task", "taskAssemblerService", "allocationService", "growl", "appParameters"];
+taskController.$inject = ["$q", "$state","$uibModal", "project", "task", "taskAssemblerService", "allocationService", "growl", "appParameters"];
 module.exports = taskController;

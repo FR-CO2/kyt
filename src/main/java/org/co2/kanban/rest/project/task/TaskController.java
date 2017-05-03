@@ -104,6 +104,8 @@ public class TaskController {
             checkCustomFields(task.getCustomField());
             saveCustomFields(task.getId(), task.getCustomField());
         }
+        Task taskSaved = repository.findOne(taskId);
+        task.setAllocations(taskSaved.getAllocations());
         Task result = repository.save(task);
         return assembler.toResource(result);
     }

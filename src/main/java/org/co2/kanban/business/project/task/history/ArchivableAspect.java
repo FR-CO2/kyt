@@ -92,8 +92,7 @@ public class ArchivableAspect {
             action = EnumAction.INSERT;
         }
 
-        Task task;
-        task = taksRepository.findOne(taskId);
+        Task task = taksRepository.findOne(taskId);
         addTaskHisto(task, project, user, action);
     }
 
@@ -111,14 +110,14 @@ public class ArchivableAspect {
         TaskHisto taskHisto = new TaskHisto();
         TaskHisto lastTaskHisto = new TaskHisto();
 
-        List<TaskHisto> tasksHisto = taskHistoRepository.findTop1ByTaskId(task.getId(), 1,1);
+        List<TaskHisto> tasksHisto = taskHistoRepository.findTop1ByTaskId(task.getId(), 0,1);
         taskHisto.setId("0");
-        taskHisto.setVersionId("0");
+        taskHisto.setVersionId(0);
 
         if(tasksHisto.size() > 0) {
             taskHisto.setId(tasksHisto.get(0).getId());
-            Integer numVersion = Integer.parseInt(tasksHisto.get(0).getVersionId()) + 1;
-            taskHisto.setVersionId(numVersion.toString());
+            long numVersion = tasksHisto.get(0).getVersionId()+ 1;
+            taskHisto.setVersionId(numVersion);
             lastTaskHisto = tasksHisto.get(0);
         }
 

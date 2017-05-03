@@ -1,6 +1,6 @@
 var histoController = function (scope,histoService) {
     var vm = this;
-    vm.page = 1;
+    vm.page = 0;
     vm.size = 10;
     vm.cpt = 0;
     vm.busy = false;

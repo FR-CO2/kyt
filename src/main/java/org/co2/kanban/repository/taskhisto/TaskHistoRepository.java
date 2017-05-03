@@ -67,7 +67,7 @@ public class TaskHistoRepository {
             TaskHisto taskHisto = new TaskHisto();
             taskHisto.setId(entity.getValue("id").toString());
             taskHisto.setTaskId(entity.getProperty("taskId").getFirstValue().toString());
-            taskHisto.setVersionId(entity.getProperty("versionId").getFirstValue().toString());
+            taskHisto.setVersionId(Long.parseLong(entity.getProperty("versionId").getFirstValue().toString()));
             taskHisto.setProjectId(entity.getProperty("projectId").getFirstValue().toString());
             taskHisto.setProjectName(entity.getProperty("projectName").getFirstValue().toString());
             if(entity.getProperty("stateId") != null) {

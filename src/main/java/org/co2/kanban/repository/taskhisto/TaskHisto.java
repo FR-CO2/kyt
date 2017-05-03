@@ -23,7 +23,7 @@ public class TaskHisto {
 
     private String id;
     private String taskId;
-    private String versionId;
+    private long versionId;
     private String projectId;
     private String projectName;
     private String stateId;
@@ -56,10 +56,10 @@ public class TaskHisto {
     }
 
     @JasDBProperty
-    public String getVersionId() {
+    public long getVersionId() {
         return versionId;
     }
-    public void setVersionId(String versionId) {
+    public void setVersionId(long versionId) {
         this.versionId = versionId;
     }
 

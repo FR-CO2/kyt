@@ -158,7 +158,7 @@ public class TaskHistoRest implements Identifiable {
 
     public void convertTaskHistoRest(TaskHistoRest taskHistoRest, TaskHisto taskHisto){
         taskHistoRest.setTaskId(Long.parseLong(taskHisto.getTaskId()));
-        taskHistoRest.setVersionId(Long.parseLong(taskHisto.getVersionId()));
+        taskHistoRest.setVersionId(taskHisto.getVersionId());
         taskHistoRest.setProjectId(Long.parseLong(taskHisto.getProjectId()));
         taskHistoRest.setProjectName(taskHisto.getProjectName());
         if(taskHisto.getStateId()!=null) {
