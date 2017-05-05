@@ -9,8 +9,8 @@ var taskController = function ($q, $state, $uibModal, project, currenttask, task
     project.$promise.then(function () {
         currenttask.$promise.then(function () {
             vm.task = taskAssemblerService(currenttask);
-            vm.children = vm.task.resource("children").query();
-            vm.parents = vm.task.resource("parents").query();
+            vm.task.children = vm.task.resource("children").query();
+            vm.task.parent = vm.task.resource("parents").query();
         });
         vm.categories = project.resource("category").query();
         vm.states = project.resource("state").query();
@@ -77,19 +77,19 @@ var taskController = function ($q, $state, $uibModal, project, currenttask, task
     };
     vm.addChild = function ($item, $model, $label) {
         vm.task.resource("children").save($item, function () {
-            vm.children.push($item);
+            vm.task.children.push($item);
         });
     };
     vm.addParent = function ($item, $model, $label) {
         vm.task.resource("parents").save($item, function () {
-            vm.parents.push($item);
+            vm.task.parent.push($item);
         });
     };
     vm.removeChild = function (index) {
-        vm.children.splice(index, 1);
+        vm.task.children.splice(index, 1);
     };
     vm.removeParent = function (index) {
-        vm.parents.splice(index, 1);
+        vm.task.parent.splice(index, 1);
     };
     vm.getTasks = function (term) {
         return project.resource("task").query({idTask : vm.task.id,search: term}).$promise;

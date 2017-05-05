@@ -88,7 +88,12 @@ public class Task implements Serializable, Identifiable {
     @OneToMany(mappedBy = "task")
     private List<TaskField> customField;
 
-    @ManyToMany(mappedBy = "children")
+    @ManyToMany
+    @JoinTable(name = "kyt_task_link",
+            joinColumns
+                    = @JoinColumn(name = "task_child_id", referencedColumnName = "ID"),
+            inverseJoinColumns
+                    = @JoinColumn(name = "task_parent_id", referencedColumnName = "ID"))
     private List<Task> parent;
 
     @ManyToMany
