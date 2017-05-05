@@ -24,4 +24,6 @@ public interface AllocationRepository extends PagingAndSortingRepository<Allocat
     Iterable<Allocation> findByMemberUserAndAllocationDate(ApplicationUser user, Timestamp date);
     
     Allocation findByMemberUserAndAllocationDateAndTask(ApplicationUser user, Timestamp date, Task task);
+
+    Allocation findTopByMemberUserAndTaskOrderByAllocationDateDesc(ApplicationUser user, Task task);
 }

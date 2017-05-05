@@ -116,8 +116,8 @@ public class UserConsommationController {
                 }
             }
             if (resource.getTimeRemains() == null) {
-                //TODO récuperer le RAF au lieu de a charge estimée
-                resource.setTimeRemains(task.getEstimatedLoad());
+                Allocation lastAllocation = allocationRepository.findTopByMemberUserAndTaskOrderByAllocationDateDesc(appUser, task);
+                resource.setTimeRemains(lastAllocation.getTimeRemains());
             }
             mapTemp.put(resource.getTaskId(), resource);
         }
