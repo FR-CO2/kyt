@@ -8,7 +8,7 @@ Outil de kanban avec gestion d'imputations
 L'application est compatible avec Edge et 
 Firefox et Chrome (dernières versions).<br/>
 
-###Serveur
+### Serveur
 Il faut avoir un JRE (v1.7 au minimum)
 
 ## Démo 
