@@ -4,9 +4,10 @@ var checkSamePassword = function (password, rePassword) {
     if (rePassword !== '' &&
             password !== undefined
             && rePassword !== password) {
-        error = {
-            message: "Les mots de passe saisis ne correspondent pas"
-        };
+        error = {};
+        error.messages = [
+            {message: "Les mots de passe saisis ne correspondent pas"}
+        ];
     }
     return error;
 };
@@ -31,6 +32,6 @@ module.exports = function () {
                 }
             });
         },
-        template: '<input type="password" class="form-control" id="rePassword" placeholder="{{placeholder}}"/>'
+        template: '<input type="password" required="requiered" class="form-control" id="rePassword" placeholder="{{placeholder}}"/>'
     };
 };
