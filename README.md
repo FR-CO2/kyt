@@ -1,20 +1,17 @@
 
-# KyT
-
+# <abbr title="Kanban and Timesheet">KyT</abbr>
 Outil de kanban avec gestion d'imputations
 
 ## Les contraintes techniques
 ### Compatibilités navigateurs 
 L'application est compatible avec Edge et 
-Firefox et Chrome (dernières versions).<br/>
+Firefox et Chrome (dernières versions).
 
 ### Serveur
 Il faut avoir un JRE (v1.7 au minimum)
 
 ## Démo 
-
-URL : https://fr-co2-kyt.herokuapp.com
-
+URL : <a href="https://fr-co2-kyt.herokuapp.com" title="Démo" alt="Démo" target="_blank">https://fr-co2-kyt.herokuapp.com</a><br/>
 Utilisateur admin par défaut (username/password) : admin/admin123
 
 ## Types des droits
@@ -31,7 +28,7 @@ Cette partie est accessible en cliquant sur le nom de l'utilisateur connecté.
 ### Profil
 Cette page comporte les informations liées à l'utilisateur connecté.<br/>
 Le rôle de l'utilisateur (droit sur l'application) est affiché.<br/>
-C'est également sur cette page que l'utilisateur peut modifier son mot de passe, son adresse mail et sa photo de profil.<br/>
+C'est également sur cette page que l'utilisateur peut modifier son mot de passe, son adresse mail et sa photo de profil.
 
 Les projets rattachés à l'utilisateur y sont listés.
 
@@ -102,8 +99,13 @@ Si des champs personnalisés ont été créés sur le projet, leurs valeurs pour
 <p>Si la somme des imputations de l'utilisateur pour une journée est inférieure à ce qui est définit dans la partie paramétrage, la valeur apparait en rouge.<br/>
 Il est possible d'avoir le détail des imputations en cliquant sur la flèche</p>
 
-#### Paramétrage des projets
+#### Paramétrage d'un projet
+Pour accéder à la partie paramétrages d'un projet, il faut cliquer sur <cite>Mes projets</cite>,<cite>Administrer les projets</cite> et sur l'icone stylo du projet à administrer.<br/>L'onglet <cite>Mes Administrer les projets</cite> n'est accessible qu'aux administrateurs de l'application.<br/>
+C'est également par là qu'on peut supprimer un projet. Pour cela au lieu de cliquer sur l'icone stylo, il suffit de cliquer sur l'icone poubelle.
 ##### Champs personnalisés
+Cette page permet d'ajouter des champs personnalisés au projet. 
+Il existe trois types de champs personnalisés : 
+*
 ##### Catégories
 ##### Etats
 ##### Couloirs

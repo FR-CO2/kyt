@@ -15,6 +15,7 @@
             <div class="form-group">
                 <div class="form-control">
                     <select ng-model="addMemberCtrl.member.projectRole" class="form-select" name="role" placeholder="Role" required="required">
+                        <option value=""></option>
                         <option value="{{role}}" ng-repeat="role in addMemberCtrl.projectRoles">{{role}}</option>
                     </select>
                 </div>
