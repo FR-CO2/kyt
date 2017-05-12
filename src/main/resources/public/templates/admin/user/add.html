@@ -22,6 +22,7 @@
             <div class="form-group">
                 <div class="form-control">
                     <select ng-model="addUserAdminCtrl.user.applicationRole" required class="form-select" name="role" placeholder="Role">
+                        <option value=""></option>
                         <option value="{{role}}" ng-repeat="role in addUserAdminCtrl.roles">{{role}}</option>
                     </select>
                 </div>
