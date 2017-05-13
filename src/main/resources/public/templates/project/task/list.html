@@ -88,6 +88,15 @@
                     </div>
                 </div>
                 <ul class="card__contentList">
+                    <li class="card__content">
+                        <ul class="userIcons">
+                            <li ng-repeat="assignee in task.assignees" class="userIcons__item">
+                                <span class="userIcons__username">{{assignee.username}}</span>
+                                <img src="{{assignee.photo}}" alt="{{assignee.username}}" title="{{assignee.username}}" class="crop" ng-if="assignee.photo" />
+                                <span class="crop" ng-if="!assignee.photo"><span class="glyphicon glyphicon-user"></span></span>
+                            </li>
+                        </ul>
+                    </li>
                     <li class="card__content">{{task.state.name}}</li>
                     <li class="card__content">
                         <span ng-if="!task.swimlane">-</span>
@@ -97,13 +106,6 @@
                         <span class="badge badge__category" ng-if="task.category.bgcolor" style="background: {{task.category.bgcolor}}">&nbsp;</span>
                         <span ng-if="!task.category">-</span>
                         {{task.category.name}}
-                    </li>
-                </ul>
-                <ul class="userIcons">
-                    <li ng-repeat="assignee in task.assignees" class="userIcons__item">
-                        <span class="userIcons__username">{{assignee.username}}</span>
-                        <img src="{{assignee.photo}}" alt="{{assignee.username}}" title="{{assignee.username}}" class="crop" ng-if="assignee.photo" />
-                        <span class="crop" ng-if="!assignee.photo"><span class="glyphicon glyphicon-user"></span></span>
                     </li>
                 </ul>
                 <aside class="card__infos">
@@ -154,7 +156,7 @@
                         <dd class="card__info__value" ng-class="{'exceeded-load' : task.exceededLoad}" ng-if="task.timeRemains">
                             {{task.timeRemains}}
                         </dd>
-                        <dt class="card__info__title">Dépassement</dt>
+                        <dt class="card__info__title">Reste à faire</dt>
                     </dl>
 
                 </aside>

@@ -16,15 +16,18 @@
     <div growl></div>
     <div class="col-md-8">
         <form id="edittask" class="panel" role="form" ng-submit="taskCtrl.submit()">
-            <alert type="danger" ng-if="taskCtrl.error">
-                <errors errors="taskCtrl.error"></errors>
-            </alert>
             <div class="panel-body">
+                <alert type="danger" ng-if="taskCtrl.error">
+                    <errors errors="taskCtrl.error"></errors>
+                </alert>
                 <fieldset>
-                    <div class="form-group col-md-3">
-                        <label for="taskname">Nom de la tâche</label>
+                    <div class="form-group col-md-12">
+                        <label for="taskname">Intitulé de la tâche</label>
                         <input type="text" required ng-model="taskCtrl.task.name" class="form-control" id="taskname" name="taskName" placeholder="Nom de la tâche"/>
                     </div>
+                </fieldset>
+                <fieldset>
+                    <legend>Généralités</legend>
                     <div class="form-group col-md-3">
                         <label for="state">Etat</label>
                         <select ng-model="taskCtrl.task.state" required class="form-control" name="state" id="state" placeholder="Etat" ng-options="state as state.name for state in taskCtrl.states track by state.id">
@@ -46,6 +49,7 @@
                     </div>
                 </fieldset>
                 <fieldset>
+                    <legend>Planning et charge</legend>
                     <div class="form-group col-md-4">
                         <label for="plannedStart">Date de début </label>
                         <input type="date" id="plannedStart" class="form-control" ng-model="taskCtrl.task.plannedStart" value="{{taskCtrl.task.plannedStartValue}}"/>
@@ -60,9 +64,10 @@
                     </div>
                 </fieldset>
                 <fieldset>
-                    <div class="form-group col-md-5">
-                        <span>Pré requis :</span>
-                        <input class="form-control" ng-model="selectedParent"
+
+                    <div class="form-group col-md-6">
+                        <label for="prerequired">Dépend de&nbsp;:</label>
+                        <input id="prerequired" class="form-control" ng-model="selectedParent"
                                typeahead-editable="false" typeahead-on-select="taskCtrl.addParent($item, $model, $label)"
                                uib-typeahead="task as task.name for task in taskCtrl.getTasks($viewValue)" placeholder="Ajouter un pré requis"/>
                         <ul>
@@ -72,9 +77,9 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="form-group col-md-5">
-                        <span>Requis par :</span>
-                        <input class="form-control" ng-model="selectedChild"
+                    <div class="form-group col-md-6">
+                        <label for="requiredby">Précède&nbsp;:</label>
+                        <input id="requiredby" class="form-control" ng-model="selectedChild"
                                typeahead-editable="false" typeahead-on-select="taskCtrl.addChild($item, $model, $label)"
                                uib-typeahead="task as task.name for task in taskCtrl.getTasks($viewValue)" placeholder="Ajouter un enfant"/>
                         <ul>
@@ -105,7 +110,7 @@
             </div>
         </form>
         <div ng-controller="commentListController as commentListCtrl">
-            <div ng-include="'templates/project/task/comment/list.html'"></div>
+            <div ng-include="'templates/project/task/comment/list.html'" class="comments-container"></div>
         </div>
     </div>
     <aside class="col-md-4">
@@ -113,10 +118,10 @@
             <div class="panel-body">
                 <div class="form-group">
                     <label for="assignee">Assigné à </label>
-                    <input class="form-control" ng-model="taskCtrl.selecteduser.username"
+                    <input id="assignee" class="form-control" ng-model="taskCtrl.selecteduser.username"
                            typeahead-editable="false" typeahead-on-select="taskCtrl.selectAssignee($item, $model, $label)" 
                            uib-typeahead="member as member.username for member in taskCtrl.getMembers($viewValue)" placeholder="Ajouter un utilisateur"/>
-                    <ul class="userIcons">
+                    <ul class="userIcons" ng-if="taskCtrl.task.assignees.length > 0">
                         <li ng-repeat="assignee in taskCtrl.task.assignees track by $index" ng-click="taskCtrl.removeuser($index)" class="userIcons__item">
                             <span class="userIcons__username">{{assignee.username}}</span>
                             <div class="crop">
@@ -127,14 +132,14 @@
                         </li>
                     </ul>
                 </div>
-            </div>
-            <div class="panel-footer" ng-if="projectCtrl.rights.hasEditRights">
-                <button type="button" ui-sref="app.project.kanban({projectId: projectCtrl.project.id })" class="btn btn-info">Annuler</button>
-                <button type="submit" class="btn btn-info" >Enregistrer</button>
+                <div class="form-group" ng-if="projectCtrl.rights.hasEditRights">
+                    <button type="button" ui-sref="app.project.kanban({projectId: projectCtrl.project.id })" class="btn btn-info">Annuler</button>
+                    <button type="submit" class="btn btn-info" >Enregistrer</button>
+                </div>
             </div>
         </form>
         <div ng-controller="histoController as histoTaskCtrl">
-            <div ng-include="'templates/project/task/history/list.html'"></div>
+            <div ng-if="histoTaskCtrl.histosTask.length > 0" ng-include="'templates/project/task/history/list.html'"></div>
         </div>
     </aside>
 </section>

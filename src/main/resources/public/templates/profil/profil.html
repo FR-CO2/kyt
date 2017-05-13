@@ -41,18 +41,3 @@
         </div>
     </section>
 </form>
-<section ng-if="profilCtrl.profil.members" class="content">
-    <h3>Mes projets</h3>
-    <div class="cards">
-        <div class="card card--project" ng-repeat="member in profilCtrl.profil.members">
-            <div class="card__item">
-                <h1 class="card__title">{{member.projectName}}</h1>
-                <div class="card__infos">
-                    <dl class="card__info">
-                        <dt class="card__info__title">{{member.projectRole}}</dt>
-                    </dl>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
