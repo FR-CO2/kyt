@@ -59,12 +59,12 @@
                         <input type="date" id="plannedEnding" class="form-control" ng-model="taskCtrl.task.plannedEnding" value="{{taskCtrl.task.plannedEndingValue}}"/>
                     </div>
                     <div class="form-group col-md-4">
-                        <label for="estimatedLoad">Charge totale</label>
+                        <label for="estimatedLoad">Charge totale estimée</label>
                         <input type="number" id="estimatedLoad" class="form-control" ng-model="taskCtrl.task.estimatedLoad" min="0" step="{{taskCtrl.allocation.step}}"/>
                     </div>
                 </fieldset>
                 <fieldset>
-
+                    <legend>Liaision entre tâches</legend>
                     <div class="form-group col-md-6">
                         <label for="prerequired">Dépend de&nbsp;:</label>
                         <input id="prerequired" class="form-control" ng-model="selectedParent"
