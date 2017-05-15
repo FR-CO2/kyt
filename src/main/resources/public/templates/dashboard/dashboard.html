@@ -1,64 +1,100 @@
 <section class="container-fluid app__content">
     <div class="col-md-6">
-        <div class="panel">
-            <div class="panel-heading clearChild">
-                <h2 class="panel-heading-title">
-                    <span class="glyphicon glyphicon-tasks">&nbsp;</span> 
-                    Mes tâches
-                </h2>
-            </div>
-            <div class="panel-body">
-                <table class="table table-striped table-condensed table-hover">
-                    <thead>
-                        <tr>
-                            <th>Projet</th>
-                            <th>Nom</th>
-                            <th>Etat</th>
-                            <th>Catégorie</th>
-                            <th>Date fin</th>
-                            <th>Consommée</th>
-                            <th>Charge estimée</th>
-                            <th>Charge réevaluée</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="task in dashboardCtrl.tasks._embedded.taskResourceList" ui-sref="app.project.task({projectId: task.project.id, taskId: task.id })">
-                            <td>
-                                {{task.project.name}}
-                            </td>
-                            <td>
-                                {{task.name}}
-                            </td>
-                            <td>
-                                {{task.state.name}}
-                            </td>
-                            <td>
-                                {{task.category.name}}
-                            </td>
-                            <td>
+        <h2 class="panel-heading-title">
+            <span class="glyphicon glyphicon-tasks">&nbsp;</span>
+            Mes tâches
+        </h2>
+        <div class="cards cards--dashboard">
+            <div class="card card--task card--dashboard" ng-repeat="task in dashboardCtrl.tasks._embedded.taskResourceList">
+                <article class="card__item">
+                    <div class="card__header">
+                        <h3 class="card__title">#{{task.id}} {{task.name}}</h3>
+                        <div class="card__action">
+                            <a class="btn pull-right"
+                               ui-sref="app.project.task({projectId: task.project.id, taskId: task.id })"
+                               title="edit">Editer</a>
+                        </div>
+                    </div>
+                    <ul class="card__contentList">
+                        <li class="card__content">
+                            <ul class="userIcons">
+                                <li ng-repeat="assignee in task.assignees" class="userIcons__item">
+                                    <span class="userIcons__username">{{assignee.username}}</span>
+                                    <img src="{{assignee.photo}}" alt="{{assignee.username}}" title="{{assignee.username}}"
+                                         class="crop" ng-if="assignee.photo"/>
+                                    <span class="crop" ng-if="!assignee.photo"><span
+                                            class="glyphicon glyphicon-user"></span></span>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="card__content">Projet : {{task.project.name}}</li>
+                        <li class="card__content">{{task.state.name}}</li>
+                        <li class="card__content">
+                            <span ng-if="!task.swimlane">-</span>
+                            {{task.swimlane.name}}
+                        </li>
+                        <li class="card__content">
+                            <span class="badge badge__category" ng-if="task.category.bgcolor"
+                                  style="background: {{task.category.bgcolor}}">&nbsp;</span>
+                            <span ng-if="!task.category">-</span>
+                            {{task.category.name}}
+                        </li>
+                    </ul>
+                    <aside class="card__infos">
+                        <dl class="card__info">
+                            <dd class="card__info__value" ng-if="!task.plannedStart">
+                                -
+                            </dd>
+                            <dd class="card__info__value" ng-if="task.plannedStart">
+                                {{task.plannedStart| date:'dd/MM/yyyy'}}
+                            </dd>
+                            <dt class="card__info__title">Date de début prévue</dt>
+                        </dl>
+
+                        <dl class="card__info">
+                            <dd class="card__info__value" ng-if="!task.plannedEnding">
+                                -
+                            </dd>
+                            <dd class="card__info__value" ng-class="{'exceeded-date' : task.exceededDate}"
+                                ng-if="task.plannedEnding">
                                 {{task.plannedEnding| date:'dd/MM/yyyy'}}
-                            </td>
-                            <td>
-                                {{task.timeSpent}}
-                            </td>
-                            <td>
+                            </dd>
+                            <dt class="card__info__title">Date de début</dt>
+                        </dl>
+
+                        <dl class="card__info">
+                            <dd class="card__info__value" ng-if="!task.estimatedLoad">
+                                -
+                            </dd>
+                            <dd class="card__info__value" ng-if="task.estimatedLoad">
                                 {{task.estimatedLoad}}
-                            </td>
-                            <td>
+                            </dd>
+                            <dt class="card__info__title">Charge estimée</dt>
+                        </dl>
+
+                        <dl class="card__info">
+                            <dd class="card__info__value" ng-if="!task.timeSpent">
+                                -
+                            </dd>
+                            <dd class="card__info__value" ng-if="task.timeSpent">
+                                {{task.timeSpent}}
+                            </dd>
+                            <dt class="card__info__title">Consommé</dt>
+                        </dl>
+
+                        <dl class="card__info">
+                            <dd class="card__info__value" ng-if="!task.timeRemains">
+                                -
+                            </dd>
+                            <dd class="card__info__value" ng-class="{'exceeded-load' : task.exceededLoad}"
+                                ng-if="task.timeRemains">
                                 {{task.timeRemains}}
-                            </td>
-                        </tr>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td colspan="8">
-                                <div class="center-block text-center">
-                                    <uib-pagination total-items="homeCtrl.tasks.nbElt" ng-model="dashboardCtrl.tasks.number" items-per-page="homeCtrl.tasks.size" max-size="5" class="pagination-sm" boundary-links="true" rotate="false" num-pages="homeCtrl.tasks.totalPages" ng-change="homeCtrl.pageTasksChanged()"></uib-pagination>
-                                </div>
-                            </td>
-                        </tr>
-                    </tfoot>
-                </table>
+                            </dd>
+                            <dt class="card__info__title">Reste à faire</dt>
+                        </dl>
+
+                    </aside>
+                </article>
             </div>
         </div>
     </div>
@@ -66,12 +102,13 @@
         <div class="panel">
             <div class="panel-heading clearChild">
                 <h2 class="panel-heading-title">
-                    <span class="glyphicon glyphicon-calendar">&nbsp;</span> 
+                    <span class="glyphicon glyphicon-calendar">&nbsp;</span>
                     Mon calendrier
                 </h2>
             </div>
             <div class="panel-body">
-                <div ui-calendar="dashboardCtrl.calendarOptions" class="span8 calendar" ng-model="dashboardCtrl.eventsSource" calendar="userCalendar"></div> 
+                <div ui-calendar="dashboardCtrl.calendarOptions" class="span8 calendar"
+                     ng-model="dashboardCtrl.eventsSource" calendar="userCalendar"></div>
             </div>
         </div>
     </div>
