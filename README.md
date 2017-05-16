@@ -1,5 +1,5 @@
 
-# <abbr title="Kanban and Timesheet">KyT</abbr>
+# KyT
 Outil de kanban avec gestion d'imputations
 
 ## Les contraintes techniques
@@ -102,11 +102,53 @@ Il est possible d'avoir le détail des imputations en cliquant sur la flèche</p
 #### Paramétrage d'un projet
 Pour accéder à la partie paramétrages d'un projet, il faut cliquer sur <cite>Mes projets</cite>,<cite>Administrer les projets</cite> et sur l'icone stylo du projet à administrer.<br/>L'onglet <cite>Mes Administrer les projets</cite> n'est accessible qu'aux administrateurs de l'application.<br/>
 C'est également par là qu'on peut supprimer un projet. Pour cela au lieu de cliquer sur l'icone stylo, il suffit de cliquer sur l'icone poubelle.
+
+Un manager peut administrer son projet en allant sur <cite>Mes projets</cite>, en sélectionnant son projet et en cliquant sur <cite>Paramétrage</cite>.
+
 ##### Champs personnalisés
 Cette page permet d'ajouter des champs personnalisés au projet. 
 Il existe trois types de champs personnalisés : 
-*
+* texte
+* date
+* nombre
+
+Chaque champ personnalisable peut être rendu obligatoire ou non, en sélectionnant le champ obligatoire présent dans le formulaire.
+
 ##### Catégories
+Par défaut, un projet a trois catégories déjà présentes : 
+* Issue : pour les anomalies
+* Evolution : pour les évolutions
+* Assistance : pour les demandes d'assistance
+
+<p>Chacune a une couleur prédéfinie. Il est possible de changer le nom et la couleur des catégories par défaut, mais aussi de les supprimer.</p>
+<p>Il est possible d'ajouter de nouvelles catégories. Pour cela, il suffit de cliquer sur le bouton <cite>Nouvelles catégories</cite> et de renseigner son nom et sa couleur.</p>
+
 ##### Etats
+Chaque projet a quatre états présents par défaut : 
+* Backlog : pour les demandes en attente
+* Prêt : pour les demandes prêtes
+* En cours : pour les demandes en cours
+* Terminé : pour les demandes terminées
+
+<p>L'état Terminé est un état de fermeture.<br/>
+Aucun des états par défaut n'est masqué dans le Kanban.</br>
+Il est possible de modifier le nom, l'état de fermeture et le fait qu'il soit masqué dans le kanban pour chaque état par défaut. Ils peuvent être également supprimés.</p>
+
+<p>Il est possible d'ajouter de nouveaux états, en cliquant sur <cite>Nouvel état</cite>. Il faut renseigner son nom et cocher si on veut que ce soit un état de cloture, pareil pour s'il faut qu'il soit masqué dans le kanban.</p>
+
 ##### Couloirs
+Il n'y a pas de couloir prévu par défaut pour un projet.</br>
+Pour ajouter un nouveau catégorie, il suffit de cliquer sur <cite>Nouveau couloir</cite> et renseigner le nom du couloir. Il est possible d'ajouter une date de fin prévue et si le couloir est repliable ou non.
+
 ##### Membres
+<p>Pour qu'un utilisateur puisse voir et naviguer dans le projet, il doit être déclaré dans l'onglet <cite>Membres</cite>.<br/>
+C'est aussi par cet onglet qu'un manager peut supprimer un membre d'un projet.</p>
+
+<p>Pour ajouter un nouveau membre, il faut cliquer sur le bouton <cite>Nouveau membre</cite>. Il faut taper le nom de l'utilisateur et les utilisateurs correspondants apparaissent par autocomplétion. Il suffit de sélectionner le correspondant et de lui assigner un rôle sur le projet.</p>
+
+Il existe trois types de rôles :
+* consummor : il peut s'imputer sur une tache. Changer l'état et le couloir de la tache par le kanban.
+* contributor : il peut, en plus des droits du consummor, ajouter de nouvelles taches, les modifier, voir les consommations.
+* manager : il est administrateur du projet.
+
+Un administrateur de l'application est forcément manager de tous les projets. S'il est rajouté sur un projet en tant que consummor ou contributor, c'est le droit administrateur qui prime. 
