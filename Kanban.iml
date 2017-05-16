@@ -109,6 +109,7 @@
     <orderEntry type="library" name="Maven: org.webjars:angular-gantt:1.2.2" level="project" />
     <orderEntry type="library" name="Maven: org.webjars:angular-ui-tree:2.13.0" level="project" />
     <orderEntry type="library" name="Maven: org.webjars:angular-dragdrop:1.0.8" level="project" />
+    <orderEntry type="library" name="Maven: org.webjars.bower:ngInfiniteScroll:1.3.0" level="project" />
     <orderEntry type="library" name="Maven: com.oberasoftware:jasdb_localservice:1.1.2" level="project" />
     <orderEntry type="library" name="Maven: com.oberasoftware:jasdb_transwriter:1.1.2" level="project" />
     <orderEntry type="library" name="Maven: com.oberasoftware:jasdb_index_btreeplus:1.1.2" level="project" />
@@ -123,5 +124,6 @@
     <orderEntry type="library" name="Maven: org.slf4j:jcl-over-slf4j:1.7.21" level="project" />
     <orderEntry type="library" name="Maven: ch.qos.logback:logback-classic:1.1.7" level="project" />
     <orderEntry type="library" name="Maven: ch.qos.logback:logback-core:1.1.7" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.commons:commons-lang3:3.2.1" level="project" />
   </component>
 </module>
