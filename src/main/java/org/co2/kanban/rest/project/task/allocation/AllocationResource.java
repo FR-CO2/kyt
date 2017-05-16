@@ -20,7 +20,7 @@ public class AllocationResource extends IdentifiableResourceSupport<Allocation> 
     }
 
     public String getUsername() {
-        return this.getBean().getMember().getUser().getUsername();
+        return this.getBean().getUser().getUsername();
     }
 
     public Timestamp getDate() {

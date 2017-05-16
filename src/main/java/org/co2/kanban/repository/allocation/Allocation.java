@@ -17,6 +17,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 import org.co2.kanban.repository.Identifiable;
+import org.co2.kanban.repository.user.ApplicationUser;
 
 /**
  *
@@ -36,7 +37,7 @@ public class Allocation implements Serializable, Identifiable {
     private Long id;
 
     @ManyToOne
-    private ProjectMember member;
+    private ApplicationUser user;
 
     private Timestamp allocationDate;
 
@@ -55,12 +56,12 @@ public class Allocation implements Serializable, Identifiable {
         this.id = id;
     }
 
-    public ProjectMember getMember() {
-        return member;
+    public ApplicationUser getUser() {
+        return user;
     }
 
-    public void setMember(ProjectMember member) {
-        this.member = member;
+    public void setUser(ApplicationUser user) {
+        this.user = user;
     }
 
     public Timestamp getAllocationDate() {

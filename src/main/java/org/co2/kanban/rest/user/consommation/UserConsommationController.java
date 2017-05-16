@@ -7,8 +7,6 @@ package org.co2.kanban.rest.user.consommation;
 
 import java.security.Principal;
 import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -17,7 +15,6 @@ import org.co2.kanban.business.project.task.history.Archivable;
 import org.co2.kanban.repository.allocation.Allocation;
 import org.co2.kanban.repository.allocation.AllocationRepository;
 import org.co2.kanban.repository.config.Parameter;
-import org.co2.kanban.repository.member.ProjectMember;
 import org.co2.kanban.repository.member.ProjectMemberRepository;
 import org.co2.kanban.repository.project.Project;
 import org.co2.kanban.repository.task.Task;
@@ -102,7 +99,7 @@ public class UserConsommationController {
         Timestamp timeLessOneDay = new Timestamp(dateLessOneDay);
         List<UserTaskImputationResource> results;
         Map<Long, UserTaskImputationResource> mapTemp = new HashMap<>();
-        Iterable<Allocation> allocations = allocationRepository.findByMemberUserAndAllocationDate(appUser, time);
+        Iterable<Allocation> allocations = allocationRepository.findByUserAndAllocationDate(appUser, time);
         Iterator<Allocation> allocationsIterator = allocations.iterator();
         Iterable<Task> tasks = taskRepositoy.findByAssigneesUserAndPlannedStartBeforeAndPlannedEndingAfterAndStateCloseStateFalse(appUser, timeMoreOneDay, timeLessOneDay);
         for (Task task : tasks) {
@@ -116,8 +113,10 @@ public class UserConsommationController {
                 }
             }
             if (resource.getTimeRemains() == null) {
-                Allocation lastAllocation = allocationRepository.findTopByMemberUserAndTaskOrderByAllocationDateDesc(appUser, task);
-                resource.setTimeRemains(lastAllocation.getTimeRemains());
+                Allocation lastAllocation = allocationRepository.findTopByUserAndTaskOrderByAllocationDateDesc(appUser, task);
+                if(lastAllocation != null) {
+                    resource.setTimeRemains(lastAllocation.getTimeRemains());
+                }
             }
             mapTemp.put(resource.getTaskId(), resource);
         }
@@ -171,12 +170,11 @@ public class UserConsommationController {
     @Archivable
     public Task createAllocation(Long projectId, Principal user, ApplicationUser appUser, Task task, UserTaskImputationResource imputation, Timestamp time) {
         Project project = task.getProject();
-        ProjectMember member = memberRepository.findByProjectAndUser(project, appUser);
-        Allocation allocation = allocationRepository.findByMemberUserAndAllocationDateAndTask(appUser, time, task);
+        Allocation allocation = allocationRepository.findByUserAndAllocationDateAndTask(appUser, time, task);
         if (allocation == null) {
             allocation = new Allocation();
             allocation.setTask(task);
-            allocation.setMember(member);
+            allocation.setUser(appUser);
             allocation.setAllocationDate(time);
         }
         allocation.setTimeSpent(imputation.getTimeSpent());

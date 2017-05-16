@@ -46,9 +46,6 @@ public class ProjectMember implements Serializable, Identifiable {
     @ManyToOne(cascade = CascadeType.DETACH)
     private ApplicationUser user;
 
-    @OneToMany
-    private List<Allocation> allocations;
-
     @ManyToMany(mappedBy = "assignees")
     private List<Task> tasksAssignee;
 
@@ -93,14 +90,6 @@ public class ProjectMember implements Serializable, Identifiable {
 
     public void setTasksAssignee(List<Task> tasksAssignee) {
         this.tasksAssignee = tasksAssignee;
-    }
-
-    public List<Allocation> getAllocations() {
-        return allocations;
-    }
-
-    public void setAllocations(List<Allocation> allocations) {
-        this.allocations = allocations;
     }
 
     public boolean hasRole(ProjectRole role) {
