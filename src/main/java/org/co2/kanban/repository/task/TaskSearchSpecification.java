@@ -32,8 +32,8 @@ public class TaskSearchSpecification implements Specification<Task> {
     @Override
     public Predicate toPredicate(Root<Task> root, CriteriaQuery<?> cq, CriteriaBuilder cb) {
 
-        Predicate id = cb.equal(cb.toString(root.get("id").as(Character.class)), searchTerm);
         String likeSearchTerm = "%".concat(searchTerm.toUpperCase()).concat("%");
+        Predicate id = cb.like(cb.toString(root.get("id").as(Character.class)), likeSearchTerm);
         Predicate name = cb.like(cb.upper(root.get("name").as(String.class)), likeSearchTerm);
         
         Predicate searchPredicate = cb.or(id, name);

@@ -36,8 +36,9 @@ public class ProjectTaskSearchSpecification implements Specification<Task> {
     @Override
     public Predicate toPredicate(Root<Task> root, CriteriaQuery<?> cq, CriteriaBuilder cb) {
 
-        Predicate id = cb.equal(cb.toString(root.get("id").as(Character.class)), searchTerm);
+
         String likeSearchTerm = "%".concat(searchTerm.toUpperCase()).concat("%");
+        Predicate id = cb.like(cb.toString(root.get("id").as(Character.class)), likeSearchTerm);
         Predicate name = cb.like(cb.upper(root.get("name").as(String.class)), likeSearchTerm);
         Predicate projectPredicate = cb.equal(root.join("project"), project);
         Predicate task = cb.notEqual(root.get("id").as(Long.class), this.idTask);
