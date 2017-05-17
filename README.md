@@ -8,7 +8,8 @@ L'application est compatible avec Edge et
 Firefox et Chrome (dernières versions).
 
 ### Serveur
-Il faut avoir un JRE (v1.7 au minimum)
+<p>Il faut avoir un JRE (v1.7 au minimum)</p>
+L'application se base sur le niveau de maturité Hateoas pour les communications entre le front et le back. <strong>Aussi, il est indispensable de le firewall et le serveur web permettent l'utilisation des mots clefs PUT et DELETE en plus des habituels POST et GET.</strong> 
 
 ## Démo 
 URL : <a href="https://fr-co2-kyt.herokuapp.com" title="Démo" alt="Démo" target="_blank">https://fr-co2-kyt.herokuapp.com</a><br/>
