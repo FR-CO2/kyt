@@ -17,7 +17,7 @@
                     </div>
                     <ul class="card__contentList">
                         <li class="card__content">
-                            <ul class="userIcons">
+                            <ul class="userIcons" ng-class="{'userIcons--multiple': task.assignees.length > 1}">
                                 <li ng-repeat="assignee in task.assignees" class="userIcons__item">
                                     <span class="userIcons__username">{{assignee.username}}</span>
                                     <img src="{{assignee.photo}}" alt="{{assignee.username}}" title="{{assignee.username}}"
