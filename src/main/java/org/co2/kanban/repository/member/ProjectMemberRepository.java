@@ -24,7 +24,7 @@ public interface ProjectMemberRepository extends PagingAndSortingRepository<Proj
 
     Iterable<ProjectMember> findByProject(Project project);
 
-    Iterable<ProjectMember> findByProjectAndUserUsernameContains(Project project, String term);
+    Iterable<ProjectMember> findByProjectAndUserUsernameContainsIgnoreCase(Project project, String term);
     
     ProjectMember findByProjectAndUser(Project project, ApplicationUser user);
     

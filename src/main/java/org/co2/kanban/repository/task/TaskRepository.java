@@ -6,6 +6,8 @@
 package org.co2.kanban.repository.task;
 
 import java.sql.Timestamp;
+import java.util.List;
+
 import org.co2.kanban.repository.project.Project;
 import org.co2.kanban.repository.user.ApplicationUser;
 import org.co2.kanban.repository.state.State;
@@ -45,6 +47,12 @@ public interface TaskRepository extends PagingAndSortingRepository<Task, Long>, 
     Iterable<Task> findByAssigneesUserAndPlannedStartBeforeAndPlannedEndingAfterAndStateCloseStateFalse(ApplicationUser user, Timestamp startBefore, Timestamp endAfter);
 
     Iterable<Task> findByprojectAndNameContaining(Project project, String term);
+
+    @Query("select c.id from #{#entityName} u JOIN u.children c where u.id = ?1")
+    List<Long> findIdChildrenById(Long idTask);
+
+    @Query("select p.id from #{#entityName} u JOIN u.parent p where u.id = ?1")
+    List<Long> findIdParentById(Long idTask);
 
     @Query("select u from #{#entityName} u where u.project = ?1 and str(u.id) like %?2%")
     Iterable<Task> findByprojectAndIdContaining(Project project, String id);

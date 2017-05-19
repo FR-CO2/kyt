@@ -27,6 +27,7 @@ public class TaskHistoRest implements Identifiable {
     private String swinlameName;
     private Long categoryId;
     private String categoryName;
+    private Double totalAllocation;
     private Timestamp dateModif;
     private Long userIdWriter;
     private String usernameWriter;
@@ -109,9 +110,15 @@ public class TaskHistoRest implements Identifiable {
     public String getCategoryName() {
         return categoryName;
     }
-
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
+    }
+
+    public Double getTotalAllocation() {
+        return totalAllocation;
+    }
+    public void setTotalAllocation(Double totalAllocation) {
+        this.totalAllocation = totalAllocation;
     }
 
     public Timestamp getDateModif() {
@@ -151,7 +158,7 @@ public class TaskHistoRest implements Identifiable {
 
     public void convertTaskHistoRest(TaskHistoRest taskHistoRest, TaskHisto taskHisto){
         taskHistoRest.setTaskId(Long.parseLong(taskHisto.getTaskId()));
-        taskHistoRest.setVersionId(Long.parseLong(taskHisto.getVersionId()));
+        taskHistoRest.setVersionId(taskHisto.getVersionId());
         taskHistoRest.setProjectId(Long.parseLong(taskHisto.getProjectId()));
         taskHistoRest.setProjectName(taskHisto.getProjectName());
         if(taskHisto.getStateId()!=null) {
@@ -166,6 +173,12 @@ public class TaskHistoRest implements Identifiable {
             taskHistoRest.setCategoryId(Long.parseLong(taskHisto.getCategoryId()));
         }
         taskHistoRest.setCategoryName(taskHisto.getCategoryName());
+
+        taskHistoRest.setTotalAllocation(0D);
+        if(taskHisto.getTotalAllocations()!=null) {
+            taskHistoRest.setTotalAllocation(Double.parseDouble(taskHisto.getTotalAllocations()));
+        }
+
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         try {
             Date parsedDate = dateFormat.parse(taskHisto.getDateModif());

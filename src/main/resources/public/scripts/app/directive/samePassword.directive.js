@@ -4,9 +4,10 @@ var checkSamePassword = function (password, rePassword) {
     if (rePassword !== '' &&
             password !== undefined
             && rePassword !== password) {
-        error = {
-            message: "Les mots de passe saisis ne correspondent pas"
-        };
+        error = {};
+        error.messages = [
+            {message: "Les mots de passe saisis ne correspondent pas"}
+        ];
     }
     return error;
 };
@@ -16,8 +17,7 @@ module.exports = function () {
         transclude: true,
         scope: {
             password: "=password",
-            placeholder: "@placeholder",
-            error: "=error"
+            error: "=error",
         },
         link: function (scope, elem, attrs, ctrl) {
             var rePasswordElm = elem.children()[0];
@@ -31,6 +31,15 @@ module.exports = function () {
                 }
             });
         },
-        template: '<input type="password" class="form-control" id="rePassword" placeholder="{{placeholder}}"/>'
+        template: function(element, attrs) {
+            var htmlText = '<input type="password" ';
+            var required = attrs.required;
+            var placeholder = attrs.placeholder;
+            if(required === "required"){
+                htmlText += 'required="required" ';
+            }
+            htmlText += 'class="form-control" id = "rePassword" placeholder = "' + placeholder+ '" / > ';
+            return htmlText;
+        }
     };
 };

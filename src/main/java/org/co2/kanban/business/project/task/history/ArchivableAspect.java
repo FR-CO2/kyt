@@ -11,11 +11,15 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import nl.renarj.jasdb.core.exceptions.JasDBException;
+import nl.renarj.jasdb.core.exceptions.JasDBStorageException;
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.co2.kanban.business.project.history.HistoryUser;
 import org.co2.kanban.business.project.type.action.EnumAction;
+import org.co2.kanban.repository.allocation.Allocation;
 import org.co2.kanban.repository.member.ProjectMemberRepository;
 import org.co2.kanban.repository.project.Project;
 import org.co2.kanban.repository.project.ProjectRepository;
@@ -26,6 +30,7 @@ import org.co2.kanban.repository.taskhisto.TaskHistoRepository;
 import org.co2.kanban.repository.user.ApplicationUser;
 import org.co2.kanban.repository.user.ApplicationUserRepository;
 import org.co2.kanban.rest.project.task.histo.TaskHistoAssembler;
+import org.co2.kanban.rest.user.consommation.UserTaskImputationResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -43,13 +48,7 @@ import org.springframework.stereotype.Service;
 public class ArchivableAspect {
 
     @Autowired
-    private TaskHistoAssembler taskHistoAssembler;
-
-    @Autowired
     private ApplicationUserRepository applicationUserRepository;
-
-    @Autowired
-    private ProjectMemberRepository projectMemberRepository;
 
     @Autowired
     private TaskHistoRepository taskHistoRepository;
@@ -60,13 +59,22 @@ public class ArchivableAspect {
     @Autowired
     private ProjectRepository projectRepository;
 
+    @AfterReturning(pointcut = "@annotation(org.co2.kanban.business.project.task.history.Archivable) && args(user, userId, date,imputations)",
+            returning = "result")
+    public void majAllocationHisto(JoinPoint jp, Principal user, Long userId, Long date, UserTaskImputationResource[] imputations, Object result) throws Throwable {
+        for (UserTaskImputationResource imputation : imputations) {
+            Task task = taksRepository.findOne(imputation.getTaskId());
+            Project project = task.getProject();
+            addTaskHisto(task, project, user, EnumAction.IMPUTATION);
+        }
+    }
     @AfterReturning(pointcut = "@annotation(org.co2.kanban.business.project.task.history.Archivable) && args(projectId, user, ..)",
             returning = "result")
     public void majTaskHisto(JoinPoint jp, Long projectId, Principal user, Object result) throws Throwable {
 
         Project project = projectRepository.findOne(projectId);
         Long taskId;
-        Task task;
+
         EnumAction action;
         try {
             taskId = (Long) jp.getArgs()[2];
@@ -83,23 +91,36 @@ public class ArchivableAspect {
             taskId = Long.valueOf(headers.get("taskId").get(0));
             action = EnumAction.INSERT;
         }
-        task = taksRepository.findOne(taskId);
+
+        Task task = taksRepository.findOne(taskId);
+        addTaskHisto(task, project, user, action);
+    }
+
+    private void addTaskHisto(Task task, Project project, Principal user, EnumAction action) throws JasDBException {
+
+        Double totalAllocations = 0D;
+        List<Allocation> allocations = task.getAllocations();
+        if(allocations != null) {
+            for (Allocation allocation : allocations) {
+                totalAllocations += allocation.getTimeSpent();
+            }
+        }
         String sort = "DESC";
         Sort.Direction dir = Sort.Direction.DESC;
-        Sort sorting = new Sort(dir, sort);
-        PageRequest pageable = new PageRequest(1, 1, sorting);
         TaskHisto taskHisto = new TaskHisto();
-        List<TaskHisto> tasksHisto = taskHistoRepository.findTop1ByTaskId(task.getId(), 10);
+        TaskHisto lastTaskHisto = new TaskHisto();
+
+        List<TaskHisto> tasksHisto = taskHistoRepository.findTop1ByTaskId(task.getId(), 0,1);
         taskHisto.setId("0");
-        taskHisto.setVersionId("0");
+        taskHisto.setVersionId(0);
 
         if(tasksHisto.size() > 0) {
-          taskHisto.setId(tasksHisto.get(tasksHisto.size()-1).getId());
-            Integer numVersion = Integer.parseInt(tasksHisto.get(tasksHisto.size()-1).getVersionId()) + 1;
-            taskHisto.setVersionId(numVersion.toString());
+            taskHisto.setId(tasksHisto.get(0).getId());
+            long numVersion = tasksHisto.get(0).getVersionId()+ 1;
+            taskHisto.setVersionId(numVersion);
+            lastTaskHisto = tasksHisto.get(0);
         }
 
-        Date date = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         taskHisto.setDateModif(dateFormat.format(new Date()));
         taskHisto.setTaskId(task.getId().toString());
@@ -118,12 +139,14 @@ public class ArchivableAspect {
             taskHisto.setCategoryName(task.getCategory().getName());
         }
 
+        taskHisto.setTotalAllocations(totalAllocations.toString());
 
         ApplicationUser appUser = applicationUserRepository.findByUsername(user.getName());
         taskHisto.setUserIdWriter(appUser.getId().toString());
         taskHisto.setUsernameWriter(appUser.getUsername());
         taskHisto.setActionValue(String.valueOf(action.getValue()));
-
-        taskHistoRepository.save(taskHisto);
+        if(!lastTaskHisto.equals(taskHisto)) {
+            taskHistoRepository.save(taskHisto);
+        }
     }
 }

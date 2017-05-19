@@ -17,11 +17,13 @@ import org.springframework.data.repository.PagingAndSortingRepository;
  */
 public interface AllocationRepository extends PagingAndSortingRepository<Allocation, Long> {
 
-    Iterable<Allocation> findByMemberAndAllocationDateBetween(ProjectMember member, Timestamp start, Timestamp end);
+    Iterable<Allocation> findByUserAndAllocationDateBetween(ApplicationUser user, Timestamp start, Timestamp end);
 
-    Iterable<Allocation> findByTaskOrderByAllocationDateAscMemberUserUsernameAsc(Task task);
+    Iterable<Allocation> findByTaskOrderByAllocationDateAscUserUsernameAsc(Task task);
     
-    Iterable<Allocation> findByMemberUserAndAllocationDate(ApplicationUser user, Timestamp date);
+    Iterable<Allocation> findByUserAndAllocationDate(ApplicationUser user, Timestamp date);
     
-    Allocation findByMemberUserAndAllocationDateAndTask(ApplicationUser user, Timestamp date, Task task);
+    Allocation findByUserAndAllocationDateAndTask(ApplicationUser user, Timestamp date, Task task);
+
+    Allocation findTopByUserAndTaskOrderByAllocationDateDesc(ApplicationUser user, Task task);
 }

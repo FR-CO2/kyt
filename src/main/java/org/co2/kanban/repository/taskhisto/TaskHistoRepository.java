@@ -14,6 +14,7 @@ import nl.renarj.jasdb.LocalDBSession;
 import nl.renarj.jasdb.api.DBSession;
 import nl.renarj.jasdb.api.SimpleEntity;
 import nl.renarj.jasdb.api.model.EntityBag;
+import nl.renarj.jasdb.api.query.Order;
 import nl.renarj.jasdb.api.query.QueryBuilder;
 import nl.renarj.jasdb.api.query.QueryExecutor;
 import nl.renarj.jasdb.api.query.QueryResult;
@@ -54,19 +55,19 @@ public class TaskHistoRepository {
         return tasksHisto.get(0);
     }
 
-    public List<TaskHisto> findTop1ByTaskId(Long idTask, int limitVal) throws JasDBStorageException {
+    public List<TaskHisto> findTop1ByTaskId(Long idTask,int page, int next) throws JasDBStorageException {
         DBSession session = initializedSession();
         EntityBag bag = session.getBag("KYT_TASK_HISTO");
         QueryExecutor executor = bag.find(QueryBuilder.createBuilder().createBuilder().field("taskId")
-                .value(idTask.toString()));
-        executor.limit(limitVal);
+                .value(idTask.toString()).sortBy("versionId", Order.DESCENDING));
+        executor.paging(page, next);
         QueryResult result = executor.execute();
         List<TaskHisto> tasksHisto = new ArrayList<>();
         for (SimpleEntity entity : result) {
             TaskHisto taskHisto = new TaskHisto();
             taskHisto.setId(entity.getValue("id").toString());
             taskHisto.setTaskId(entity.getProperty("taskId").getFirstValue().toString());
-            taskHisto.setVersionId(entity.getProperty("versionId").getFirstValue().toString());
+            taskHisto.setVersionId(Long.parseLong(entity.getProperty("versionId").getFirstValue().toString()));
             taskHisto.setProjectId(entity.getProperty("projectId").getFirstValue().toString());
             taskHisto.setProjectName(entity.getProperty("projectName").getFirstValue().toString());
             if(entity.getProperty("stateId") != null) {
@@ -85,6 +86,9 @@ public class TaskHistoRepository {
             taskHisto.setUserIdWriter(entity.getProperty("userIdWriter").getFirstValue().toString());
             taskHisto.setUsernameWriter(entity.getProperty("usernameWriter").getFirstValue().toString());
             taskHisto.setActionValue(entity.getProperty("actionValue").getFirstValue().toString());
+            if(entity.getProperty("totalAllocations") != null) {
+                taskHisto.setTotalAllocations(entity.getProperty("totalAllocations").getFirstValue().toString());
+            }
             tasksHisto.add(taskHisto);
         }
     return tasksHisto;

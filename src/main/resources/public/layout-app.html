@@ -71,7 +71,7 @@
                    typeahead-editable="false"
                    typeahead-on-select="appCtrl.redirectTask($item, $model, $label)" 
                    typeahead-loading="appCtrl.loadingtask"
-                   uib-typeahead="task as task.name for task in appCtrl.getTasks($viewValue)">
+                   uib-typeahead="task as appCtrl.libelleResearch(task) for task in appCtrl.getTasks($viewValue)">
             <i ng-show="appCtrl.loadingtask" class="glyphicon glyphicon-refresh"></i>
         </li>
 

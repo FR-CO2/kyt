@@ -1,0 +1,18 @@
+## YAML Template.
+---
+databaseChangeLog:
+    - changeSet:
+        id: schema-1.0.9-task_allocation
+        author: stan
+        changes:
+            - dropColumn:
+                columnName: member_id
+                tableName: kyt_allocation
+            - addColumn:
+                    tableName: kyt_allocation
+                    columns:
+                    - column:
+                        name: user_id
+                        type: BIGINT
+                        constraints:
+                            nullable: false

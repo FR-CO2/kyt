@@ -15,7 +15,7 @@ public class ImputationByDateResource extends ResourceSupport {
 
     private String imputationDate;
 
-    private Float valImputation;
+    private Double valImputation;
 
     private boolean areMissing;
 
@@ -25,7 +25,7 @@ public class ImputationByDateResource extends ResourceSupport {
      * @param valImputation
      * @param areMissing 
      */
-    public ImputationByDateResource(String imputationDate, Float valImputation, boolean areMissing) {
+    public ImputationByDateResource(String imputationDate, Double valImputation, boolean areMissing) {
         this.imputationDate = imputationDate;
         this.valImputation = valImputation;
         this.areMissing = areMissing;
@@ -51,7 +51,7 @@ public class ImputationByDateResource extends ResourceSupport {
      * 
      * @return 
      */
-    public Float getValImputation() {
+    public Double getValImputation() {
         return valImputation;
     }
 
@@ -59,7 +59,7 @@ public class ImputationByDateResource extends ResourceSupport {
      * 
      * @param valImputation 
      */
-    public void setValImputation(Float valImputation) {
+    public void setValImputation(Double valImputation) {
         this.valImputation = valImputation;
     }
 

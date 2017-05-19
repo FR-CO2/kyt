@@ -14,11 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  *
@@ -48,6 +44,17 @@ public class TaskLinkController {
             throw new BusinessException(HttpStatus.NOT_FOUND, MESSAGE_KEY_NOT_FOUND);
         }
         return assembler.toResources(task.getChildren());
+    }
+
+    @RequestMapping(value = "/child/{linkedTaskId}", params = {"linkedTaskId"},  method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    public TaskLinkResource getTaskChild(@PathVariable("id") Long taskId, @RequestParam(name = "linkedTaskId") Long linkedTaskId) {
+        Task task = repository.findOne(taskId);
+        Task childTask = repository.findOne(linkedTaskId);
+        if (task == null || childTask == null) {
+            throw new BusinessException(HttpStatus.NOT_FOUND, MESSAGE_KEY_NOT_FOUND);
+        }
+        childTask.getParent().add(task);
+        return assembler.toResource(childTask);
     }
 
     @RequestMapping(value = "/child", method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
@@ -81,6 +88,17 @@ public class TaskLinkController {
             throw new BusinessException(HttpStatus.NOT_FOUND, MESSAGE_KEY_NOT_FOUND);
         }
         return assembler.toResources(task.getParent());
+    }
+
+    @RequestMapping(value = "/parent/{linkedTaskId}", params = {"linkedTaskId"},  method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
+    public TaskLinkResource getTaskParent(@PathVariable("id") Long taskId, @RequestParam(name = "linkedTaskId") Long linkedTaskId) {
+        Task task = repository.findOne(taskId);
+        Task parentTask = repository.findOne(linkedTaskId);
+        if (task == null || parentTask == null) {
+            throw new BusinessException(HttpStatus.NOT_FOUND, MESSAGE_KEY_NOT_FOUND);
+        }
+        parentTask.getChildren().add(task);
+        return assembler.toResource(parentTask);
     }
 
     @RequestMapping(value = "/parent", method = RequestMethod.POST, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)

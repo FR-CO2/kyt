@@ -52,7 +52,7 @@ public class AllocationController {
     @RequestMapping(method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public Iterable<AllocationResource> list(@PathVariable("projectId") Long projectId, @PathVariable("taskId") Long taskId) {
         Task task = repository.findOne(taskId);
-        return assembler.toResources(allocationRepository.findByTaskOrderByAllocationDateAscMemberUserUsernameAsc(task));
+        return assembler.toResources(allocationRepository.findByTaskOrderByAllocationDateAscUserUsernameAsc(task));
     }
 
     @RequestMapping(value = "/{allocationId}", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)

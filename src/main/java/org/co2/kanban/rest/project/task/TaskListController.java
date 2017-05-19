@@ -12,6 +12,8 @@ import org.co2.kanban.repository.category.CategoryRepository;
 import org.co2.kanban.repository.task.ProjectTaskSearchSpecification;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
+
 import org.co2.kanban.business.project.task.history.Archivable;
 import org.co2.kanban.repository.member.ProjectMemberRepository;
 import org.co2.kanban.repository.task.Task;
@@ -88,7 +90,9 @@ public class TaskListController {
     public Iterable<TaskResource> search(@PathVariable("projectId") Long projectId,  @RequestParam("idTask") Long idTask,
             @RequestParam("search") String searchTerm) {
         Project project = projectRepository.findOne(projectId);
-        ProjectTaskSearchSpecification search = new ProjectTaskSearchSpecification(project, idTask, searchTerm);
+        List<Long> tasksLinked = repository.findIdChildrenById(idTask);
+        tasksLinked.addAll(repository.findIdParentById(idTask));
+        ProjectTaskSearchSpecification search = new ProjectTaskSearchSpecification(project, idTask, searchTerm, tasksLinked);
         Iterable<Task> tasks = repository.findAll(search);
         return assembler.toResources(tasks);
     }

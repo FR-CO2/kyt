@@ -58,7 +58,7 @@ public class Task implements Serializable, Identifiable {
 
     private Timestamp plannedEnding;
 
-    private Float estimatedLoad;
+    private Double estimatedLoad;
 
     @Column(length = 10000)
     private String description;
@@ -88,7 +88,12 @@ public class Task implements Serializable, Identifiable {
     @OneToMany(mappedBy = "task")
     private List<TaskField> customField;
 
-    @ManyToMany(mappedBy = "children")
+    @ManyToMany
+    @JoinTable(name = "kyt_task_link",
+            joinColumns
+                    = @JoinColumn(name = "task_child_id", referencedColumnName = "ID"),
+            inverseJoinColumns
+                    = @JoinColumn(name = "task_parent_id", referencedColumnName = "ID"))
     private List<Task> parent;
 
     @ManyToMany
@@ -152,11 +157,11 @@ public class Task implements Serializable, Identifiable {
         this.plannedEnding = plannedEnding;
     }
 
-    public Float getEstimatedLoad() {
+    public Double getEstimatedLoad() {
         return estimatedLoad;
     }
 
-    public void setEstimatedLoad(Float estimatedLoad) {
+    public void setEstimatedLoad(Double estimatedLoad) {
         this.estimatedLoad = estimatedLoad;
     }
 

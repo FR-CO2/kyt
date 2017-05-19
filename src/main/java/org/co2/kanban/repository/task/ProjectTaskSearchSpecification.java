@@ -12,6 +12,8 @@ import javax.persistence.criteria.Root;
 import org.co2.kanban.repository.project.Project;
 import org.springframework.data.jpa.domain.Specification;
 
+import java.util.List;
+
 /**
  *
  * @author courtib
@@ -22,22 +24,26 @@ public class ProjectTaskSearchSpecification implements Specification<Task> {
 
     private final String searchTerm;
     private final Long idTask;
+    private final List<Long> tasksLinked;
 
-    public ProjectTaskSearchSpecification(Project project, Long idTask, String searchTerm) {
+    public ProjectTaskSearchSpecification(Project project, Long idTask, String searchTerm, List<Long> tasksLinked) {
         this.project = project;
         this.searchTerm = searchTerm;
         this.idTask = idTask;
+        this.tasksLinked = tasksLinked;
     }
 
     @Override
     public Predicate toPredicate(Root<Task> root, CriteriaQuery<?> cq, CriteriaBuilder cb) {
 
-        Predicate id = cb.equal(cb.toString(root.get("id").as(Character.class)), searchTerm);
+
         String likeSearchTerm = "%".concat(searchTerm.toUpperCase()).concat("%");
+        Predicate id = cb.like(cb.toString(root.get("id").as(Character.class)), likeSearchTerm);
         Predicate name = cb.like(cb.upper(root.get("name").as(String.class)), likeSearchTerm);
         Predicate projectPredicate = cb.equal(root.join("project"), project);
         Predicate task = cb.notEqual(root.get("id").as(Long.class), this.idTask);
-        return cb.and(projectPredicate, task, cb.or(id,name));
+        Predicate linked = root.get("id").in(this.tasksLinked);
+        return cb.and(projectPredicate, task, cb.or(id,name), cb.not(linked));
     }
 
 }

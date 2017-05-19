@@ -10,6 +10,7 @@ import java.sql.Timestamp;
 import com.oberasoftware.jasdb.api.entitymapper.annotations.Id;
 import com.oberasoftware.jasdb.api.entitymapper.annotations.JasDBEntity;
 import com.oberasoftware.jasdb.api.entitymapper.annotations.JasDBProperty;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.co2.kanban.repository.Identifiable;
 import org.co2.kanban.repository.user.ApplicationUser;
 
@@ -22,7 +23,7 @@ public class TaskHisto {
 
     private String id;
     private String taskId;
-    private String versionId;
+    private long versionId;
     private String projectId;
     private String projectName;
     private String stateId;
@@ -31,6 +32,7 @@ public class TaskHisto {
     private String swinlameName;
     private String categoryId;
     private String categoryName;
+    private String totalAllocations;
     private String dateModif;
     private String userIdWriter;
     private String usernameWriter;
@@ -54,10 +56,10 @@ public class TaskHisto {
     }
 
     @JasDBProperty
-    public String getVersionId() {
+    public long getVersionId() {
         return versionId;
     }
-    public void setVersionId(String versionId) {
+    public void setVersionId(long versionId) {
         this.versionId = versionId;
     }
 
@@ -126,6 +128,14 @@ public class TaskHisto {
     }
 
     @JasDBProperty
+    public String getTotalAllocations() {
+        return totalAllocations;
+    }
+    public void setTotalAllocations(String totalAllocations) {
+        this.totalAllocations= totalAllocations;
+    }
+
+    @JasDBProperty
     public String getDateModif() {
         return dateModif;
     }
@@ -155,6 +165,26 @@ public class TaskHisto {
     }
     public void setActionValue(String actionValue) {
         this.actionValue = actionValue;
+    }
+
+    @Override
+    public int hashCode(){
+        return new HashCodeBuilder(13, 23).
+                append(projectId).
+                append(stateId).
+                append(swinlameId).
+                append(categoryId).
+                append(totalAllocations).
+                toHashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if( ! (obj instanceof TaskHisto) ){
+            return false;
+        }
+        TaskHisto other = (TaskHisto) obj;
+        return other.hashCode() == this.hashCode();
     }
 
 }

@@ -17,14 +17,14 @@
                     </div>
                     <div class="form-group">
                         <label for="password">Nouveau mot de passe</label>
-                        <input type="password" class="form-control" id="password" ng-model="profilCtrl.profil.password" />
+                        <input type="password" class="form-control" id="password" ng-model="profilCtrl.profil.password" placeholder="Mot de passe"/>
                     </div>
                     <div class="form-group">
-                        <same-password password="profilCtrl.profil.password" error="profilCtrl.error" placeholder="Confirmer votre mot de passe" ></same-password>
+                        <same-password password="profilCtrl.profil.password" required="false" error="profilCtrl.error" placeholder="Confirmer votre mot de passe" ></same-password>
                     </div>
                     <div class="form-group">
                         <label for="email">Modifier mon adresse email</label>
-                        <input type="email" class="form-control" id="email" ng-model="profilCtrl.profil.email" />
+                        <input type="email" class="form-control" id="email" ng-model="profilCtrl.profil.email" placeholder="Adresse mail" />
                     </div>
                 </div>
                 <div class="profil__image">
@@ -41,18 +41,3 @@
         </div>
     </section>
 </form>
-<section ng-if="profilCtrl.profil.members" class="content">
-    <h3>Mes projets</h3>
-    <div class="cards">
-        <div class="card card--project" ng-repeat="member in profilCtrl.profil.members">
-            <div class="card__item">
-                <h1 class="card__title">{{member.projectName}}</h1>
-                <div class="card__infos">
-                    <dl class="card__info">
-                        <dt class="card__info__title">{{member.projectRole}}</dt>
-                    </dl>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>

@@ -28,6 +28,7 @@ import org.springframework.web.servlet.i18n.FixedLocaleResolver;
 
 import javax.annotation.PreDestroy;
 import java.util.Locale;
+import java.util.TimeZone;
 
 /**
  *
@@ -51,6 +52,7 @@ public class KanbanApplication {
     public LocaleResolver localeResolver() {
         FixedLocaleResolver slr = new FixedLocaleResolver();
         slr.setDefaultLocale(Locale.FRENCH);
+        TimeZone.getTimeZone("GMT");
         return slr;
     }
 

@@ -12,11 +12,10 @@ import org.co2.kanban.repository.taskhisto.TaskHistoRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,10 +37,13 @@ public class TaskHistoController {
     private TaskHistoAssembler assembler;
 
     @RequestMapping(method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public Iterable<TaskHistoResource> list(@PathVariable("projectId") Long projectId, @PathVariable("taskId") Long taskId) {
+    public Iterable<TaskHistoResource> list(@PathVariable("projectId") Long projectId, @PathVariable("taskId") Long taskId,
+        @RequestParam(name = "page", required = false) Integer page,
+        @RequestParam(name = "size", required = false) Integer size) {
+
         List<TaskHistoRest> tasksHistoRest = new ArrayList<>();
         try {
-            List<TaskHisto> tasksHisto = repository.findTop1ByTaskId(taskId, 10);
+            List<TaskHisto> tasksHisto = repository.findTop1ByTaskId(taskId, page, size);
 
             for(TaskHisto taskHisto : tasksHisto) {
                 TaskHistoRest taskHistoRest = new TaskHistoRest();

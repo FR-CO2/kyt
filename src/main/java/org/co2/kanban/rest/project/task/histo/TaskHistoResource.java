@@ -66,4 +66,5 @@ public class TaskHistoResource extends IdentifiableResourceSupport<TaskHistoRest
     public Timestamp getWritingDate() {
         return this.getBean().getDateModif();
     }
+    public Double getTotalAllocation(){return this.getBean().getTotalAllocation();}
 }

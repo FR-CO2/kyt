@@ -8,6 +8,7 @@ package org.co2.kanban.rest.user.task;
 import java.sql.Timestamp;
 import org.co2.kanban.repository.task.Task;
 import org.co2.kanban.repository.task.TaskRepository;
+import org.co2.kanban.repository.task.TaskSearchSpecification;
 import org.co2.kanban.repository.user.ApplicationUser;
 import org.co2.kanban.repository.user.ApplicationUserRepository;
 import org.co2.kanban.rest.project.task.TaskAssembler;
@@ -70,7 +71,8 @@ public class UserTaskController {
     public Iterable<TaskResource> search(@PathVariable("userId") Long userId,
             @RequestParam("search") String searchTerm) {
         ApplicationUser appUser = repository.findOne(userId);
-        Iterable<Task> tasks = taskRepositoy.findByAssigneesUserAndNameContainingAndStateCloseStateFalse(appUser, searchTerm);
+        TaskSearchSpecification search = new TaskSearchSpecification(appUser, searchTerm);
+        Iterable<Task> tasks = taskRepositoy.findAll(search);
         return taskAssembler.toResources(tasks);
     }
 

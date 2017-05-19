@@ -34,8 +34,8 @@ public class TaskAssembler extends ResourceAssemblerSupport<Task, TaskResource> 
         super(TaskController.class, TaskResource.class);
     }
 
-    private Float calculateTimeRemains(Float currentTimeRemains, Allocation allocation) {
-        Float timeRemains = currentTimeRemains;
+    private Double calculateTimeRemains(Double currentTimeRemains, Allocation allocation) {
+        Double timeRemains = currentTimeRemains;
         if (allocation.getTimeRemains() != null) {
             timeRemains = allocation.getTimeRemains();
         } else {
@@ -47,8 +47,11 @@ public class TaskAssembler extends ResourceAssemblerSupport<Task, TaskResource> 
     @Override
     public TaskResource toResource(Task task) {
         TaskResource resource = new TaskResource(task);
-        Float timeSpent = 0F;
-        Float timeRemains = task.getEstimatedLoad();
+        Double timeSpent = 0D;
+        Double timeRemains = 0D;
+        if(task.getEstimatedLoad() != null) {
+            timeRemains = task.getEstimatedLoad();
+        }
         Timestamp timeRemainsAllocationDate = null;
         if (task.getAllocations() != null) {
             for (Allocation allocation : task.getAllocations()) {
@@ -79,7 +82,7 @@ public class TaskAssembler extends ResourceAssemblerSupport<Task, TaskResource> 
         resource.add(linkTo(methodOn(TaskFieldController.class).list(task.getProject().getId(), task.getId())).withRel("customfield"));
         resource.add(linkTo(methodOn(TaskLinkController.class).parents(task.getProject().getId(), task.getId())).withRel("parents"));
         resource.add(linkTo(methodOn(TaskLinkController.class).children(task.getProject().getId(), task.getId())).withRel("children"));
-        resource.add(linkTo(methodOn(TaskHistoController.class).list(task.getProject().getId(), task.getId())).withRel("histo"));
+        resource.add(linkTo(methodOn(TaskHistoController.class).list(task.getProject().getId(), task.getId(), null,null)).withRel("histo"));
         return resource;
     }
 }

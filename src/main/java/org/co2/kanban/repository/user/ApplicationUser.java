@@ -5,6 +5,7 @@
  */
 package org.co2.kanban.repository.user;
 
+import org.co2.kanban.repository.allocation.Allocation;
 import org.co2.kanban.repository.member.ProjectMember;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -50,6 +51,9 @@ public class ApplicationUser implements Serializable, Identifiable {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<ProjectMember> members = new ArrayList<>();
+
+    @OneToMany( cascade = CascadeType.ALL)
+    private List<Allocation> allocations;
 
     @Override
     public Long getId() {
@@ -111,5 +115,14 @@ public class ApplicationUser implements Serializable, Identifiable {
     public void setPhoto(byte[] photo) {
         this.photo = photo;
     }
+
+    public List<Allocation> getAllocations() {
+        return allocations;
+    }
+
+    public void setAllocations(List<Allocation> allocations) {
+        this.allocations = allocations;
+    }
+
 
 }

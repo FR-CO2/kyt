@@ -10,11 +10,12 @@
             <div class="form-group">
                 <input class="form-control" ng-model="addMemberCtrl.member.user"
                        typeahead-editable="false" typeahead-on-select="addMemberCtrl.selectUser($item, $model, $label)"
-                       uib-typeahead="user as user.username for user in addMemberCtrl.getUsers($viewValue)" />
+                       uib-typeahead="user as user.username for user in addMemberCtrl.getUsers($viewValue)" placeholder="Nom de l'utilisateur" required="required"/>
             </div>
             <div class="form-group">
                 <div class="form-control">
-                    <select ng-model="addMemberCtrl.member.projectRole" class="form-select" name="role" placeholder="Role">
+                    <select ng-model="addMemberCtrl.member.projectRole" class="form-select" name="role" placeholder="Role" required="required">
+                        <option value=""></option>
                         <option value="{{role}}" ng-repeat="role in addMemberCtrl.projectRoles">{{role}}</option>
                     </select>
                 </div>

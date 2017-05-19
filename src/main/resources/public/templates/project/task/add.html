@@ -8,7 +8,8 @@
         </alert>
         <form id="task" role="form" ng-submit="addTaskCtrl.submit()">
             <div class="form-group">
-                <input type="text" required ng-model="addTaskCtrl.task.name" class="form-control" name="taskName" placeholder="Nom de la tâche"/>
+                <label for="newTaskName">Nom de la tâche</label>
+                <input type="text" required ng-model="addTaskCtrl.task.name" class="form-control" id="newTaskName" name="taskName" placeholder="Nom de la tâche"/>
             </div>
             <div class="form-group">
                 <label for="category">Catégorie</label>
@@ -39,7 +40,7 @@
                 <input type="date" id="plannedEnding" class="form-control" ng-model="addTaskCtrl.task.plannedEnding" />
             </div>
             <div>
-                <button type="submit"  class="btn btn-info center-block">Créer</button>
+                <button type="submit" class="btn btn-info center-block">Créer</button>
             </div>
         </form>
     </div>

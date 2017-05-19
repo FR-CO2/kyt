@@ -1,9 +1,9 @@
-<h3 class="panel-heading-title">Commentaires </h3>
+<h3 ng-if="commentListCtrl.comments.length > 0"  class="panel-heading-title">Commentaires </h3>
 <div class="panel-heading-action">
     <button class="btn btn-info btn-sm" ng-click="commentListCtrl.add()" title="Ajouter un commentaire"><span class="glyphicon glyphicon-comment"></span>Commenter</button>
 </div>
 
-<section class="comments">
+<section class="comments" ng-if="commentListCtrl.comments.length > 0" >
     <blockquote ng-repeat="comment in commentListCtrl.comments" class="comment" cite="{{comment.writer}}">
         <cite class="comment__header">Commentaire  de {{comment.writer}} le {{comment.writingDate| date:'dd-MM-yyyy'}}</cite>
         <div class="comment__action pull-right" ng-if="projectCtrl.rights.hasAdminRights">
