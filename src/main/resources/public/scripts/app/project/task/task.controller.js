@@ -4,23 +4,24 @@ var taskController = function ($q, $state, $uibModal, project, currenttask, task
     vm.customFieldMap = {};
     vm.task = currenttask;
 
-    vm.task.parentId = [];
-    vm.task.childrenId = [];
 
     vm.allocation = allocationService.loadAllocation(appParameters);
     project.$promise.then(function () {
         currenttask.$promise.then(function () {
             vm.task = taskAssemblerService(currenttask);
+            vm.task.parentId = [];
+            vm.task.childrenId = [];
+
             vm.task.children = vm.task.resource("children").query();
-            vm.task.children.$promise.then(function(){
-                for(var i = 0 ; i < vm.task.childrend; i++){
-                    vm.task.childrenId.push(vm.task.children[i].id);
+            vm.task.children.$promise.then(function(data){
+                for(var i = 0 ; i < data.length; i++){
+                    vm.task.childrenId.push(data[i].id);
                 }
             });
             vm.task.parent = vm.task.resource("parents").query();
-            vm.task.parent.$promise.then(function(){
-                for(var i = 0 ; i < vm.task.parent; i++){
-                    vm.task.parentId.push(vm.task.parent[i].id);
+            vm.task.parent.$promise.then(function(data){
+                for(var i = 0 ; i < data.length; i++){
+                    vm.task.parentId.push(data[i].id);
                 }
             });
         });
