@@ -15,12 +15,18 @@ var appController = function ($http, currentuser, scope, $sessionStorage, $state
         project.then(function () {
             $state.transitionTo("app.project.task", ({projectId: project.$$state.value[0].id, taskId: $model.id}));
         });
-        vm.searchedTask = null;
+        vm.searchedTask = '';
     };
     vm.getTasks = function (term) {
         return currentuser.resource("search").query({search: term}).$promise;
     };
-
+    vm.libelleResearch = function(task){
+        var libelle = '';
+        if(task !== undefined && task !== ''){
+            libelle = '#' + task.id + ' - ' + task.name;
+        }
+        return libelle;
+    }
     vm.logout = function () {
         delete $sessionStorage.oauth;
         $state.transitionTo("login");

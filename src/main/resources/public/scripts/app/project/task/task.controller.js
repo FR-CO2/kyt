@@ -4,13 +4,25 @@ var taskController = function ($q, $state, $uibModal, project, currenttask, task
     vm.customFieldMap = {};
     vm.task = currenttask;
 
+    vm.task.parentId = [];
+    vm.task.childrenId = [];
+
     vm.allocation = allocationService.loadAllocation(appParameters);
-    //vm.task.description;
     project.$promise.then(function () {
         currenttask.$promise.then(function () {
             vm.task = taskAssemblerService(currenttask);
             vm.task.children = vm.task.resource("children").query();
+            vm.task.children.$promise.then(function(){
+                for(var i = 0 ; i < vm.task.childrend; i++){
+                    vm.task.childrenId.push(vm.task.children[i].id);
+                }
+            });
             vm.task.parent = vm.task.resource("parents").query();
+            vm.task.parent.$promise.then(function(){
+                for(var i = 0 ; i < vm.task.parent; i++){
+                    vm.task.parentId.push(vm.task.parent[i].id);
+                }
+            });
         });
         vm.categories = project.resource("category").query();
         vm.states = project.resource("state").query();
@@ -75,25 +87,57 @@ var taskController = function ($q, $state, $uibModal, project, currenttask, task
     vm.getMembers = function (term) {
         return project.resource("member").query({search: term}).$promise;
     };
+    vm.chechNotAlreadyInParentOrChild = function(task){
+        var isNotPresent = true;
+        if(vm.task.childrenId.indexOf(task.id) > -1 ||vm.task.parentId.indexOf(task.id) > -1){
+            isNotPresent = false;
+        }
+        return isNotPresent;
+    };
     vm.addChild = function ($item, $model, $label) {
-        vm.task.resource("children").save($item, function () {
-            vm.task.children.push($item);
-        });
+        if(vm.chechNotAlreadyInParentOrChild($item)) {
+            vm.task.resource("children").query({linkedTaskId: $item.id}, function () {
+                vm.task.children.push($item);
+                vm.task.childrenId.push($item.id);
+            });
+        }
+        vm.selectedChild = null;
     };
     vm.addParent = function ($item, $model, $label) {
-        vm.task.resource("parents").save($item, function () {
-            vm.task.parent.push($item);
-        });
+        if(vm.chechNotAlreadyInParentOrChild($item)){
+            vm.task.resource("parents").query({linkedTaskId: $item.id}, function () {
+                vm.task.parent.push($item);
+                vm.task.parentId.push($item.id);
+            });
+        }
+        vm.selectedParent = null;
     };
     vm.removeChild = function (index) {
         vm.task.children.splice(index, 1);
+        vm.task.childrenId.splice(index, 1);
     };
     vm.removeParent = function (index) {
         vm.task.parent.splice(index, 1);
+        vm.task.parentId.splice(index, 1);
     };
     vm.getTasks = function (term) {
-        return project.resource("task").query({idTask : vm.task.id,search: term}).$promise;
+        return project.resource("task").query({idTask : vm.task.id,search: term}).$promise.then(function(data){
+            var resultWithoutDuplicate = [];
+            for(i = 0; i < data.length; i ++){
+                if(vm.chechNotAlreadyInParentOrChild(data[i])){
+                    resultWithoutDuplicate.push(data[i]);
+                }
+            }
+            return resultWithoutDuplicate;
+        });
     };
+    vm.formatLibelle = function(task){
+        var libelle = '';
+        if(task !== undefined && task !== null){
+            libelle = '#'+ task.id + ' - ' + task.name;
+        }
+        return libelle;
+    }
     vm.submit = function () {
         angular.forEach(vm.task.customField, function (customField) {
             if (vm.customFieldMap[customField.definition.fieldName].value) {

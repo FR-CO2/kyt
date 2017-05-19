@@ -68,9 +68,9 @@
                     <legend>Liaision entre tâches</legend>
                     <div class="form-group col-md-6">
                         <label for="prerequired">Dépend de&nbsp;:</label>
-                        <input id="prerequired" class="form-control" ng-model="selectedParent"
+                        <input id="prerequired" class="form-control" ng-model="taskCtrl.selectedParent"
                                typeahead-editable="false" typeahead-on-select="taskCtrl.addParent($item, $model, $label)"
-                               uib-typeahead="task as task.name for task in taskCtrl.getTasks($viewValue)" placeholder="Ajouter un pré requis"/>
+                               uib-typeahead="task as taskCtrl.formatLibelle(task) for task in taskCtrl.getTasks($viewValue)" placeholder="Ajouter un pré requis"/>
                         <ul>
                             <li ng-repeat="parent in taskCtrl.task.parent track by $index">
                                 <a ng-href="#/project/{{projectCtrl.project.id}}/task/{{parent.id}}">{{parent.id}} - {{parent.name}}</a>
@@ -80,9 +80,9 @@
                     </div>
                     <div class="form-group col-md-6">
                         <label for="requiredby">Précède&nbsp;:</label>
-                        <input id="requiredby" class="form-control" ng-model="selectedChild"
+                        <input id="requiredby" class="form-control" ng-model="taskCtrl.selectedChild"
                                typeahead-editable="false" typeahead-on-select="taskCtrl.addChild($item, $model, $label)"
-                               uib-typeahead="task as task.name for task in taskCtrl.getTasks($viewValue)" placeholder="Ajouter un enfant"/>
+                               uib-typeahead="task as taskCtrl.formatLibelle(task) for task in taskCtrl.getTasks($viewValue)" placeholder="Ajouter un enfant"/>
                         <ul>
                             <li ng-repeat="child in taskCtrl.task.children track by $index">
                                 <a ng-href="#/project/{{projectCtrl.project.id}}/task/{{child.id}}">{{child.id}} - {{child.name}}</a>
