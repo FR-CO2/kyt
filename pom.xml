@@ -46,6 +46,40 @@
         </plugins>
     </build>
 
+    <profiles>
+        <profile>
+            <id>docker</id>
+            <build>
+                <plugins>
+
+                    <plugin>
+                        <groupId>io.fabric8</groupId>
+                        <artifactId>docker-maven-plugin</artifactId>
+                        <configuration>
+                            <images>
+                                <image>
+                                    <name>fabric8:dmp-sample-dockerfile</name>
+                                    <alias>dockerfile</alias>
+                                    <build>
+                                        <dockerFileDir>${project.basedir}/src/main/docker</dockerFileDir>
+                                        <assembly>
+                                            <descriptorRef>rootWar</descriptorRef>
+                                        </assembly>
+                                    </build>
+                                    <run>
+                                        <ports>
+                                            <port>8080:8080</port>
+                                        </ports>
+                                    </run>
+                                </image>
+                            </images>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
     <repositories>
         <repository>
             <id>spring-snapshots</id>
@@ -63,6 +97,7 @@
                 <enabled>false</enabled>
             </snapshots>
         </repository>
+
     </repositories>
 
     <dependencies>
