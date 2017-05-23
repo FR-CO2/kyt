@@ -81,7 +81,7 @@
         <div class="card card--task" ng-repeat="task in tasksCtrl.tasks._embedded.taskResourceList">
             <article class="card__item">
                 <div class="card__header">
-                    <h3 class="card__title">{{task.name}}</h3>
+                    <h3 class="card__title">#{{task.id}} {{task.name}}</h3>
                     <div class="card__action">
                         <a class="btn btn-danger pull-right" ng-click="tasksCtrl.delete(task)" title="delete" ng-if="projectCtrl.rights.hasAdminRights"><span class="glyphicon glyphicon-trash"></span></a>&nbsp;
                         <a class="btn pull-right" ui-sref="app.project.task({projectId: projectCtrl.project.id, taskId: task.id })" title="edit">Editer</a>
