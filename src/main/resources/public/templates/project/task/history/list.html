@@ -1,25 +1,37 @@
-<div class="histo-container panel">
-    <div class="panel-heading">
-        <h3 class="panel-heading-title">Historique de la tâche </h3>
-    </div>
-    <section class="histo">
+<div class="histo-container">
+    <h3>Historique de la tâche </h3>
+    <section>
         <div infinite-scroll="histoTaskCtrl.loadHisto()" infinite-scroll-disabled="histoTaskCtrl.busy"
              infinite-scroll-distance='1' infinite-scroll-parent="true">
-            <blockquote ng-repeat="histoTask in histoTaskCtrl.histosTask" cite="{{histoTask.writer}}">
-                <cite class="histo__header">Action de {{histoTask.userNameWriter}} le {{histoTask.writingDate|
-                    date:'dd-MM-yyyy'}}</cite>
-                <q class="histo__content">{{histoTask.actionName}}
-                    Etat : <span ng-if="histoTask.stateName !== null"><span
-                            ng-class="{'histo__content--not-same':!histoTask.stateNameChecked}">{{histoTask.stateName}}</span></span><span
-                            ng-if="histoTask.stateName === null">Néant</span><br/>
-                    Couloir : <span ng-if="histoTask.swimlaneName !== null"><span
-                            ng-class="{'histo__content--not-same':!histoTask.swimlaneNameChecked}">{{histoTask.swimlaneName}}</span></span><span
-                            ng-if="histoTask.swimlaneName === null">Néant</span><br/>
-                    Catégorie : <span ng-if="histoTask.categoryName !== null"><span
-                            ng-class="{'histo__content--not-same':!histoTask.categoryNameChecked}">{{histoTask.categoryName}}</span></span><span
-                            ng-if="histoTask.categoryName === null">Néant</span><br/>
-                    Temps passé : {{histoTask.totalAllocation}}<br/>
-                </q>
+            <blockquote class="histo panel" ng-repeat="histoTask in histoTaskCtrl.histosTask" cite="{{histoTask.writer}}">
+                <div class="histo__status">{{histoTask.actionName}}</div>
+                <div class="histo__content">
+                    <dl class="histo__info"  ng-class="{'histo__content--not-same':!histoTask.stateNameChecked}">
+                        <dt>
+                            Etat :
+                        </dt>
+                        <dd ng-if="histoTask.stateName !== null">{{histoTask.stateName}}</dd>
+                        <dd ng-if="histoTask.stateName === null">-</dd>
+                    </dl>
+                    <dl class="histo__info"  ng-class="{'histo__content--not-same':!histoTask.swimlaneNameChecked}">
+                        <dt>
+                            Couloir :
+                        </dt>
+                        <dd ng-if="histoTask.swimlaneName !== null">{{histoTask.swimlaneName}}</dd>
+                        <dd ng-if="histoTask.swimlaneName === null">-</dd>
+                    </dl>
+                    <dl class="histo__info"  ng-class="{'histo__content--not-same':!histoTask.categoryNameChecked}">
+                        <dt>Catégorie :</dt>
+                        <dd ng-if="histoTask.categoryName !== null">{{histoTask.categoryName}}</dd>
+                        <dd ng-if="histoTask.categoryName === null">-</dd>
+                    </dl>
+                    <dl class="histo__info" >
+                        <dt>Temps passé : </dt>
+                        <dd>{{histoTask.totalAllocation}}</dd>
+                    </dl>
+
+                </div>
+                <cite class="histo__member">Action de {{histoTask.userNameWriter}} le {{histoTask.writingDate|date:'dd-MM-yyyy'}}</cite>
             </blockquote>
         </div>
     </section>
