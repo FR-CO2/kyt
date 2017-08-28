@@ -52,7 +52,7 @@ public class ApplicationUser implements Serializable, Identifiable {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<ProjectMember> members = new ArrayList<>();
 
-    @OneToMany( cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Allocation> allocations;
 
     @Override
