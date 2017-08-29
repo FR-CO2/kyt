@@ -6,21 +6,16 @@
 package org.co2.kanban.business.project.task.history;
 
 import java.security.Principal;
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 import nl.renarj.jasdb.core.exceptions.JasDBException;
-import nl.renarj.jasdb.core.exceptions.JasDBStorageException;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
-import org.co2.kanban.business.project.history.HistoryUser;
 import org.co2.kanban.business.project.type.action.EnumAction;
 import org.co2.kanban.repository.allocation.Allocation;
-import org.co2.kanban.repository.member.ProjectMemberRepository;
 import org.co2.kanban.repository.project.Project;
 import org.co2.kanban.repository.project.ProjectRepository;
 import org.co2.kanban.repository.task.Task;
@@ -29,11 +24,8 @@ import org.co2.kanban.repository.taskhisto.TaskHisto;
 import org.co2.kanban.repository.taskhisto.TaskHistoRepository;
 import org.co2.kanban.repository.user.ApplicationUser;
 import org.co2.kanban.repository.user.ApplicationUserRepository;
-import org.co2.kanban.rest.project.task.histo.TaskHistoAssembler;
 import org.co2.kanban.rest.user.consommation.UserTaskImputationResource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;

@@ -2,7 +2,7 @@
 ---
 databaseChangeLog:
     - changeSet:
-        id: schema-1.0.9-task_allocation
+        id: schema-1.0.10-task_allocation
         author: stan
         changes:
             - dropColumn:
@@ -13,6 +13,6 @@ databaseChangeLog:
                     columns:
                     - column:
                         name: user_id
-                        type: BIGINT
+                        type: varchar(255)
                         constraints:
                             nullable: false

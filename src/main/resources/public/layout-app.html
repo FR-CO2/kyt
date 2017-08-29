@@ -33,7 +33,7 @@
             <a class="dropdown-toggle account" data-toggle="dropdown" id="accountDropdown" aria-expanded="true">
                 <span ng-if="!appCtrl.currentuser.photo" class="glyphicon glyphicon-user"></span>
                 <img ng-if="appCtrl.currentuser.photo" class="crop crop--nav" ng-src="{{appCtrl.currentuser.photo}}" alt="{{appCtrl.currentuser.username}}">
-                {{appCtrl.currentuser.username}}
+                {{appCtrl.currentuser.name}}
                 <span class="caret"></span>
             </a>
             <ul class="dropdown-menu pull-right" aria-labelledby="accountDropdown">

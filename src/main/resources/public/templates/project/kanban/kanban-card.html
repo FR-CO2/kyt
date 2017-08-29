@@ -14,8 +14,8 @@
     <div class="col-md-7">
       <ul class="userIcons">
         <li ng-repeat="assignee in task.assignees" class="userIcons__item">
-          <span class="userIcons__username">{{assignee.username}}</span>
-          <img src="{{assignee.photo}}" alt="{{assignee.username}}" title="{{assignee.username}}" class="crop" ng-if="assignee.photo" />
+          <span class="userIcons__username">{{assignee.name}}</span>
+          <img src="{{assignee.photo}}" alt="{{assignee.name}}" title="{{assignee.name}}" class="crop" ng-if="assignee.photo" />
           <span class="crop" ng-if="!assignee.photo"><span class="glyphicon glyphicon-user"></span></span>
         </li>
       </ul>

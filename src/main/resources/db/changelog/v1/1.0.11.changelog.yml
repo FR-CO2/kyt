@@ -1,0 +1,17 @@
+## YAML Template.
+---
+databaseChangeLog:
+    - changeSet:
+        id: schema-1.0.11-task_user
+        author: stan
+        changes:
+            - addColumn:
+                tableName: kyt_user
+                columns:
+                    - column:
+                        name: name
+                        type: varchar(255)
+                        constraints:
+                            nullable: true
+            - sql:
+                sql: update kyt_user set name = username;

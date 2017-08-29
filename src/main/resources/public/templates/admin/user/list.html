@@ -10,6 +10,7 @@
       <table class="table table-hover">
         <thead>
           <tr>
+            <th>Utilisateur</th>
             <th>Nom</th>
             <th>Email</th>
             <th>Rôle</th>
@@ -20,6 +21,11 @@
           <tr ng-repeat="user in usersCtrl.users._embedded.userResourceList">
             <td>
               {{user.username}}
+            </td>
+            <td>
+              <a href="#" editable-text="user.name" onaftersave="usersCtrl.saveUser(user)" title="Modifier l'utilisateur">
+                {{user.name}}
+              </a>
             </td>
             <td>
               <a href="#" editable-text="user.email" onaftersave="usersCtrl.saveUser(user)" title="Modifier l'utilisateur">
@@ -41,7 +47,7 @@
         </tbody>
         <tfoot>
           <tr>
-            <td colspan="4">
+            <td colspan="5">
               <div class="row">
                 <div class="col-md-6 col-md-offset-3">
                   <div class="center-block text-center">

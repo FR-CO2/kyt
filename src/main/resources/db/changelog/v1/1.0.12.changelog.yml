@@ -1,0 +1,12 @@
+## YAML Template.
+---
+databaseChangeLog:
+    - changeSet:
+        id: schema-1.0.11-task_user
+        author: stan
+        changes:
+            - addNotNullConstraint:
+                    tableName: kyt_user
+                    columnDataType: varchar(255)
+                    columnName: name
+                    defaultNullValue: false

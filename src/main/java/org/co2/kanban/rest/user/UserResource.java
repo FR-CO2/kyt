@@ -20,6 +20,8 @@ public class UserResource extends IdentifiableResourceSupport<ApplicationUser> {
         super(user);
     }
 
+    public String getName(){return this.getBean().getName();}
+
     public String getUsername() {
         return this.getBean().getUsername();
     }

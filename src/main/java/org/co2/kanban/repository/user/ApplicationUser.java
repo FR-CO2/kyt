@@ -38,6 +38,8 @@ public class ApplicationUser implements Serializable, Identifiable {
     @GeneratedValue(generator = "user_generator", strategy = GenerationType.TABLE)
     private Long id;
 
+    private String name;
+
     private String username;
 
     private String email;
@@ -62,6 +64,14 @@ public class ApplicationUser implements Serializable, Identifiable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getUsername() {
