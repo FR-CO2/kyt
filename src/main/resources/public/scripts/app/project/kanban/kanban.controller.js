@@ -36,7 +36,7 @@ var kanbanController = function ($uibModal, project, kanbanService) {
                 task.swimlane = null;
             }
             task.resource("self").save(null, task, function () {
-                vm.states = project.resource("state").query({"order": "position"});
+                vm.states = project.resource("state").query({"order": "position", "kanban": true});
             });
         }
     };

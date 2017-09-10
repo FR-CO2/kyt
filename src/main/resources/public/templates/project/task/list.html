@@ -23,7 +23,7 @@
                 <li class="checkboxDropdown__item"><label for="filterAssignee">Assignée à</label>
                     <select id="filterAssignee" ng-model="tasksCtrl.filter.member" ng-change="tasksCtrl.changedFilter()">
                         <option value="all">Tous</option>
-                        <option value="{{member.id}}" ng-repeat="member in tasksCtrl.members">{{member.username}}</option>
+                        <option value="{{member.id}}" ng-repeat="member in tasksCtrl.members">{{member.name}}</option>
                     </select>
                 </li>
                 <li class="checkboxDropdown__item"><label for="filterCategory">Catégorie</label>
@@ -56,9 +56,9 @@
                                 <span class="glyphicon" ng-if="tasksCtrl.sort.field === 'category'"
                                       ng-class="{'glyphicon-sort-by-alphabet': tasksCtrl.sort.sortDirection === 'asc', 'glyphicon-sort-by-alphabet-alt': tasksCtrl.sort.sortDirection === 'desc'}" ></span>
                 </li>
-                <li class="checkboxDropdown__item" ng-click="tasksCtrl.tableFilter('assignees.user.username')">
+                <li class="checkboxDropdown__item" ng-click="tasksCtrl.tableFilter('assignees.user.name')">
                     Assigné à
-                                <span class="glyphicon" ng-if="tasksCtrl.sort.field === 'assignee.user.username'"
+                                <span class="glyphicon" ng-if="tasksCtrl.sort.field === 'assignee.user.name'"
                                       ng-class="{'glyphicon-sort-by-alphabet': tasksCtrl.sort.sortDirection === 'asc', 'glyphicon-sort-by-alphabet-alt': tasksCtrl.sort.sortDirection === 'desc'}" ></span>
                 </li>
                 <li class="checkboxDropdown__item" ng-click="tasksCtrl.tableFilter('plannedStart')">
@@ -81,7 +81,7 @@
         <div class="card card--task" ng-repeat="task in tasksCtrl.tasks._embedded.taskResourceList">
             <article class="card__item">
                 <div class="card__header">
-                    <h3 class="card__title">{{task.name}}</h3>
+                    <h3 class="card__title">#{{task.id}} {{task.name}}</h3>
                     <div class="card__action">
                         <a class="btn btn-danger pull-right" ng-click="tasksCtrl.delete(task)" title="delete" ng-if="projectCtrl.rights.hasAdminRights"><span class="glyphicon glyphicon-trash"></span></a>&nbsp;
                         <a class="btn pull-right" ui-sref="app.project.task({projectId: projectCtrl.project.id, taskId: task.id })" title="edit">Editer</a>
@@ -91,8 +91,8 @@
                     <li class="card__content">
                         <ul class="userIcons">
                             <li ng-repeat="assignee in task.assignees" class="userIcons__item">
-                                <span class="userIcons__username">{{assignee.username}}</span>
-                                <img src="{{assignee.photo}}" alt="{{assignee.username}}" title="{{assignee.username}}" class="crop" ng-if="assignee.photo" />
+                                <span class="userIcons__username">{{assignee.name}}</span>
+                                <img src="{{assignee.photo}}" alt="{{assignee.name}}" title="{{assignee.name}}" class="crop" ng-if="assignee.photo" />
                                 <span class="crop" ng-if="!assignee.photo"><span class="glyphicon glyphicon-user"></span></span>
                             </li>
                         </ul>

@@ -65,7 +65,7 @@ public class MemberController {
     public Iterable<MemberResource> search(@PathVariable("projectId") Long projectId,
             @RequestParam("search") String term) {
         Project project = projectRepository.findOne(projectId);
-        return assembler.toResources(repository.findByProjectAndUserUsernameContainsIgnoreCase(project, term));
+        return assembler.toResources(repository.findByProjectAndUserNameContainsIgnoreCase(project, term));
     }
 
     @RequestMapping(method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)

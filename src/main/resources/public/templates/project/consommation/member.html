@@ -41,7 +41,7 @@
                 <tbody ng-repeat="entry in consommationCtrl.entries">
                     <tr>
                         <th>
-                            {{entry.username}}
+                            {{entry.name}}
                         </th>
                         <th>
                             <span ng-if="!entry.showDetails && entry.imputations.details.length" class="glyphicon glyphicon-chevron-down" ng-click="consommationCtrl.showDetail(entry)"></span>

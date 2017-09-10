@@ -10,24 +10,12 @@
                     <div class="card__header">
                         <h3 class="card__title">#{{task.id}} {{task.name}}</h3>
                         <div class="card__action">
-                            <a class="btn pull-right"
+                            <a
                                ui-sref="app.project.task({projectId: task.project.id, taskId: task.id })"
-                               title="edit">Editer</a>
+                               title="Accéder à la tâche">Accéder à la tâche</a>
                         </div>
                     </div>
                     <ul class="card__contentList">
-                        <li class="card__content">
-                            <ul class="userIcons" ng-class="{'userIcons--multiple': task.assignees.length > 1}">
-                                <li ng-repeat="assignee in task.assignees" class="userIcons__item">
-                                    <span class="userIcons__username">{{assignee.username}}</span>
-                                    <img src="{{assignee.photo}}" alt="{{assignee.username}}" title="{{assignee.username}}"
-                                         class="crop" ng-if="assignee.photo"/>
-                                    <span class="crop" ng-if="!assignee.photo"><span
-                                            class="glyphicon glyphicon-user"></span></span>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="card__content">Projet : {{task.project.name}}</li>
                         <li class="card__content">{{task.state.name}}</li>
                         <li class="card__content">
                             <span ng-if="!task.swimlane">-</span>
@@ -42,41 +30,41 @@
                     </ul>
                     <aside class="card__infos">
                         <dl class="card__info">
-                            <dd class="card__info__value" ng-if="!task.plannedStart">
+                            <dd class="card__info__value" ng-if="!task.plannedStart" title="Date de début prévue">
                                 -
                             </dd>
-                            <dd class="card__info__value" ng-if="task.plannedStart">
+                            <dd class="card__info__value" ng-if="task.plannedStart" title="Date de début prévue">
                                 {{task.plannedStart| date:'dd/MM/yyyy'}}
                             </dd>
                             <dt class="card__info__title">Date de début prévue</dt>
                         </dl>
 
                         <dl class="card__info">
-                            <dd class="card__info__value" ng-if="!task.plannedEnding">
+                            <dd class="card__info__value" ng-if="!task.plannedEnding" title="Date de début">
                                 -
                             </dd>
-                            <dd class="card__info__value" ng-class="{'exceeded-date' : task.exceededDate}"
+                            <dd class="card__info__value" ng-class="{'exceeded-date' : task.exceededDate}" title="Date de début"
                                 ng-if="task.plannedEnding">
                                 {{task.plannedEnding| date:'dd/MM/yyyy'}}
                             </dd>
-                            <dt class="card__info__title">Date de début</dt>
+                            <dt class="card__info__title">Date de fin</dt>
                         </dl>
 
                         <dl class="card__info">
-                            <dd class="card__info__value" ng-if="!task.estimatedLoad">
+                            <dd class="card__info__value" ng-if="!task.estimatedLoad" title="Charge estimée">
                                 -
                             </dd>
-                            <dd class="card__info__value" ng-if="task.estimatedLoad">
+                            <dd class="card__info__value" ng-if="task.estimatedLoad" title="Charge estimée">
                                 {{task.estimatedLoad}}
                             </dd>
                             <dt class="card__info__title">Charge estimée</dt>
                         </dl>
 
                         <dl class="card__info">
-                            <dd class="card__info__value" ng-if="!task.timeSpent">
+                            <dd class="card__info__value" ng-if="!task.timeSpent" title="Consommé">
                                 -
                             </dd>
-                            <dd class="card__info__value" ng-if="task.timeSpent">
+                            <dd class="card__info__value" ng-if="task.timeSpent" title="Consommé">
                                 {{task.timeSpent}}
                             </dd>
                             <dt class="card__info__title">Consommé</dt>
@@ -86,7 +74,7 @@
                             <dd class="card__info__value" ng-if="!task.timeRemains">
                                 -
                             </dd>
-                            <dd class="card__info__value" ng-class="{'exceeded-load' : task.exceededLoad}"
+                            <dd class="card__info__value" ng-class="{'exceeded-load' : task.exceededLoad}"  title="Reste à faire"
                                 ng-if="task.timeRemains">
                                 {{task.timeRemains}}
                             </dd>
@@ -99,13 +87,11 @@
         </div>
     </div>
     <div class="col-md-6">
+        <h2 class="panel-heading-title">
+            <span class="glyphicon glyphicon-calendar">&nbsp;</span>
+            Mon calendrier
+        </h2>
         <div class="panel">
-            <div class="panel-heading clearChild">
-                <h2 class="panel-heading-title">
-                    <span class="glyphicon glyphicon-calendar">&nbsp;</span>
-                    Mon calendrier
-                </h2>
-            </div>
             <div class="panel-body">
                 <div ui-calendar="dashboardCtrl.calendarOptions" class="span8 calendar"
                      ng-model="dashboardCtrl.eventsSource" calendar="userCalendar"></div>

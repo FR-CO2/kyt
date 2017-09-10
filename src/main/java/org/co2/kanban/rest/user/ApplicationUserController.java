@@ -78,6 +78,7 @@ public class ApplicationUserController {
         }
         String passwordDigest = bcryptEncoder.encode(newUser.getPassword());
         newUser.setPassword(passwordDigest);
+        newUser.setName(newUser.getUsername());
         ApplicationUser user = repository.save(newUser);
         MultiValueMap<String, String> headers = new HttpHeaders();
         headers.add(HttpHeaders.LOCATION, linkTo(methodOn(ApplicationUserController.class).get(user.getId())).toString());
@@ -109,6 +110,7 @@ public class ApplicationUserController {
         }
         updatedUser.setApplicationRole(user.getApplicationRole());
         updatedUser.setEmail(user.getEmail());
+        updatedUser.setName(user.getName());
         repository.save(updatedUser);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

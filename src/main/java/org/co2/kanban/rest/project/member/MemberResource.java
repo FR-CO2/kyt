@@ -20,6 +20,7 @@ public class MemberResource extends IdentifiableResourceSupport<ProjectMember> {
         super(member);
     }
 
+    public String getName() { return this.getBean().getUser().getName();}
     public String getUsername() {
         return this.getBean().getUser().getUsername();
     }

@@ -56,7 +56,8 @@ public class StateController {
     @RequestMapping(params = {"kanban"}, method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public List<StateResource> kanbanList(@PathVariable("projectId") Long projectId, @RequestParam(name = "kanban") Boolean kanban) {
         Project project = projectRepository.findOne(projectId);
-        return assembler.toResources(repository.findByProjectAndKanbanHideFalseOrderByPositionAsc(project));
+        Boolean hide = !kanban;
+        return assembler.toResources(repository.findByProjectAndKanbanHideOrderByPositionAsc(project, hide));
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)

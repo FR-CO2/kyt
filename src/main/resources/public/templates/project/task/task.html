@@ -121,13 +121,13 @@
                     <label for="assignee">Assigné à </label>
                     <input id="assignee" class="form-control" ng-model="taskCtrl.selecteduser.username"
                            typeahead-editable="false" typeahead-on-select="taskCtrl.selectAssignee($item, $model, $label)" 
-                           uib-typeahead="member as member.username for member in taskCtrl.getMembers($viewValue)" placeholder="Ajouter un utilisateur"/>
+                           uib-typeahead="member as member.name for member in taskCtrl.getMembers($viewValue)" placeholder="Ajouter un utilisateur"/>
                     <ul class="userIcons" ng-if="taskCtrl.task.assignees.length > 0">
                         <li ng-repeat="assignee in taskCtrl.task.assignees track by $index" ng-click="taskCtrl.removeuser($index)" class="userIcons__item">
-                            <span class="userIcons__username">{{assignee.username}}</span>
+                            <span class="userIcons__username">{{assignee.name}}</span>
                             <div class="crop">
                                 <div class="userIcons__actions"><span class="fa fa-trash"></span></div>
-                                <img src="{{assignee.photo}}" alt="{{assignee.username}}" title="{{assignee.username}}" ng-if="assignee.photo" width="40" height="40"/>
+                                <img src="{{assignee.photo}}" alt="{{assignee.name}}" title="{{assignee.name}}" ng-if="assignee.photo" width="40" height="40"/>
                                 <span class="glyphicon glyphicon-user" ng-if="!assignee.photo"></span>
                             </div>
                         </li>
