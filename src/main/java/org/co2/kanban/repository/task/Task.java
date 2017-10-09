@@ -112,9 +112,11 @@ public class Task implements Serializable, Identifiable {
             = @JoinColumn(name = "member_id", referencedColumnName = "ID")
     )
     private List<ProjectMember> assignees;
-    
+
+    @Column(nullable = true, columnDefinition = "TINYINT(1)")
     private Boolean urgent;
-    
+
+    @Column(nullable = false, columnDefinition = "TINYINT(1)")
     private Boolean deleted;
 
     public Long getId() {
